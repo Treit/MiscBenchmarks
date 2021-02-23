@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "StringParsingBenchmark": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\src\\github\\Treit\\misc\\StringParsingBenchmark\\input.txt",
+      "sqlDebugging": true
+    }
+  }
+}
