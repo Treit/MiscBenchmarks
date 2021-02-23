@@ -133,7 +133,7 @@
         public int CountUsingLinqWhereLengthEqualsZero()
         {
             int count = 0;
-            count = strings.Where(x =>x.Length == 0).Count();
+            count = strings.Where(x => x.Length == 0).Count();
 
             return count;
         }
