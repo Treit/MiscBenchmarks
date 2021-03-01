@@ -47,6 +47,20 @@
         }
 
         [Benchmark]
+        public int ForLoopCountUsingLengthEqualsZeroWithNullCheck()
+        {
+            int count = 0;
+            for (int i = 0; i < strings.Count; i++)
+            {
+                if (strings[i]?.Length == 0)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        [Benchmark]
         public int ForLoopCountUsingLengthEqualsZeroWithTryCatch()
         {
             int count = 0;
