@@ -2,20 +2,14 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
+    using System;
     using System.Collections.Generic;
 
     public class SomeClass
     {
         public int DoSomething()
         {
-            int total = 0;
-
-            for (int i = 0; i < 1_000_000; i++)
-            {
-                total += i;
-            }
-
-            return total;
+            return (int)DateTime.UtcNow.Ticks;
         }
     }
 
@@ -23,7 +17,7 @@
     [ShortRunJob]
     public class Benchmark
     {
-        [Params(1000, 100_000, 1_000_000)]
+        [Params(10, 100, 1000, 10_000, 100_000)]
         public int Iterations { get; set; }
 
         private SomeClass[] arrayLookup;
@@ -52,7 +46,7 @@
 
             for (int i = 0; i < this.Iterations; i++)
             {
-                for (int j = 0; j < arrayLookup.Length; i++)
+                for (int j = 0; j < arrayLookup.Length; j++)
                 {
                     SomeClass c = arrayLookup[j];
                     result += c.DoSomething();
@@ -69,7 +63,7 @@
 
             for (int i = 0; i < this.Iterations; i++)
             {
-                for (int j = 0; j < arrayLookup.Length; i++)
+                for (int j = 0; j < arrayLookup.Length; j++)
                 {
                     SomeClass c = dictionaryLookup[j];
                     result += c.DoSomething();
