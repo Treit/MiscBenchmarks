@@ -156,6 +156,20 @@
         }
 
         [Benchmark]
+        public int ForLoopCountUsingIsNullOrEmpty()
+        {
+            int count = 0;
+            for (int i = 0; i < strings.Count; i++)
+            {
+                if (string.IsNullOrEmpty(strings[i]))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        [Benchmark]
         public int CountUsingLinqWhereEmptyStringLiteral()
         {
             int count = 0;
