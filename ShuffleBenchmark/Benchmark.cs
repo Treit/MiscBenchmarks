@@ -109,5 +109,25 @@
 
             return _values[0];
         }
+
+        [Benchmark]
+        public int PLinqWithRandom()
+        {
+            Random r = new Random();
+
+            _values = _values.AsParallel().OrderBy(_ => r.Next()).ToList();
+
+            return _values[0];
+        }
+
+        [Benchmark]
+        public int PLinqWithGuid()
+        {
+            Random r = new Random();
+
+            _values = _values.AsParallel().OrderBy(_ => Guid.NewGuid()).ToList();
+
+            return _values[0];
+        }
     }
 }
