@@ -2,10 +2,8 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
-    using Microsoft.Diagnostics.Tracing.Parsers;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text.RegularExpressions;
 
     [MemoryDiagnoser]
