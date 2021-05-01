@@ -11,20 +11,24 @@ AMD Ryzen Threadripper 3960X, 1 CPU, 48 logical and 24 physical cores
 Job=ShortRun  IterationCount=3  LaunchCount=1
 WarmupCount=3
 
-|                      Method |   Count |              Mean |            Error |         StdDev |      Gen 0 |     Gen 1 | Gen 2 |    Allocated |
-|---------------------------- |-------- |------------------:|-----------------:|---------------:|-----------:|----------:|------:|-------------:|
-|         FindTokenUsingSplit |      10 |          3.801 us |         2.098 us |      0.1150 us |     0.5341 |         - |     - |      4.38 KB |
-|         FindTokenUsingRegex |      10 |         60.038 us |         6.180 us |      0.3387 us |     0.8545 |         - |     - |      7.34 KB |
-| FindTokenUsingCompiledRegex |      10 |      3,871.644 us |     6,168.054 us |    338.0918 us |          - |         - |     - |      23.6 KB |
-|         FindTokenUsingSplit |     100 |         22.509 us |         4.389 us |      0.2406 us |     5.5237 |         - |     - |     45.18 KB |
-|         FindTokenUsingRegex |     100 |        574.419 us |        29.929 us |      1.6405 us |     3.9063 |         - |     - |     31.97 KB |
-| FindTokenUsingCompiledRegex |     100 |      3,756.789 us |        53.988 us |      2.9593 us |     3.9063 |         - |     - |      48.3 KB |
-|         FindTokenUsingSplit |    1000 |        213.411 us |         2.405 us |      0.1318 us |    55.4199 |         - |     - |       453 KB |
-|         FindTokenUsingRegex |    1000 |      7,146.676 us |     1,369.275 us |     75.0546 us |    31.2500 |         - |     - |    278.08 KB |
-| FindTokenUsingCompiledRegex |    1000 |      5,527.701 us |       175.939 us |      9.6438 us |    31.2500 |   15.6250 |     - |    294.38 KB |
-|         FindTokenUsingSplit |  100000 |     23,300.616 us |     5,908.041 us |    323.8397 us |  5531.2500 |         - |     - |   45312.8 KB |
-|         FindTokenUsingRegex |  100000 |  1,369,778.867 us |    64,893.799 us |  3,557.0481 us |  3000.0000 |         - |     - |  27352.92 KB |
-| FindTokenUsingCompiledRegex |  100000 |    290,998.767 us |    60,515.877 us |  3,317.0794 us |  3000.0000 |         - |     - |  27365.65 KB |
-|         FindTokenUsingSplit | 1000000 |    280,467.033 us |   104,741.041 us |  5,741.2099 us | 64500.0000 |         - |     - | 530469.06 KB |
-|         FindTokenUsingRegex | 1000000 | 13,011,741.067 us | 1,753,476.595 us | 96,113.9690 us | 34000.0000 | 1000.0000 |     - | 280480.38 KB |
-| FindTokenUsingCompiledRegex | 1000000 |  3,352,983.533 us |   418,318.150 us | 22,929.4294 us | 34000.0000 |         - |     - | 280496.63 KB |
+|                      Method |   Count |              Mean |             Error |         StdDev |  Ratio | RatioSD |      Gen 0 |     Gen 1 | Gen 2 |    Allocated |
+|---------------------------- |-------- |------------------:|------------------:|---------------:|-------:|--------:|-----------:|----------:|------:|-------------:|
+|         FindTokenUsingSplit |      10 |          3.647 us |         0.2531 us |      0.0139 us |   1.00 |    0.00 |     0.5341 |         - |     - |      4.38 KB |
+|         FindTokenUsingRegex |      10 |         59.812 us |         4.9330 us |      0.2704 us |  16.40 |    0.07 |     0.8545 |         - |     - |      7.34 KB |
+| FindTokenUsingCompiledRegex |      10 |      3,638.054 us |       113.4121 us |      6.2165 us | 997.54 |    4.96 |          - |         - |     - |      23.6 KB |
+|                             |         |                   |                   |                |        |         |            |           |       |              |
+|         FindTokenUsingSplit |     100 |         23.089 us |        21.4267 us |      1.1745 us |   1.00 |    0.00 |     5.5237 |         - |     - |     45.18 KB |
+|         FindTokenUsingRegex |     100 |        575.585 us |        22.2949 us |      1.2221 us |  24.97 |    1.30 |     3.9063 |         - |     - |     31.97 KB |
+| FindTokenUsingCompiledRegex |     100 |      3,795.274 us |        65.2887 us |      3.5787 us | 164.66 |    8.51 |     3.9063 |         - |     - |      48.3 KB |
+|                             |         |                   |                   |                |        |         |            |           |       |              |
+|         FindTokenUsingSplit |    1000 |        212.412 us |        56.6023 us |      3.1026 us |   1.00 |    0.00 |    55.4199 |         - |     - |       453 KB |
+|         FindTokenUsingRegex |    1000 |      7,212.646 us |     1,969.8768 us |    107.9756 us |  33.96 |    0.58 |    31.2500 |         - |     - |    278.08 KB |
+| FindTokenUsingCompiledRegex |    1000 |      5,577.158 us |       388.9371 us |     21.3190 us |  26.26 |    0.43 |    31.2500 |   15.6250 |     - |    294.38 KB |
+|                             |         |                   |                   |                |        |         |            |           |       |              |
+|         FindTokenUsingSplit |  100000 |     24,906.697 us |     2,399.3381 us |    131.5158 us |   1.00 |    0.00 |  5531.2500 |         - |     - |   45312.8 KB |
+|         FindTokenUsingRegex |  100000 |  1,546,085.000 us | 1,048,292.7714 us | 57,460.4641 us |  62.07 |    2.03 |  3000.0000 |         - |     - |  27352.92 KB |
+| FindTokenUsingCompiledRegex |  100000 |    294,409.033 us |    70,214.1380 us |  3,848.6738 us |  11.82 |    0.21 |  3000.0000 |         - |     - |  27365.65 KB |
+|                             |         |                   |                   |                |        |         |            |           |       |              |
+|         FindTokenUsingSplit | 1000000 |    281,597.417 us |    35,884.1878 us |  1,966.9334 us |   1.00 |    0.00 | 64500.0000 |         - |     - | 530469.06 KB |
+|         FindTokenUsingRegex | 1000000 | 13,354,609.800 us | 1,455,336.9306 us | 79,771.9280 us |  47.43 |    0.59 | 34000.0000 | 1000.0000 |     - | 280480.38 KB |
+| FindTokenUsingCompiledRegex | 1000000 |  3,317,923.433 us |   157,475.2441 us |  8,631.7495 us |  11.78 |    0.11 | 34000.0000 |         - |     - | 280496.63 KB |

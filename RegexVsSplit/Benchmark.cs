@@ -28,7 +28,7 @@
             }
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int FindTokenUsingSplit()
         {
             Random r = new Random();
