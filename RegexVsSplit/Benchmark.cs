@@ -17,10 +17,15 @@
 
         private List<string> _values;
 
+        private Regex _re;
+        private Regex _rec;
+
         [GlobalSetup]
         public void GlobalSetup()
         {
             _values = new List<string>(Count);
+            _re = new Regex("^.+,.+,.+,.+,.+,(.+?),");
+            _rec = new Regex("^.+,.+,.+,.+,.+,(.+?),", RegexOptions.Compiled);
 
             for (int i = 0; i < this.Count; i++)
             {
@@ -52,11 +57,9 @@
             string needle = "104";
             int result = -1;
 
-            Regex re = new Regex("^.+,.+,.+,.+,.+,(.+?),");
-
             for (int i = 0; i < _values.Count; i++)
             {
-                Match m = re.Match(_values[i]);
+                Match m = _re.Match(_values[i]);
                 if (m.Success && m.Result("$1") == needle)
                 {
                     result = i;
@@ -72,11 +75,9 @@
             string needle = "104";
             int result = -1;
 
-            Regex re = new Regex("^.+,.+,.+,.+,.+,(.+?),", RegexOptions.Compiled);
-
             for (int i = 0; i < _values.Count; i++)
             {
-                Match m = re.Match(_values[i]);
+                Match m = _rec.Match(_values[i]);
                 if (m.Success && m.Result("$1") == needle)
                 {
                     result = i;
