@@ -31,8 +31,7 @@
         [Benchmark(Baseline = true)]
         public int FindTokenUsingSplit()
         {
-            Random r = new Random();
-            string needle = r.Next(0, Count).ToString();
+            string needle = "104";
             int result = -1;
 
             for (int i = 0; i < _values.Count; i++)
@@ -50,8 +49,7 @@
         [Benchmark]
         public int FindTokenUsingRegex()
         {
-            Random r = new Random();
-            string needle = r.Next(0, Count).ToString();
+            string needle = "104";
             int result = -1;
 
             Regex re = new Regex("^.+,.+,.+,.+,.+,(.+?),");
@@ -71,8 +69,7 @@
         [Benchmark]
         public int FindTokenUsingCompiledRegex()
         {
-            Random r = new Random();
-            string needle = r.Next(0, Count).ToString();
+            string needle = "104";
             int result = -1;
 
             Regex re = new Regex("^.+,.+,.+,.+,.+,(.+?),", RegexOptions.Compiled);
@@ -84,6 +81,53 @@
                 {
                     result = i;
                 }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public int FindTokenUsingSpan()
+        {
+            string needle = "104";
+            int result = -1;
+
+            for (int i = 0; i < _values.Count; i++)
+            {
+                string value = _values[i];
+                int cc = 0;
+                int start = 0;
+                int end = 0;
+
+                for (int j = 0; j < value.Length; j++)
+                {
+                    if (value[j] == ',')
+                    {
+                        cc++;
+                    }
+
+                    if (cc == 5)
+                    {
+                        if (start == 0)
+                        {
+                            start = j;
+                        }
+                    }
+
+                    if (cc == 6)
+                    {
+                        end = j;
+                        break;
+                    }
+                }
+
+                ReadOnlySpan<char> span = value.AsSpan(start + 1, end - start - 1);
+
+                if (span.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
+                {
+                    result = i;
+                }
+
             }
 
             return result;
