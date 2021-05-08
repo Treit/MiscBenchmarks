@@ -44,6 +44,8 @@
         [Benchmark]
         public long QueueUsingStruct()
         {
+            _structQueue.Clear();
+
             PopulateQueueUsingStruct();
 
             long result = 0;
@@ -59,6 +61,8 @@
         [Benchmark(Baseline = true)]
         public long QueueUsingClass()
         {
+            _classQueue.Clear();
+
             PopulateQueueUsingClass();
 
             long result = 0;
