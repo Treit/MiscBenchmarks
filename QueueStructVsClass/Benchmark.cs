@@ -50,8 +50,9 @@
 
             long result = 0;
 
-            foreach (var item in _structQueue)
+            while (_structQueue.Count > 0)
             {
+                var item = _structQueue.Dequeue();
                 result += item.Message.Length;
             }
 
@@ -67,8 +68,9 @@
 
             long result = 0;
 
-            foreach (var item in _structQueue)
+            while (_classQueue.Count > 0)
             {
+                var item = _classQueue.Dequeue();
                 result += item.Message.Length;
             }
 
