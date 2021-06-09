@@ -22,7 +22,7 @@
         [Benchmark]
         public int PaginateWithArraySegment()
         {
-            Random r = new ();
+            Random r = new();
             _array = new byte[Size];
             r.NextBytes(_array);
 
