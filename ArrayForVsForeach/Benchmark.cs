@@ -47,7 +47,7 @@
             return count;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int ForEachLoopCount()
         {
             int count = 0;
