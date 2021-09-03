@@ -53,5 +53,24 @@
         {
             return Enumerable.Range(1, Count).Average();
         }
+
+        [Benchmark]
+        public long PopulateAndTakeSumWithExplicitArray()
+        {
+            long[] range = new long[Count];
+
+            for (int i = 0; i < range.Length; i++)
+            {
+                range[i] = i + 1;
+            }
+
+            return range.Sum();
+        }
+
+        [Benchmark]
+        public long PopulateAndTakeSumWithEnumerableRange()
+        {
+            return Enumerable.Range(1, Count).Select(x => (long)x).Sum();
+        }
     }
 }

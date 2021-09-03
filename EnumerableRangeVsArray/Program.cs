@@ -13,7 +13,7 @@
             Benchmark b = new Benchmark();
             b.Count = 1_000_000;
             b.GlobalSetup();
-            Console.WriteLine(b.PopulateWithEnumerableRange());
+            Console.WriteLine(b.PopulateAndTakeSumWithEnumerableRange());
 #endif
         }
     }
