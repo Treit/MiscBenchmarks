@@ -34,5 +34,24 @@
         {
             return Enumerable.Range(1, Count).ToArray().Length;
         }
+
+        [Benchmark]
+        public double PopulateAndTakeAverageWithExplicitArray()
+        {
+            int[] range = new int[Count];
+
+            for (int i = 0; i < range.Length; i++)
+            {
+                range[i] = i + 1;
+            }
+
+            return range.Average();
+        }
+
+        [Benchmark]
+        public double PopulateAndTakeAverageWithEnumerableRange()
+        {
+            return Enumerable.Range(1, Count).Average();
+        }
     }
 }
