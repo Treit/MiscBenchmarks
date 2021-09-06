@@ -14,6 +14,7 @@
         [Params(2, 4, 10, 100, 1000, 10_000)]
         public int Count { get; set; }
         private List<string> _values;
+        private int _finalStrLen ;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -22,7 +23,9 @@
 
             for (int i = 0; i < this.Count; i++)
             {
-                _values.Add(i.ToString());
+                var str = i.ToString();
+                _finalStrLen += str.Length;
+                _values.Add(str);
             }
         }
 
@@ -65,6 +68,38 @@
             }
 
             return result.Length;
+        }
+
+        [Benchmark]
+        public int BuildStringWithStringCreateAkari()
+        {
+            int size = 0;
+            for (int i = 0; i < this.Count; i++)
+            {
+                size += _values[i].Length;
+            }
+
+            return string.Create(size, _values, (span, list) =>
+            {
+                foreach (var str in list)
+                {
+                    str.AsSpan().CopyTo(span);
+                    span = span[str.Length..];
+                }
+            }).Length;
+        }
+
+        [Benchmark]
+        public int BuildStringWithStringCreateLengthPrecalc()
+        {
+            return string.Create(_finalStrLen, _values, (span, list) =>
+            {
+                foreach (var str in list)
+                {
+                    str.AsSpan().CopyTo(span);
+                    span = span[str.Length..];
+                }
+            }).Length;
         }
     }
 }
