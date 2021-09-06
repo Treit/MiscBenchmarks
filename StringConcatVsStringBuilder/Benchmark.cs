@@ -53,5 +53,18 @@
 
             return result.Length;
         }
+
+        [Benchmark]
+        public int BuildStringWithInterpolation()
+        {
+            string result = string.Empty;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                result = $"{result}{i}";
+            }
+
+            return result.Length;
+        }
     }
 }
