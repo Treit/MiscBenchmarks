@@ -4,7 +4,9 @@
     using BenchmarkDotNet.Diagnosers;
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
+using System.Text;
     using System.Text.RegularExpressions;
 
     [MemoryDiagnoser]
@@ -98,6 +100,59 @@
                 {
                     str.AsSpan().CopyTo(span);
                     span = span[str.Length..];
+                }
+            }).Length;
+        }
+
+        [Benchmark]
+        public int BuildStringWithStringCreateWithCountKozi()
+        {
+            var s = CollectionsMarshal.AsSpan(_values);
+            int size = 0;
+            foreach (var item in s)
+            {
+                size += item.Length;
+            }
+
+            return string.Create(size, _values, (span, list) =>
+            {
+                foreach (var str in list)
+                {
+                    str.AsSpan().CopyTo(span);
+                    span = span[str.Length..];
+                }
+            }).Length;
+        }
+
+        [Benchmark]
+        public int BuildStringWithStringCreateLengthPrecalKozi()
+        {
+            return string.Create(_finalStrLen, _values, (span, list) =>
+            {
+                var s = CollectionsMarshal.AsSpan(list);
+                foreach (var str in s)
+                {
+                    str.AsSpan().CopyTo(span);
+                    span = span.Slice(str.Length);
+                }
+            }).Length;
+        }
+
+        [Benchmark]
+        public int BuildStringWithStringCreateLengthPrecalKoziUnsafeMagic()
+        {
+            return string.Create(_finalStrLen, _values, (span, list) =>
+            {
+                var s = CollectionsMarshal.AsSpan(list);
+                ref byte destination = ref Unsafe.As<char, byte>(ref MemoryMarshal.GetReference(span));
+                foreach (var str in s)
+                {
+                    var len = str.Length * 2;
+                    Unsafe.CopyBlockUnaligned(ref destination,
+                                              ref Unsafe.As<char, byte>(ref MemoryMarshal.GetReference(str.AsSpan())),
+                                              (uint)len);
+
+                    destination = ref Unsafe.Add(ref destination, len);
                 }
             }).Length;
         }
