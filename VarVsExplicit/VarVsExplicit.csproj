@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Remove="testsrc\*.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Remove="explicit.cs" />
+    <Compile Remove="var.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Include="var.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="explicit.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
