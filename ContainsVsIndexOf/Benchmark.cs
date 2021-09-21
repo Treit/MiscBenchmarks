@@ -49,6 +49,38 @@
         }
 
         [Benchmark]
+        public int CountUsingContainsExplicitOrdinal()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].Contains("garbage", StringComparison.Ordinal))
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
+        public int CountUsingContainsExplicitCurrentCulture()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].Contains("garbage", StringComparison.CurrentCulture))
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
         public int CountUsingIndexOf()
         {
             int garbageCount = 0;
