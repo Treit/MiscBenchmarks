@@ -65,6 +65,22 @@
         }
 
         [Benchmark]
+        public int CountUsingContainsExplicitOrdinalIgnoreCase()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].Contains("garbage", StringComparison.OrdinalIgnoreCase))
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
         public int CountUsingContainsExplicitCurrentCulture()
         {
             int garbageCount = 0;
@@ -72,6 +88,54 @@
             for (int i = 0; i < this.Count; i++)
             {
                 if (_values[i].Contains("garbage", StringComparison.CurrentCulture))
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
+        public int CountUsingContainsExplicitCurrentCultureIgnoreCase()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].Contains("garbage", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
+        public int CountUsingContainsExplicitInvariantCulture()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].Contains("garbage", StringComparison.InvariantCulture))
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
+        public int CountUsingContainsExplicitInvariantCultureIgnoreCase()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].Contains("garbage", StringComparison.InvariantCultureIgnoreCase))
                 {
                     garbageCount++;
                 }
@@ -97,6 +161,54 @@
         }
 
         [Benchmark]
+        public int CountUsingIndexOfInvariantCulture()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].IndexOf("garbage", StringComparison.InvariantCulture) != -1)
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
+        public int CountUsingIndexOfInvariantCultureIgnoreCase()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].IndexOf("garbage", StringComparison.InvariantCultureIgnoreCase) != -1)
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
+        public int CountUsingIndexOfCurrentCultureIgnoreCase()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].IndexOf("garbage", StringComparison.CurrentCultureIgnoreCase) != -1)
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
         public int CountUsingIndexOfOrdinal()
         {
             int garbageCount = 0;
@@ -104,6 +216,22 @@
             for (int i = 0; i < this.Count; i++)
             {
                 if (_values[i].IndexOf("garbage", StringComparison.Ordinal) != -1)
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
+
+        [Benchmark]
+        public int CountUsingIndexOfOrdinalIgnoreCase()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].IndexOf("garbage", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     garbageCount++;
                 }
