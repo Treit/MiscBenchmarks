@@ -6,7 +6,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    [MemoryDiagnoser]
     [ShortRunJob]
     public class Benchmark
     {
@@ -81,7 +80,7 @@
             return count;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int ForLoopCountUsingEmptyStringLiteral()
         {
             int count = 0;
