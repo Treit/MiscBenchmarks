@@ -63,5 +63,21 @@
 
             return garbageCount;
         }
+
+        [Benchmark]
+        public int CountUsingIndexOfOrdinal()
+        {
+            int garbageCount = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].IndexOf("garbage", StringComparison.Ordinal) != -1)
+                {
+                    garbageCount++;
+                }
+            }
+
+            return garbageCount;
+        }
     }
 }
