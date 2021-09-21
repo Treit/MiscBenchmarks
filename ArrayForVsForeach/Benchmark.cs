@@ -6,7 +6,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    [MemoryDiagnoser]
     [ShortRunJob]
     public class Benchmark
     {
