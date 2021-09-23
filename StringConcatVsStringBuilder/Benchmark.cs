@@ -59,6 +59,21 @@
         }
 
         [Benchmark]
+        public int BuildStringWithStringBuilderPrecalc()
+        {
+            var sb = new StringBuilder(_finalStrLen);
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                sb.Append(_values[i]);
+            }
+
+            string result = sb.ToString();
+
+            return result.Length;
+        }
+
+        [Benchmark]
         public int BuildStringWithInterpolation()
         {
             string result = string.Empty;
@@ -124,7 +139,7 @@
         }
 
         [Benchmark]
-        public int BuildStringWithStringCreateLengthPrecalKozi()
+        public int BuildStringWithStringCreateLengthPrecalcKozi()
         {
             return string.Create(_finalStrLen, _values, (span, list) =>
             {
@@ -138,7 +153,7 @@
         }
 
         [Benchmark]
-        public int BuildStringWithStringCreateLengthPrecalKoziUnsafeMagic()
+        public int BuildStringWithStringCreateLengthPrecalcKoziUnsafeMagic()
         {
             return string.Create(_finalStrLen, _values, (span, list) =>
             {
