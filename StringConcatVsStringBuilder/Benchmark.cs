@@ -80,7 +80,7 @@
 
             for (int i = 0; i < this.Count; i++)
             {
-                result = $"{result}{i}";
+                result = $"{result}{_values[i]}";
             }
 
             return result.Length;
@@ -169,6 +169,23 @@
                     destination = ref Unsafe.Add(ref destination, len);
                 }
             }).Length;
+        }
+
+        [Benchmark]
+        public int BuildStringWithDefaultInterpolatedStringHanlder333Fred()
+        {
+            DefaultInterpolatedStringHandler handler = new(
+                literalLength: 0,
+                formattedCount: Count,
+                provider: null,
+                initialBuffer: stackalloc char[250]);
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                handler.AppendFormatted(_values[i]);
+            }
+
+            return handler.ToStringAndClear().Length;
         }
     }
 }
