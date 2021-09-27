@@ -12,7 +12,7 @@
             Benchmark b = new Benchmark();
             b.Count = 1024 * 1024 * 1024;
             b.GlobalSetup();
-            b.HashFileLocationsUsingFileStream();
+            b.HashFileLocationsUsingFileStreamCrc32();
 #endif
 
         }

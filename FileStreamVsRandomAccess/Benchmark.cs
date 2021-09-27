@@ -1,16 +1,10 @@
 ﻿namespace Test
 {
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
     using Microsoft.Win32.SafeHandles;
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
-    using System.Text;
 
-    [MemoryDiagnoser]
     [ShortRunJob]
     public class Benchmark
     {
@@ -37,11 +31,11 @@
         }
 
         [Benchmark(Baseline = true)]
-        public uint HashFileLocationsUsingFileStream()
+        public uint HashFileLocationsUsingFileStreamCrc32()
         {
-            uint crc1 = 0;
-            uint crc2 = 0;
-            uint crc3 = 0;
+            uint hash1 = 0;
+            uint hash2 = 0;
+            uint hash3 = 0;
 
             using FileStream fs = new FileStream(FilePath, FileMode.Open);
 
@@ -50,43 +44,149 @@
             for (int i = 0; i < 10; i++)
             {
                 fs.Read(buffer, 0, buffer.Length);
-                crc1 = HashUtils.CRC32(buffer);
+                hash1 = HashUtils.CRC32(buffer);
 
                 fs.Seek(Count / 2, SeekOrigin.Begin);
                 fs.Read(buffer, 0, buffer.Length);
-                crc2 = HashUtils.CRC32(buffer);
+                hash2 = HashUtils.CRC32(buffer);
 
                 fs.Seek(1024 * 1024 * 2 * -1, SeekOrigin.End);
-                crc3 = HashUtils.CRC32(buffer);
+                hash3 = HashUtils.CRC32(buffer);
             }
 
-            return crc1 ^ crc2 ^ crc3;
+            return (uint)HashCode.Combine(hash1, hash2, hash3);
         }
 
         [Benchmark]
-        public uint HashFileLocationsUsingRandomAccess()
+        public uint HashFileLocationsUsingRandomAccessCrc32()
         {
             SafeFileHandle handle = File.OpenHandle(FilePath, FileMode.Open);
 
             byte[] buffer = new byte[1024 * 1024 * 2];
 
-            uint crc1 = 0;
-            uint crc2 = 0;
-            uint crc3 = 0;
+            uint hash1 = 0;
+            uint hash2 = 0;
+            uint hash3 = 0;
 
             for (int i = 0; i < 10; i++)
             {
                 RandomAccess.Read(handle, buffer, 0);
-                crc1 = HashUtils.CRC32(buffer);
+                hash1 = HashUtils.CRC32(buffer);
 
                 RandomAccess.Read(handle, buffer, Count / 2);
-                crc2 = HashUtils.CRC32(buffer);
+                hash2 = HashUtils.CRC32(buffer);
 
                 RandomAccess.Read(handle, buffer, Count - 1024 * 1024 * 2);
-                crc3 = HashUtils.CRC32(buffer);
+                hash3 = HashUtils.CRC32(buffer);
             }
 
-            return crc1 ^ crc2 ^ crc3;
+            return (uint)HashCode.Combine(hash1, hash2, hash3);
+        }
+
+        [Benchmark]
+        public uint HashFileLocationsUsingFileStreamMurmurHash()
+        {
+            uint hash1 = 0;
+            uint hash2 = 0;
+            uint hash3 = 0;
+
+            using FileStream fs = new FileStream(FilePath, FileMode.Open);
+
+            byte[] buffer = new byte[1024 * 1024 * 2];
+
+            for (int i = 0; i < 10; i++)
+            {
+                fs.Read(buffer, 0, buffer.Length);
+                hash1 = HashUtils.MurmurHash32(buffer);
+
+                fs.Seek(Count / 2, SeekOrigin.Begin);
+                fs.Read(buffer, 0, buffer.Length);
+                hash2 = HashUtils.MurmurHash32(buffer);
+
+                fs.Seek(1024 * 1024 * 2 * -1, SeekOrigin.End);
+                hash3 = HashUtils.MurmurHash32(buffer);
+            }
+
+            return (uint)HashCode.Combine(hash1, hash2, hash3);
+        }
+
+        [Benchmark]
+        public uint HashFileLocationsUsingRandomAccessMurmurHash()
+        {
+            SafeFileHandle handle = File.OpenHandle(FilePath, FileMode.Open);
+
+            byte[] buffer = new byte[1024 * 1024 * 2];
+
+            uint hash1 = 0;
+            uint hash2 = 0;
+            uint hash3 = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                RandomAccess.Read(handle, buffer, 0);
+                hash1 = HashUtils.MurmurHash32(buffer);
+
+                RandomAccess.Read(handle, buffer, Count / 2);
+                hash2 = HashUtils.MurmurHash32(buffer);
+
+                RandomAccess.Read(handle, buffer, Count - 1024 * 1024 * 2);
+                hash3 = HashUtils.MurmurHash32(buffer);
+            }
+
+            return (uint)HashCode.Combine(hash1, hash2, hash3);
+        }
+
+        [Benchmark]
+        public uint HashFileLocationsUsingFileStreamJenkinsHash()
+        {
+            uint hash1 = 0;
+            uint hash2 = 0;
+            uint hash3 = 0;
+
+            using FileStream fs = new FileStream(FilePath, FileMode.Open);
+
+            byte[] buffer = new byte[1024 * 1024 * 2];
+
+            for (int i = 0; i < 10; i++)
+            {
+                fs.Read(buffer, 0, buffer.Length);
+                hash1 = (uint)HashUtils.JenkinsHash(buffer);
+
+                fs.Seek(Count / 2, SeekOrigin.Begin);
+                fs.Read(buffer, 0, buffer.Length);
+                hash2 = (uint)HashUtils.JenkinsHash(buffer);
+
+                fs.Seek(1024 * 1024 * 2 * -1, SeekOrigin.End);
+                hash3 = (uint)HashUtils.JenkinsHash(buffer);
+            }
+
+            return (uint)HashCode.Combine(hash1, hash2, hash3);
+        }
+
+        [Benchmark]
+        public uint HashFileLocationsUsingRandomAccessJenkinsHash()
+        {
+            SafeFileHandle handle = File.OpenHandle(FilePath, FileMode.Open);
+
+            byte[] buffer = new byte[1024 * 1024 * 2];
+
+            uint hash1 = 0;
+            uint hash2 = 0;
+            uint hash3 = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                RandomAccess.Read(handle, buffer, 0);
+                hash1 = (uint)HashUtils.JenkinsHash(buffer);
+
+                RandomAccess.Read(handle, buffer, Count / 2);
+                hash2 = (uint)HashUtils.JenkinsHash(buffer);
+
+                RandomAccess.Read(handle, buffer, Count - 1024 * 1024 * 2);
+                hash3 = (uint)HashUtils.JenkinsHash(buffer);
+            }
+
+            return (uint)HashCode.Combine(hash1, hash2, hash3);
         }
     }
 }
