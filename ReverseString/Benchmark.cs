@@ -96,5 +96,20 @@ using System.Drawing;
 
             return total;
         }
+
+        [Benchmark]
+        public long ReverseStringUsingArrayReverse()
+        {
+            long total = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                var buff = _values[i].ToCharArray();
+                Array.Reverse(buff);
+                total += new string(buff).Length;
+            }
+
+            return total;
+        }
     }
 }
