@@ -9,7 +9,7 @@
     public class Benchmark
     {
         //[Params(10, 100, 10_000, 1_000_000)]
-        [Params(10, 100, 10_000]
+        [Params(10, 100, 10_000)]
         public int Count { get; set; }
 
         private List<byte[]> _buffers;
