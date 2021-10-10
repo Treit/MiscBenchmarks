@@ -4,6 +4,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
     [MemoryDiagnoser]
     [ShortRunJob]
@@ -106,6 +108,39 @@
                 var buff = _values[i].ToCharArray();
                 Array.Reverse(buff);
                 total += new string(buff).Length;
+            }
+
+            return total;
+        }
+
+        [Benchmark]
+        public long ReverseStringUsingStringCreateKozi()
+        {
+            long total = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                string input = _values[i];
+
+                
+                int len = string.Create(input.Length, input, (buff, str) =>
+                {
+                    var len = str.Length;
+                    ref char input = ref Unsafe.AsRef(in str.GetPinnableReference());
+                    ref char end = ref Unsafe.Add(ref input, len);
+                    ref char output = ref Unsafe.Add(ref MemoryMarshal.GetReference(buff), len - 1);
+
+                    do
+                    {
+                        output = input;
+                        input = ref Unsafe.Add(ref input, 1);
+                        output = ref Unsafe.Subtract(ref output, 1);
+                    } 
+                    while (Unsafe.IsAddressLessThan(ref input, ref end));
+
+                }).Length;
+
+                total += len;
             }
 
             return total;
