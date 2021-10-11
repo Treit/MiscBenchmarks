@@ -30,7 +30,7 @@ namespace Test
             int diff = 0;
             for (int i = 0; i < HASH_LENGTH / 2; i++)
             {
-                diff += LookupTables.PairCountUshortTable[first[i] ^ second[i]];
+                diff += LookupTables.PairCountTable16[first[i] ^ second[i]];
             }
 
             if (diff > 128 + THRESHOLD)
@@ -46,7 +46,7 @@ namespace Test
             int diff = 0;
             for (int i = 0; i < HASH_LENGTH; i++)
             {
-                diff += LookupTables.PairCountTableSpan[first[i] ^ second[i]];
+                diff += LookupTables.PairCountTable8[first[i] ^ second[i]];
             }
 
             if (diff > 128 + THRESHOLD)
@@ -61,7 +61,7 @@ namespace Test
         {
             ref byte f = ref MemoryMarshal.GetReference(first);
             ref byte s = ref MemoryMarshal.GetReference(second);
-            ref byte table = ref MemoryMarshal.GetReference(LookupTables.PairCountTableSpan);
+            ref byte table = ref MemoryMarshal.GetReference(LookupTables.PairCountTable8);
 
             uint diff = 0;
             for (nint i = 0; i < HASH_LENGTH; i++)
@@ -84,7 +84,7 @@ namespace Test
             ref Byte firstRef = ref MemoryMarshal.GetReference(first);
             ref Byte end = ref Unsafe.Add(ref firstRef, HASH_LENGTH);
             ref Byte secondRef = ref MemoryMarshal.GetReference(second);
-            ref Byte tableRef = ref MemoryMarshal.GetReference(LookupTables.PairCountTableSpan);
+            ref Byte tableRef = ref MemoryMarshal.GetReference(LookupTables.PairCountTable8);
 
             do
             {
@@ -107,7 +107,7 @@ namespace Test
         {
             ref byte f = ref MemoryMarshal.GetReference(first);
             ref byte s = ref MemoryMarshal.GetReference(second);
-            ref byte table = ref Unsafe.Add(ref MemoryMarshal.GetReference(LookupTables.PairCountTableSpan), 0);
+            ref byte table = ref Unsafe.Add(ref MemoryMarshal.GetReference(LookupTables.PairCountTable8), 0);
 
             nuint diff = 0;
             for (nint i = 0; i < HASH_LENGTH; i++)
@@ -123,11 +123,11 @@ namespace Test
             return 0;
         }
 
-        public static unsafe uint ConfidenceSauceControlUnrolled(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        public static unsafe uint ConfidenceSauceControlUnrolledKozi(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
         {
             ref byte f = ref MemoryMarshal.GetReference(first);
             ref byte s = ref MemoryMarshal.GetReference(second);
-            ref byte table = ref Unsafe.Add(ref MemoryMarshal.GetReference(LookupTables.PairCountTableSpan), 0);
+            ref byte table = ref Unsafe.Add(ref MemoryMarshal.GetReference(LookupTables.PairCountTable8), 0);
 
             nuint diff = 0;
             for (nint i = 0; i < HASH_LENGTH; i += 4)
@@ -141,6 +141,62 @@ namespace Test
             if (diff > 128 + THRESHOLD)
             {
                 return ((uint)diff - 128) * 100 / 128;
+            }
+
+            return 0;
+        }
+
+        public static unsafe int ConfidenceSauceControlUnrolled(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        {
+            ref byte f = ref MemoryMarshal.GetReference(first);
+            ref byte s = ref MemoryMarshal.GetReference(second);
+            ref byte table = ref Unsafe.Add(ref MemoryMarshal.GetReference(LookupTables.PairCountTable8), 0);
+            ref byte end = ref Unsafe.Add(ref f, HASH_LENGTH);
+
+            nuint diff1 = 0, diff2 = 0;
+            do
+            {
+                diff1 += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, 0) ^ (nuint)Unsafe.Add(ref s, 0)));
+                diff2 += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, 1) ^ (nuint)Unsafe.Add(ref s, 1)));
+                diff1 += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, 2) ^ (nuint)Unsafe.Add(ref s, 2)));
+                diff2 += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, 3) ^ (nuint)Unsafe.Add(ref s, 3)));
+
+                f = ref Unsafe.Add(ref f, 4);
+                s = ref Unsafe.Add(ref s, 4);
+            } while (Unsafe.IsAddressLessThan(ref f, ref end));
+
+            diff1 += diff2;
+            if (diff1 > 128 + THRESHOLD)
+            {
+                return ((int)diff1 - 128) * 100 / 128;
+            }
+
+            return 0;
+        }
+
+        public static unsafe int ConfidenceSauceControlUnrolledHugeLookup(ReadOnlySpan<ushort> first, ReadOnlySpan<ushort> second)
+        {
+            ref ushort f = ref MemoryMarshal.GetReference(first);
+            ref ushort s = ref MemoryMarshal.GetReference(second);
+            ref byte table = ref Unsafe.Add(ref MemoryMarshal.GetReference(LookupTables.PairCountTable16), 0);
+            ref ushort end = ref Unsafe.Add(ref f, HASH_LENGTH / 2);
+
+            nuint diff1 = 0, diff2 = 0;
+            do
+            {
+                diff1 += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, 0) ^ (nuint)Unsafe.Add(ref s, 0)));
+                diff2 += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, 1) ^ (nuint)Unsafe.Add(ref s, 1)));
+                diff1 += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, 2) ^ (nuint)Unsafe.Add(ref s, 2)));
+                diff2 += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, 3) ^ (nuint)Unsafe.Add(ref s, 3)));
+
+                f = ref Unsafe.Add(ref f, 4);
+                s = ref Unsafe.Add(ref s, 4);
+            } while (Unsafe.IsAddressLessThan(ref f, ref end));
+
+            diff1 += diff2;
+            if (diff1 > 128 + THRESHOLD)
+            {
+                return ((int)diff1 - 128) * 100 / 128;
             }
 
             return 0;

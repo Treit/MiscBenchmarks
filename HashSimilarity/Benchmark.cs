@@ -117,14 +117,14 @@
         }
 
         [Benchmark]
-        public uint CheckHashesSauceControlUnrolled()
+        public uint CheckHashesSauceControlUnrolledKozi()
         {
             Span<byte> target = _buffers[0].AsSpan();
             uint maxConfidence = 0;
 
             foreach (var buffer in _buffers)
             {
-                var confidence = LSHash.ConfidenceSauceControl(target, buffer.AsSpan());
+                var confidence = LSHash.ConfidenceSauceControlUnrolledKozi(target, buffer.AsSpan());
                 if (confidence > maxConfidence)
                 {
                     maxConfidence = confidence;
@@ -143,6 +143,42 @@
             foreach (var buffer in _buffers)
             {
                 var confidence = LSHash.ConfidenceWithUShortTable(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
+
+        [Benchmark]
+        public int CheckHashesSauceControlUnrolled()
+        {
+            Span<byte> target = _buffers[0].AsSpan();
+            int maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceSauceControlUnrolled(target, buffer.AsSpan());
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
+
+        [Benchmark]
+        public int CheckHashesSauceControlUnrolledHugeLookup()
+        {
+            var target = MemoryMarshal.Cast<byte, ushort>(_buffers[0].AsSpan());
+            int maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceSauceControlUnrolledHugeLookup(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
                 if (confidence > maxConfidence)
                 {
                     maxConfidence = confidence;
