@@ -9,52 +9,28 @@ namespace Test
         const int THRESHOLD = 90;
         const int HASH_LENGTH = 64;
 
-        static readonly byte[] PairCountTable = new byte[256]
-        {
-            4, 3, 3, 3, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0
-        };
-
-        static ReadOnlySpan<byte> PairCountTableSpan => new byte[256]
-        {
-            4, 3, 3, 3, 3, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            3, 2, 2, 2, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            2, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0
-        };
-
         public static int Confidence(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
         {
             int diff = 0;
             for (int i = 0; i < HASH_LENGTH; i++)
             {
-                diff += PairCountTable[first[i] ^ second[i]];
+                diff += LookupTables.PairCountTable[first[i] ^ second[i]];
+            }
+
+            if (diff > 128 + THRESHOLD)
+            {
+                return ((diff - 128) * 100) / 128;
+            }
+
+            return 0;
+        }
+
+        public static int ConfidenceWithUShortTable(ReadOnlySpan<ushort> first, ReadOnlySpan<ushort> second)
+        {
+            int diff = 0;
+            for (int i = 0; i < HASH_LENGTH / 2; i++)
+            {
+                diff += LookupTables.PairCountUshortTable[first[i] ^ second[i]];
             }
 
             if (diff > 128 + THRESHOLD)
@@ -70,7 +46,7 @@ namespace Test
             int diff = 0;
             for (int i = 0; i < HASH_LENGTH; i++)
             {
-                diff += PairCountTableSpan[first[i] ^ second[i]];
+                diff += LookupTables.PairCountTableSpan[first[i] ^ second[i]];
             }
 
             if (diff > 128 + THRESHOLD)
@@ -85,7 +61,7 @@ namespace Test
         {
             ref byte f = ref MemoryMarshal.GetReference(first);
             ref byte s = ref MemoryMarshal.GetReference(second);
-            ref byte table = ref MemoryMarshal.GetReference(PairCountTableSpan);
+            ref byte table = ref MemoryMarshal.GetReference(LookupTables.PairCountTableSpan);
 
             uint diff = 0;
             for (nint i = 0; i < HASH_LENGTH; i++)
@@ -108,7 +84,7 @@ namespace Test
             ref Byte firstRef = ref MemoryMarshal.GetReference(first);
             ref Byte end = ref Unsafe.Add(ref firstRef, HASH_LENGTH);
             ref Byte secondRef = ref MemoryMarshal.GetReference(second);
-            ref Byte tableRef = ref MemoryMarshal.GetReference(PairCountTableSpan);
+            ref Byte tableRef = ref MemoryMarshal.GetReference(LookupTables.PairCountTableSpan);
 
             do
             {
@@ -122,6 +98,49 @@ namespace Test
             if (diff > 128 + THRESHOLD)
             {
                 return ((diff - 128) * 100) / 128;
+            }
+
+            return 0;
+        }
+
+        public static unsafe uint ConfidenceSauceControl(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        {
+            ref byte f = ref MemoryMarshal.GetReference(first);
+            ref byte s = ref MemoryMarshal.GetReference(second);
+            ref byte table = ref Unsafe.Add(ref MemoryMarshal.GetReference(LookupTables.PairCountTableSpan), 0);
+
+            nuint diff = 0;
+            for (nint i = 0; i < HASH_LENGTH; i++)
+            {
+                diff += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, i) ^ (nuint)Unsafe.Add(ref s, i)));
+            }
+
+            if (diff > 128 + THRESHOLD)
+            {
+                return ((uint)diff - 128) * 100 / 128;
+            }
+
+            return 0;
+        }
+
+        public static unsafe uint ConfidenceSauceControlUnrolled(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        {
+            ref byte f = ref MemoryMarshal.GetReference(first);
+            ref byte s = ref MemoryMarshal.GetReference(second);
+            ref byte table = ref Unsafe.Add(ref MemoryMarshal.GetReference(LookupTables.PairCountTableSpan), 0);
+
+            nuint diff = 0;
+            for (nint i = 0; i < HASH_LENGTH; i += 4)
+            {
+                diff += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, i + 0) ^ (nuint)Unsafe.Add(ref s, i + 0)));
+                diff += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, i + 1) ^ (nuint)Unsafe.Add(ref s, i + 1)));
+                diff += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, i + 2) ^ (nuint)Unsafe.Add(ref s, i + 2)));
+                diff += Unsafe.Add(ref table, (nint)((nuint)Unsafe.Add(ref f, i + 3) ^ (nuint)Unsafe.Add(ref s, i + 3)));
+            }
+
+            if (diff > 128 + THRESHOLD)
+            {
+                return ((uint)diff - 128) * 100 / 128;
             }
 
             return 0;

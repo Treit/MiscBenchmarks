@@ -3,12 +3,11 @@
     using BenchmarkDotNet.Attributes;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+    using System.Runtime.InteropServices;
 
     public class Benchmark
     {
-        //[Params(10, 100, 10_000, 1_000_000)]
-        [Params(10, 100, 10_000)]
+        [Params(100, 100_000)]
         public int Count { get; set; }
 
         private List<byte[]> _buffers;
@@ -33,7 +32,7 @@
             Span<byte> target = _buffers[0].AsSpan();
             int maxConfidence = 0;
 
-            foreach ( var buffer in _buffers)
+            foreach (var buffer in _buffers)
             {
                 var confidence = LSHash.Confidence(target, buffer.AsSpan());
                 if (confidence > maxConfidence)
@@ -90,6 +89,60 @@
             foreach (var buffer in _buffers)
             {
                 var confidence = LSHash.ConfidenceWithSpanTableTechPizza(target, buffer.AsSpan());
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
+
+        [Benchmark]
+        public uint CheckHashesSauceControl()
+        {
+            Span<byte> target = _buffers[0].AsSpan();
+            uint maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceSauceControl(target, buffer.AsSpan());
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
+
+        [Benchmark]
+        public uint CheckHashesSauceControlUnrolled()
+        {
+            Span<byte> target = _buffers[0].AsSpan();
+            uint maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceSauceControl(target, buffer.AsSpan());
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
+
+        [Benchmark]
+        public int CheckHashesHugeLookupTable()
+        {
+            var target = MemoryMarshal.Cast<byte, ushort>(_buffers[0].AsSpan());
+            int maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceWithUShortTable(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
                 if (confidence > maxConfidence)
                 {
                     maxConfidence = confidence;
