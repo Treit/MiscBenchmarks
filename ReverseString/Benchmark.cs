@@ -145,5 +145,26 @@ using System.Runtime.InteropServices;
 
             return total;
         }
+
+        [Benchmark]
+        public long RevereStringEnumerableKesa()
+        {
+            long total = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                total += new string(Reverse(_values[i]).ToArray()).Length;
+            }
+
+            return total;
+
+            IEnumerable<char> Reverse(string str)
+            {
+                for (int i = str.Length - 1; i >= 0; i--)
+                {
+                    yield return str[i];
+                }
+            }
+        }
     }
 }
