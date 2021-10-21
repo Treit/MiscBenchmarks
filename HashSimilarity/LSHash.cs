@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.X86;
+using System.Runtime.Intrinsics;
 
 namespace Test
 {
@@ -194,6 +196,51 @@ namespace Test
             } while (Unsafe.IsAddressLessThan(ref f, ref end));
 
             diff1 += diff2;
+            if (diff1 > 128 + THRESHOLD)
+            {
+                return ((int)diff1 - 128) * 100 / 128;
+            }
+
+            return 0;
+        }
+
+        public static int ConfidenceSseKozi(ReadOnlySpan<ushort> first, ReadOnlySpan<ushort> second)
+        {
+            ref ushort f = ref MemoryMarshal.GetReference(first);
+            ref ushort s = ref MemoryMarshal.GetReference(second);
+            ref byte table = ref Unsafe.Add(ref MemoryMarshal.GetReference(LookupTables.PairCountTable16), 0);
+            ref ushort end = ref Unsafe.Add(ref f, HASH_LENGTH / 2);
+
+            nuint diff1 = 0;
+            do
+            {
+
+                Vector128<ushort> firstVec = Unsafe.As<ushort, Vector128<ushort>>(ref f);
+                Vector128<ushort> secondVec = Unsafe.As<ushort, Vector128<ushort>>(ref s);
+                Vector128<ushort> xor = Sse2.Xor(firstVec, secondVec);
+
+
+                diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 0));
+
+                diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 1));
+
+                diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 2));
+
+                diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 3));
+
+                diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 4));
+
+                diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 5));
+
+                diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 6));
+
+                diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 7));
+
+
+                f = ref Unsafe.Add(ref f, 8);
+                s = ref Unsafe.Add(ref s, 8);
+            } while (Unsafe.IsAddressLessThan(ref f, ref end));
+
             if (diff1 > 128 + THRESHOLD)
             {
                 return ((int)diff1 - 128) * 100 / 128;

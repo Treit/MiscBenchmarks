@@ -187,5 +187,23 @@
 
             return maxConfidence;
         }
+
+        [Benchmark]
+        public int CheckHashesSseKozidHugeLookup()
+        {
+            var target = MemoryMarshal.Cast<byte, ushort>(_buffers[0].AsSpan());
+            int maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceSseKozi(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
     }
 }
