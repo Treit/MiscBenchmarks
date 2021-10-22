@@ -362,5 +362,38 @@ namespace Test
 
             return 0;
         }
+
+        public static int ConfidenceSauceControlThirdAvx2(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        {
+            const byte _ = 0x80;
+
+            ref byte f = ref MemoryMarshal.GetReference(first);
+            ref byte s = ref MemoryMarshal.GetReference(second);
+
+            var vmsk0 = Vector256.Create((byte)0b_01_01_01_01);
+            var vmsk1 = Vector256.Create((byte)0b_00_00_11_11);
+            var vlut = Vector256.Create(4, 3, 2, _, 3, 2, 1, _, 2, 1, 0, _, _, _, _, _, 4, 3, 2, _, 3, 2, 1, _, 2, 1, 0, _, _, _, _, _);
+
+            var vxor = Avx2.Xor(Unsafe.As<byte, Vector256<byte>>(ref f), Unsafe.As<byte, Vector256<byte>>(ref s));
+            var vpe0 = Avx2.Or(Avx2.And(vxor, vmsk0), Avx2.And(Avx2.ShiftRightLogical(vxor.AsUInt32(), 1).AsByte(), vmsk0));
+            vpe0 = Avx2.Shuffle(vlut, Avx2.Add(Avx2.And(vpe0, vmsk1), Avx2.And(Avx2.ShiftRightLogical(vpe0.AsUInt32(), 4).AsByte(), vmsk1)));
+
+            vxor = Avx2.Xor(Unsafe.As<byte, Vector256<byte>>(ref Unsafe.Add(ref f, Vector256<byte>.Count)), Unsafe.As<byte, Vector256<byte>>(ref Unsafe.Add(ref s, Vector256<byte>.Count)));
+            var vpe1 = Avx2.Or(Avx2.And(vxor, vmsk0), Avx2.And(Avx2.ShiftRightLogical(vxor.AsUInt32(), 1).AsByte(), vmsk0));
+            vpe1 = Avx2.Shuffle(vlut, Avx2.Add(Avx2.And(vpe1, vmsk1), Avx2.And(Avx2.ShiftRightLogical(vpe1.AsUInt32(), 4).AsByte(), vmsk1)));
+
+            var vzero = Vector256<byte>.Zero;
+            var vsum = Avx2.Add(Avx2.SumAbsoluteDifferences(vpe0, vzero), Avx2.SumAbsoluteDifferences(vpe1, vzero));
+
+            var v128 = Sse2.Add(vsum.GetLower(), vsum.GetUpper()).AsUInt64();
+            uint diff = Sse2.Add(v128, Sse2.UnpackHigh(v128, v128)).AsUInt32().ToScalar();
+
+            if (diff > 128 + THRESHOLD)
+            {
+                return (int)((diff - 128) * 100 / 128);
+            }
+
+            return 0;
+        }
     }
 }
