@@ -21,7 +21,7 @@ using System;
             var first = MemoryMarshal.Cast<byte, ushort>(bytesA);
             var second = MemoryMarshal.Cast<byte, ushort>(bytesB);
             var confidence = LSHash.ConfidenceSauceControlUnrolledHugeLookup(first, second);
-            var confidence2 = LSHash.ConfidenceSauceControlUnrolled(bytesA, bytesB);
+            var confidence2 = LSHash.ConfidenceSauceControlSecondAvx2(bytesA, bytesB);
             Console.WriteLine(confidence);
             Console.WriteLine(confidence2);
             //b.CheckHashesOriginal();

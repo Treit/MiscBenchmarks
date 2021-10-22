@@ -205,5 +205,60 @@
 
             return maxConfidence;
         }
+
+        [Benchmark]
+        public int CheckHashesSauceControlSse()
+        {
+            var target = _buffers[0];
+            int maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceSauceControlSse2(target, buffer);
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
+
+        [Benchmark]
+        public int CheckHashesSauceControlFirstAvx()
+        {
+            var target = _buffers[0];
+            int maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceSauceControlFirstAvx2(target, buffer);
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
+
+        [Benchmark]
+        public int CheckHashesSauceControlSecondAvx()
+        {
+            var target = _buffers[0];
+            int maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceSauceControlSecondAvx2(target, buffer);
+
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
     }
 }

@@ -248,5 +248,119 @@ namespace Test
 
             return 0;
         }
+
+        public static int ConfidenceSauceControlSse2(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        {
+            ref byte f = ref MemoryMarshal.GetReference(first);
+            ref byte s = ref MemoryMarshal.GetReference(second);
+            ref byte end = ref Unsafe.Add(ref f, HASH_LENGTH);
+
+            var vzero = Vector128<byte>.Zero;
+            var vmsk0 = Vector128.Create((byte)0b_11_00_00_00);
+            var vmsk1 = Vector128.Create((byte)0b_00_11_00_00);
+            var vmsk2 = Vector128.Create((byte)0b_00_00_11_00);
+            var vmsk3 = Vector128.Create((byte)0b_00_00_00_11);
+
+            nuint diff = 0;
+            do
+            {
+                var vxor = Sse2.Xor(Unsafe.As<byte, Vector128<byte>>(ref f), Unsafe.As<byte, Vector128<byte>>(ref s));
+                diff += Popcnt.PopCount((uint)Sse2.MoveMask(Sse2.CompareEqual(Sse2.And(vxor, vmsk0), vzero)));
+                diff += Popcnt.PopCount((uint)Sse2.MoveMask(Sse2.CompareEqual(Sse2.And(vxor, vmsk1), vzero)));
+                diff += Popcnt.PopCount((uint)Sse2.MoveMask(Sse2.CompareEqual(Sse2.And(vxor, vmsk2), vzero)));
+                diff += Popcnt.PopCount((uint)Sse2.MoveMask(Sse2.CompareEqual(Sse2.And(vxor, vmsk3), vzero)));
+
+                f = ref Unsafe.Add(ref f, Vector128<byte>.Count);
+                s = ref Unsafe.Add(ref s, Vector128<byte>.Count);
+            }
+            while (Unsafe.IsAddressLessThan(ref f, ref end));
+
+            if (diff > 128 + THRESHOLD)
+            {
+                return ((int)diff - 128) * 100 / 128;
+            }
+
+            return 0;
+        }
+
+        public static int ConfidenceSauceControlFirstAvx2(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        {
+            ref byte f = ref MemoryMarshal.GetReference(first);
+            ref byte s = ref MemoryMarshal.GetReference(second);
+
+            var vzero = Vector256<byte>.Zero;
+            var vmsk0 = Vector256.Create((byte)0b_11_00_00_00);
+            var vmsk1 = Vector256.Create((byte)0b_00_11_00_00);
+            var vmsk2 = Vector256.Create((byte)0b_00_00_11_00);
+            var vmsk3 = Vector256.Create((byte)0b_00_00_00_11);
+
+            nuint diff = 0;
+
+            var vxor = Avx2.Xor(Unsafe.As<byte, Vector256<byte>>(ref f), Unsafe.As<byte, Vector256<byte>>(ref s));
+            diff += Popcnt.PopCount((uint)Avx2.MoveMask(Avx2.CompareEqual(Avx2.And(vxor, vmsk0), vzero)));
+            diff += Popcnt.PopCount((uint)Avx2.MoveMask(Avx2.CompareEqual(Avx2.And(vxor, vmsk1), vzero)));
+            diff += Popcnt.PopCount((uint)Avx2.MoveMask(Avx2.CompareEqual(Avx2.And(vxor, vmsk2), vzero)));
+            diff += Popcnt.PopCount((uint)Avx2.MoveMask(Avx2.CompareEqual(Avx2.And(vxor, vmsk3), vzero)));
+
+            vxor = Avx2.Xor(Unsafe.As<byte, Vector256<byte>>(ref Unsafe.Add(ref f, Vector256<byte>.Count)), Unsafe.As<byte, Vector256<byte>>(ref Unsafe.Add(ref s, Vector256<byte>.Count)));
+            diff += Popcnt.PopCount((uint)Avx2.MoveMask(Avx2.CompareEqual(Avx2.And(vxor, vmsk0), vzero)));
+            diff += Popcnt.PopCount((uint)Avx2.MoveMask(Avx2.CompareEqual(Avx2.And(vxor, vmsk1), vzero)));
+            diff += Popcnt.PopCount((uint)Avx2.MoveMask(Avx2.CompareEqual(Avx2.And(vxor, vmsk2), vzero)));
+            diff += Popcnt.PopCount((uint)Avx2.MoveMask(Avx2.CompareEqual(Avx2.And(vxor, vmsk3), vzero)));
+
+            if (diff > 128 + THRESHOLD)
+            {
+                return ((int)diff - 128) * 100 / 128;
+            }
+
+            return 0;
+        }
+
+        public static int ConfidenceSauceControlSecondAvx2(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        {
+            ref byte f = ref MemoryMarshal.GetReference(first);
+            ref byte s = ref MemoryMarshal.GetReference(second);
+
+            var vzero = Vector256<byte>.Zero;
+            var vmsk0 = Vector256.Create((byte)0b_11_00_00_00);
+            var vmsk1 = Vector256.Create((byte)0b_00_11_00_00);
+            var vmsk2 = Vector256.Create((byte)0b_00_00_11_00);
+            var vmsk3 = Vector256.Create((byte)0b_00_00_00_11);
+
+            var vxor = Avx2.Xor(Unsafe.As<byte, Vector256<byte>>(ref f), Unsafe.As<byte, Vector256<byte>>(ref s));
+            var vpe0 = Avx2.CompareEqual(Avx2.And(vxor, vmsk0), vzero);
+            var vpe1 = Avx2.CompareEqual(Avx2.And(vxor, vmsk1), vzero);
+            var vpe2 = Avx2.CompareEqual(Avx2.And(vxor, vmsk2), vzero);
+            var vpe3 = Avx2.CompareEqual(Avx2.And(vxor, vmsk3), vzero);
+
+            uint mpe0 = (uint)Avx2.MoveMask(vpe0);
+            uint mpe1 = (uint)Avx2.MoveMask(vpe1);
+            uint mpe2 = (uint)Avx2.MoveMask(vpe2);
+            uint mpe3 = (uint)Avx2.MoveMask(vpe3);
+
+            uint diff = Popcnt.PopCount(mpe0) + Popcnt.PopCount(mpe1);
+            diff += Popcnt.PopCount(mpe2) + Popcnt.PopCount(mpe3);
+
+            vxor = Avx2.Xor(Unsafe.As<byte, Vector256<byte>>(ref Unsafe.Add(ref f, Vector256<byte>.Count)), Unsafe.As<byte, Vector256<byte>>(ref Unsafe.Add(ref s, Vector256<byte>.Count)));
+            vpe0 = Avx2.CompareEqual(Avx2.And(vxor, vmsk0), vzero);
+            vpe1 = Avx2.CompareEqual(Avx2.And(vxor, vmsk1), vzero);
+            vpe2 = Avx2.CompareEqual(Avx2.And(vxor, vmsk2), vzero);
+            vpe3 = Avx2.CompareEqual(Avx2.And(vxor, vmsk3), vzero);
+
+            mpe0 = (uint)Avx2.MoveMask(vpe0);
+            mpe1 = (uint)Avx2.MoveMask(vpe1);
+            mpe2 = (uint)Avx2.MoveMask(vpe2);
+            mpe3 = (uint)Avx2.MoveMask(vpe3);
+
+            diff += Popcnt.PopCount(mpe0) + Popcnt.PopCount(mpe1);
+            diff += Popcnt.PopCount(mpe2) + Popcnt.PopCount(mpe3);
+
+            if (diff > 128 + THRESHOLD)
+            {
+                return ((int)diff - 128) * 100 / 128;
+            }
+
+            return 0;
+        }
     }
 }
