@@ -279,5 +279,24 @@
 
             return maxConfidence;
         }
+
+        [Benchmark]
+        public int CheckHashesSauceControlFourthAvx()
+        {
+            var target = _buffers[0];
+            int maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceSauceControlFourthAvx2(target, buffer);
+
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
     }
 }

@@ -395,5 +395,94 @@ namespace Test
 
             return 0;
         }
+
+        public static int ConfidenceSauceControlFourthAvx2(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        {
+            /*
+            If we consider that each bit pair is either 00 (match) or not 00, there are only 16 possible combinations
+            per byte. We can consolidate these possibilities from the 256 possible single bit combinations by shifting
+            any 1s to the lower bit of each pair.  e.g. 0b_00_01_10_11 => 0b_00_01_01_01
+
+            Although this leaves us with only 16 possible combinations, the value of each byte can still be as high
+            as 85, meaning we would need a lookup table at least that big. We can collapse the values further by adding
+            the high 4 bits to the low 4 bits, which is safe because any overflow will go into a bit that is already
+            cleared to 0. This leaves us with a a max possible sum of 10, meaning we can use a lookup table of only 16
+            values, of which 9 are actual possible sums. The possible sums out of the 16 combinations are as follows:
+
+            0b_00_00 + 0b_00_00 = 0x0 => 4 match
+            0b_00_00 + 0b_00_01 = 0x1 => 3 match
+            0b_00_01 + 0b_00_00 = 0x1 => 3 match
+            0b_00_01 + 0b_00_01 = 0x2 => 2 match
+                                  0x3 (not possible)
+            0b_00_00 + 0b_01_00 = 0x4 => 3 match
+            0b_01_00 + 0b_00_00 = 0x4 => 3 match
+            0b_00_00 + 0b_01_01 = 0x5 => 2 match
+            0b_00_01 + 0b_01_00 = 0x5 => 2 match
+            0b_01_00 + 0b_00_01 = 0x5 => 2 match
+            0b_01_01 + 0b_00_00 = 0x5 => 2 match
+            0b_00_01 + 0b_01_01 = 0x6 => 1 match
+            0b_01_01 + 0b_00_01 = 0x6 => 1 match
+                                  0x7 (not possible)
+            0b_01_00 + 0b_01_00 = 0x8 => 2 match
+            0b_01_00 + 0b_01_01 = 0x9 => 1 match
+            0b_01_01 + 0b_01_00 = 0x9 => 1 match
+            0b_01_01 + 0b_01_01 = 0xa => 0 match
+
+            We can store these values in a single 16-byte vector, or double them up in a 32-byte vector,
+            allowing for the lookup to be performed by a single byte shuffle (vpshufb).
+            */
+
+            // Just a placeholder for impossible lookup positions.
+            const byte _ = 0x80;
+
+            ref Vector256<byte> f = ref Unsafe.As<byte, Vector256<byte>>(ref MemoryMarshal.GetReference(first));
+            ref Vector256<byte> s = ref Unsafe.As<byte, Vector256<byte>>(ref MemoryMarshal.GetReference(second));
+
+            // Masks for low bit of each bit pair and low 4 bits of byte.
+            var vmsk0 = Vector256.Create((byte)0b_01_01_01_01);
+            var vmsk1 = Vector256.Create((byte)0b_00_00_11_11);
+
+            // Lookup table for number of matching bit pairs.
+            // It only needs 16 entries, but we repeat them for each 16-byte lane in AVX2.
+            var vlut = Vector256.Create(4, 3, 2, _, 3, 2, 1, _, 2, 1, 0, _, _, _, _, _,
+                                        4, 3, 2, _, 3, 2, 1, _, 2, 1, 0, _, _, _, _, _);
+
+            // Load 32 bytes at a time from the inputs and xor them.
+            var vxor0 = Avx2.Xor(f, s);
+            var vxor1 = Avx2.Xor(Unsafe.Add(ref f, 1), Unsafe.Add(ref s, 1));
+
+            // Shift either (or both) 1 in each bit pair to the lower bit.
+            // Equal pairs will be 00, unequal will be 01.
+            var vpe0 = Avx2.Or(Avx2.And(vxor0, vmsk0), Avx2.And(Avx2.ShiftRightLogical(vxor0.AsUInt32(), 1).AsByte(), vmsk0));
+            var vpe1 = Avx2.Or(Avx2.And(vxor1, vmsk0), Avx2.And(Avx2.ShiftRightLogical(vxor1.AsUInt32(), 1).AsByte(), vmsk0));
+
+            // Add the upper 4 bits of each byte to the lower 4 bits.
+            // Sum will fit into 4 bits and will match the table above.
+            vpe0 = Avx2.Add(Avx2.And(vpe0, vmsk1), Avx2.And(Avx2.ShiftRightLogical(vpe0.AsUInt32(), 4).AsByte(), vmsk1));
+            vpe1 = Avx2.Add(Avx2.And(vpe1, vmsk1), Avx2.And(Avx2.ShiftRightLogical(vpe1.AsUInt32(), 4).AsByte(), vmsk1));
+
+            // Use the sum to look up the number of matching pairs in each byte.
+            vpe0 = Avx2.Shuffle(vlut, vpe0);
+            vpe1 = Avx2.Shuffle(vlut, vpe1);
+
+            // SumAbsoluteDifferences (vpsadbw) subtracts vertically (we subtract 0) and then
+            // horizontally adds 8 adjacent result bytes into one value, packed in the low 16 bits
+            // of 64. We use that to sum the match counts from both lookup results.
+            var vsum = Avx2.SumAbsoluteDifferences(Avx2.Add(vpe0, vpe1), Vector256<byte>.Zero);
+
+            // That leaves us with 4 64-bit sums. We add the two 16-byte lanes to make that
+            // 2 64-bit sums, then add the upper and lower halves of the remaining 16-byte
+            // vector, yielding a single 64-bit horizontal sum of all 32 counts, which we
+            // can safely truncate to 32 bits.
+            var v128 = Sse2.Add(vsum.GetLower(), vsum.GetUpper()).AsUInt64();
+            uint diff = Sse2.Add(v128, Sse2.UnpackHigh(v128, v128)).AsUInt32().ToScalar();
+
+            if (diff > 128 + THRESHOLD)
+            {
+                return (int)((diff - 128) * 100 / 128);
+            }
+
+            return 0;
+        }
     }
 }
