@@ -19,7 +19,6 @@
             {
                 _data.Add(i);
             }
-
         }
 
         [Benchmark]
