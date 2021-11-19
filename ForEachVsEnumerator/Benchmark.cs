@@ -86,12 +86,13 @@
         [Benchmark]
         public int MaxUsingEnumeratorArray()
         {
-            int value;
+            int value = int.MinValue;
             IEnumerator e = _array.GetEnumerator();
-            value = (int)e.Current;
+
             while (e.MoveNext())
             {
                 int x = (int)e.Current;
+
                 if (x > value)
                 {
                     value = x;
