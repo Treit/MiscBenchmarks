@@ -37,6 +37,8 @@
 
             _array = _data.ToArray();
             _array64 = _data64.ToArray();
+
+            _arraySorted = new int[Count];
             Array.Copy(_array, _arraySorted, _array.Length);
             Array.Sort(_arraySorted);
 
