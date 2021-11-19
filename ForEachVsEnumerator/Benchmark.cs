@@ -102,6 +102,7 @@
             return value;
         }
 
+        [Benchmark]
         public int MaxUsingForEachArray()
         {
             int value = 0;
