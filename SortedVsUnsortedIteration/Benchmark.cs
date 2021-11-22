@@ -2,7 +2,11 @@
 {
     using BenchmarkDotNet.Attributes;
     using System;
+    using System.Runtime.CompilerServices;
+    using System.Runtime.Intrinsics.X86;
+    using System.Runtime.Intrinsics;
 
+    [ShortRunJob]
     public class Benchmark
     {
         [Params(1000, 100_000)]
@@ -84,6 +88,72 @@
             }
 
             return max;
+        }
+
+        [Benchmark]
+        public int KoziMax()
+        {
+            int[] values = _array;
+            ref int arrRef = ref values[0];
+            nint arrLen = values.Length;
+            if (values.Length == 1)
+                return arrRef;
+            Vector128<int> max = Unsafe.As<int, Vector128<int>>(ref arrRef);
+
+            nint i = 0;
+            do
+            {
+                var val = Unsafe.As<int, Vector128<int>>(ref Unsafe.Add(ref arrRef, i));
+                var mask = Sse42.CompareGreaterThan(val, max);
+                max = Sse41.BlendVariable(max, val, mask);
+                i += 2;
+            } while (i < (arrLen & ~1));
+
+            var t = Sse41.Shuffle(max.AsInt32(), 0b0_01_11_10);
+            var m = Sse42.CompareGreaterThan(t, max);
+            max = Sse41.BlendVariable(max, t, m);
+
+            if (i < arrLen)
+            {
+                var val = Vector128.CreateScalarUnsafe(Unsafe.Add(ref arrRef, i));
+                var mask = Sse42.CompareGreaterThan(val, max);
+                max = Sse41.BlendVariable(max, val, mask);
+            }
+
+            return max.ToScalar();
+        }
+
+        [Benchmark]
+        public int KoziMaxSorted()
+        {
+            int[] values = _arraySorted;
+            ref int arrRef = ref values[0];
+            nint arrLen = values.Length;
+            if (values.Length == 1)
+                return arrRef;
+            Vector128<int> max = Unsafe.As<int, Vector128<int>>(ref arrRef);
+
+            nint i = 0;
+            do
+            {
+                var val = Unsafe.As<int, Vector128<int>>(ref Unsafe.Add(ref arrRef, i));
+                var mask = Sse42.CompareGreaterThan(val, max);
+                max = Sse41.BlendVariable(max, val, mask);
+                i += 2;
+            } while (i < (arrLen & ~1));
+
+            var t = Sse41.Shuffle(max.AsInt32(), 0b0_01_11_10);
+            var m = Sse42.CompareGreaterThan(t, max);
+            max = Sse41.BlendVariable(max, t, m);
+
+            if (i < arrLen)
+            {
+                var val = Vector128.CreateScalarUnsafe(Unsafe.Add(ref arrRef, i));
+                var mask = Sse42.CompareGreaterThan(val, max);
+                max = Sse41.BlendVariable(max, val, mask);
+            }
+
+            return max.ToScalar();
         }
     }
 }
