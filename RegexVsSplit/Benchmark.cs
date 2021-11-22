@@ -2,15 +2,15 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
+    using CommunityToolkit.HighPerformance;
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
     [MemoryDiagnoser]
-    [ShortRunJob]
     public class Benchmark
     {
-        [Params(10, 100, 1000, 100_000, 1_000_000)]
+        [Params(10, 100, 1000, 100_000)]
         public int Count { get; set; }
 
         private List<string> _values;
@@ -127,6 +127,33 @@
                     result = i;
                 }
 
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public int FindTokenUsingTokenize()
+        {
+            string needle = "104";
+            int result = -1;
+
+            for (int i = 0; i < _values.Count; i++)
+            {
+                var tokens = _values[i].Tokenize(',');
+
+                int tokenNumber = 1;
+
+                do
+                {
+                    tokens.MoveNext();
+                }
+                while (tokenNumber++ != 6);
+
+                if (tokens.Current.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
+                {
+                    result = i;
+                }
             }
 
             return result;
