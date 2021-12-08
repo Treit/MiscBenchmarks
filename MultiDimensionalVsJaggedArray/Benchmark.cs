@@ -94,7 +94,7 @@
         }
 
         [Benchmark]
-        public long SumJaggedKozi()
+        public long SumJaggedOptimizedKozi()
         {
             var arr = _jagged;
             long result = 0;
@@ -111,7 +111,7 @@
         }
 
         [Benchmark]
-        public long SumMultiDimensionalGoose()
+        public long SumMultiDimensionalLocalVariableGoose()
         {
             long result = 0;
 
@@ -130,7 +130,7 @@
         }
 
         [Benchmark]
-        public long SumJaggedGoose()
+        public long SumJaggedLocalVariableGoose()
         {
             long result = 0;
             var arr = _jagged;
@@ -147,7 +147,7 @@
         }
 
         [Benchmark]
-        public long SumKoziSupperOptimizedWithReadOnlySpan()
+        public long SumWithReadOnlySpanKozi()
         {
             var span = MemoryMarshal.CreateReadOnlySpan(
                 ref MemoryMarshal.GetArrayDataReference(_mdim),
