@@ -1,17 +1,15 @@
 ﻿namespace Test
 {
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
     using System;
+    using System.Runtime.InteropServices;
 
-    [MemoryDiagnoser]
-    [ShortRunJob]
     public class Benchmark
     {
         private byte[,] _mdim;
         private byte[][] _jagged;
 
-        [Params(100, 1024)]
+        [Params(4, 10, 100, 1024)]
         public int Size { get; set; }
 
         [GlobalSetup]
@@ -63,6 +61,106 @@
             }
 
             return result;
+        }
+
+        [Benchmark]
+        public long SumMultiDimensionalReversedIndexes()
+        {
+            long result = 0;
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    result += _mdim[j, i];
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long SumJaggedReversedIndexes()
+        {
+            long result = 0;
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    result += _jagged[j][i];
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long SumJaggedKozi()
+        {
+            var arr = _jagged;
+            long result = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                var a = arr[i];
+                for (int j = 0; j < a.Length; j++)
+                {
+                    result += a[j];
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long SumMultiDimensionalGoose()
+        {
+            long result = 0;
+
+            var arr = _mdim;
+            var size = Size;
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    result += arr[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long SumJaggedGoose()
+        {
+            long result = 0;
+            var arr = _jagged;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                for (int j = 0; j < arr[i].Length; j++)
+                {
+                    result += _jagged[i][j];
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long SumKoziSupperOptimizedWithReadOnlySpan()
+        {
+            var span = MemoryMarshal.CreateReadOnlySpan(
+                ref MemoryMarshal.GetArrayDataReference(_mdim),
+                _mdim.Length);
+
+            long n = 0;
+
+            foreach (var b in span)
+            {
+                n += b;
+            }
+
+            return n;
         }
     }
 }
