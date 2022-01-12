@@ -1,18 +1,11 @@
 ﻿using System.Text;
-using System;
 
 namespace Test
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
     using System;
-    using System.Collections;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Threading.Channels;
 
     [MemoryDiagnoser]
     public class Benchmark
@@ -43,14 +36,14 @@ namespace Test
         [Benchmark]
         public string DupeUsingStringCreate()
         {
-                return string.Create(seedString.Length * Count, (seedString, Count), (data, buffer) =>
+            return string.Create(seedString.Length * Count, (seedString, Count), (data, buffer) =>
+            {
+                for (int i = 0; i < Count; i++)
                 {
-                    for (int i = 0; i < Count; i++)
-                    {
-                        var window = data.Slice(i * seedString.Length);
-                        seedString.CopyTo(window);
-                    }
-                });
+                    var window = data.Slice(i * seedString.Length);
+                    seedString.CopyTo(window);
+                }
+            });
         }
 
         [Benchmark]
