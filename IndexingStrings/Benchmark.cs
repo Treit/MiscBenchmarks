@@ -68,7 +68,7 @@
             {
                 foreach (int i in _searchPositions)
                 {
-                    if (s[i] == (int)'f')
+                    if (s[i] == 'f')
                     {
                         total++;
                     }
