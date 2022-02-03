@@ -8,7 +8,7 @@
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(1000)]
+        [Params(10, 100, 10_000)]
         public int Count { get; set; }
 
         private List<string> _strings;
