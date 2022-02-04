@@ -12,7 +12,6 @@ namespace Test
         [Params(3, 50, 1000)]
         public int Count { get; set; }
 
-
         private static string HexChars = "0123456789ABCDEF";
 
         private static int[] RandomInts;

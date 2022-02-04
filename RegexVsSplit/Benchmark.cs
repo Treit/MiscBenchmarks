@@ -8,6 +8,7 @@
     using System.Text.RegularExpressions;
 
     [MemoryDiagnoser]
+    [ShortRunJob]
     public class Benchmark
     {
         [Params(10, 100, 1000, 100_000)]
@@ -153,6 +154,35 @@
                 if (tokens.Current.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
                 {
                     result = i;
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public int FindTokenUsingTokenizeWithForEach()
+        {
+            string needle = "104";
+            int result = -1;
+
+            for (int i = 0; i < _values.Count; i++)
+            {
+                var tokens = _values[i].Tokenize(',');
+
+                int tokenIndex = 0;
+
+                foreach (var token in tokens)
+                {
+                    if (tokenIndex++ == 5)
+                    {
+                        if (token.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
+                        {
+                            result = i;
+                        }
+
+                        break;
+                    }
                 }
             }
 

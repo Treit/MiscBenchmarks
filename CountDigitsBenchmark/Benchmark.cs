@@ -4,8 +4,10 @@
     using BenchmarkDotNet.Diagnosers;
     using System;
     using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
+    using System.Collections.Immutable;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Numerics;
 
     [MemoryDiagnoser]
     public class Benchmark
@@ -13,23 +15,24 @@ using System.Linq;
         [Params(100, 1000, 100_000)]
         public int Count { get; set; }
 
-        private List<long> _values;
+        private List<int> _values;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            _values = new List<long>(Count);
+            _values = new List<int>(Count);
+            var r = new Random(1234);
 
-            for (int i = 0; i < this.Count; i++)
+            for (int i = 0; i < Count; i++)
             {
-                _values.Add(i);
+                _values.Add(r.Next());
             }
         }
 
         [Benchmark(Baseline = true)]
-        public long CountDigitsUsingMath()
+        public int CountDigitsUsingMath()
         {
-            long total = 0;
+            int total = 0;
 
             for (int i = 0; i < _values.Count; i++)
             {
@@ -40,9 +43,9 @@ using System.Linq;
         }
 
         [Benchmark]
-        public long CountDigitsUsingMathIncludingFloor()
+        public int CountDigitsUsingMathIncludingFloor()
         {
-            long total = 0;
+            int total = 0;
 
             for (int i = 0; i < _values.Count; i++)
             {
@@ -53,9 +56,9 @@ using System.Linq;
         }
 
         [Benchmark]
-        public long CountDigitsUsingString()
+        public int CountDigitsUsingString()
         {
-            long total = 0;
+            int total = 0;
 
             for (int i = 0; i < _values.Count; i++)
             {
@@ -66,31 +69,68 @@ using System.Linq;
         }
 
         [Benchmark]
-        public long CountDigitsUsingMaxMahem()
+        public int CountDigitsUsingMaxMahem()
         {
-            long total = 0;
+            int total = 0;
 
             for (int i = 0; i < _values.Count; i++)
             {
+                // DigitsInLong code written by MaxMahem from the C# discord server.
                 total += DigitsInLong(_values[i]);
             }
 
             return total;
         }
 
-        static int NumDigitsUsingMath(long number)
+        [Benchmark]
+        public int CountDigitsUsingLookupTable()
+        {
+            int total = 0;
+
+            for (int i = 0; i < _values.Count; i++)
+            {
+                total += NumDigtsUsingLookup(_values[i]);
+            }
+
+            return total;
+        }
+
+        [Benchmark]
+        public int CountDigitsUsingIfGreaterThanChecks()
+        {
+            int total = 0;
+
+            for (int i = 0; i < _values.Count; i++)
+            {
+                total += NumDigtsUsingIfGreaterThanChecks(_values[i]);
+            }
+
+            return total;
+        }
+
+        static int NumDigitsUsingMath(int number)
         {
             return (int)Math.Log10(Math.Abs(number)) + 1;
         }
 
-        static int NumDigitsUsingMathIncludingFloor(long number)
+        static int NumDigitsUsingMathIncludingFloor(int number)
         {
             return (int)Math.Floor(Math.Log10(Math.Abs(number))) + 1;
         }
 
-        static int NumDigtsUsingStr(long number)
+        static int NumDigtsUsingStr(int number)
         {
             return number.ToString().Length;
+        }
+
+        static int NumDigtsUsingLookup(int number)
+        {
+            return number.DigitsLength();
+        }
+
+        static int NumDigtsUsingIfGreaterThanChecks(int number)
+        {
+            return number.DigitsLength();
         }
 
         // if lookup for digits in long via binary search.
@@ -123,6 +163,68 @@ using System.Linq;
 
             return lowIndex;
         }
+
+        public static int CountDigits(uint value)
+        {
+            int digits = 1;
+            if (value >= 100000)
+            {
+                value /= 100000;
+                digits += 5;
+            }
+
+            if (value < 10)
+            {
+                // no-op
+            }
+            else if (value < 100)
+            {
+                digits++;
+            }
+            else if (value < 1000)
+            {
+                digits += 2;
+            }
+            else if (value < 10000)
+            {
+                digits += 3;
+            }
+            else
+            {
+                Debug.Assert(value < 100000);
+                digits += 4;
+            }
+
+            return digits;
+        }
+    }
+
+    public static class IntExtensions
+    {
+        public static int DigitsLength(this uint number)
+            => (int)((number + Lookups[BitOperations.Log2(number)]) >> 32);
+
+        public static int DigitsLength(this int number)
+        {
+            if (number >= 0)
+            {
+                return ((uint)number).DigitsLength();
+            }
+            else
+            {
+                return ((uint)-number).DigitsLength() + 1;
+            }
+        }
+
+        static ulong[] Lookups = {
+          4294967296,  8589934582,  8589934582,  8589934582,  12884901788,
+          12884901788, 12884901788, 17179868184, 17179868184, 17179868184,
+          21474826480, 21474826480, 21474826480, 21474826480, 25769703776,
+          25769703776, 25769703776, 30063771072, 30063771072, 30063771072,
+          34349738368, 34349738368, 34349738368, 34349738368, 38554705664,
+          38554705664, 38554705664, 41949672960, 41949672960, 41949672960,
+          42949672960, 42949672960
+        };
     }
 
     // helper class for holding the value of digit's value times its position, and doing math on it.
