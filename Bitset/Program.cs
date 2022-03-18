@@ -13,7 +13,7 @@
             Benchmark b = new Benchmark();
             b.Count = 3;
             b.GlobalSetup();
-            Console.WriteLine(b.DupeUsingEnumerableRepeat());
+            Console.WriteLine(b.ReadBitArray());
 #endif
         }
     }
