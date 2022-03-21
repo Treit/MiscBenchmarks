@@ -1,6 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Test
@@ -10,7 +11,7 @@ namespace Test
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(10, 1000, 100_000)]
+        [Params(10, 1000)]
         public int Count { get; set; }
 
         private List<MyType> _data = new();
@@ -38,6 +39,20 @@ namespace Test
         }
 
         [Benchmark]
+        public long SerializeAndDeserializeSTJCaseInsensitive()
+        {
+            long total = 0;
+            var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+            foreach (var item in _data)
+            {
+                total += SystemTextJson(item, opts);
+            }
+
+            return total;
+        }
+
+        [Benchmark]
         public long SerializeAndDeserializeNewtonsoft()
         {
             long total = 0;
@@ -50,10 +65,10 @@ namespace Test
             return total;
         }
 
-        static int SystemTextJson(MyType m)
+        static int SystemTextJson(MyType m, JsonSerializerOptions opts = null)
         {
-            var s = JsonSerializer.Serialize(m);
-            var r = JsonSerializer.Deserialize<MyType>(s)!;
+            var s = JsonSerializer.Serialize(m, opts);
+            var r = JsonSerializer.Deserialize<MyType>(s, opts)!;
             return r.Age;
         }
 
