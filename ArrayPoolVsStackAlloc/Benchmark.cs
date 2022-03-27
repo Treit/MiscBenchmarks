@@ -35,7 +35,7 @@
                 var len = r.Next(maxLength);
                 var sb = new StringBuilder(len);
                 
-                for (int i =0; i < len; i++)
+                for (int i = 0; i < len; i++)
                 {
                     sb.Append(alphabet[r.Next(alphabet.Length)]);
                 }
