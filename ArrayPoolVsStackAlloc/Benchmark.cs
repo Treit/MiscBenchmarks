@@ -26,13 +26,13 @@
 
             for (int i = 0; i < Size; i++)
             {
-                _strings.Add(GetRandomString(r));
+                _strings.Add(GetRandomString(r, 100));
             }
 
-            static string GetRandomString(Random r)
+            static string GetRandomString(Random r, int maxLength)
             {
                 var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_@!#$%^&*()+{}[]";
-                var len = r.Next(100);
+                var len = r.Next(maxLength);
                 var sb = new StringBuilder(len);
                 
                 for (int i =0; i < len; i++)
