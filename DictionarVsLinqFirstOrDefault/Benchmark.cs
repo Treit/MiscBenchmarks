@@ -2,6 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
+    using Microsoft.Diagnostics.Tracing.Parsers.MicrosoftWindowsTCPIP;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -44,15 +45,15 @@
         }
 
         [Benchmark(Baseline = true)]
-        public IList<Item> FindMatchesUsingDictionary()
+        public int FindMatchesUsingDictionary()
         {
-            var result = new List<Item>();
+            var result = 0;
 
             foreach (var item in _allItems)
             {
                 if (_acceptedDict.TryGetValue(item.Id, out var match))
                 {
-                    result.Add(match);
+                    result++;
                 }
             }
 
@@ -60,9 +61,9 @@
         }
 
         [Benchmark]
-        public IList<Item> FindMatchesUsingFirstOrDeault()
+        public int FindMatchesUsingFirstOrDeault()
         {
-            var result = new List<Item>();
+            var result = 0;
 
             foreach (var item in _allItems)
             {
@@ -70,7 +71,7 @@
 
                 if (match != null)
                 {
-                    result.Add(match);
+                    result++;
                 }
             }
 
@@ -78,9 +79,9 @@
         }
 
         [Benchmark]
-        public IList<Item> FindMatchesUsingFirstOrDeaultNoLambda()
+        public int FindMatchesUsingFirstOrDeaultNoLambda()
         {
-            var result = new List<Item>();
+            var result = 0;
 
             foreach (var item in _allItems)
             {
@@ -88,7 +89,7 @@
 
                 if (match != null)
                 {
-                    result.Add(match);
+                    result++;
                 }
             }
 
