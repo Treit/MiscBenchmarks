@@ -16,6 +16,8 @@
 
         private (string column, int index)[] _tuples3 { get; set; }
 
+        private IList<(string column, int index)> _tuples4 { get; set; }
+
         [GlobalSetup]
         public void GlobalSetup()
         {
@@ -28,11 +30,12 @@
                 _tuples.Add(new(i.ToString(), i));
                 _tuples2[i] = new KeyValuePair<string, int>(i.ToString(), i);
                 _tuples3[i] = new(i.ToString(), i);
+                _tuples4 = _tuples3;
             }
         }
 
         [Benchmark(Baseline = true)]
-        public long ForEachOfIListOfValueTuple()
+        public long ForEachOfIListOfValueTupleBackedByList()
         {
             long result = 0;
 
@@ -65,6 +68,22 @@
 
         [Benchmark]
         public long ForEachOfArrayOfValueTuple()
+        {
+            long result = 0;
+
+            for (int i = 0; i < Count; i++)
+            {
+                foreach (var (_, index) in _tuples3)
+                {
+                    result += index;
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long ForEachOfIListOfValueTupleBackedByArray()
         {
             long result = 0;
 

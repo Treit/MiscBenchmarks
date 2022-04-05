@@ -10,16 +10,19 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|                       Method | Count |              Mean |           Error |          StdDev | Ratio |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|----------------------------- |------ |------------------:|----------------:|----------------:|------:|-------:|------:|------:|----------:|
-|   **ForEachOfIListOfValueTuple** |     **3** |        **213.659 ns** |       **4.3194 ns** |       **8.4246 ns** |  **1.00** | **0.0334** |     **-** |     **-** |     **144 B** |
-| ForEachOfArrayOfKeyValuePair |     3 |         10.397 ns |       0.2450 ns |       0.4837 ns |  0.05 |      - |     - |     - |         - |
-|   ForEachOfArrayOfValueTuple |     3 |          8.048 ns |       0.1961 ns |       0.4006 ns |  0.04 |      - |     - |     - |         - |
-|                              |       |                   |                 |                 |       |        |       |       |           |
-|   **ForEachOfIListOfValueTuple** |    **50** |     **36,617.348 ns** |     **723.9519 ns** |     **990.9535 ns** |  **1.00** | **0.5493** |     **-** |     **-** |    **2400 B** |
-| ForEachOfArrayOfKeyValuePair |    50 |      2,270.111 ns |      45.2573 ns |      96.4470 ns |  0.06 |      - |     - |     - |         - |
-|   ForEachOfArrayOfValueTuple |    50 |      1,586.733 ns |      30.7854 ns |      54.7210 ns |  0.04 |      - |     - |     - |         - |
-|                              |       |                   |                 |                 |       |        |       |       |           |
-|   **ForEachOfIListOfValueTuple** |  **1000** | **14,236,891.243 ns** | **281,939.6407 ns** | **556,521.3445 ns** |  **1.00** |      **-** |     **-** |     **-** |   **48008 B** |
-| ForEachOfArrayOfKeyValuePair |  1000 |    906,001.972 ns |  17,767.4265 ns |  30,170.4385 ns |  0.06 |      - |     - |     - |         - |
-|   ForEachOfArrayOfValueTuple |  1000 |    628,220.018 ns |  12,560.3781 ns |  25,657.5240 ns |  0.04 |      - |     - |     - |         - |
+|                                  Method | Count |              Mean |           Error |          StdDev | Ratio |  Gen 0 | Gen 1 | Gen 2 | Allocated |
+|---------------------------------------- |------ |------------------:|----------------:|----------------:|------:|-------:|------:|------:|----------:|
+|  **ForEachOfIListOfValueTupleBackedByList** |     **3** |        **205.303 ns** |       **4.0655 ns** |       **8.0250 ns** |  **1.00** | **0.0334** |     **-** |     **-** |     **144 B** |
+|            ForEachOfArrayOfKeyValuePair |     3 |         10.336 ns |       0.2338 ns |       0.5033 ns |  0.05 |      - |     - |     - |         - |
+|              ForEachOfArrayOfValueTuple |     3 |          8.065 ns |       0.1960 ns |       0.4582 ns |  0.04 |      - |     - |     - |         - |
+| ForEachOfIListOfValueTupleBackedByArray |     3 |          7.989 ns |       0.1966 ns |       0.3926 ns |  0.04 |      - |     - |     - |         - |
+|                                         |       |                   |                 |                 |       |        |       |       |           |
+|  **ForEachOfIListOfValueTupleBackedByList** |    **50** |     **36,855.740 ns** |     **730.4451 ns** |   **1,441.8273 ns** |  **1.00** | **0.5493** |     **-** |     **-** |    **2400 B** |
+|            ForEachOfArrayOfKeyValuePair |    50 |      2,285.451 ns |      45.4844 ns |      75.9942 ns |  0.06 |      - |     - |     - |         - |
+|              ForEachOfArrayOfValueTuple |    50 |      1,581.696 ns |      31.4253 ns |      65.5963 ns |  0.04 |      - |     - |     - |         - |
+| ForEachOfIListOfValueTupleBackedByArray |    50 |      1,648.517 ns |      31.3489 ns |      30.7888 ns |  0.04 |      - |     - |     - |         - |
+|                                         |       |                   |                 |                 |       |        |       |       |           |
+|  **ForEachOfIListOfValueTupleBackedByList** |  **1000** | **14,200,238.884 ns** | **256,083.1976 ns** | **420,752.0374 ns** |  **1.00** |      **-** |     **-** |     **-** |   **48008 B** |
+|            ForEachOfArrayOfKeyValuePair |  1000 |    906,094.370 ns |  17,661.3922 ns |  24,175.1130 ns |  0.06 |      - |     - |     - |         - |
+|              ForEachOfArrayOfValueTuple |  1000 |    622,703.703 ns |  12,313.5590 ns |  20,573.1908 ns |  0.04 |      - |     - |     - |         - |
+| ForEachOfIListOfValueTupleBackedByArray |  1000 |    615,160.500 ns |  12,144.0074 ns |  25,615.8333 ns |  0.04 |      - |     - |     - |         - |
