@@ -89,7 +89,7 @@
 
             for (int i = 0; i < Count; i++)
             {
-                foreach (var (_, index) in _tuples3)
+                foreach (var (_, index) in _tuples4)
                 {
                     result += index;
                 }
