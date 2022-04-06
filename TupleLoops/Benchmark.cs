@@ -18,19 +18,24 @@
 
         private IList<(string column, int index)> _tuples4 { get; set; }
 
+        private List<(string column, int index)> _tuples5 { get; set; }
+
         [GlobalSetup]
         public void GlobalSetup()
         {
             _tuples = new List<(string, int)>();
             _tuples2 = new KeyValuePair<string, int>[Count];
             _tuples3 = new (string, int)[Count];
+            _tuples4 = new (string, int)[Count];
+            _tuples5 = new List<(string, int)>();
 
             for (int i = 0; i < Count; i++)
             {
                 _tuples.Add(new(i.ToString(), i));
                 _tuples2[i] = new KeyValuePair<string, int>(i.ToString(), i);
                 _tuples3[i] = new(i.ToString(), i);
-                _tuples4 = _tuples3;
+                _tuples4[i] = new(i.ToString(), i);
+                _tuples5.Add(new(i.ToString(), i));
             }
         }
 
@@ -90,6 +95,22 @@
             for (int i = 0; i < Count; i++)
             {
                 foreach (var (_, index) in _tuples4)
+                {
+                    result += index;
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long ForEachOfConcreteListOfValueTuple()
+        {
+            long result = 0;
+
+            for (int i = 0; i < Count; i++)
+            {
+                foreach (var (_, index) in _tuples5)
                 {
                     result += index;
                 }
