@@ -13,7 +13,13 @@
             Benchmark b = new Benchmark();
             b.Count = 1000;
             b.GlobalSetup();
-            Console.WriteLine(b.SerializeGCMemoryInfo());
+            var first = b.CountUsingTwoChecks();
+            var second = b.CountUsingCollectionMarshalAndIndexOf();
+
+            if (first != second)
+            {
+                throw new InvalidOperationException("Busted");
+            }
 #endif
         }
     }

@@ -3,13 +3,14 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
     using System;
+    using System.Buffers;
     using System.Collections.Generic;
 
     [MemoryDiagnoser]
     [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
     public class Benchmark
     {
-        [Params(10, 1000, 1_000_000)]
+        [Params(10, 1000)]
         public int Count { get; set; }
 
         private List<string> _values;
@@ -50,6 +51,66 @@
             }
 
             return total;
+        }
+
+        [Benchmark]
+        public long CountKuinox()
+        {
+            long total = 0;
+
+            for (int i = 0; i < Count; i++)
+            {
+                if (DoesStringContainDeck(_values[i]))
+                {
+                    total++;
+                }
+            }
+
+            return total;
+
+            static bool DoesStringContainDeck(string theString)
+            {
+                var reader = new SequenceReader<char>(new ReadOnlySequence<char>(theString.AsMemory()));
+
+                while (!reader.End)
+                {
+                    if (!reader.TryAdvanceToAny("dD")) return false;
+                    var unread = reader.UnreadSpan[0..3];
+                    if (unread.SequenceEqual("eck")) return true;
+                }
+                return false;
+            }
+        }
+
+        [Benchmark]
+        public long CountKuinoxSecondVersion()
+        {
+            long total = 0;
+
+            for (int i = 0; i < Count; i++)
+            {
+                if (DoesStringContainDeck2(_values[i]))
+                {
+                    total++;
+                }
+            }
+
+            return total;
+
+            bool DoesStringContainDeck2(string theString)
+            {
+                var reader = new SequenceReader<char>(new ReadOnlySequence<char>(theString.AsMemory()));
+
+                while (!reader.End)
+                {
+                    if (!reader.TryAdvanceTo('e')) return false;
+                    var previousChar = reader.CurrentSpan[(int)reader.Consumed - 1];
+                    if (previousChar != 'd' && previousChar != 'D') continue;
+                    var unread = reader.UnreadSpan[0..2];
+                    if (unread.SequenceEqual("ck")) return true;
+                }
+                return false;
+            }
         }
 
         [Benchmark]
