@@ -7,7 +7,6 @@
     using System.Threading.Tasks;
 
     [MemoryDiagnoser]
-    [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     public class Benchmark
     {
         [Params(10, 100, 100_000)]
