@@ -2,10 +2,11 @@
 {
     using BenchmarkDotNet.Attributes;
     using System;
+    using System.Numerics;
 
     public class Benchmark
     {
-        [Params(1000, 100_000)]
+        [Params(100_000)]
         public int Count { get; set; }
 
         private static int[] RandomInts;
@@ -45,6 +46,19 @@
             foreach (var val in RandomInts)
             {
                 result += (int)Math.Pow(val, 2);
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long SquareUsingBigIntegerPow()
+        {
+            long result = 0;
+
+            foreach (var val in RandomInts)
+            {
+                result += (int)BigInteger.Pow(val, 2);
             }
 
             return result;
