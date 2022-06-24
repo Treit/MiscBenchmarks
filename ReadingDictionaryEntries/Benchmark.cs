@@ -13,7 +13,9 @@
 
         private Dictionary<int, string> _dict;
         private ConcurrentDictionary<int, string> _concurrentdict;
-        private ReaderWriterLockSlim _rwlock = new ReaderWriterLockSlim();
+        private ReaderWriterLock _rwlock = new ReaderWriterLock();
+        private ReaderWriterLockSlim _rwlockslim = new ReaderWriterLockSlim();
+        private object _syncobj = new object();
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -40,7 +42,7 @@
         [Benchmark]
         public string KeyLookupUsingDictionaryReaderWriterLockSlim()
         {
-                _rwlock.EnterReadLock();
+                _rwlockslim.EnterReadLock();
 
                 try
                 {
@@ -48,14 +50,38 @@
                 }
                 finally
                 {
-                    _rwlock.ExitReadLock();
+                    _rwlockslim.ExitReadLock();
                 }
+        }
+
+        [Benchmark]
+        public string KeyLookupUsingDictionaryReaderWriterLock()
+        {
+            _rwlock.AcquireReaderLock(int.MaxValue);
+
+            try
+            {
+                return _dict[Count / 2];
+            }
+            finally
+            {
+                _rwlock.ReleaseLock();
+            }
         }
 
         [Benchmark]
         public string KeyLookupUsingConcurrentDictionary()
         {
             return _concurrentdict[Count / 2];
+        }
+
+        [Benchmark]
+        public string KeyLookupUsingLock()
+        {
+            lock (_syncobj)
+            {
+                return _dict[Count / 2];
+            }
         }
     }
 }
