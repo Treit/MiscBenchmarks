@@ -18,7 +18,7 @@
         }
 
         [Benchmark]
-        public void InitJagged()
+        public void InitJaggedRandomValues()
         {
             var r = new Random(Size);
 
@@ -37,7 +37,7 @@
         }
 
         [Benchmark]
-        public void InitMultidimensional()
+        public void InitMultidimensionalRandomValues()
         {
             var r = new Random(Size);
 
@@ -49,6 +49,36 @@
                 {
                     byte b = (byte)r.Next(256);
                     _mdim[i, j] = b;
+                }
+            }
+        }
+
+        [Benchmark]
+        public void InitJaggedFixedValue()
+        {
+            _jagged = new byte[Size][];
+
+            for (int i = 0; i < Size; i++)
+            {
+                _jagged[i] = new byte[Size];
+
+                for (int j = 0; j < Size; j++)
+                {
+                    _jagged[i][j] = 0xFF;
+                }
+            }
+        }
+
+        [Benchmark]
+        public void InitMultidimensionalFixedValue()
+        {
+            _mdim = new byte[Size, Size];
+
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    _mdim[i, j] = 0xFF;
                 }
             }
         }
