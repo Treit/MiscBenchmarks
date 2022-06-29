@@ -12,6 +12,6 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 ```
 |                      Method | Count |       Mean |    Error |   StdDev |
 |---------------------------- |------ |-----------:|---------:|---------:|
-| BubbleSortUsingTempVariable |  1000 |   659.4 μs |  3.32 μs |  2.95 μs |
-| BubbleSortUsingSwapFunction |  1000 |   636.1 μs | 10.68 μs |  9.99 μs |
-|  BubbleSortUsingTupleToSwap |  1000 | 1,151.1 μs | 22.02 μs | 20.59 μs |
+| BubbleSortUsingTempVariable |  1000 |   894.6 μs |  8.51 μs |  7.11 μs |
+| BubbleSortUsingSwapFunction |  1000 |   898.8 μs | 12.89 μs | 10.76 μs |
+|  BubbleSortUsingTupleToSwap |  1000 | 1,155.2 μs |  9.76 μs |  8.15 μs |

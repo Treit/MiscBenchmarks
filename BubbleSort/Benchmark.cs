@@ -35,9 +35,12 @@
             {
                 for (int j = 0; j < _values.Length - i - 1; j++)
                 {
-                    temp = _values[j + 1];
-                    _values[j + 1] = _values[j];
-                    _values[j] = temp;
+                    if (cmp.Compare(_values[j], _values[j + 1]) > 0)
+                    {
+                        temp = _values[j + 1];
+                        _values[j + 1] = _values[j];
+                        _values[j] = temp;
+                    }
                 }
             }
         }
@@ -51,7 +54,10 @@
             {
                 for (int j = 0; j < _values.Length - i - 1; j++)
                 {
-                    Swap(_values, j, j + 1);
+                    if (cmp.Compare(_values[j], _values[j + 1]) > 0)
+                    {
+                        Swap(_values, j, j + 1);
+                    }
                 }
             }
 
