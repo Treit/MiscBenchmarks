@@ -13,7 +13,7 @@
             Benchmark b = new Benchmark();
             b.Count = 3;
             b.GlobalSetup();
-            b.ReadDataUsingDataSet();
+            var x = b.ReadDataUsingEntityFramework();
 #endif
         }
     }

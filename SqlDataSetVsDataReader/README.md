@@ -1,5 +1,7 @@
-# DataReader vs DataSet
+# DataReader vs DataSet vs EntityFramework
 This benchmark assumes you have the AdventureWorks2019 sample database installed.
+
+The benchmark task simply reads one column of values from a fairly large table into a List<short>, in an attempt to evaluate the overhead of each technqiue for reading the data.
 
 
 ``` ini
@@ -12,7 +14,8 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|                  Method |      Mean |    Error |    StdDev | Ratio | RatioSD |      Gen 0 |     Gen 1 |     Gen 2 | Allocated |
-|------------------------ |----------:|---------:|----------:|------:|--------:|-----------:|----------:|----------:|----------:|
-| ReadDataUsingDataReader |  90.98 ms | 1.790 ms |  2.328 ms |  1.00 |    0.00 |   666.6667 |         - |         - |   3.29 MB |
-|    ReadDataUsingDataSet | 338.72 ms | 6.535 ms | 11.950 ms |  3.73 |    0.11 | 10000.0000 | 4000.0000 | 2000.0000 |  78.12 MB |
+|                       Method |      Mean |    Error |   StdDev | Ratio | RatioSD |      Gen 0 |     Gen 1 |     Gen 2 | Allocated |
+|----------------------------- |----------:|---------:|---------:|------:|--------:|-----------:|----------:|----------:|----------:|
+|      ReadDataUsingDataReader |  90.95 ms | 1.771 ms | 1.818 ms |  1.00 |    0.00 |   666.6667 |         - |         - |   3.29 MB |
+|         ReadDataUsingDataSet | 337.08 ms | 4.061 ms | 3.391 ms |  3.69 |    0.08 | 10000.0000 | 4000.0000 | 2000.0000 |  78.12 MB |
+| ReadDataUsingEntityFramework |  29.98 ms | 0.587 ms | 1.250 ms |  0.33 |    0.02 |  5000.0000 |         - |         - |  22.72 MB |

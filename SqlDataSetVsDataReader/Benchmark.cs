@@ -2,22 +2,33 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
+using global::Benchmark;
     using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Data;
+    using System.Linq;
 
     [MemoryDiagnoser]
     public class Benchmark
     {
+        private readonly string _connstring = "Server=.; Integrated Security=sspi; Initial Catalog=AdventureWorks2019;Encrypt=false";
         private SqlConnection _conn;
+        private AdventureWorks2019Context _dbcontext;
 
         public int Count { get; set; }
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            _conn = new SqlConnection("Server=.; Integrated Security=sspi; Initial Catalog=AdventureWorks2019;Encrypt=false");
+            _conn = new SqlConnection(_connstring);
             _conn.Open();
+
+            var contextOptions = new DbContextOptionsBuilder<AdventureWorks2019Context>()
+                .UseSqlServer(_connstring)
+                .Options;
+
+            _dbcontext = new AdventureWorks2019Context(contextOptions);
         }
 
         [Benchmark(Baseline = true)]
@@ -56,6 +67,12 @@
             }
 
             return result;
+        }
+
+        [Benchmark]
+        public List<short> ReadDataUsingEntityFramework()
+        {
+            return _dbcontext.SalesOrderDetails.Select(x => x.OrderQty).ToList();
         }
     }
 }
