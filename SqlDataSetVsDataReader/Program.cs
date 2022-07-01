@@ -13,7 +13,9 @@
             Benchmark b = new Benchmark();
             b.Count = 3;
             b.GlobalSetup();
-            var x = b.ReadDataUsingEntityFramework();
+            var first = b.ReadDataUsingEntityFramework();
+            var second = b.ReadDataUsingDataSet();
+            var third = b.ReadDataUsingDataReader();
 #endif
         }
     }

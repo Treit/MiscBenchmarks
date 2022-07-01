@@ -34,16 +34,15 @@ using Microsoft.EntityFrameworkCore;
         [Benchmark(Baseline = true)]
         public List<short> ReadDataUsingDataReader()
         {
-            var sql = "select * from Sales.SalesOrderDetail";
+            var sql = "select OrderQty from Sales.SalesOrderDetail";
             using var cmd = new SqlCommand(sql, _conn);
             using var reader = cmd.ExecuteReader();
 
             var result = new List<short>();
-            var ordinal = reader.GetOrdinal("OrderQty");
 
             while (reader.Read())
             {
-                result.Add(reader.GetInt16(ordinal));
+                result.Add(reader.GetInt16(0));
             }
 
             return result;
@@ -52,7 +51,7 @@ using Microsoft.EntityFrameworkCore;
         [Benchmark]
         public List<short> ReadDataUsingDataSet()
         {
-            var sql = "select * from Sales.SalesOrderDetail";
+            var sql = "select OrderQty from Sales.SalesOrderDetail";
             using var cmd = new SqlCommand(sql, _conn);
 
             var ds = new DataSet();
@@ -63,7 +62,7 @@ using Microsoft.EntityFrameworkCore;
 
             foreach (DataRow row in ds.Tables[0].Rows)
             {
-                result.Add((short)row["OrderQty"]);
+                result.Add((short)row[0]);
             }
 
             return result;

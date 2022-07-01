@@ -14,8 +14,8 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|                       Method |      Mean |    Error |   StdDev | Ratio | RatioSD |      Gen 0 |     Gen 1 |     Gen 2 | Allocated |
-|----------------------------- |----------:|---------:|---------:|------:|--------:|-----------:|----------:|----------:|----------:|
-|      ReadDataUsingDataReader |  90.95 ms | 1.771 ms | 1.818 ms |  1.00 |    0.00 |   666.6667 |         - |         - |   3.29 MB |
-|         ReadDataUsingDataSet | 337.08 ms | 4.061 ms | 3.391 ms |  3.69 |    0.08 | 10000.0000 | 4000.0000 | 2000.0000 |  78.12 MB |
-| ReadDataUsingEntityFramework |  29.98 ms | 0.587 ms | 1.250 ms |  0.33 |    0.02 |  5000.0000 |         - |         - |  22.72 MB |
+|                       Method |      Mean |    Error |   StdDev | Ratio | RatioSD |     Gen 0 |     Gen 1 |    Gen 2 |   Allocated |
+|----------------------------- |----------:|---------:|---------:|------:|--------:|----------:|----------:|---------:|------------:|
+|      ReadDataUsingDataReader |  23.68 ms | 0.473 ms | 0.901 ms |  1.00 |    0.00 |   93.7500 |   93.7500 |  93.7500 |   513.48 KB |
+|         ReadDataUsingDataSet | 152.92 ms | 1.721 ms | 1.437 ms |  6.49 |    0.31 | 4250.0000 | 2000.0000 | 750.0000 |  24966.4 KB |
+| ReadDataUsingEntityFramework |  33.21 ms | 0.906 ms | 2.584 ms |  1.43 |    0.12 | 5000.0000 |         - |        - | 23266.52 KB |
