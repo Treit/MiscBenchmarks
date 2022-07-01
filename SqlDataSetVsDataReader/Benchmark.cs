@@ -52,7 +52,6 @@ using Microsoft.EntityFrameworkCore;
         public List<short> ReadDataUsingDataSet()
         {
             var sql = "select OrderQty from Sales.SalesOrderDetail";
-            using var cmd = new SqlCommand(sql, _conn);
 
             var ds = new DataSet();
             var adapter = new SqlDataAdapter(sql, _conn);
