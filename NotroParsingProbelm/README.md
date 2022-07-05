@@ -20,8 +20,9 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|                   Method |       Mean |    Error |    StdDev |     Median | Ratio |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|------------------------- |-----------:|---------:|----------:|-----------:|------:|-------:|------:|------:|----------:|
-|          ParseUsingRegex | 2,748.5 ns | 54.72 ns | 101.42 ns | 2,732.2 ns |  1.00 | 0.0916 |     - |     - |     408 B |
-| ParseUsingTokensViaSplit |   409.9 ns |  8.27 ns |  14.26 ns |   407.5 ns |  0.15 | 0.1369 |     - |     - |     592 B |
-|   ParseUsingStateMachine |   301.8 ns |  6.08 ns |  13.84 ns |   296.9 ns |  0.11 | 0.0648 |     - |     - |     280 B |
+|                   Method |       Mean |    Error |   StdDev | Ratio |  Gen 0 | Gen 1 | Gen 2 | Allocated |
+|------------------------- |-----------:|---------:|---------:|------:|-------:|------:|------:|----------:|
+|          ParseUsingRegex | 2,706.0 ns | 53.47 ns | 90.80 ns |  1.00 | 0.0916 |     - |     - |     408 B |
+|  ParseUsingCompiledRegex |   961.2 ns | 15.40 ns | 14.40 ns |  0.36 | 0.0935 |     - |     - |     408 B |
+| ParseUsingTokensViaSplit |   404.7 ns |  6.46 ns |  5.39 ns |  0.15 | 0.1369 |     - |     - |     592 B |
+|   ParseUsingStateMachine |   317.6 ns |  6.09 ns |  5.40 ns |  0.12 | 0.0648 |     - |     - |     280 B |

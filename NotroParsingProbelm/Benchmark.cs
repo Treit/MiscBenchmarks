@@ -10,6 +10,7 @@
     {
         private string _stringToParse = "[on] [AdvancementsAddon] [player] advancement (award|get|complete)";
         private Regex _regex = new Regex(@"^\[(.+?)\].+\]\s(.+?)\s\(.+\|.+\|(.+)\)");
+        private Regex _compregex = new Regex(@"^\[(.+?)\].+\]\s(.+?)\s\(.+\|.+\|(.+)\)", RegexOptions.Compiled);
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -20,6 +21,19 @@
         public string ParseUsingRegex()
         {
             var m = _regex.Match(_stringToParse);
+
+            if (!m.Success)
+            {
+                throw new InvalidOperationException("Regex unexpectedly did not match.");
+            }
+
+            return m.Result("$1 $2 $3");
+        }
+
+        [Benchmark]
+        public string ParseUsingCompiledRegex()
+        {
+            var m = _compregex.Match(_stringToParse);
 
             if (!m.Success)
             {
