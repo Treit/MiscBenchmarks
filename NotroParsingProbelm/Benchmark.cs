@@ -11,6 +11,7 @@
         private string _stringToParse = "[on] [AdvancementsAddon] [player] advancement (award|get|complete)";
         private Regex _regex = new Regex(@"^\[(.+?)\].+\]\s(.+?)\s\(.+\|.+\|(.+)\)");
         private Regex _compregex = new Regex(@"^\[(.+?)\].+\]\s(.+?)\s\(.+\|.+\|(.+)\)", RegexOptions.Compiled);
+        private char[] _chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -136,6 +137,15 @@
             }
 
             return sb.ToString();
+        }
+        
+        [Benchmark]
+        public string ParseUsingSpan()
+        {
+            ReadOnlySpan<char> inputSpan = _stringToParse;
+            int posEndOfFirst = _stringToParse.IndexOfAny(_chars, inputSpan.LastIndexOf(']'));
+            int posEndOfLast = inputSpan.LastIndexOf('|') + 1;
+            return $"{inputSpan.Slice(inputSpan.IndexOf('[') + 1, inputSpan.IndexOf(']')-1).ToString()} {inputSpan.Slice(posEndOfFirst, inputSpan.IndexOf('(')-posEndOfFirst - 1).ToString()} {inputSpan.Slice(posEndOfLast, inputSpan.LastIndexOf(')') - posEndOfLast)}";
         }
     }
 }
