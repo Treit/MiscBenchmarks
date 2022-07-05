@@ -9,7 +9,6 @@
     using System.Text;
 
     [MemoryDiagnoser]
-    [ShortRunJob]
     public class Benchmark
     {
         [Params(2, 4, 10, 100, 1000, 10_000)]

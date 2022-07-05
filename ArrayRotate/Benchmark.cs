@@ -4,7 +4,6 @@
     using BenchmarkDotNet.Diagnosers;
 
     [MemoryDiagnoser]
-    [ShortRunJob]
     public class Benchmark
     {
         private char[] _array;

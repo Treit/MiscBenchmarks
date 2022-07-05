@@ -5,7 +5,6 @@
     using System;
     using System.Collections.Generic;
 
-    [ShortRunJob]
     public class Benchmark
     {
         [Params(100, 1000, 10_000, 100_000)]

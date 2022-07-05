@@ -14,7 +14,6 @@
     }
 
     [MemoryDiagnoser]
-    [ShortRunJob]
     public class Benchmark
     {
         [Params(10, 100, 1000, 10_000, 100_000)]

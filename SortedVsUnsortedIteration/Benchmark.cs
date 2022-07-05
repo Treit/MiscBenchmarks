@@ -6,7 +6,6 @@
     using System.Runtime.Intrinsics.X86;
     using System.Runtime.Intrinsics;
 
-    [ShortRunJob]
     public class Benchmark
     {
         [Params(1000, 100_000)]

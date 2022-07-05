@@ -5,7 +5,6 @@
     using System;
     using System.IO;
 
-    [ShortRunJob]
     public class Benchmark
     {
         [Params(3 * 1024 * 1024, 1024 * 1024 * 1024)]

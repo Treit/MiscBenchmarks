@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
     [MemoryDiagnoser]
-    [ShortRunJob]
     public class Benchmark
     {
         [Params(10, 100, 10_000)]

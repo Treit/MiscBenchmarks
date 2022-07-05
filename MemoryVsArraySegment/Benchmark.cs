@@ -6,7 +6,6 @@
     using System.Collections.Generic;
 
     [MemoryDiagnoser]
-    [ShortRunJob]
     public class Benchmark
     {
         private byte[] _array;

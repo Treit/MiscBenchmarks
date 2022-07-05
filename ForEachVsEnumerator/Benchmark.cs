@@ -8,7 +8,6 @@
     using System.Linq;
 
     [MemoryDiagnoser]
-    [ShortRunJob]
     public class Benchmark
     {
         [Params(1000, 100_000)]
