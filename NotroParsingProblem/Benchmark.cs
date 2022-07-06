@@ -138,14 +138,17 @@
 
             return sb.ToString();
         }
-        
+
         [Benchmark]
         public string ParseUsingSpan()
         {
             ReadOnlySpan<char> inputSpan = _stringToParse;
             int posEndOfFirst = _stringToParse.IndexOfAny(_chars, inputSpan.LastIndexOf(']'));
             int posEndOfLast = inputSpan.LastIndexOf('|') + 1;
-            return $"{inputSpan.Slice(inputSpan.IndexOf('[') + 1, inputSpan.IndexOf(']')-1).ToString()} {inputSpan.Slice(posEndOfFirst, inputSpan.IndexOf('(')-posEndOfFirst - 1).ToString()} {inputSpan.Slice(posEndOfLast, inputSpan.LastIndexOf(')') - posEndOfLast)}";
+            var a = inputSpan.Slice(inputSpan.IndexOf('[') + 1, inputSpan.IndexOf(']') - 1).ToString();
+            var b = inputSpan.Slice(posEndOfFirst, inputSpan.IndexOf('(') - posEndOfFirst - 1).ToString();
+            var c = inputSpan.Slice(posEndOfLast, inputSpan.LastIndexOf(')') - posEndOfLast);
+            return $"{a} {b} {c}";
         }
     }
 }

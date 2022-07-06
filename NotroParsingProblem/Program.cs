@@ -12,11 +12,12 @@
 #else
             Benchmark b = new Benchmark();
             b.GlobalSetup();
-            var x = b.ParseUsingRegex();
-            var y = b.ParseUsingStateMachine();
-            var z = b.ParseUsingTokensViaSplit();
+            var w = b.ParseUsingRegex();
+            var x = b.ParseUsingStateMachine();
+            var y = b.ParseUsingTokensViaSplit();
+            var z = b.ParseUsingSpan();
 
-            if (x != y || y != z)
+            if (w != x || x != y || y != z)
             {
                 throw new InvalidOperationException("Expected everything to be equal");
             }
