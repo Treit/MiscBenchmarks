@@ -9,7 +9,7 @@
         private List<string> _strings;
         private readonly string needle = "find_me";
 
-        [Params(100, 1000, 10_000)]
+        [Params(1000)]
         public int Count { get; set; }
 
         [GlobalSetup]
@@ -18,7 +18,7 @@
             _strings = new List<string>(Count);
             for (int i = 0; i < Count; i++)
             {
-                _strings.Add(i.ToString());
+                _strings.Add(i.ToString() + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             }
 
             _strings[_strings.Count - 1] = $"1234-abc-xyz{needle}zzz";
