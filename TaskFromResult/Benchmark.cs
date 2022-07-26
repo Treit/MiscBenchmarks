@@ -23,6 +23,18 @@
         {
             return await Task.FromResult("foo");
         }
+
+        [Benchmark]
+        public Task ReturnCompletedTask()
+        {
+            return Task.CompletedTask;
+        }
+
+        [Benchmark]
+        public async Task AwaitCompletedTask()
+        {
+            await Task.CompletedTask;
+        }
     }
 }
 
