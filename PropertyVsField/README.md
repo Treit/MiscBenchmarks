@@ -10,17 +10,49 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|      Method |      Mean |     Error |    StdDev | Ratio | RatioSD | Code Size |
-|------------ |----------:|----------:|----------:|------:|--------:|----------:|
-| GetProperty |  1.683 ns | 0.2391 ns | 0.7050 ns |  1.00 |    0.00 |      38 B |
-|    GetField |  2.550 ns | 0.3015 ns | 0.8891 ns |  1.77 |    0.95 |      35 B |
-| SetProperty | 31.574 ns | 0.9662 ns | 2.8488 ns | 22.42 |    9.80 |     170 B |
-|    SetField | 32.898 ns | 0.9553 ns | 2.8166 ns | 23.44 |   10.46 |     160 B |
-
+|      Method |       Mean |    Error |    StdDev | Code Size |
+|------------ |-----------:|---------:|----------:|----------:|
+| GetProperty | 3,524.8 ns | 69.61 ns | 118.21 ns |     124 B |
+|    GetField |   426.7 ns | 32.09 ns |  94.61 ns |      67 B |
 
 ## .NET Core 6.0.7 (CoreCLR 6.0.722.32202, CoreFX 6.0.722.32202), X64 RyuJIT
 ```assembly
 ; Test.Benchmark.GetProperty()
+       push      rdi
+       push      rsi
+       push      rbx
+       sub       rsp,30
+       xor       eax,eax
+       mov       [rsp+20],rax
+       mov       [rsp+28],rax
+       mov       rsi,rcx
+       mov       rdi,rdx
+       xor       ebx,ebx
+       cmp       dword ptr [rsi+18],0
+       jle       short M00_L01
+M00_L00:
+       lea       rdx,[rsp+20]
+       mov       rcx,rsi
+       call      Test.Benchmark.DoGetProperty()
+       inc       ebx
+       cmp       ebx,[rsi+18]
+       jl        short M00_L00
+M00_L01:
+       mov       rdx,[rsp+20]
+       mov       rcx,rdi
+       call      CORINFO_HELP_CHECKED_ASSIGN_REF
+       mov       rax,[rsp+28]
+       mov       [rdi+8],rax
+       mov       rax,rdi
+       add       rsp,30
+       pop       rbx
+       pop       rsi
+       pop       rdi
+       ret
+; Total bytes of code 86
+```
+```assembly
+; Test.Benchmark.DoGetProperty()
        push      rdi
        push      rsi
        mov       rsi,rdx
@@ -43,145 +75,35 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 ; Test.Benchmark.GetField()
        push      rdi
        push      rsi
+       push      rbp
+       push      rbx
        mov       rsi,rdx
-       mov       rdx,[rcx+8]
-       mov       rdi,[rdx+10]
-       mov       rdx,[rdx+8]
+       xor       edx,edx
+       xor       edi,edi
+       xor       ebx,ebx
+       mov       ebp,[rcx+18]
+       test      ebp,ebp
+       jle       short M00_L01
+       mov       rax,[rcx+8]
+       mov       rdx,[rax+10]
+       mov       rax,[rax+8]
+M00_L00:
+       mov       rdi,rdx
+       mov       rcx,rax
+       inc       ebx
+       cmp       ebx,ebp
+       jl        short M00_L00
+       mov       rdx,rcx
+M00_L01:
        mov       rcx,rsi
        call      CORINFO_HELP_CHECKED_ASSIGN_REF
        mov       [rsi+8],rdi
        mov       rax,rsi
-       pop       rsi
-       pop       rdi
-       ret
-; Total bytes of code 35
-```
-
-## .NET Core 6.0.7 (CoreCLR 6.0.722.32202, CoreFX 6.0.722.32202), X64 RyuJIT
-```assembly
-; Test.Benchmark.SetProperty()
-       push      rdi
-       push      rsi
-       sub       rsp,28
-       mov       rsi,rcx
-       mov       rdi,[rsi+8]
-       call      System.DateTime.get_UtcNow()
-       mov       [rdi+10],rax
-       mov       rdx,[rsi+8]
-       mov       [rsp+20],rdx
-       mov       rcx,204374A6690
-       mov       rdx,[rcx]
-       mov       rcx,[rsp+20]
-       lea       rcx,[rcx+8]
-       call      CORINFO_HELP_ASSIGN_REF
-       nop
-       add       rsp,28
-       pop       rsi
-       pop       rdi
-       ret
-; Total bytes of code 66
-```
-```assembly
-; System.DateTime.get_UtcNow()
-       push      rbp
-       push      rdi
-       push      rsi
-       sub       rsp,30
-       lea       rbp,[rsp+40]
-       lea       rcx,[rbp+0FFE8]
-       mov       rax,7FFDA1181FE0
-       call      rax
-       mov       rsi,[rbp+0FFE8]
-       mov       rax,204374A1230
-       mov       rdi,[rax]
-       sub       rsi,[rdi+8]
-       cmp       dword ptr [7FFC2B0F59FC],0
-       jne       short M01_L02
-M01_L00:
-       mov       eax,0B2D05E00
-       cmp       rsi,rax
-       jae       short M01_L01
-       mov       rax,rsi
-       add       rax,[rdi+10]
-       add       rsp,30
-       pop       rsi
-       pop       rdi
+       pop       rbx
        pop       rbp
-       ret
-M01_L01:
-       call      System.DateTime.UpdateLeapSecondCacheAndReturnUtcNow()
-       nop
-       add       rsp,30
-       pop       rsi
-       pop       rdi
-       pop       rbp
-       ret
-M01_L02:
-       call      CORINFO_HELP_POLL_GC
-       jmp       short M01_L00
-; Total bytes of code 104
-```
-
-## .NET Core 6.0.7 (CoreCLR 6.0.722.32202, CoreFX 6.0.722.32202), X64 RyuJIT
-```assembly
-; Test.Benchmark.SetField()
-       push      rdi
-       push      rsi
-       sub       rsp,28
-       mov       rsi,rcx
-       mov       rdi,[rsi+8]
-       call      System.DateTime.get_UtcNow()
-       mov       [rdi+10],rax
-       mov       rdx,[rsi+8]
-       lea       rcx,[rdx+8]
-       mov       rdx,1DCAF619FE8
-       mov       rdx,[rdx]
-       call      CORINFO_HELP_ASSIGN_REF
-       nop
-       add       rsp,28
        pop       rsi
        pop       rdi
        ret
-; Total bytes of code 56
-```
-```assembly
-; System.DateTime.get_UtcNow()
-       push      rbp
-       push      rdi
-       push      rsi
-       sub       rsp,30
-       lea       rbp,[rsp+40]
-       lea       rcx,[rbp+0FFE8]
-       mov       rax,7FFDA1181FE0
-       call      rax
-       mov       rsi,[rbp+0FFE8]
-       mov       rax,1DCAF611230
-       mov       rdi,[rax]
-       sub       rsi,[rdi+8]
-       cmp       dword ptr [7FFC2B0F59FC],0
-       jne       short M01_L02
-M01_L00:
-       mov       eax,0B2D05E00
-       cmp       rsi,rax
-       jae       short M01_L01
-       mov       rax,rsi
-       add       rax,[rdi+10]
-       add       rsp,30
-       pop       rsi
-       pop       rdi
-       pop       rbp
-       ret
-M01_L01:
-       call      System.DateTime.UpdateLeapSecondCacheAndReturnUtcNow()
-       nop
-       add       rsp,30
-       pop       rsi
-       pop       rdi
-       pop       rbp
-       ret
-M01_L02:
-       call      CORINFO_HELP_POLL_GC
-       jmp       short M01_L00
-; Total bytes of code 104
+; Total bytes of code 67
 ```
 
