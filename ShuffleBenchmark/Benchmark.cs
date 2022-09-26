@@ -10,7 +10,7 @@
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(10, 100, 1000, 100_000, 1_000_000)]
+        [Params(10, 1000, 100_000)]
         public int Count { get; set; }
 
         private List<int> _values;
@@ -26,7 +26,7 @@
             }
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int FisherYates()
         {
             Random r = new Random();
