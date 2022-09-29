@@ -10,7 +10,10 @@
     public class Benchmark
     {
         [Params(100_000)]
-        public int Count { get; set; }
+        public int TotalItems { get; set; }
+
+        [Params(10, 100, 100_000)]
+        public int RandomNumberCeiling { get; set; }
 
         private const int DefaultInternalSetCapacity = 7;
 
@@ -19,13 +22,13 @@
         [GlobalSetup]
         public void GlobalSetup()
         {
-            _data = new int[Count];
+            _data = new int[TotalItems];
 
-            var r = new Random(Count);
+            var r = new Random(TotalItems);
 
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < TotalItems; i++)
             {
-                _data[i] = r.Next(100);
+                _data[i] = r.Next(RandomNumberCeiling);
             }
         }
 
@@ -51,6 +54,10 @@
             foreach (int val in _data)
             {
                 set.Add(val);
+            }
+
+            foreach (int val in set)
+            {
                 count++;
             }
 

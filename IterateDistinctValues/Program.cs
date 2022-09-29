@@ -1,6 +1,7 @@
 ﻿namespace Test
 {
     using BenchmarkDotNet.Running;
+    using System;
 
     internal class Program
     {
@@ -10,9 +11,18 @@
             BenchmarkRunner.Run<Benchmark>();
 #else
             Benchmark b = new Benchmark();
-            b.Count = 1000;
+            b.TotalItems = 100_000;
             b.GlobalSetup();
-            b.ForEachUsingDistinct();
+            var countA = b.ForEachUsingDistinct();
+            var countB = b.ForEachUsingHashSet();
+            var countC = b.ForEachUsingHashSetWithInitialCapacity();
+
+            var identical = countA == countB && countB == countC;
+
+            if (!identical)
+            {
+                throw new InvalidOperationException("Mismatch");
+            }
 #endif
 
         }
