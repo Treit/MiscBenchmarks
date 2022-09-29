@@ -12,6 +12,8 @@
         [Params(100_000)]
         public int Count { get; set; }
 
+        private const int DefaultInternalSetCapacity = 7;
+
         private int[] _data;
 
         [GlobalSetup]
@@ -32,7 +34,7 @@
         {
             var count = 0L;
 
-            foreach (int idx in new HashSet<int>(_data))
+            foreach (int val in new HashSet<int>(_data))
             {
                 count++;
             }
@@ -41,11 +43,24 @@
         }
 
         [Benchmark]
+        public long ForEachUsingHashSetWithInitialCapacity()
+        {
+            var set = new HashSet<int>(DefaultInternalSetCapacity, null);
+
+            foreach (int val in _data)
+            {
+                set.Add(val);
+            }
+
+            return set.Count;
+        }
+
+        [Benchmark]
         public long ForEachUsingDistinct()
         {
             var count = 0L;
 
-            foreach (int idx in _data.Distinct())
+            foreach (int val in _data.Distinct())
             {
                 count++;
             }
