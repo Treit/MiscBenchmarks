@@ -46,13 +46,15 @@
         public long ForEachUsingHashSetWithInitialCapacity()
         {
             var set = new HashSet<int>(DefaultInternalSetCapacity, null);
+            var count = 0L;
 
             foreach (int val in _data)
             {
                 set.Add(val);
+                count++;
             }
 
-            return set.Count;
+            return count;
         }
 
         [Benchmark]

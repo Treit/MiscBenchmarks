@@ -10,8 +10,8 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|                                 Method |  Count |       Mean |    Error |    StdDev |     Median | Ratio | RatioSD |    Gen 0 |    Gen 1 |    Gen 2 | Allocated |
-|--------------------------------------- |------- |-----------:|---------:|----------:|-----------:|------:|--------:|---------:|---------:|---------:|----------:|
-|                    ForEachUsingHashSet | 100000 | 1,142.5 μs | 38.51 μs | 110.49 μs | 1,108.2 μs |  1.00 |    0.00 | 498.0469 | 498.0469 | 498.0469 | 1699.4 KB |
-| ForEachUsingHashSetWithInitialCapacity | 100000 |   613.3 μs | 17.30 μs |  50.73 μs |   598.7 μs |  0.54 |    0.07 |   0.9766 |        - |        - |   5.76 KB |
-|                   ForEachUsingDistinct | 100000 | 1,073.2 μs | 38.32 μs | 110.55 μs | 1,032.3 μs |  0.95 |    0.11 |        - |        - |        - |   5.85 KB |
+|                                 Method |  Count |       Mean |    Error |   StdDev |     Median | Ratio | RatioSD |    Gen 0 |    Gen 1 |    Gen 2 | Allocated |
+|--------------------------------------- |------- |-----------:|---------:|---------:|-----------:|------:|--------:|---------:|---------:|---------:|----------:|
+|                    ForEachUsingHashSet | 100000 | 1,157.5 μs | 32.76 μs | 93.99 μs | 1,134.6 μs |  1.00 |    0.00 | 498.0469 | 498.0469 | 498.0469 | 1699.4 KB |
+| ForEachUsingHashSetWithInitialCapacity | 100000 |   615.3 μs | 16.07 μs | 45.84 μs |   602.2 μs |  0.54 |    0.05 |   0.9766 |        - |        - |   5.76 KB |
+|                   ForEachUsingDistinct | 100000 |   980.0 μs | 19.55 μs | 42.50 μs |   972.3 μs |  0.85 |    0.08 |        - |        - |        - |   5.85 KB |
