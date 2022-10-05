@@ -21,25 +21,38 @@ namespace AsParallelBenchmark
     [MemoryDiagnoser]
     public class PerfTest
     {
-        private const int N = 1000000;
+        [Params(100000)]
+        public int ItemCount { get; set; }
+
+        [Params(1, 4, 10)]
+        public int PredicateCount { get; set; }
 
         private Keyword[] _keywords;
+
+        Func<Keyword, bool>[] _predicates;
 
         [GlobalSetup]
         public void Setup()
         {
             var rnd = new Random();
 
-            _keywords = new Keyword[N];
+            _keywords = new Keyword[ItemCount];
 
-            for (int i = 0; i < N; i++)
+            for (int i = 0; i < ItemCount; i++)
             {
                 _keywords[i] = new Keyword
                 {
-                    Text = "kw_" + rnd.Next(N),
+                    Text = "kw_" + rnd.Next(ItemCount),
                     Id = i,
                     Bid = rnd.NextDouble() * 10
                 };
+            }
+
+            _predicates = new Func<Keyword, bool>[PredicateCount];
+
+            for (int i = 0; i < PredicateCount; i++)
+            {
+                _predicates[i] = x => ContainsPredicate(x.Text, new[] { "12" });
             }
         }
 
@@ -57,10 +70,6 @@ namespace AsParallelBenchmark
 
         public IList<Keyword> RunFiltering(ParallelType parallelType)
         {
-            var predicates = new Func<Keyword, bool>[]
-            {
-                x => ContainsPredicate(x.Text, new[] { "12" })
-            };
 
             switch (parallelType)
             {
@@ -68,7 +77,7 @@ namespace AsParallelBenchmark
                     {
                         IEnumerable<Keyword> rows = _keywords;
 
-                        foreach (var predicate in predicates)
+                        foreach (var predicate in _predicates)
                         {
                             rows = rows.Where(predicate);
                         }
@@ -79,7 +88,7 @@ namespace AsParallelBenchmark
                     {
                         var rows = _keywords.AsParallel();
 
-                        foreach (var predicate in predicates)
+                        foreach (var predicate in _predicates)
                         {
                             rows = rows.Where(predicate);
                         }
@@ -90,7 +99,7 @@ namespace AsParallelBenchmark
                     {
                         IEnumerable<Keyword> rows = _keywords.AsParallel();
 
-                        foreach (var predicate in predicates)
+                        foreach (var predicate in _predicates)
                         {
                             rows = rows.Where(predicate);
                         }
@@ -101,7 +110,7 @@ namespace AsParallelBenchmark
                     {
                         IEnumerable<Keyword> rows = _keywords;
 
-                        foreach (var predicate in predicates)
+                        foreach (var predicate in _predicates)
                         {
                             rows = rows.AsParallel().Where(predicate);
                         }
