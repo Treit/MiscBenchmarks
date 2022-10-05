@@ -31,6 +31,7 @@ foreach (var predicate in predicates)
 }
 
 return rows.ToList();
+```
 
 ``` ini
 
