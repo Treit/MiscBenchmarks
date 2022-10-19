@@ -35,7 +35,7 @@
                     }
                     else if (x == 1)
                     {
-                        sb.Append("L");
+                        sb.Append("A");
                     }
                     else
                     {
