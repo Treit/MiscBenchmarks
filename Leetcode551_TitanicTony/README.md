@@ -10,9 +10,9 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|       Method | Count |         Mean |       Error |       StdDev |
-|------------- |------ |-------------:|------------:|-------------:|
-| **TestVersionA** |    **10** |     **191.9 ns** |     **3.87 ns** |      **4.90 ns** |
-| TestVersionB |    10 |     125.7 ns |     2.52 ns |      5.43 ns |
-| **TestVersionA** | **10000** | **529,737.7 ns** | **9,947.63 ns** |  **8,818.31 ns** |
-| TestVersionB | 10000 | 443,668.6 ns | 8,563.05 ns | 10,193.70 ns |
+|       Method | Count |         Mean |        Error |      StdDev |       Median |
+|------------- |------ |-------------:|-------------:|------------:|-------------:|
+| **TestVersionA** |    **10** |     **202.5 ns** |      **4.71 ns** |    **13.67 ns** |     **199.7 ns** |
+| TestVersionB |    10 |     177.0 ns |      6.36 ns |    18.14 ns |     171.2 ns |
+| **TestVersionA** | **10000** | **547,882.9 ns** | **10,604.15 ns** | **9,919.13 ns** | **549,219.4 ns** |
+| TestVersionB | 10000 | 489,727.1 ns |  8,634.97 ns | 8,077.16 ns | 489,427.7 ns |
