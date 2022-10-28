@@ -56,5 +56,37 @@
 
             return count;
         }
+
+        [Benchmark]
+        public int ListDotForEachLoopCount()
+        {
+            int count = 0;
+            _strings.ForEach(s =>
+            {
+                if (s.Length == 0)
+                {
+                    count++;
+                }
+            });
+
+            return count;
+        }
+
+        [Benchmark]
+        public int ListExplicitEnumeratorCount()
+        {
+            int count = 0;
+            var enumerator = _strings.GetEnumerator();
+
+            while (enumerator.MoveNext())
+            {
+                if (enumerator.Current.Length == 0)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
     }
 }
