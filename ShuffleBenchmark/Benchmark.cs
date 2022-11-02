@@ -2,18 +2,22 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
-    using Microsoft.Diagnostics.Tracing.Parsers;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography;
 
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(10, 1000, 100_000)]
+        [Params(100_000)]
         public int Count { get; set; }
 
         private List<int> _values;
+
+        private RandomNumberGenerator _rng = RandomNumberGenerator.Create();
+        private byte[] _rngbuff = new byte[4];
+        private Random _random;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -24,16 +28,16 @@
             {
                 _values.Add(i);
             }
+
+            _random = new Random(_values.Count);
         }
 
         [Benchmark(Baseline = true)]
         public int FisherYates()
         {
-            Random r = new Random();
-
             for (int i = _values.Count - 1; i > 0; --i)
             {
-                int n = r.Next(i, _values.Count - 1);
+                int n = _random.Next(i, _values.Count);
                 Swap(i, n);
             }
 
@@ -50,11 +54,28 @@
         [Benchmark]
         public int FisherYatesAscending()
         {
-            Random r = new Random();
-
             for (int i = 0; i < _values.Count - 1; i++)
             {
-                int n = r.Next(i, _values.Count - 1);
+                int n = _random.Next(i, _values.Count);
+                Swap(i, n);
+            }
+
+            void Swap(int x, int y)
+            {
+                int tmp = _values[x];
+                _values[x] = _values[y];
+                _values[y] = tmp;
+            }
+
+            return _values[0];
+        }
+
+        [Benchmark]
+        public int FisherYatesUsingStrongCryptoRandom()
+        {
+            for (int i = _values.Count - 1; i > 0; --i)
+            {
+                var n = RandomNumberGenerator.GetInt32(i, _values.Count);
                 Swap(i, n);
             }
 
@@ -71,11 +92,9 @@
         [Benchmark]
         public int Sattolo()
         {
-            Random r = new Random();
-
             for (int i = 0; i < _values.Count - 1; i++)
             {
-                int n = r.Next(i + 1, _values.Count - 1);
+                int n = _random.Next(i + 1, _values.Count);
                 Swap(i, n);
             }
 
