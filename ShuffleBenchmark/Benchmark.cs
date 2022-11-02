@@ -15,8 +15,6 @@
 
         private List<int> _values;
 
-        private RandomNumberGenerator _rng = RandomNumberGenerator.Create();
-        private byte[] _rngbuff = new byte[4];
         private Random _random;
 
         [GlobalSetup]
