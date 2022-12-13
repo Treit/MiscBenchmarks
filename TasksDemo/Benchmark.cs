@@ -31,36 +31,69 @@
         [Benchmark(Baseline = true)]
         public void Sequential()
         {
-            for (int i = 0; i < ArraySize; i++)
+            for (int i = 0; i < NumberOfArrays; i++)
             {
-                for (int j = 0; j < NumberOfArrays; j++)
+                for (int j = 0; j < ArraySize; j++)
                 {
-                    _arraysToFill[j][i] = Guid.NewGuid();
+                    _arraysToFill[i][j] = Guid.NewGuid();
                 }
             }
         }
 
-        [Benchmark]
-        public void ParallelTasks()
+        public Task GetBackgroundTask()
         {
-            var tasks = new Task[NumberOfArrays];
-
-            for (int i = 0; i < NumberOfArrays; i++)
+            var task = Task.Factory.StartNew(() =>
             {
-                tasks[i] = StartTask(_arraysToFill[i]);
+                // Long running background work goes here.
+            },
+             // Not 100% guaranteed to use a dedicated thread.
+            TaskCreationOptions.LongRunning);
+
+            return task;
+        }
+
+        [Benchmark]
+        public async Task ParallelTasks()
+        {
+            var tasks = new Task[_arraysToFill.Count];
+
+            for (int i = 0; i < _arraysToFill.Count; i++)
+            {
+                var target = _arraysToFill[i];
+
+                var task = Task.Run(() => 
+                {
+                    for (int i = 0; i < target.Length; i++)
+                    {
+                        target[i] = Guid.NewGuid();
+                    }
+                });
+
+                tasks[i] = task;
             }
 
-            Task.WaitAll(tasks);
+            await Task.WhenAll(tasks);
         }
 
         [Benchmark]
         public void ParallelThreads()
         {
-            var threads = new Thread[NumberOfArrays];
+            var threads = new Thread[_arraysToFill.Count];
 
-            for (int i = 0; i < NumberOfArrays; i++)
+            for (int i = 0; i < _arraysToFill.Count; i++)
             {
-                threads[i] = StartThread(_arraysToFill[i]);
+                var target = _arraysToFill[i];
+
+                var thread = new Thread(() =>
+                {
+                    for (int i = 0; i < target.Length; i++)
+                    {
+                        target[i] = Guid.NewGuid();
+                    }
+                });
+
+                thread.Start();
+                threads[i] = thread;
             }
 
             foreach(var thread in threads)
@@ -92,31 +125,6 @@
                     target[i] = Guid.NewGuid();
                 }
             });
-        }
-
-        static Task StartTask(Guid[] target)
-        {
-            return Task.Run(() => 
-            {
-                for (int i = 0; i < target.Length; i++)
-                {
-                    target[i] = Guid.NewGuid();
-                }
-            });
-        }
-
-        static Thread StartThread(Guid[] target)
-        {
-            var thread = new Thread(() =>
-            {
-                for (int i = 0; i < target.Length; i++)
-                {
-                    target[i] = Guid.NewGuid();
-                }
-            });
-
-            thread.Start();
-            return thread;
         }
     }
 }

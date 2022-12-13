@@ -14,7 +14,6 @@
             Benchmark b = new Benchmark();
             b.ArraySize = 10_000;
             b.GlobalSetup();
-            b.ParallelTasks();
 #endif
         }
     }
