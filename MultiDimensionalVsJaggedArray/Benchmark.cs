@@ -1,15 +1,18 @@
 ﻿namespace Test
 {
     using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Jobs;
     using System;
     using System.Runtime.InteropServices;
 
+    [SimpleJob(RuntimeMoniker.Net70)]
+    [SimpleJob(RuntimeMoniker.Net60)]
     public class Benchmark
     {
         private byte[,] _mdim;
         private byte[][] _jagged;
 
-        [Params(4, 10, 100, 1024)]
+        [Params(100, 1024, 10_000)]
         public int Size { get; set; }
 
         [GlobalSetup]
