@@ -2,32 +2,29 @@
 
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22572
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25272.1000)
 Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=6.0.200
-  [Host]     : .NET Core 5.0.12 (CoreCLR 5.0.1221.52207, CoreFX 5.0.1221.52207), X64 RyuJIT
-  DefaultJob : .NET Core 5.0.12 (CoreCLR 5.0.1221.52207, CoreFX 5.0.1221.52207), X64 RyuJIT
+.NET SDK=7.0.101
+  [Host]   : .NET 6.0.12 (6.0.1222.56807), X64 RyuJIT AVX2
+  .NET 6.0 : .NET 6.0.12 (6.0.1222.56807), X64 RyuJIT AVX2
+  .NET 7.0 : .NET 7.0.1 (7.0.122.56804), X64 RyuJIT AVX2
 
 
 ```
-|                                     Method |   Count |             Mean |          Error |         StdDev | Ratio | RatioSD |
-|------------------------------------------- |-------- |-----------------:|---------------:|---------------:|------:|--------:|
-|                             **ClassicForLoop** |      **10** |         **8.731 ns** |      **0.2054 ns** |      **0.2671 ns** |  **1.00** |    **0.00** |
-| ForLoopPrefixIncrementInsideConditionCheck |      10 |        10.785 ns |      0.2516 ns |      0.4663 ns |  1.23 |    0.07 |
-|                              LoopUsingGoto |      10 |         9.616 ns |      0.2255 ns |      0.4008 ns |  1.10 |    0.06 |
-|                                            |         |                  |                |                |       |         |
-|                             **ClassicForLoop** |     **100** |        **86.830 ns** |      **1.7383 ns** |      **2.6018 ns** |  **1.00** |    **0.00** |
-| ForLoopPrefixIncrementInsideConditionCheck |     100 |       107.310 ns |      1.8257 ns |      1.8748 ns |  1.24 |    0.04 |
-|                              LoopUsingGoto |     100 |       157.247 ns |      2.7163 ns |      2.4079 ns |  1.81 |    0.07 |
-|                                            |         |                  |                |                |       |         |
-|                             **ClassicForLoop** |    **1000** |       **786.161 ns** |     **15.3237 ns** |     **15.0499 ns** |  **1.00** |    **0.00** |
-| ForLoopPrefixIncrementInsideConditionCheck |    1000 |       978.473 ns |     19.4778 ns |     23.9205 ns |  1.24 |    0.04 |
-|                              LoopUsingGoto |    1000 |       801.580 ns |     15.4080 ns |     20.0348 ns |  1.02 |    0.04 |
-|                                            |         |                  |                |                |       |         |
-|                             **ClassicForLoop** |  **100000** |    **79,702.335 ns** |  **1,587.7649 ns** |  **3,243.3829 ns** |  **1.00** |    **0.00** |
-| ForLoopPrefixIncrementInsideConditionCheck |  100000 |   178,610.748 ns |  3,474.3452 ns |  3,567.8967 ns |  2.26 |    0.09 |
-|                              LoopUsingGoto |  100000 |   151,367.787 ns |  2,978.5330 ns |  4,458.1279 ns |  1.91 |    0.10 |
-|                                            |         |                  |                |                |       |         |
-|                             **ClassicForLoop** | **1000000** |   **817,357.767 ns** | **15,843.6136 ns** | **42,015.0157 ns** |  **1.00** |    **0.00** |
-| ForLoopPrefixIncrementInsideConditionCheck | 1000000 | 1,805,332.227 ns | 34,141.1744 ns | 35,060.4725 ns |  2.16 |    0.14 |
-|                              LoopUsingGoto | 1000000 | 1,503,236.119 ns | 26,897.5687 ns | 23,843.9940 ns |  1.78 |    0.10 |
+|                                     Method |      Job |  Runtime |   Count |          Mean |         Error |         StdDev |        Median | Ratio | RatioSD |
+|------------------------------------------- |--------- |--------- |-------- |--------------:|--------------:|---------------:|--------------:|------:|--------:|
+|                             **ClassicForLoop** | **.NET 6.0** | **.NET 6.0** |     **100** |      **93.46 ns** |      **1.911 ns** |       **3.903 ns** |      **92.72 ns** |  **1.00** |    **0.00** |
+| ForLoopPrefixIncrementInsideConditionCheck | .NET 6.0 | .NET 6.0 |     100 |      96.98 ns |      1.981 ns |       5.652 ns |      96.24 ns |  1.02 |    0.06 |
+|                              LoopUsingGoto | .NET 6.0 | .NET 6.0 |     100 |      93.59 ns |      1.877 ns |       2.631 ns |      93.50 ns |  0.99 |    0.04 |
+|                                            |          |          |         |               |               |                |               |       |         |
+|                             ClassicForLoop | .NET 7.0 | .NET 7.0 |     100 |      95.48 ns |      1.966 ns |       4.634 ns |      94.04 ns |  1.00 |    0.00 |
+| ForLoopPrefixIncrementInsideConditionCheck | .NET 7.0 | .NET 7.0 |     100 |      91.07 ns |      1.855 ns |       4.187 ns |      90.35 ns |  0.95 |    0.06 |
+|                              LoopUsingGoto | .NET 7.0 | .NET 7.0 |     100 |      94.31 ns |      1.902 ns |       3.331 ns |      93.57 ns |  0.98 |    0.06 |
+|                                            |          |          |         |               |               |                |               |       |         |
+|                             **ClassicForLoop** | **.NET 6.0** | **.NET 6.0** | **1000000** | **864,507.38 ns** | **17,111.439 ns** |  **43,863.160 ns** | **854,139.75 ns** |  **1.00** |    **0.00** |
+| ForLoopPrefixIncrementInsideConditionCheck | .NET 6.0 | .NET 6.0 | 1000000 | 911,054.52 ns | 26,250.679 ns |  76,574.463 ns | 885,452.69 ns |  1.05 |    0.11 |
+|                              LoopUsingGoto | .NET 6.0 | .NET 6.0 | 1000000 | 924,977.89 ns | 23,195.019 ns |  67,660.958 ns | 916,079.20 ns |  1.07 |    0.09 |
+|                                            |          |          |         |               |               |                |               |       |         |
+|                             ClassicForLoop | .NET 7.0 | .NET 7.0 | 1000000 | 901,347.00 ns | 20,750.088 ns |  60,528.982 ns | 887,212.89 ns |  1.00 |    0.00 |
+| ForLoopPrefixIncrementInsideConditionCheck | .NET 7.0 | .NET 7.0 | 1000000 | 957,755.91 ns | 36,742.448 ns | 108,335.937 ns | 910,054.69 ns |  1.07 |    0.11 |
+|                              LoopUsingGoto | .NET 7.0 | .NET 7.0 | 1000000 | 944,581.98 ns | 31,200.600 ns |  91,995.674 ns | 930,898.39 ns |  1.05 |    0.12 |
