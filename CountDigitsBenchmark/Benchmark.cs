@@ -120,7 +120,7 @@
 
         static int NumDigtsUsingStr(int number)
         {
-            return number.ToString().Length;
+            return Math.Abs(number).ToString().Length;
         }
 
         static int NumDigtsUsingLookup(int number)
