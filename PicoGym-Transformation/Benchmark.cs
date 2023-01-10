@@ -45,6 +45,24 @@
             return r;
         }
 
+        [Benchmark]
+        public string DecodeStringChatGPTStringBuilder()
+        {
+            var enc = "灩捯䍔䙻ㄶ形楴獟楮獴㌴摟潦弸彥ㄴㅡて㝽";
+
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in enc)
+            {
+                var bytes = Encoding.BigEndianUnicode.GetBytes(c.ToString());
+                for (int j = 0; j < bytes.Length; j++)
+                {
+                    sb.Append((char)bytes[j]);
+                }
+            }
+
+            return sb.ToString();
+        }
+
         static string DecodeString(string enc)
         {
             if (string.IsNullOrEmpty(enc))

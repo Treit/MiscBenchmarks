@@ -11,8 +11,9 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|                       Method |       Mean |     Error |    StdDev |     Median | Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
-|----------------------------- |-----------:|----------:|----------:|-----------:|------:|--------:|-------:|----------:|------------:|
-|                 DecodeString |   115.5 ns |   2.89 ns |   8.18 ns |   112.8 ns |  1.00 |    0.00 | 0.0761 |     328 B |        1.00 |
-| DecodeStringChatGPTRecursive | 2,825.5 ns | 104.22 ns | 293.94 ns | 2,746.4 ns | 24.58 |    3.18 | 1.2093 |    5216 B |       15.90 |
-|      DecodeStringChatGPTLinq | 2,503.8 ns |  70.03 ns | 204.29 ns | 2,478.9 ns | 21.83 |    2.35 | 0.7133 |    3088 B |        9.41 |
+|                           Method |       Mean |    Error |    StdDev |     Median | Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
+|--------------------------------- |-----------:|---------:|----------:|-----------:|------:|--------:|-------:|----------:|------------:|
+|                     DecodeString |   120.0 ns |  3.74 ns |  10.97 ns |   116.1 ns |  1.00 |    0.00 | 0.0761 |     328 B |        1.00 |
+|     DecodeStringChatGPTRecursive | 2,910.9 ns | 96.14 ns | 278.92 ns | 2,904.9 ns | 24.39 |    3.06 | 1.2093 |    5216 B |       15.90 |
+|          DecodeStringChatGPTLinq | 2,501.2 ns | 73.89 ns | 208.41 ns | 2,448.7 ns | 20.84 |    2.47 | 0.7133 |    3088 B |        9.41 |
+| DecodeStringChatGPTStringBuilder |   798.1 ns | 20.20 ns |  58.60 ns |   788.3 ns |  6.68 |    0.69 | 0.3500 |    1512 B |        4.61 |
