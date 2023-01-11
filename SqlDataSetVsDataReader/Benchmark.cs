@@ -2,9 +2,9 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
-using global::Benchmark;
+    using global::Benchmark;
     using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
