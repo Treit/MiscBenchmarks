@@ -7,6 +7,7 @@
     using System.Numerics;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
+    using System.Runtime.Intrinsics;
 
     [SimpleJob(RuntimeMoniker.Net70)]
     public class Benchmark
@@ -246,6 +247,45 @@
                 {
                     result += _handrolled[j + i * Size];
                 }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long SumHandRolledVectorizedAkseli()
+        {
+            var pin = _handrolled;
+
+            ref byte r0 = ref MemoryMarshal.GetArrayDataReference(pin);
+
+            Vector256<ulong> sum = Vector256<ulong>.Zero;
+
+            int i = 0;
+            for (; i < pin.Length - Vector256<byte>.Count; i += Vector256<byte>.Count)
+            {
+                var v0 = Vector256.Widen(Vector256.LoadUnsafe(ref Unsafe.Add(ref r0, i)));
+                var vR = Vector256.Widen(v0.Lower);
+                var vL = Vector256.Widen(v0.Upper);
+                var vR1 = Vector256.Widen(vR.Lower);
+                var vR2 = Vector256.Widen(vR.Upper);
+                var vL1 = Vector256.Widen(vL.Lower);
+                var vL2 = Vector256.Widen(vL.Upper);
+                sum += vR1.Lower;
+                sum += vR1.Upper;
+                sum += vR2.Lower;
+                sum += vR2.Upper;
+                sum += vL1.Lower;
+                sum += vL1.Upper;
+                sum += vL2.Lower;
+                sum += vL2.Upper;
+            }
+
+            long result = (long)Vector256.Sum(sum);
+
+            for (; i < pin.Length; i++)
+            {
+                result += Unsafe.Add(ref r0, i);
             }
 
             return result;

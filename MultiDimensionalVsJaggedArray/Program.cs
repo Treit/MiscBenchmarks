@@ -18,6 +18,7 @@
             Console.WriteLine(b.SumMultiDimensionalAkari());
             //Console.WriteLine(b.SumMultiDimensionalVectorAkari());
             Console.WriteLine(b.SumHandrolledAkseli());
+            Console.WriteLine(b.SumHandRolledVectorizedAkseli());
 #endif
 
         }

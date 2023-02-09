@@ -13,13 +13,14 @@ Job=.NET 7.0  Runtime=.NET 7.0
 ```
 |                                Method | Size |       Mean |    Error |    StdDev |     Median | Ratio | RatioSD |
 |-------------------------------------- |----- |-----------:|---------:|----------:|-----------:|------:|--------:|
-|                             SumJagged | 1000 |   890.9 μs | 19.07 μs |  56.21 μs |   893.5 μs |  0.50 |    0.05 |
-|                   SumMultiDimensional | 1000 | 1,782.5 μs | 35.54 μs |  77.26 μs | 1,776.7 μs |  1.00 |    0.00 |
-|    SumMultiDimensionalReversedIndexes | 1000 | 1,870.3 μs | 45.29 μs | 130.67 μs | 1,838.6 μs |  1.06 |    0.08 |
-|              SumJaggedReversedIndexes | 1000 | 1,384.5 μs | 27.58 μs |  35.87 μs | 1,381.2 μs |  0.77 |    0.04 |
-|                SumJaggedOptimizedKozi | 1000 |   514.8 μs | 16.22 μs |  47.56 μs |   517.9 μs |  0.28 |    0.03 |
-| SumMultiDimensionalLocalVariableGoose | 1000 | 1,152.2 μs | 30.92 μs |  88.73 μs | 1,143.0 μs |  0.66 |    0.06 |
-|           SumJaggedLocalVariableGoose | 1000 |   673.7 μs | 13.10 μs |  20.40 μs |   671.9 μs |  0.37 |    0.02 |
-|               SumWithReadOnlySpanKozi | 1000 |   475.2 μs | 13.01 μs |  38.16 μs |   463.2 μs |  0.26 |    0.02 |
-|              SumMultiDimensionalAkari | 1000 |   492.5 μs | 10.29 μs |  29.53 μs |   488.9 μs |  0.28 |    0.02 |
-|                   SumHandrolledAkseli | 1000 |   797.5 μs | 38.59 μs | 113.79 μs |   750.6 μs |  0.45 |    0.08 |
+|                             SumJagged | 1000 |   878.7 μs | 23.66 μs |  68.63 μs |   878.5 μs |  0.49 |    0.05 |
+|                   SumMultiDimensional | 1000 | 1,786.0 μs | 35.76 μs | 105.43 μs | 1,770.0 μs |  1.00 |    0.00 |
+|    SumMultiDimensionalReversedIndexes | 1000 | 1,985.2 μs | 69.17 μs | 202.88 μs | 1,953.9 μs |  1.11 |    0.13 |
+|              SumJaggedReversedIndexes | 1000 | 1,472.4 μs | 32.92 μs |  97.06 μs | 1,454.8 μs |  0.83 |    0.08 |
+|                SumJaggedOptimizedKozi | 1000 |   494.2 μs | 15.13 μs |  44.62 μs |   488.7 μs |  0.28 |    0.03 |
+| SumMultiDimensionalLocalVariableGoose | 1000 | 1,142.8 μs | 26.44 μs |  77.56 μs | 1,147.3 μs |  0.64 |    0.06 |
+|           SumJaggedLocalVariableGoose | 1000 |   740.2 μs | 18.92 μs |  55.48 μs |   728.6 μs |  0.42 |    0.04 |
+|               SumWithReadOnlySpanKozi | 1000 |   470.2 μs | 13.36 μs |  38.32 μs |   457.1 μs |  0.26 |    0.03 |
+|              SumMultiDimensionalAkari | 1000 |   493.4 μs | 11.78 μs |  33.60 μs |   488.5 μs |  0.28 |    0.02 |
+|                   SumHandrolledAkseli | 1000 |   739.6 μs | 16.55 μs |  48.03 μs |   735.7 μs |  0.41 |    0.03 |
+|         SumHandRolledVectorizedAkseli | 1000 |   194.0 μs |  2.77 μs |   2.45 μs |   194.7 μs |  0.11 |    0.01 |
