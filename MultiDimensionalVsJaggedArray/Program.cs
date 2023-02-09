@@ -15,6 +15,9 @@
             b.GlobalSetup();
             Console.WriteLine(b.SumMultiDimensional());
             Console.WriteLine(b.SumJagged());
+            Console.WriteLine(b.SumMultiDimensionalAkari());
+            //Console.WriteLine(b.SumMultiDimensionalVectorAkari());
+            Console.WriteLine(b.SumHandrolledAkseli());
 #endif
 
         }

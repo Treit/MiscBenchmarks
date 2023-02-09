@@ -3,16 +3,19 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
     using System;
+    using System.Diagnostics;
+    using System.Numerics;
+    using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
 
     [SimpleJob(RuntimeMoniker.Net70)]
-    [SimpleJob(RuntimeMoniker.Net60)]
     public class Benchmark
     {
         private byte[,] _mdim;
         private byte[][] _jagged;
+        private byte[] _handrolled;
 
-        [Params(100, 1024, 10_000)]
+        [Params(1000)]
         public int Size { get; set; }
 
         [GlobalSetup]
@@ -20,6 +23,7 @@
         {
             _mdim = new byte[Size, Size];
             _jagged = new byte[Size][];
+            _handrolled = new byte[Size * Size];
 
             var r = new Random();
 
@@ -32,6 +36,7 @@
                     byte b = (byte)r.Next(256);
                     _mdim[i, j] = b;
                     _jagged[i][j] = b;
+                    _handrolled[j + i * Size] = b;
                 }
             }
         }
@@ -164,6 +169,86 @@
             }
 
             return n;
+        }
+
+        [Benchmark]
+        public long SumMultiDimensionalAkari()
+        {
+            unsafe
+            {
+                long sum = 0;
+                fixed (byte* data = _mdim)
+                {
+                    byte* mutablePtr = data;
+
+                    for (int i = 0; i < Size * Size; i++)
+                    {
+                        sum += *mutablePtr;
+                        mutablePtr++;
+                    }
+                }
+
+                return sum;
+            }
+        }
+
+        // GIVES WRONG ANSWER 😬
+        /*
+        [Benchmark]
+        public long SumMultiDimensionalVectorAkari()
+        {
+            unsafe
+            {
+                Debug.Assert(Vector<int>.IsSupported, "System.Numerics.Vector<int>.IsSupported");
+
+                long sum = 0;
+                Vector<int> brrrr = Vector<int>.Zero;
+                fixed (byte* data = _mdim)
+                {
+                    int stride = Vector<int>.Count;
+                    int simdIterationCount = (int)((Size * Size) / (float)stride);
+                    var remainderCount = (Size * Size) - (simdIterationCount * stride);
+                    byte* mutablePtr = data;
+
+                    int test = 0;
+                    for (int i = 0; i < simdIterationCount; i++)
+                    {
+                        test += sizeof(int) * stride;
+                        var t = Unsafe.Read<Vector<int>>(mutablePtr);
+                        brrrr += Unsafe.Read<Vector<int>>(mutablePtr);
+                        mutablePtr += stride;
+                    }
+
+                    for (var i = 0; i < Vector<int>.Count; ++i)
+                    {
+                        sum += brrrr[i];
+                    }
+
+                    for (int i = 0; i < remainderCount; i++)
+                    {
+                        sum += *mutablePtr;
+                        mutablePtr++;
+                    }
+                }
+
+                return sum;
+            }
+        }
+        */
+
+        [Benchmark]
+        public long SumHandrolledAkseli()
+        {
+            long result = 0;
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    result += _handrolled[j + i * Size];
+                }
+            }
+
+            return result;
         }
     }
 }
