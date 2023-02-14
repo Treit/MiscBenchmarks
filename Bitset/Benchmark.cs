@@ -15,6 +15,12 @@
 
         private BitArray _bitArray;
 
+        private byte[] _reacherbytes = new byte[(1L << 32) / 8];
+
+        bool GetBit(uint value) => (_reacherbytes[value / 8] & (1 << (int)(value & 7))) != 0;
+        void SetBit(uint value) => _reacherbytes[value / 8] |= (byte)(1 << (int)(value & 7));
+        void ClearBit(uint value) => _reacherbytes[value / 8] &= (byte)(255 - (1 << (int)(value & 7)));
+
         [GlobalSetup]
         public void GlobalSetup()
         {
@@ -69,6 +75,22 @@
         }
 
         [Benchmark]
+        public int ReadReacherBitSet()
+        {
+            int trueBits = 0;
+
+            for (uint i = 0; i < Count; i++)
+            {
+                if (GetBit(i))
+                {
+                    trueBits++;
+                }
+            }
+
+            return trueBits;
+        }
+
+        [Benchmark]
         public void WriteCustomBitSet()
         {
             var r = new Random(Count);
@@ -101,6 +123,24 @@
                 ;
 
                 _bitArray[i] = v;
+            }
+        }
+
+        [Benchmark]
+        public void WriteReacherBitSet()
+        {
+            var r = new Random(Count);
+
+            for (int i = 0; i < Count; i++)
+            {
+                var v = r.Next(2) switch
+                {
+                    0 => 0U,
+                    _ => 1U
+                };
+                ;
+
+                SetBit(v);
             }
         }
     }

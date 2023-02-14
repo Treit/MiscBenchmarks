@@ -19,7 +19,6 @@ namespace Test
     {
         const int BITS_PER_WORD = 32;
         readonly int[] _words;
-        readonly int _maxBits;
 
         public BitSet(int size)
         {
@@ -28,9 +27,7 @@ namespace Test
                 throw new ArgumentOutOfRangeException("size");
             }
 
-            _maxBits = size;
-
-            var wordcount = (int)Math.Ceiling((double)_maxBits / BITS_PER_WORD);
+            var wordcount = (int)Math.Ceiling((double)size / BITS_PER_WORD);
             _words = new int[wordcount];
         }
 
@@ -42,11 +39,6 @@ namespace Test
 
         private bool Get(int index)
         {
-            if (index > _maxBits - 1)
-            {
-                throw new ArgumentOutOfRangeException("index");
-            }
-
             var wordIndex = index / BITS_PER_WORD;
             var word = _words[wordIndex];
             var bitpos = index % BITS_PER_WORD;
@@ -60,11 +52,6 @@ namespace Test
 
         private void Set(int index, bool value)
         {
-            if (index > _maxBits - 1)
-            {
-                throw new ArgumentOutOfRangeException("index");
-            }
-
             var wordIndex = index / BITS_PER_WORD;
             var word = _words[wordIndex];
             var bitpos = index % BITS_PER_WORD;
