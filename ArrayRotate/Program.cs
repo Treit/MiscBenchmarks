@@ -11,7 +11,6 @@
 #else
             Benchmark b = new Benchmark();
             b.Amount = 26;
-            b.GlobalSetup();
             b.RotateLeftWithReverse();
             b.RotateLeftWithCopy();
             b.RotateLeftWithJuggling();

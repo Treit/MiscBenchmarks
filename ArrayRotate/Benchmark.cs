@@ -1,26 +1,20 @@
 ﻿namespace Test
 {
+    using System;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
 
     [MemoryDiagnoser]
     public class Benchmark
     {
-        private char[] _array;
+        private char[] _array  = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
 
         [Params(1, 4, 16, 24)]
         public int Amount { get; set; }
 
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-        }
-
         [Benchmark]
         public void RotateLeftWithReverse()
         {
-            _array = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
-
             // This algorithm is from Programming Pearls.
             int i = Amount;
             int n = _array.Length;
@@ -48,8 +42,6 @@
         [Benchmark]
         public void RotateLeftWithCopy()
         {
-            _array = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
-
             char[] copy = new char[_array.Length];
             int n = Amount;
             int len = _array.Length;
@@ -65,8 +57,6 @@
         [Benchmark]
         public void RotateLeftWithJuggling()
         {
-            _array = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
-
             char temp;
             var len = _array.Length;
             var n = Amount;
@@ -111,6 +101,21 @@
 
                 return x;
             }
+        }
+
+        [Benchmark]
+        public char[] RotateLeftArrayCopyAaron()
+        {
+            var array = _array;
+
+            var final = new char[array.Length];
+
+            int offset = Amount % array.Length;
+
+            Array.Copy(array, offset, final, 0, array.Length - offset);
+            Array.Copy(array, 0, final, array.Length - offset, offset);
+            
+            return final;
         }
     }
 }
