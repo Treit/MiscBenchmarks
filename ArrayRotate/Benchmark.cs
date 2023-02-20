@@ -7,13 +7,19 @@
     [MemoryDiagnoser]
     public class Benchmark
     {
-        private char[] _array  = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+        private char[] _array;
 
         [Params(1, 4, 16, 24)]
         public int Amount { get; set; }
 
+        [GlobalSetup]
+        public void GlobalSetup()
+        {
+            _array = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+        }
+
         [Benchmark]
-        public void RotateLeftWithReverse()
+        public char[] RotateLeftWithReverse()
         {
             // This algorithm is from Programming Pearls.
             int i = Amount;
@@ -22,6 +28,7 @@
             Reverse(_array, 0, i - 1);
             Reverse(_array, i, n - 1);
             Reverse(_array, 0, n - 1);
+            return _array;
 
             static void Reverse<T>(T[] array, int start, int end)
             {
@@ -40,7 +47,7 @@
         }
 
         [Benchmark]
-        public void RotateLeftWithCopy()
+        public char[] RotateLeftWithCopy()
         {
             char[] copy = new char[_array.Length];
             int n = Amount;
@@ -52,10 +59,12 @@
                 var newidx = ((i - n % len) + len) % len;
                 copy[newidx] = _array[i];
             }
+
+            return copy;
         }
 
         [Benchmark]
-        public void RotateLeftWithJuggling()
+        public char[] RotateLeftWithJuggling()
         {
             char temp;
             var len = _array.Length;
@@ -90,6 +99,8 @@
                 _array[j] = temp;
             }
 
+            return _array;
+
             static int Gcd(int x, int y)
             {
                 while (y != 0)
@@ -114,7 +125,7 @@
 
             Array.Copy(array, offset, final, 0, array.Length - offset);
             Array.Copy(array, 0, final, array.Length - offset, offset);
-            
+
             return final;
         }
     }
