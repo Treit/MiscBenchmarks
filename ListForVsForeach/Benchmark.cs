@@ -2,6 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
 
     public class Benchmark
     {
@@ -47,6 +48,21 @@
         {
             int count = 0;
             foreach (string s in _strings)
+            {
+                if (s.Length == 0)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        [Benchmark]
+        public int ForEachLoopCountCollectionsMarshalAsSpan()
+        {
+            int count = 0;
+            foreach (string s in CollectionsMarshal.AsSpan(_strings))
             {
                 if (s.Length == 0)
                 {
