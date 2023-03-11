@@ -12,7 +12,7 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 ```
 |                            Method |      Mean |     Error |    StdDev |   Gen0 | Allocated |
 |---------------------------------- |----------:|----------:|----------:|-------:|----------:|
-| LookupTypeUsingDictionary100Items |  3.698 μs | 0.0725 μs | 0.1170 μs | 0.0687 |     304 B |
-|   LookupTypeUsingDictionary5Items |  3.603 μs | 0.0699 μs | 0.0858 μs | 0.0687 |     304 B |
-|       LookupTypeUsingSwitch5Items |  1.747 μs | 0.0342 μs | 0.0336 μs | 0.0687 |     304 B |
-|     LookupTypeUsingSwitch100Items | 13.601 μs | 0.2301 μs | 0.2152 μs | 0.0610 |     304 B |
+| LookupTypeUsingDictionary100Items |  3.840 μs | 0.0768 μs | 0.1569 μs | 0.0687 |     304 B |
+|   LookupTypeUsingDictionary5Items |  3.690 μs | 0.0722 μs | 0.1812 μs | 0.0687 |     304 B |
+|       LookupTypeUsingSwitch5Items |  1.746 μs | 0.0227 μs | 0.0233 μs | 0.0687 |     304 B |
+|     LookupTypeUsingSwitch100Items | 13.691 μs | 0.2617 μs | 0.2570 μs | 0.0610 |     304 B |
