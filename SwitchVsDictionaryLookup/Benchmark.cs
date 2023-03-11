@@ -249,7 +249,7 @@
 
             for (int i = 0; i < 100; i++)
             {
-                var o = availableObjects100[r.Next(0, availableObjects5.Count)];
+                var o = availableObjects5[r.Next(0, 5)];
                 result += typeMap[o.GetType()];
             }
 
