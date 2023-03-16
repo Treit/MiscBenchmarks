@@ -2,6 +2,8 @@
 {
     using BenchmarkDotNet.Attributes;
     using System;
+    using System.Buffers.Binary;
+    using System.IO.Hashing;
     using System.Runtime.InteropServices;
 
     public class Benchmark
@@ -26,9 +28,17 @@
         }
 
         [Benchmark]
-        public int HashCRC32()
+        public uint HashCRC32()
         {
-            return (int)HashUtils.CRC32(_data);
+            return HashUtils.CRC32(_data);
+        }
+
+        [Benchmark]
+        public int HashSystemIOHashingCRC32()
+        {
+            var crc32 = new Crc32();
+            crc32.Append(_data);
+            return BinaryPrimitives.ReadInt32LittleEndian(crc32.GetCurrentHash());
         }
 
         [Benchmark]
@@ -59,6 +69,6 @@
         public long HashFNV1_32_StackOverflowLinq()
         {
             return FNVConstants.CreateHash(_data);
-        }        
+        }
     }
 }
