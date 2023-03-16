@@ -1,22 +1,22 @@
-# Initializing Multidimensional vs. Jagged arrays.
+# Hash functions.
 
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25140
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25305.1000)
 Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
+.NET SDK=7.0.201
+  [Host]     : .NET 7.0.3 (7.0.323.6910), X64 RyuJIT AVX2
+  DefaultJob : .NET 7.0.3 (7.0.323.6910), X64 RyuJIT AVX2
 
 
 ```
-|                           Method | Size |          Mean |       Error |        StdDev |        Median |
-|--------------------------------- |----- |--------------:|------------:|--------------:|--------------:|
-|           **InitJaggedRandomValues** |  **100** |    **136.590 μs** |   **6.1929 μs** |    **18.2599 μs** |    **131.261 μs** |
-| InitMultidimensionalRandomValues |  100 |    115.718 μs |   4.3263 μs |    12.6200 μs |    110.550 μs |
-|             InitJaggedFixedValue |  100 |      8.935 μs |   0.2441 μs |     0.6806 μs |      8.731 μs |
-|   InitMultidimensionalFixedValue |  100 |     18.696 μs |   0.7215 μs |     2.1160 μs |     18.297 μs |
-|           **InitJaggedRandomValues** | **1024** | **14,521.715 μs** | **462.8224 μs** | **1,357.3778 μs** | **14,308.362 μs** |
-| InitMultidimensionalRandomValues | 1024 | 12,599.513 μs | 464.9211 μs | 1,333.9457 μs | 12,369.759 μs |
-|             InitJaggedFixedValue | 1024 |    805.751 μs |  20.8999 μs |    60.3009 μs |    790.840 μs |
-|   InitMultidimensionalFixedValue | 1024 |  1,878.145 μs |  61.3491 μs |   172.0295 μs |  1,817.200 μs |
+|                        Method | Size |       Mean |     Error |    StdDev |     Median |
+|------------------------------ |----- |-----------:|----------:|----------:|-----------:|
+|                   HashJenkins | 1024 | 1,474.4 ns |  25.59 ns |  27.38 ns | 1,464.2 ns |
+|                     HashCRC32 | 1024 | 2,687.4 ns |  33.79 ns |  29.96 ns | 2,674.9 ns |
+|      HashSystemIOHashingCRC32 | 1024 | 2,648.5 ns |  22.47 ns |  21.02 ns | 2,652.7 ns |
+|                  HashMurmur32 | 1024 |   593.9 ns |  15.04 ns |  41.43 ns |   582.4 ns |
+|                   HashFNV1_32 | 1024 | 1,159.9 ns |  15.45 ns |  14.45 ns | 1,156.7 ns |
+|                  HashMurmur64 | 1024 |   490.0 ns |  27.17 ns |  79.25 ns |   468.6 ns |
+|                   HashFNV1_64 | 1024 | 1,172.0 ns |  16.23 ns |  14.39 ns | 1,170.9 ns |
+| HashFNV1_32_StackOverflowLinq | 1024 | 7,692.5 ns | 307.50 ns | 901.85 ns | 7,497.9 ns |
