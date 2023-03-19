@@ -68,5 +68,56 @@
             var str = new string(_array);
             return str;
         }
+
+        [Benchmark]
+        public string SwapWithTempVariableLocalCopy()
+        {
+            var array = _array;
+
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                var tmp = array[i];
+                array[i] = array[i + 1];
+                array[i + 1] = tmp;
+            }
+
+            var str = new string(array);
+            return str;
+        }
+
+        [Benchmark]
+        public string SwapWithLocalFunctionLocalCopy()
+        {
+            var array = _array;
+
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                Swap(i, i + 1);
+            }
+
+            var str = new string(array);
+            return str;
+
+            void Swap(int i, int j)
+            {
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+
+        [Benchmark]
+        public string SwapWithTupleLocalCopy()
+        {
+            var array = _array;
+
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                (array[i], array[i + 1]) = (array[i + 1], array[i]);
+            }
+
+            var str = new string(array);
+            return str;
+        }
     }
 }
