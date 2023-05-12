@@ -264,6 +264,17 @@
 
             return Math.Abs(hashCode);
         }
+
+        // Cursed answer from ChatGPT using MD5 🤦‍♂️
+        public static long Get64BitHashUsingMD5(byte[] data)
+        {
+            using (var md5 = MD5.Create())
+            {
+                var hash = md5.ComputeHash(data);
+                return BitConverter.ToInt64(hash, 0);
+            }
+        }
+
     }
 
     // Cursed answer from Stack Overflow that uses LINQ 😬

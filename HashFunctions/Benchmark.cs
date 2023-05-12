@@ -54,7 +54,7 @@
             return (int)HashUtils.FNV1_32(_data);
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int HashMurmur64()
         {
             return (int)HashUtils.MurmurHash64(_data);
@@ -76,6 +76,12 @@
         public long Hash64BitUsingSHA2()
         {
             return HashUtils.GetInt64HashCode(_data);
+        }
+
+        [Benchmark]
+        public long Hash64BitUsingMD5ChatGPT()
+        {
+            return HashUtils.Get64BitHashUsingMD5(_data);
         }
     }
 }
