@@ -1,6 +1,8 @@
 ﻿namespace Test
 {
+    using System;
     using System.Linq;
+    using System.Security.Cryptography;
     using System.Text;
 
     /// <summary>
@@ -241,6 +243,26 @@
 
                 return hash;
             }
+        }
+
+        // Using SHA2 for some reason.
+        public static Int64 GetInt64HashCode(byte[] data)
+        {
+            Int64 hashCode = 0;
+            //Unicode Encode Covering all characterset
+            using SHA256 hash = SHA256.Create();
+            byte[] hashText = hash.ComputeHash(data);
+            //32Byte hashText separate
+            //hashCodeStart = 0~7  8Byte
+            //hashCodeMedium = 8~23  8Byte
+            //hashCodeEnd = 24~31  8Byte
+            //and Fold
+            Int64 hashCodeStart = BitConverter.ToInt64(hashText, 0);
+            Int64 hashCodeMedium = BitConverter.ToInt64(hashText, 8);
+            Int64 hashCodeEnd = BitConverter.ToInt64(hashText, 24);
+            hashCode = hashCodeStart ^ hashCodeMedium ^ hashCodeEnd;
+
+            return Math.Abs(hashCode);
         }
     }
 

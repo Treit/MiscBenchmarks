@@ -6,6 +6,7 @@
     using System.IO.Hashing;
     using System.Runtime.InteropServices;
 
+    [MemoryDiagnoser]
     public class Benchmark
     {
         private byte[] _data;
@@ -69,6 +70,12 @@
         public long HashFNV1_32_StackOverflowLinq()
         {
             return FNVConstants.CreateHash(_data);
+        }
+
+        [Benchmark]
+        public long Hash64BitUsingSHA2()
+        {
+            return HashUtils.GetInt64HashCode(_data);
         }
     }
 }
