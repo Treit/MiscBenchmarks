@@ -36,7 +36,7 @@
         }
 
         [Benchmark]
-        public async Task SemaphoreAsync()
+        public async Task SemaphoreSlimAsync()
         {
             var tasks = new List<Task>();
 
