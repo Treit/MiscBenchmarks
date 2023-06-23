@@ -2,10 +2,14 @@
 {
     using BenchmarkDotNet.Attributes;
     using Microsoft.VisualStudio.Threading;
+    using Nito.AsyncEx;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
+    using AsyncManualResetEvent = Microsoft.VisualStudio.Threading.AsyncManualResetEvent;
+    using AsyncSemaphore = Microsoft.VisualStudio.Threading.AsyncSemaphore;
+    using AsyncManualResetEventNito = Nito.AsyncEx.AsyncManualResetEvent;
 
     [MemoryDiagnoser]
     public class Benchmark
@@ -15,6 +19,7 @@
         SemaphoreSlim _semaphore;
         AsyncSemaphore _asyncsemaphore;
         AsyncManualResetEvent _asyncmre;
+        AsyncManualResetEventNito _asyncnitomre;
 
         [Params(100)]
         public int Count;
@@ -26,6 +31,7 @@
             _semaphore = new SemaphoreSlim(1, 1);
             _asyncsemaphore = new AsyncSemaphore(1);
             _asyncmre = new AsyncManualResetEvent(true);
+            _asyncnitomre = new AsyncManualResetEventNito(true);
         }
 
         [GlobalCleanup]
@@ -97,6 +103,32 @@
                     finally
                     {
                         _asyncmre.Set();
+                    }
+                });
+
+                tasks.Add(t);
+            }
+
+            await Task.WhenAll(tasks);
+        }
+
+        [Benchmark]
+        public async Task AsyncManualResetEventNitoAsync()
+        {
+            var tasks = new List<Task>();
+
+            for (int i = 0; i < Count; i++)
+            {
+                var t = Task.Run(async () =>
+                {
+                    await _asyncnitomre.WaitAsync();
+                    try
+                    {
+                        _fs.WriteByte(0xFF);
+                    }
+                    finally
+                    {
+                        _asyncnitomre.Set();
                     }
                 });
 
