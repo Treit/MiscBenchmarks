@@ -44,9 +44,9 @@
         {
             int nonemptyCount = 0;
 
-            foreach (var dict in _dictionaries)
+            for (int i = 0; i < _dictionaries.Count; i++)
             {
-                if (dict.Count > 0)
+                if (_dictionaries[i].Count > 0)
                 {
                     nonemptyCount++;
                 }
@@ -60,9 +60,9 @@
         {
             int nonemptyCount = 0;
 
-            foreach (var dict in _dictionaries)
+            for (int i = 0; i < _dictionaries.Count; i++)
             {
-                if (dict.Any())
+                if (_dictionaries[i].Any())
                 {
                     nonemptyCount++;
                 }
