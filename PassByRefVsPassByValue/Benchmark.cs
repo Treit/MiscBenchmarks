@@ -60,6 +60,22 @@
         public double B { get; set; }
     }
 
+    public class MediumClass
+    {
+        public double A { get; set; }
+        public double B { get; set; }
+        public double C { get; set; }
+        public double D { get; set; }
+    }
+
+    public class MediumStruct
+    {
+        public double A { get; set; }
+        public double B { get; set; }
+        public double C { get; set; }
+        public double D { get; set; }
+    }
+
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     public class Benchmark
@@ -68,6 +84,8 @@
         List<TestStruct> _structs;
         List<TinyStruct> _tinyStructs;
         List<TinyClass> _tinyClasses;
+        List<MediumStruct> _mediumStructs;
+        List<MediumClass> _mediumClasses;
 
         [Params(10_000)]
         public int Count { get; set; }
@@ -79,6 +97,8 @@
             _structs = new List<TestStruct>(Count);
             _tinyStructs = new List<TinyStruct>(Count);
             _tinyClasses = new List<TinyClass>(Count);
+            _mediumClasses = new List<MediumClass>(Count);
+            _mediumStructs = new List<MediumStruct>(Count);
 
             for (int i = 0; i < Count; i++)
             {
@@ -86,11 +106,13 @@
                 _structs.Add(new TestStruct());
                 _tinyStructs.Add(new TinyStruct());
                 _tinyClasses.Add(new TinyClass());
+                _mediumStructs.Add(new MediumStruct());
+                _mediumClasses.Add(new MediumClass());
             }
         }
 
         [Benchmark(Baseline = true)]
-        public double PassClass()
+        public double Pass128ByteClass()
         {
             double total = 0f;
 
@@ -103,7 +125,7 @@
         }
 
         [Benchmark]
-        public double PassStruct()
+        public double Pass128ByteStruct()
         {
             double total = 0f;
 
@@ -116,7 +138,7 @@
         }
 
         [Benchmark]
-        public double PassStructByRef()
+        public double Pass128ByteStructByRef()
         {
             double total = 0f;
 
@@ -130,7 +152,7 @@
         }
 
         [Benchmark]
-        public double PassTinyStruct()
+        public double Pass16ByteStruct()
         {
             double total = 0f;
 
@@ -143,7 +165,7 @@
         }
 
         [Benchmark]
-        public double PassTinyClass()
+        public double Pass16ByteClass()
         {
             double total = 0f;
 
@@ -156,7 +178,7 @@
         }
 
         [Benchmark]
-        public double PassTinyStructByRef()
+        public double Pass16ByteStructByRef()
         {
             double total = 0f;
 
@@ -164,6 +186,46 @@
             {
                 var s = _tinyStructs[i];
                 total += ReceiveTinyStructByRef(ref s);
+            }
+
+            return total;
+        }
+
+        [Benchmark]
+        public double Pass32ByteStruct()
+        {
+            double total = 0f;
+
+            for (int i = 0; i < Count; i++)
+            {
+                total += ReceiveMediumStruct(_mediumStructs[i]);
+            }
+
+            return total;
+        }
+
+        [Benchmark]
+        public double Pass32ByteClass()
+        {
+            double total = 0f;
+
+            for (int i = 0; i < Count; i++)
+            {
+                total += ReceiveMediumClass(_mediumClasses[i]);
+            }
+
+            return total;
+        }
+
+        [Benchmark]
+        public double Pass32ByteStructByRef()
+        {
+            double total = 0f;
+
+            for (int i = 0; i < Count; i++)
+            {
+                var s = _mediumStructs[i];
+                total += ReceiveMediumStructByRef(ref s);
             }
 
             return total;
@@ -197,6 +259,21 @@
         public double ReceiveTinyStructByRef(ref TinyStruct s)
         {
             return s.A + s.B;
+        }
+
+        public double ReceiveMediumStruct(MediumStruct c)
+        {
+            return c.A + c.B;
+        }
+
+        public double ReceiveMediumStructByRef(ref MediumStruct s)
+        {
+            return s.A + s.B;
+        }
+
+        public double ReceiveMediumClass(MediumClass c)
+        {
+            return c.A + c.B;
         }
     }
 }
