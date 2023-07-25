@@ -48,12 +48,26 @@
         public double Q { get; set; }
     }
 
+    public struct TinyStruct
+    {
+        public double A { get; set; }
+        public double B { get; set; }
+    }
+
+    public class TinyClass
+    {
+        public double A { get; set; }
+        public double B { get; set; }
+    }
+
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     public class Benchmark
     {
         List<TestClass> _classes;
         List<TestStruct> _structs;
+        List<TinyStruct> _tinyStructs;
+        List<TinyClass> _tinyClasses;
 
         [Params(10_000)]
         public int Count { get; set; }
@@ -63,11 +77,15 @@
         {
             _classes = new List<TestClass>(Count);
             _structs = new List<TestStruct>(Count);
+            _tinyStructs = new List<TinyStruct>(Count);
+            _tinyClasses = new List<TinyClass>(Count);
 
             for (int i = 0; i < Count; i++)
             {
                 _classes.Add(new TestClass());
                 _structs.Add(new TestStruct());
+                _tinyStructs.Add(new TinyStruct());
+                _tinyClasses.Add(new TinyClass());
             }
         }
 
@@ -111,9 +129,54 @@
             return total;
         }
 
+        [Benchmark]
+        public double PassTinyStruct()
+        {
+            double total = 0f;
+
+            for (int i = 0; i < Count; i++)
+            {
+                total += ReceiveTinyStruct(_tinyStructs[i]);
+            }
+
+            return total;
+        }
+
+        [Benchmark]
+        public double PassTinyClass()
+        {
+            double total = 0f;
+
+            for (int i = 0; i < Count; i++)
+            {
+                total += ReceiveTinyClass(_tinyClasses[i]);
+            }
+
+            return total;
+        }
+
+        [Benchmark]
+        public double PassTinyStructByRef()
+        {
+            double total = 0f;
+
+            for (int i = 0; i < Count; i++)
+            {
+                var s = _tinyStructs[i];
+                total += ReceiveTinyStructByRef(ref s);
+            }
+
+            return total;
+        }
+
         public double ReceiveStruct(TestStruct s)
         {
             return s.F + s.P;
+        }
+
+        public double ReceiveTinyStruct(TinyStruct s)
+        {
+            return s.A + s.B;
         }
 
         public double ReceiveClass(TestClass c)
@@ -121,9 +184,19 @@
             return c.F + c.P;
         }
 
+        public double ReceiveTinyClass(TinyClass c)
+        {
+            return c.A + c.B;
+        }
+
         public double ReceiveStructByRef(ref TestStruct s)
         {
             return s.F + s.P;
+        }
+
+        public double ReceiveTinyStructByRef(ref TinyStruct s)
+        {
+            return s.A + s.B;
         }
     }
 }

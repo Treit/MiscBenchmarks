@@ -10,8 +10,11 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|          Method | Count |      Mean |    Error |   StdDev | Ratio | RatioSD | Allocated | Alloc Ratio |
-|---------------- |------ |----------:|---------:|---------:|------:|--------:|----------:|------------:|
-|       PassClass | 10000 |  35.76 μs | 0.714 μs | 2.048 μs |  1.00 |    0.00 |         - |          NA |
-| PassStructByRef | 10000 |  55.89 μs | 1.073 μs | 1.468 μs |  1.57 |    0.09 |         - |          NA |
-|      PassStruct | 10000 | 111.35 μs | 2.177 μs | 2.980 μs |  3.14 |    0.23 |         - |          NA |
+|              Method | Count |      Mean |    Error |   StdDev | Ratio | RatioSD | Allocated | Alloc Ratio |
+|-------------------- |------ |----------:|---------:|---------:|------:|--------:|----------:|------------:|
+|      PassTinyStruct | 10000 |  11.04 μs | 0.146 μs | 0.122 μs |  0.27 |    0.01 |         - |          NA |
+| PassTinyStructByRef | 10000 |  11.16 μs | 0.142 μs | 0.133 μs |  0.28 |    0.01 |         - |          NA |
+|       PassTinyClass | 10000 |  26.58 μs | 0.531 μs | 1.481 μs |  0.64 |    0.04 |         - |          NA |
+|           PassClass | 10000 |  41.38 μs | 0.821 μs | 1.920 μs |  1.00 |    0.00 |         - |          NA |
+|     PassStructByRef | 10000 |  55.11 μs | 1.078 μs | 1.439 μs |  1.35 |    0.07 |         - |          NA |
+|          PassStruct | 10000 | 110.61 μs | 0.624 μs | 0.553 μs |  2.73 |    0.14 |         - |          NA |
