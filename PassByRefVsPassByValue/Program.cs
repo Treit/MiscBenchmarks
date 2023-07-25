@@ -11,9 +11,8 @@
             BenchmarkRunner.Run<Benchmark>();
 #else
             Benchmark b = new Benchmark();
-            b.Count = 3;
+            b.Count = 1000;
             b.GlobalSetup();
-            b.RandomStringsUsingStringBuilder();
 #endif
         }
     }

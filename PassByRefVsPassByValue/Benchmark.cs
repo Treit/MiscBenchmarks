@@ -5,8 +5,6 @@
     using BenchmarkDotNet.Order;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     public struct TestStruct
     {
@@ -26,7 +24,6 @@
         public double N { get; set; }
         public double O { get; set; }
         public double P { get; set; }
-
         public double Q { get; set; }
     }
 
@@ -48,7 +45,6 @@
         public double N { get; set; }
         public double O { get; set; }
         public double P { get; set; }
-
         public double Q { get; set; }
     }
 
@@ -56,7 +52,6 @@
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     public class Benchmark
     {
-        public static Random random;
         List<TestClass> _classes;
         List<TestStruct> _structs;
 
@@ -66,7 +61,6 @@
         [GlobalSetup]
         public void GlobalSetup()
         {
-            random = new Random(Count);
             _classes = new List<TestClass>(Count);
             _structs = new List<TestStruct>(Count);
 
