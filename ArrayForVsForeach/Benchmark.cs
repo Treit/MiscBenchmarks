@@ -6,11 +6,13 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    [MemoryDiagnoser]
+    [DisassemblyDiagnoser(printSource: true)]
     public class Benchmark
     {
         private string[] _strings;
 
-        [Params(10, 100, 1000, 100_000, 1_000_000)]
+        [Params(100, 100_000)]
         public int Count { get; set; }
 
         [GlobalSetup]
