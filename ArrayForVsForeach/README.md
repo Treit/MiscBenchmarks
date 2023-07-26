@@ -10,94 +10,11 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|           Method |  Count |         Mean |       Error |      StdDev |       Median | Ratio | RatioSD | Code Size | Allocated | Alloc Ratio |
-|----------------- |------- |-------------:|------------:|------------:|-------------:|------:|--------:|----------:|----------:|------------:|
-|     **ForLoopCount** |    **100** |     **110.6 ns** |     **4.25 ns** |    **12.05 ns** |     **105.7 ns** |  **1.20** |    **0.09** |      **62 B** |         **-** |          **NA** |
-| ForEachLoopCount |    100 |     102.9 ns |     1.65 ns |     1.47 ns |     102.6 ns |  1.00 |    0.00 |         - |         - |          NA |
-|                  |        |              |             |             |              |       |         |           |           |             |
-|     **ForLoopCount** | **100000** | **129,425.6 ns** | **2,573.47 ns** | **6,913.47 ns** | **129,554.3 ns** |  **1.03** |    **0.08** |      **62 B** |         **-** |          **NA** |
-| ForEachLoopCount | 100000 | 126,201.3 ns | 2,522.44 ns | 6,420.41 ns | 127,334.1 ns |  1.00 |    0.00 |         - |         - |          NA |
-
-
-## .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
-```assembly
-; Test.Benchmark.ForLoopCount()
-;             int count = 0;
-;             ^^^^^^^^^^^^^^
-;             for (int i = 0; i < _strings.Length; i++)
-;                  ^^^^^^^^^
-;                 if (_strings[i].Length == 0)
-;                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-;                     count++;
-;                     ^^^^^^^^
-;             return count;
-;             ^^^^^^^^^^^^^
-       sub       rsp,28
-       xor       eax,eax
-       xor       edx,edx
-       mov       rcx,[rcx+8]
-       cmp       dword ptr [rcx+8],0
-       jle       short M00_L02
-M00_L00:
-       mov       r8,rcx
-       cmp       edx,[r8+8]
-       jae       short M00_L03
-       mov       r9d,edx
-       mov       r8,[r8+r9*8+10]
-       cmp       dword ptr [r8+8],0
-       jne       short M00_L01
-       inc       eax
-M00_L01:
-       inc       edx
-       cmp       [rcx+8],edx
-       jg        short M00_L00
-M00_L02:
-       add       rsp,28
-       ret
-M00_L03:
-       call      CORINFO_HELP_RNGCHKFAIL
-       int       3
-; Total bytes of code 62
-```
-
-## .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
-```assembly
-; Test.Benchmark.ForLoopCount()
-;             int count = 0;
-;             ^^^^^^^^^^^^^^
-;             for (int i = 0; i < _strings.Length; i++)
-;                  ^^^^^^^^^
-;                 if (_strings[i].Length == 0)
-;                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-;                     count++;
-;                     ^^^^^^^^
-;             return count;
-;             ^^^^^^^^^^^^^
-       sub       rsp,28
-       xor       eax,eax
-       xor       edx,edx
-       mov       rcx,[rcx+8]
-       cmp       dword ptr [rcx+8],0
-       jle       short M00_L02
-M00_L00:
-       mov       r8,rcx
-       cmp       edx,[r8+8]
-       jae       short M00_L03
-       mov       r9d,edx
-       mov       r8,[r8+r9*8+10]
-       cmp       dword ptr [r8+8],0
-       jne       short M00_L01
-       inc       eax
-M00_L01:
-       inc       edx
-       cmp       [rcx+8],edx
-       jg        short M00_L00
-M00_L02:
-       add       rsp,28
-       ret
-M00_L03:
-       call      CORINFO_HELP_RNGCHKFAIL
-       int       3
-; Total bytes of code 62
-```
-
+|           Method |  Count |           Mean |         Error |        StdDev |         Median | Code Size |
+|----------------- |------- |---------------:|--------------:|--------------:|---------------:|----------:|
+|     **ForLoopCount** |     **10** |       **9.697 ns** |     **0.2146 ns** |     **0.2204 ns** |       **9.622 ns** |      **62 B** |
+| ForEachLoopCount |     10 |      10.271 ns |     0.9467 ns |     2.7914 ns |       8.406 ns |      57 B |
+|     **ForLoopCount** |    **100** |      **98.072 ns** |     **0.8742 ns** |     **0.7750 ns** |      **98.184 ns** |      **62 B** |
+| ForEachLoopCount |    100 |     100.193 ns |     1.4564 ns |     1.2911 ns |     100.345 ns |      57 B |
+|     **ForLoopCount** | **100000** | **132,219.027 ns** | **2,626.7709 ns** | **6,780.5345 ns** | **132,031.274 ns** |      **62 B** |
+| ForEachLoopCount | 100000 | 127,130.295 ns | 2,539.6310 ns | 6,690.4039 ns | 126,741.602 ns |      57 B |

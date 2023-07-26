@@ -2,17 +2,13 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
-    [MemoryDiagnoser]
-    [DisassemblyDiagnoser(printSource: true)]
+    [DisassemblyDiagnoser(exportDiff: true, exportHtml: true)]
     public class Benchmark
     {
         private string[] _strings;
 
-        [Params(100, 100_000)]
+        [Params(10, 100, 100_000)]
         public int Count { get; set; }
 
         [GlobalSetup]
@@ -47,7 +43,7 @@
             return count;
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public int ForEachLoopCount()
         {
             int count = 0;
