@@ -5,21 +5,22 @@ See the ArraySum benchmark for some other results.
 
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25290.1000)
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25915.1000)
 Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.102
-  [Host]   : .NET 7.0.2 (7.0.222.60605), X64 RyuJIT AVX2
-  .NET 7.0 : .NET 7.0.2 (7.0.222.60605), X64 RyuJIT AVX2
+.NET SDK=7.0.306
+  [Host]   : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+  .NET 7.0 : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
 
 Job=.NET 7.0  Runtime=.NET 7.0  
 
 ```
-|                                Method | Size |       Mean |    Error |    StdDev |     Median | Ratio | RatioSD |
-|-------------------------------------- |----- |-----------:|---------:|----------:|-----------:|------:|--------:|
-|                             SumJagged | 1000 |   810.6 μs | 16.14 μs |  43.07 μs |   798.7 μs |  0.46 |    0.03 |
-|                   SumMultiDimensional | 1000 | 1,749.9 μs | 38.89 μs | 114.06 μs | 1,723.8 μs |  1.00 |    0.00 |
-|    SumMultiDimensionalReversedIndexes | 1000 | 1,775.8 μs | 35.40 μs |  63.83 μs | 1,769.7 μs |  1.02 |    0.07 |
-|              SumJaggedReversedIndexes | 1000 | 1,480.7 μs | 46.69 μs | 136.94 μs | 1,433.5 μs |  0.85 |    0.09 |
-|                SumJaggedOptimizedKozi | 1000 |   478.3 μs | 10.40 μs |  29.16 μs |   473.1 μs |  0.27 |    0.02 |
-| SumMultiDimensionalLocalVariableGoose | 1000 | 1,169.1 μs | 28.50 μs |  83.14 μs | 1,157.1 μs |  0.67 |    0.06 |
-|           SumJaggedLocalVariableGoose | 1000 |   735.6 μs | 14.71 μs |  39.52 μs |   727.3 μs |  0.42 |    0.03 |
+|                                Method | Size |        Mean |     Error |    StdDev |      Median | Ratio | RatioSD |
+|-------------------------------------- |----- |------------:|----------:|----------:|------------:|------:|--------:|
+|                             SumJagged | 1000 |   722.21 μs | 23.234 μs | 67.035 μs |   695.12 μs |  0.52 |    0.05 |
+|                   SumMultiDimensional | 1000 | 1,437.16 μs | 28.442 μs | 29.207 μs | 1,437.84 μs |  1.00 |    0.00 |
+|    SumMultiDimensionalReversedIndexes | 1000 | 1,439.54 μs |  8.796 μs | 10.802 μs | 1,441.57 μs |  1.00 |    0.02 |
+|              SumJaggedReversedIndexes | 1000 | 1,214.34 μs | 23.650 μs | 39.514 μs | 1,197.64 μs |  0.86 |    0.04 |
+|                SumJaggedOptimizedKozi | 1000 |   374.74 μs |  6.732 μs |  8.988 μs |   370.66 μs |  0.26 |    0.01 |
+| SumMultiDimensionalLocalVariableGoose | 1000 |   877.99 μs | 16.468 μs | 16.174 μs |   878.36 μs |  0.61 |    0.02 |
+|           SumJaggedLocalVariableGoose | 1000 |   584.54 μs | 11.655 μs | 10.332 μs |   581.78 μs |  0.41 |    0.01 |
+|                   SumHandrolledAkseli | 1000 |    26.92 μs |  0.683 μs |  1.991 μs |    26.29 μs |  0.02 |    0.00 |

@@ -154,5 +154,68 @@
 
             return result;
         }
+
+        [Benchmark]
+        public long SumHandrolledAkseli()
+        {
+            var data = _handrolled;
+            ref byte ptr = ref MemoryMarshal.GetArrayDataReference(data);
+            Vector256<long> sum = Vector256<long>.Zero;
+            Vector256<ushort> mask = Vector256.Create((ushort)0xff);
+            Vector256<uint> widenMask = Vector256.Create((uint)ushort.MaxValue);
+            nint i = 0;
+            if (data.Length >= Vector256<byte>.Count * 4)
+            {
+                do
+                {
+                    Vector256<ushort> offload = Vector256<ushort>.Zero;
+                    int index = 0;
+                    while (index < 128 && i <= data.Length - Vector256<byte>.Count * 4)
+                    {
+
+                        Vector256<ushort> vec = Vector256.LoadUnsafe(ref Unsafe.Add(ref ptr, i)).AsUInt16();
+                        offload += vec & mask;
+                        offload += Vector256.ShiftRightLogical(vec, 8);
+
+                        vec = Vector256.LoadUnsafe(ref Unsafe.Add(ref ptr, i + Vector256<byte>.Count)).AsUInt16();
+                        offload += vec & mask;
+                        offload += Vector256.ShiftRightLogical(vec, 8);
+
+                        vec = Vector256.LoadUnsafe(ref Unsafe.Add(ref ptr, i + Vector256<byte>.Count * 2)).AsUInt16();
+                        offload += vec & mask;
+                        offload += Vector256.ShiftRightLogical(vec, 8);
+
+                        vec = Vector256.LoadUnsafe(ref Unsafe.Add(ref ptr, i + Vector256<byte>.Count * 3)).AsUInt16();
+                        offload += vec & mask;
+                        offload += Vector256.ShiftRightLogical(vec, 8);
+
+                        index += 4;
+                        i += Vector256<byte>.Count * 4;
+
+                    }
+                    while (index < 128 && i <= data.Length - Vector256<byte>.Count)
+                    {
+                        index++;
+                        Vector256<ushort> vec = Vector256.LoadUnsafe(ref Unsafe.Add(ref ptr, i)).AsUInt16();
+                        offload += vec & mask;
+                        offload += Vector256.ShiftRightLogical(vec, 8);
+                        i += Vector256<byte>.Count;
+                    }
+                    (Vector256<long> lower, Vector256<long> upper) = Vector256.Widen((offload.AsUInt32() & widenMask).AsInt32());
+                    sum += lower;
+                    sum += upper;
+                    (lower, upper) = Vector256.Widen(Vector256.ShiftRightLogical(offload.AsUInt32(), 16).AsInt32());
+                    sum += lower;
+                    sum += upper;
+
+                } while (i <= data.Length - Vector256<byte>.Count);
+            }
+            long result = Vector256.Sum(sum);
+            for (; i < data.Length; i++)
+            {
+                result += Unsafe.Add(ref ptr, i);
+            }
+            return result;
+        }
     }
 }
