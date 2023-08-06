@@ -2,6 +2,7 @@
 {
     using BenchmarkDotNet.Running;
     using System;
+    using System.Diagnostics;
 
     internal class Program
     {
@@ -13,16 +14,17 @@
             try
             {
                 Benchmark b = new Benchmark();
-                b.Count = 50;
+                b.Count = 5000;
                 b.GlobalSetup();
+                var sw = Stopwatch.StartNew();
                 var resultA = b.CountElementsWithXmlReader();
-                Console.WriteLine(resultA);
+                Console.WriteLine($"XmlReader: {sw.ElapsedMilliseconds} ms.");
 
                 var resultB = b.CountElementsWithXDocument();
-                Console.WriteLine(resultB);
+                Console.WriteLine($"XDocument (LINQ to XML): {sw.ElapsedMilliseconds} ms.");
 
                 var resultC = b.CountElementsWithXmlDocument();
-                Console.WriteLine(resultC);
+                Console.WriteLine($"XmlDocument (XPath): {sw.ElapsedMilliseconds} ms.");
             }
             catch (Exception e)
             {
