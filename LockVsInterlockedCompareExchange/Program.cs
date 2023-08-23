@@ -14,7 +14,7 @@
             try
             {
                 Benchmark b = new Benchmark();
-                b.GlobalSetup();
+                b.IterationSetup();
                 long first = b.ReadAndWriteWithLock();
                 long second = b.ReadAndWriteWithInterlockedCompareExchange();
                 Console.WriteLine(first);

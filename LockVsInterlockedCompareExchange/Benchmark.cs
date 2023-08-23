@@ -37,7 +37,7 @@
         [Benchmark]
         public long ReadAndWriteWithInterlockedCompareExchange()
         {
-            Interlocked.CompareExchange(ref _target, 4567, 1234);
+            Interlocked.CompareExchange(ref _target, 1234, 4567);
             return _target;
         }
     }
