@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -60,6 +61,24 @@
             {
                 result += task.Result.Length;
             }
+
+            return result;
+        }
+
+        [Benchmark]
+        public async Task<long> ReadFilesAsyncWithTakWhenAllTebeco()
+        {
+            var result = 0L;
+            var tasks = new List<Task<byte[]>>();
+
+            foreach (var file in s_files)
+            {
+                var t = File.ReadAllBytesAsync(file);
+                tasks.Add(t);
+            }
+
+            var results = await Task.WhenAll(tasks);
+            result = results.Sum(x => x.Length);
 
             return result;
         }
