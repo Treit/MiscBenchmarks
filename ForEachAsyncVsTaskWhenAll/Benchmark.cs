@@ -7,6 +7,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    [MemoryDiagnoser]
     public class Benchmark
     {
         static readonly List<string> s_files = new();
@@ -71,7 +72,7 @@
             await Parallel.ForEachAsync(s_files, async (file, ct) =>
             {
                 var bytes = await File.ReadAllBytesAsync(file);
-                Interlocked.Increment(ref result);
+                Interlocked.Add(ref result, bytes.Length);
             });
 
             return result;
@@ -85,7 +86,7 @@
             Parallel.ForEach(s_files, file =>
             {
                 var bytes = File.ReadAllBytes(file);
-                Interlocked.Increment(ref result);
+                Interlocked.Add(ref result, bytes.Length);
             });
 
             return result;
