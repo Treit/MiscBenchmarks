@@ -1,6 +1,7 @@
 ﻿namespace Test
 {
     using BenchmarkDotNet.Running;
+    using System;
 
     internal class Program
     {
@@ -10,9 +11,13 @@
             BenchmarkRunner.Run<Benchmark>();
 #else
             Benchmark b = new Benchmark();
-            b.Count = 1000;
+            b.Count = 10;
             b.GlobalSetup();
             b.FisherYates();
+            b.Print();
+            Console.WriteLine("-------");
+            b.FisherYates();
+            b.Print();
 #endif
 
         }

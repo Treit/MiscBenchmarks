@@ -30,10 +30,18 @@
             _random = new Random(_values.Count);
         }
 
+        public void Print()
+        {
+            foreach (var val in _values)
+            {
+                Console.WriteLine(val);
+            }
+        }
+
         [Benchmark(Baseline = true)]
         public int FisherYates()
         {
-            for (int i = _values.Count - 1; i > 0; --i)
+            for (int i = _values.Count - 1; i >= 0; --i)
             {
                 int n = _random.Next(i, _values.Count);
                 Swap(i, n);
