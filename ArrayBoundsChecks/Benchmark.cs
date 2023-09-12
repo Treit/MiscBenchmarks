@@ -8,7 +8,7 @@
     {
         private string[] _strings;
 
-        [Params(10_000_000)]
+        [Params(10_000)]
         public int Count { get; set; }
 
         [GlobalSetup]
@@ -91,6 +91,39 @@
                 }
             }
 
+            return count;
+        }
+
+        [Benchmark]
+        public int Lulz1()
+        {
+            var count = _strings.Length;
+            foreach (string s in _strings)
+            {
+                count += (-s.Length) >> 31;
+            }
+            return count;
+        }
+
+        [Benchmark]
+        public int Lulz2()
+        {
+            ulong count = (uint)_strings.Length; count <<= 31;
+            foreach (string s in _strings)
+            {
+                count -= (ulong)((uint)(-s.Length) & 0x80000000u);
+            }
+            return (int)(count >> 31);
+        }
+
+        [Benchmark]
+        public int Lulz3()
+        {
+            var count = 0;
+            foreach (string s in _strings)
+            {
+                count += (s.Length - 1) >>> 31;
+            }
             return count;
         }
     }
