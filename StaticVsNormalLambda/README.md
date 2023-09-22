@@ -1,4 +1,4 @@
-# Calling static methods on static and non-static classes.
+# Calling static vs. normal lambda.
 
 ``` ini
 
