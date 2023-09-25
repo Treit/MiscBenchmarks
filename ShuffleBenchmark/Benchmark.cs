@@ -41,9 +41,9 @@
         [Benchmark(Baseline = true)]
         public int FisherYates()
         {
-            for (int i = _values.Count - 1; i >= 0; --i)
+            for (int i = _values.Count - 1; i > 0; --i)
             {
-                int n = _random.Next(i, _values.Count);
+                int n = _random.Next(0, i + 1);
                 Swap(i, n);
             }
 
