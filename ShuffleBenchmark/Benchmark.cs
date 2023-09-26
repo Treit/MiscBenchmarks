@@ -77,6 +77,25 @@
         }
 
         [Benchmark]
+        public int FisherYatesXorSwap ()
+        {
+            for (int i = _values.Count - 1; i > 0; --i)
+            {
+                int n = _random.Next(0, i + 1);
+                Swap(i, n);
+            }
+
+            void Swap(int x, int y)
+            {
+                _values[x] ^= _values[y];
+                _values[y] ^= _values[x];
+                _values[x] ^= _values[y];
+            }
+
+            return _values[0];
+        }
+
+        [Benchmark]
         public int FisherYatesUsingStrongCryptoRandom()
         {
             for (int i = _values.Count - 1; i > 0; --i)

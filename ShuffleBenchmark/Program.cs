@@ -18,6 +18,9 @@
             Console.WriteLine("-------");
             b.FisherYates();
             b.Print();
+            Console.WriteLine("-------");
+            b.FisherYatesXorSwap();
+            b.Print();
 #endif
 
         }
