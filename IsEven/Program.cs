@@ -19,13 +19,16 @@
             var third = b.IsEvenMrCarrot();
             var fourth = b.IsEvenAaron();
             var fifth = b.IsEvenAaronUnsafeBitConverter();
-            var sixth = b.IsEvenUsingINumber();
+            var sixth = b.IsEvenUsingINumberIsEvenInteger();
+            var seventh = b.IsEvenCrabFuelCursedRecursiveVersion();
 
             Console.WriteLine(first);
             Console.WriteLine(second);
             Console.WriteLine(third);
             Console.WriteLine(fourth);
             Console.WriteLine(fifth);
+            Console.WriteLine(sixth);
+            Console.WriteLine(seventh);
 #endif
         }
     }

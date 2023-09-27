@@ -20,7 +20,7 @@
 
             for (int i = 0; i < _array.Length; i++)
             {
-                _array[i] = r.Next();
+                _array[i] = r.Next(1, 15);
             }
         }
 
@@ -167,6 +167,33 @@
             {
                 i &= 1;
                 return !((bool*)&i)[BitConverter.IsLittleEndian ? 0 : 3];
+            }
+        }
+
+        [Benchmark]
+        public ulong IsEvenCrabFuelCursedRecursiveVersion()
+        {
+            var arr = _array;
+            var result = 0UL;
+
+            for (int i = 0; i < _array.Length; i++)
+            {
+                if (IsEven(arr[i]))
+                {
+                    result++;
+                }
+            }
+
+            return result;
+
+            bool IsEven(int i)
+            {
+                if (i == 1)
+                {
+                    return false;
+                }
+
+                return !IsEven(--i);
             }
         }
     }
