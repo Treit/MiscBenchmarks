@@ -40,5 +40,17 @@
         {
             return _values.ToHashSet();
         }
+
+        [Benchmark]
+        public HashSet<string> ManualAddViaLoop()
+        {
+            var hs = new HashSet<string>();
+            foreach (var val in _values)
+            {
+                hs.Add(val);
+            }
+
+            return hs;
+        }
     }
 }
