@@ -12,17 +12,20 @@
             BenchmarkRunner.Run<Benchmark>();
 #else
             Benchmark b = new Benchmark();
-            b.Count = 26;
+            b.Count = 1000;
             b.GlobalSetup();
-            var first = b.SwapWithTuple();
-            b.GlobalSetup();
-            var second = b.SwapWithLocalFunction();
-            b.GlobalSetup();
-            var third = b.SwapWithTempVariable();
+            var first = b.IsEvenUsingMod();
+            var second = b.IsEvenlyxerexyl();
+            var third = b.IsEvenMrCarrot();
+            var fourth = b.IsEvenAaron();
+            var fifth = b.IsEvenAaronUnsafeBitConverter();
+            var sixth = b.IsEvenUsingINumber();
 
             Console.WriteLine(first);
             Console.WriteLine(second);
             Console.WriteLine(third);
+            Console.WriteLine(fourth);
+            Console.WriteLine(fifth);
 #endif
         }
     }

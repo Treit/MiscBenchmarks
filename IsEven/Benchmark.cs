@@ -9,7 +9,7 @@
     {
         private int[] _array;
 
-        [Params(10, 100_000)]
+        [Params(100_000)]
         public int Count { get; set; }
 
         [GlobalSetup]
@@ -24,7 +24,7 @@
             }
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public ulong IsEvenUsingMod()
         {
             var arr = _array;
@@ -43,6 +43,28 @@
             bool IsEven(int x)
             {
                 return x % 2 == 0;
+            }
+        }
+
+        [Benchmark]
+        public ulong IsEvenUsingINumberIsEventInteger()
+        {
+            var arr = _array;
+            var result = 0UL;
+
+            for (int i = 0; i < _array.Length; i++)
+            {
+                if (IsEven(arr[i]))
+                {
+                    result++;
+                }
+            }
+
+            return result;
+
+            bool IsEven(int i)
+            {
+                return int.IsEvenInteger(i);
             }
         }
 
@@ -77,6 +99,74 @@
                     default:
                         return false;
                 }
+            }
+        }
+
+        [Benchmark]
+        public ulong IsEvenMrCarrot()
+        {
+            var arr = _array;
+            var result = 0UL;
+
+            for (int i = 0; i < _array.Length; i++)
+            {
+                if (IsEven(arr[i]))
+                {
+                    result++;
+                }
+            }
+
+            return result;
+
+            unsafe bool IsEven(int i)
+            {
+                i &= 1;
+                return !(*((bool*)&i));
+            }
+        }
+
+        [Benchmark]
+        public ulong IsEvenAaron()
+        {
+            var arr = _array;
+            var result = 0UL;
+
+            for (int i = 0; i < _array.Length; i++)
+            {
+                if (IsEven(arr[i]))
+                {
+                    result++;
+                }
+            }
+
+            return result;
+
+            bool IsEven(int i)
+            {
+                return (~i & 1) == 1;
+            }
+        }
+
+        [Benchmark]
+        public ulong IsEvenAaronUnsafeBitConverter()
+        {
+            var arr = _array;
+            var result = 0UL;
+
+            for (int i = 0; i < _array.Length; i++)
+            {
+                if (IsEven(arr[i]))
+                {
+                    result++;
+                }
+            }
+
+            return result;
+
+            unsafe bool IsEven(int i)
+            {
+                i &= 1;
+                return !((bool*)&i)[BitConverter.IsLittleEndian ? 0 : 3];
             }
         }
     }
