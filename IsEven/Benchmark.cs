@@ -47,7 +47,7 @@
         }
 
         [Benchmark]
-        public ulong IsEvenUsingINumberIsEventInteger()
+        public ulong IsEvenUsingINumberIsEvenInteger()
         {
             var arr = _array;
             var result = 0UL;
