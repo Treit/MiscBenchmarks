@@ -1,6 +1,7 @@
 ﻿namespace Test
 {
     using System;
+    using System.Linq;
     using System.Runtime.InteropServices;
     using System.Runtime.Intrinsics;
     using BenchmarkDotNet.Attributes;
@@ -201,6 +202,34 @@
         }
 
         [Benchmark]
+        public ulong IsEvenNotWorthUsingJester()
+        {
+            var arr = _array;
+            var result = 0UL;
+
+            for (int i = 0; i < _array.Length; i++)
+            {
+                if (IsEven(arr[i]))
+                {
+                    result++;
+                }
+            }
+
+            return result;            
+
+            bool IsEven(int i)
+            {
+                return
+                Convert.
+                ToString(i, 2).
+                PadLeft(32, '0').
+                Select(c => c.ToString()).
+                Select(int.Parse).
+                Last().
+                CompareTo(0).
+                Equals(0);
+            }
+
         public ulong IsEvenAkseli()
         {
             var array = _array;

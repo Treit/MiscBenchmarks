@@ -21,7 +21,8 @@
             var fifth = b.IsEvenAaronUnsafeBitConverter();
             var sixth = b.IsEvenUsingINumberIsEvenInteger();
             var seventh = b.IsEvenCrabFuelCursedRecursiveVersion();
-            var eigth = b.IsEvenAkseli();
+            var eighth = b.IsEvenNotWorthUsing();
+            var ninth = b.IsEvenAkseli();
 
             Console.WriteLine(first);
             Console.WriteLine(second);
@@ -30,6 +31,8 @@
             Console.WriteLine(fifth);
             Console.WriteLine(sixth);
             Console.WriteLine(seventh);
+            Console.WriteLine(eighth);
+            Console.WriteLine(ninth);
 #endif
         }
     }
