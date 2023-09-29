@@ -2,10 +2,13 @@
 {
     using System;
     using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Intrinsics;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
 
     [MemoryDiagnoser]
+    [DisassemblyDiagnoser(exportDiff: true, exportHtml: true)]
     public class Benchmark
     {
         private int[] _array;
@@ -199,7 +202,7 @@
         }
 
         [Benchmark]
-        public ulong IsEvenNotWorthUsing()
+        public ulong IsEvenNotWorthUsingJester()
         {
             var arr = _array;
             var result = 0UL;
@@ -226,6 +229,23 @@
                 CompareTo(0).
                 Equals(0);
             }
+
+        public ulong IsEvenAkseli()
+        {
+            var array = _array;
+            ref int start = ref MemoryMarshal.GetArrayDataReference(array);
+            nint i = 0;
+            Vector256<int> vsum = Vector256<int>.Zero;
+            for (; i <= array.Length - Vector256<int>.Count; i += Vector256<int>.Count)
+            {
+                vsum += Vector256.LoadUnsafe(ref start, (nuint)i) & Vector256.Create(1);
+            }
+            int count = Vector256.Sum(vsum);
+            for (; i < array.Length; i++)
+            {
+                count += array[i];
+            }
+            return (ulong)(array.Length - count);
         }
     }
 }

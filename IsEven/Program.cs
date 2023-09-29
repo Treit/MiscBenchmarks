@@ -22,6 +22,7 @@
             var sixth = b.IsEvenUsingINumberIsEvenInteger();
             var seventh = b.IsEvenCrabFuelCursedRecursiveVersion();
             var eighth = b.IsEvenNotWorthUsing();
+            var ninth = b.IsEvenAkseli();
 
             Console.WriteLine(first);
             Console.WriteLine(second);
@@ -31,6 +32,7 @@
             Console.WriteLine(sixth);
             Console.WriteLine(seventh);
             Console.WriteLine(eighth);
+            Console.WriteLine(ninth);
 #endif
         }
     }
