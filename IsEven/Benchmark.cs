@@ -196,5 +196,35 @@
                 return !IsEven(--i);
             }
         }
+
+        [Benchmark]
+        public ulong IsEvenNotWorthUsing(int x)
+        {
+            var arr = _array;
+            var result = 0UL;
+
+            for (int i = 0; i < _array.Length; i++)
+            {
+                if (IsEven(arr[i]))
+                {
+                    result++;
+                }
+            }
+
+            return result;            
+
+            bool IsEven(int i)
+            {
+                return
+                Convert.
+                ToString(x, 2).
+                PadLeft(32, '0').
+                Select(c => c.ToString()).
+                Select(int.Parse).
+                Last().
+                CompareTo(0).
+                Equals(0);
+            }
+        }
     }
 }
