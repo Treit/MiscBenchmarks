@@ -217,7 +217,7 @@
             {
                 return
                 Convert.
-                ToString(x, 2).
+                ToString(i, 2).
                 PadLeft(32, '0').
                 Select(c => c.ToString()).
                 Select(int.Parse).
