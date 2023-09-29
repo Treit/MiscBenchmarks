@@ -1,6 +1,7 @@
 ﻿namespace Test
 {
     using System;
+    using System.Linq;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
 
@@ -198,7 +199,7 @@
         }
 
         [Benchmark]
-        public ulong IsEvenNotWorthUsing(int x)
+        public ulong IsEvenNotWorthUsing()
         {
             var arr = _array;
             var result = 0UL;
