@@ -215,7 +215,7 @@
                 }
             }
 
-            return result;            
+            return result;
 
             bool IsEven(int i)
             {
@@ -229,7 +229,9 @@
                 CompareTo(0).
                 Equals(0);
             }
+        }
 
+        [Benchmark]
         public ulong IsEvenAkseli()
         {
             var array = _array;
@@ -239,6 +241,40 @@
             for (; i <= array.Length - Vector256<int>.Count; i += Vector256<int>.Count)
             {
                 vsum += Vector256.LoadUnsafe(ref start, (nuint)i) & Vector256.Create(1);
+            }
+            int count = Vector256.Sum(vsum);
+            for (; i < array.Length; i++)
+            {
+                count += array[i];
+            }
+            return (ulong)(array.Length - count);
+        }
+
+        [Benchmark]
+        public ulong IsEvenAkseliV2()
+        {
+            var array = _array;
+            ref int start = ref MemoryMarshal.GetArrayDataReference(array);
+            nint i = 0;
+            Vector256<int> vsum = Vector256<int>.Zero;
+
+            for (; i <= array.Length - Vector256<int>.Count * 4; i += Vector256<int>.Count * 4)
+            {
+                vsum += Vector256.LoadUnsafe(ref start, (nuint)i) & Vector256.Create(1);
+                vsum += Vector256.LoadUnsafe(ref start, (nuint)(i + Vector256<int>.Count)) & Vector256.Create(1);
+                vsum += Vector256.LoadUnsafe(ref start, (nuint)(i + Vector256<int>.Count * 2)) & Vector256.Create(1);
+                vsum += Vector256.LoadUnsafe(ref start, (nuint)(i + Vector256<int>.Count * 3)) & Vector256.Create(1);
+            }
+            if (i <= array.Length - Vector256<int>.Count * 2)
+            {
+                vsum += Vector256.LoadUnsafe(ref start, (nuint)i) & Vector256.Create(1);
+                vsum += Vector256.LoadUnsafe(ref start, (nuint)(i + Vector256<int>.Count)) & Vector256.Create(1);
+                i += Vector256<int>.Count * 2;
+            }
+            if (i <= array.Length - Vector256<int>.Count)
+            {
+                vsum += Vector256.LoadUnsafe(ref start, (nuint)i) & Vector256.Create(1);
+                i += Vector256<int>.Count;
             }
             int count = Vector256.Sum(vsum);
             for (; i < array.Length; i++)
