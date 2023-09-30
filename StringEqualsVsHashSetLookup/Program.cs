@@ -44,18 +44,18 @@ public class StringTest
     [Benchmark]
     public bool CheckUsingEquals()
     {
-        return _target.TagStr == "Enemy";
+        return _target?.TagStr == "Enemy";
     }
 
     [Benchmark]
     public bool CheckUsingHashset()
     {
-        return _enemies.Contains(_target);
+        return _enemies!.Contains(_target!);
     }
 
     [Benchmark]
     public bool CheckUsingEnum()
     {
-        return _target.Tag == ObjectTag.Enemy;
+        return _target!.Tag == ObjectTag.Enemy;
     }
 }
