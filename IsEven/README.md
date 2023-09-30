@@ -22,6 +22,7 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 |            IsEvenNotWorthUsingJester | 100000 | 120,771.511 μs | 3,168.5207 μs | 9,091.0797 μs | 117,054.600 μs | 289.19 |   14.10 |     456 B | 26000.0000 | 112742054 B |          NA |
 |                         IsEvenAkseli | 100000 |      10.916 μs |     0.2163 μs |     0.3553 μs |      10.854 μs |   0.03 |    0.00 |     135 B |          - |           - |          NA |
 |                       IsEvenAkseliV2 | 100000 |       4.329 μs |     0.0986 μs |     0.2798 μs |       4.241 μs |   0.01 |    0.00 |     262 B |          - |           - |          NA |
+
 ## .NET 7.0.11 (7.0.1123.42427), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.IsEvenUsingMod()
