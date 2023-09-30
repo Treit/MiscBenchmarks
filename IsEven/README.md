@@ -12,18 +12,16 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 ```
 |                               Method |  Count |           Mean |         Error |        StdDev |         Median |  Ratio | RatioSD | Code Size |       Gen0 |   Allocated | Alloc Ratio |
 |------------------------------------- |------- |---------------:|--------------:|--------------:|---------------:|-------:|--------:|----------:|-----------:|------------:|------------:|
-|                       IsEvenUsingMod | 100000 |     394.864 μs |     1.6759 μs |     1.5676 μs |     394.429 μs |   1.00 |    0.00 |      71 B |          - |           - |          NA |
-|      IsEvenUsingINumberIsEvenInteger | 100000 |     393.663 μs |     3.7400 μs |     3.3154 μs |     392.805 μs |   1.00 |    0.01 |      71 B |          - |           - |          NA |
-|                      IsEvenlyxerexyl | 100000 |   1,600.033 μs |    15.6307 μs |    13.8562 μs |   1,594.872 μs |   4.05 |    0.04 |     157 B |   263.6719 |   1142624 B |          NA |
-|                       IsEvenMrCarrot | 100000 |     584.930 μs |     2.6209 μs |     2.3233 μs |     584.289 μs |   1.48 |    0.01 |      94 B |          - |         1 B |          NA |
-|                          IsEvenAaron | 100000 |     385.760 μs |     7.0197 μs |     6.2228 μs |     383.477 μs |   0.98 |    0.02 |      85 B |          - |           - |          NA |
-|        IsEvenAaronUnsafeBitConverter | 100000 |     638.349 μs |     4.2046 μs |     3.7273 μs |     637.846 μs |   1.62 |    0.01 |     115 B |          - |           - |          NA |
-| IsEvenCrabFuelCursedRecursiveVersion | 100000 |   1,659.347 μs |    32.5409 μs |    42.3124 μs |   1,640.904 μs |   4.21 |    0.13 |     133 B |          - |         1 B |          NA |
-|            IsEvenNotWorthUsingJester | 100000 | 113,532.899 μs | 2,249.2811 μs | 4,937.2266 μs | 112,047.620 μs | 295.00 |   15.63 |     456 B | 26000.0000 | 112742029 B |          NA |
-|                         IsEvenAkseli | 100000 |      11.219 μs |     0.3407 μs |     0.9885 μs |      10.809 μs |   0.03 |    0.00 |     135 B |          - |           - |          NA |
-|                       IsEvenAkseliV2 | 100000 |       3.980 μs |     0.0788 μs |     0.1338 μs |       3.925 μs |   0.01 |    0.00 |     262 B |          - |           - |          NA |
-
-
+|                       IsEvenUsingMod | 100000 |     408.821 μs |     2.8832 μs |     2.4076 μs |     409.391 μs |   1.00 |    0.00 |      71 B |          - |           - |          NA |
+|      IsEvenUsingINumberIsEvenInteger | 100000 |     420.859 μs |     8.3468 μs |    13.9456 μs |     416.700 μs |   1.05 |    0.03 |      71 B |          - |           - |          NA |
+|                      IsEvenlyxerexyl | 100000 |   1,743.495 μs |    33.7738 μs |    42.7131 μs |   1,741.578 μs |   4.26 |    0.14 |     157 B |   263.6719 |   1142625 B |          NA |
+|                       IsEvenMrCarrot | 100000 |     612.936 μs |    11.9798 μs |    11.2059 μs |     610.390 μs |   1.49 |    0.02 |      94 B |          - |           - |          NA |
+|                          IsEvenAaron | 100000 |     404.617 μs |     8.0665 μs |    10.2016 μs |     404.359 μs |   0.98 |    0.03 |      85 B |          - |           - |          NA |
+|        IsEvenAaronUnsafeBitConverter | 100000 |     679.468 μs |    13.3134 μs |    19.0936 μs |     677.299 μs |   1.68 |    0.05 |     115 B |          - |           - |          NA |
+| IsEvenCrabFuelCursedRecursiveVersion | 100000 |   1,715.292 μs |    34.0678 μs |    61.4312 μs |   1,694.827 μs |   4.26 |    0.17 |     133 B |          - |         1 B |          NA |
+|            IsEvenNotWorthUsingJester | 100000 | 120,771.511 μs | 3,168.5207 μs | 9,091.0797 μs | 117,054.600 μs | 289.19 |   14.10 |     456 B | 26000.0000 | 112742054 B |          NA |
+|                         IsEvenAkseli | 100000 |      10.916 μs |     0.2163 μs |     0.3553 μs |      10.854 μs |   0.03 |    0.00 |     135 B |          - |           - |          NA |
+|                       IsEvenAkseliV2 | 100000 |       4.329 μs |     0.0986 μs |     0.2798 μs |       4.241 μs |   0.01 |    0.00 |     262 B |          - |           - |          NA |
 ## .NET 7.0.11 (7.0.1123.42427), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.IsEvenUsingMod()
@@ -256,7 +254,7 @@ M00_L00:
        jae       short M00_L03
        mov       ecx,ebp
        mov       ecx,[rdi+rcx*4+10]
-       call      qword ptr [7FF7CF747A98]; Test.Benchmark.<IsEvenAaronUnsafeBitConverter>g__IsEven|11_0(Int32)
+       call      qword ptr [7FF7CF737A98]; Test.Benchmark.<IsEvenAaronUnsafeBitConverter>g__IsEven|11_0(Int32)
        test      eax,eax
        je        short M00_L01
        inc       rbx
@@ -317,7 +315,7 @@ M00_L00:
        cmp       ecx,1
        je        short M00_L01
        dec       ecx
-       call      qword ptr [7FF7CF747AB0]; Test.Benchmark.<IsEvenCrabFuelCursedRecursiveVersion>g__IsEven|12_0(Int32)
+       call      qword ptr [7FF7CF727AB0]; Test.Benchmark.<IsEvenCrabFuelCursedRecursiveVersion>g__IsEven|12_0(Int32)
        test      eax,eax
        jne       short M00_L01
        inc       rbx
@@ -351,7 +349,7 @@ M01_L00:
        ret
 M01_L01:
        dec       ecx
-       call      qword ptr [7FF7CF747AB0]
+       call      qword ptr [7FF7CF727AB0]
        test      eax,eax
        sete      al
        movzx     eax,al
@@ -424,20 +422,20 @@ M00_L03:
        cmp       [rcx],ecx
        call      qword ptr [7FF7CF471F48]; System.String.PadLeft(Int32, Char)
        mov       rsi,rax
-       mov       rcx,1AB6F0064D8
+       mov       rcx,19AE68064D8
        mov       r8,[rcx]
        test      r8,r8
        jne       short M01_L00
        mov       rcx,offset MT_System.Func`2[[System.Char, System.Private.CoreLib],[System.String, System.Private.CoreLib]]
        call      CORINFO_HELP_NEWSFAST
        mov       rdi,rax
-       mov       rdx,1AB6F0064D0
+       mov       rdx,19AE68064D0
        mov       rdx,[rdx]
        lea       rcx,[rdi+8]
        call      CORINFO_HELP_ASSIGN_REF
        mov       rdx,7FF7CF85AFD8
        mov       [rdi+18],rdx
-       mov       rcx,1AB6F0064D8
+       mov       rcx,19AE68064D8
        mov       rdx,rdi
        call      CORINFO_HELP_ASSIGN_REF
        mov       r8,rdi
@@ -446,7 +444,7 @@ M01_L00:
        mov       rcx,offset MD_System.Linq.Enumerable.Select[[System.Char, System.Private.CoreLib],[System.String, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Char>, System.Func`2<Char,System.String>)
        call      qword ptr [7FF7CF85D060]; System.Linq.Enumerable.Select[[System.Char, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Char>, System.Func`2<Char,System.__Canon>)
        mov       rsi,rax
-       mov       rcx,1AB6F0064C8
+       mov       rcx,19AE68064C8
        mov       r8,[rcx]
        test      r8,r8
        jne       short M01_L01
@@ -460,7 +458,7 @@ M01_L00:
        mov       [rdi+18],rdx
        mov       rdx,offset System.Int32.Parse(System.String)
        mov       [rdi+20],rdx
-       mov       rcx,1AB6F0064C8
+       mov       rcx,19AE68064C8
        mov       rdx,rdi
        call      CORINFO_HELP_ASSIGN_REF
        mov       r8,rdi
@@ -513,7 +511,7 @@ M01_L05:
        movsxd    r10,eax
        test      r10,r10
        jl        short M00_L01
-       vmovupd   ymm1,[7FF7CF406B80]
+       vmovupd   ymm1,[7FF7CF3F6B80]
 M00_L00:
        vpand     ymm2,ymm1,[rcx+r8*4]
        vpaddd    ymm0,ymm0,ymm2
@@ -562,7 +560,7 @@ M00_L04:
        movsxd    r10,eax
        test      r10,r10
        jl        short M00_L01
-       vmovupd   ymm1,[7FF7CF416DA0]
+       vmovupd   ymm1,[7FF7CF436DA0]
 M00_L00:
        vpand     ymm2,ymm1,[rcx+r8*4]
        vpaddd    ymm0,ymm0,ymm2
@@ -580,7 +578,7 @@ M00_L01:
        cdqe
        cmp       rax,r8
        jl        short M00_L02
-       vmovupd   ymm1,[7FF7CF416DA0]
+       vmovupd   ymm1,[7FF7CF436DA0]
        vpand     ymm2,ymm1,[rcx+r8*4]
        vpaddd    ymm0,ymm0,ymm2
        vpand     ymm1,ymm1,[rcx+r8*4+20]
@@ -591,7 +589,7 @@ M00_L02:
        cdqe
        cmp       rax,r8
        jl        short M00_L03
-       vmovupd   ymm1,[7FF7CF416DA0]
+       vmovupd   ymm1,[7FF7CF436DA0]
        vpand     ymm1,ymm1,[rcx+r8*4]
        vpaddd    ymm0,ymm0,ymm1
        add       r8,8
