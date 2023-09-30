@@ -14,7 +14,7 @@ if (!File.Exists(resultsPath))
 
 if (!File.Exists(readme))
 {
-    File.Create(readme);
+    File.Create(readme).Close();
 }
 
 using (var sr = new StreamReader(readme))
