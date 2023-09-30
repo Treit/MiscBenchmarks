@@ -1,5 +1,6 @@
 # Is it even?
 
+
 ``` ini
 
 BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25963.1000)

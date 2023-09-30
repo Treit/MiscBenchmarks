@@ -1,2 +1,0 @@
-# Linq vs. LinqGen
-
