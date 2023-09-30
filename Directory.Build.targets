@@ -1,0 +1,13 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+<!--
+  Things to consider enabling in the future!
+<Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.0.46" />
+  <ItemGroup>
+    <PackageReference Include="Roslynator.Analyzers">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+-->
+</Project>

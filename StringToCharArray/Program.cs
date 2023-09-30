@@ -11,9 +11,7 @@
             BenchmarkRunner.Run<Benchmark>();
 #else
             Benchmark b = new Benchmark();
-            b.Count = 1000;
             b.GlobalSetup();
-            Console.WriteLine(b.ToCharArray());
 #endif
         }
     }

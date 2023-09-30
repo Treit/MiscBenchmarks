@@ -13,7 +13,6 @@
             Benchmark b = new Benchmark();
             b.Count = 1000;
             b.GlobalSetup();
-            b.NewHashSe();
 #endif
         }
     }

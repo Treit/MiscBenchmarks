@@ -16,9 +16,9 @@
             Console.WriteLine(b.SumMultiDimensional());
             Console.WriteLine(b.SumJagged());
             Console.WriteLine(b.SumMultiDimensionalAkari());
-            //Console.WriteLine(b.SumMultiDimensionalVectorAkari());
+            Console.WriteLine(b.SumMultiDimensionalVectorAkari());
             Console.WriteLine(b.SumHandrolledAkseli());
-            Console.WriteLine(b.SumHandRolledVectorizedAkseli());
+            Console.WriteLine(b.SumHandrolledAkseliJuly2023());
 #endif
 
         }

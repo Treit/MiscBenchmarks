@@ -13,12 +13,6 @@
             Benchmark b = new Benchmark();
             b.Size = 1024;
             b.GlobalSetup();
-            Console.WriteLine(b.SumMultiDimensional());
-            Console.WriteLine(b.SumJagged());
-            Console.WriteLine(b.SumMultiDimensionalAkari());
-            //Console.WriteLine(b.SumMultiDimensionalVectorAkari());
-            Console.WriteLine(b.SumHandrolledAkseli());
-            Console.WriteLine(b.SumHandRolledVectorizedAkseli());
 #endif
 
         }

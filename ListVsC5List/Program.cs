@@ -13,7 +13,6 @@
             Benchmark b = new Benchmark();
             b.Count = 1024;
             b.GlobalSetup();
-            Console.WriteLine(b.IterateArrayList());
 #endif
 
         }

@@ -14,7 +14,7 @@
             b.Count = 1000;
             b.GlobalSetup();
             var first = b.CountUsingTwoChecks();
-            var second = b.CountUsingCollectionMarshalAndIndexOf();
+            var second = b.CountUsingTwoChecks();
 
             if (first != second)
             {

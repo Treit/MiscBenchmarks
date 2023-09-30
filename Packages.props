@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <!--<PackageReference Update="System.Text.Json" Version="7.0.3" /> -->
+  </ItemGroup>
+  <ItemGroup Label="Packages to add to all projects">
+    <!--
+      To reference a package in all projects, add it to this list.
+    -->
+  </ItemGroup>
+</Project>
