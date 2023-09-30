@@ -41,6 +41,7 @@ using (var sw = new StreamWriter(tmp))
         sw.WriteLine($"# {projectName}");
     }
 
+    sw.WriteLine();
     using var resultsSr = new StreamReader(resultsPath);
     while (resultsSr.ReadLine() is string line)
     {
@@ -49,6 +50,8 @@ using (var sw = new StreamWriter(tmp))
 
     if (File.Exists(resultsAsmPath))
     {
+        sw.WriteLine();
+
         using var resultsAsmSr = new StreamReader(resultsAsmPath);
         while (resultsAsmSr.ReadLine() is string line)
         {
