@@ -18,9 +18,6 @@
         private HashSet<string> _firstSet;
         private HashSet<string> _secondSet;
 
-        private Regex _re;
-        private Regex _rec;
-
         [GlobalSetup]
         public void GlobalSetup()
         {
