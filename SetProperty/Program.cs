@@ -15,6 +15,7 @@
             Console.WriteLine(b.SetPropertyUsingReflection().Data.Message);
             Console.WriteLine(b.SetPropertyUsingDynamic().Data.Message);
             Console.WriteLine(b.SetPropertyNormally().Data.Message);
+            Console.WriteLine(b.SetPropertyUsingNonGenericInterface().Data.Message);
 #endif
 
         }

@@ -3,9 +3,14 @@
     using BenchmarkDotNet.Attributes;
     using System;
 
-    public interface IContainer<T>
+    public interface IContainer
     {
-        T Data { get; set; }
+        object Data { get; set; }
+    }
+    public interface IContainer<T> : IContainer
+    {
+        object IContainer.Data { get => Data; set => Data = (T)value; }
+        new T Data { get; set; }
     }
 
     public class Container<T> : IContainer<T>
@@ -21,36 +26,45 @@
     [MemoryDiagnoser]
     public class Benchmark
     {
+        Container<Payload> _container;
+        dynamic _containerDynamic;
+        Type _containerType;
+
         [GlobalSetup]
         public void GlobalSetup()
         {
+            _container = new Container<Payload>();
+            _containerDynamic = new Container<Payload>();
+            _containerType = _container.GetType();
         }
 
         [Benchmark]
-        public IContainer<Payload> SetPropertyNormally()
+        public Container<Payload> SetPropertyNormally()
         {
-            var type = typeof(Container<Payload>);
-            var inst = Activator.CreateInstance(type) as IContainer<Payload>;
+            _container.Data = new Payload { Message = "TEST" };
+            return _container;
+        }
+
+        [Benchmark]
+        public Container<Payload> SetPropertyUsingDynamic()
+        {
+            _containerDynamic.Data = new Payload { Message = "TEST" };
+            return _containerDynamic;
+        }
+
+        [Benchmark]
+        public Container<Payload> SetPropertyUsingReflection()
+        {
+            _containerType.GetProperty("Data").SetValue(_container, new Payload { Message = "TEST" });
+            return _container;
+        }
+
+        [Benchmark]
+        public Container<Payload> SetPropertyUsingNonGenericInterface()
+        {
+            IContainer inst = _container;
             inst.Data = new Payload { Message = "TEST" };
-            return inst;
-        }
-
-        [Benchmark]
-        public IContainer<Payload> SetPropertyUsingDynamic()
-        {
-            var type = typeof(Container<Payload>);
-            dynamic inst = Activator.CreateInstance(type);
-            inst.Data = new Payload { Message = "TEST" };
-            return inst;
-        }
-
-        [Benchmark]
-        public IContainer<Payload> SetPropertyUsingReflection()
-        {
-            var type = typeof(Container<Payload>);
-            var inst = Activator.CreateInstance(type);
-            type.GetProperty("Data").SetValue(inst, new Payload { Message = "TEST" });
-            return inst as IContainer<Payload>;
+            return inst as Container<Payload>;
         }
     }
 }
