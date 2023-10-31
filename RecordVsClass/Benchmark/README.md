@@ -1,6 +1,7 @@
 # Calling methods on sealed vs non-sealed classes.
 
 
+
 ``` ini
 
 BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25987.1000)
@@ -11,7 +12,7 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-|  Method |     Mean |     Error |    StdDev |   Median |
-|-------- |---------:|----------:|----------:|---------:|
-| Classes | 1.141 μs | 0.0456 μs | 0.1308 μs | 1.094 μs |
-| Records | 1.030 μs | 0.0206 μs | 0.0439 μs | 1.018 μs |
+|  Method |     Mean |    Error |   StdDev |
+|-------- |---------:|---------:|---------:|
+| Classes | 977.2 ns | 12.49 ns | 11.07 ns |
+| Records | 980.0 ns | 15.56 ns | 14.55 ns |
