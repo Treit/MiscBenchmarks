@@ -25,10 +25,6 @@ internal class Program
         //benchmark.GlobalSetup();
         //benchmark.BigPerson_Update_Half_Init();
 #else
-        var benchmark1 = new Benchmark();
-        benchmark1.GlobalSetup();
-        benchmark1.SmallPerson_Add_One();
-        benchmark1.BigPerson_Add_One();
 #endif
     }
 }

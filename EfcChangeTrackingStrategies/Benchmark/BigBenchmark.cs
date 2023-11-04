@@ -36,14 +36,9 @@ public class BigBenchmark
 
         ctx.SaveChanges();
 
-        var person = new BigPerson() { IsInit = true };
-        // Always have initial people to work with        
+        // Always have initial people to work with
         for (int i = 0; i < InitCount; i++)
-        {
-            ctx.BigPeople.ToList().Add(person);
-            ctx.Entry(person).State = EntityState.Detached;
-            person.Id = 0;
-        }
+            ctx.BigPeople.Add(new BigPerson() { IsInit = true });
 
         ctx.SaveChanges();
     }
@@ -65,7 +60,7 @@ public class BigBenchmark
     {
         // Each iteration remove all people except the init people
         var ctx1 = Contexts.Values.First();
-        ctx1.BigPeople.RemoveRange(ctx1.BigPeople.ToList().Where(x => !x.IsInit));
+        ctx1.BigPeople.RemoveRange(ctx1.BigPeople.Where(x => !x.IsInit).ToList());
         ctx1.SaveChanges();
 
         foreach (var ctx in Contexts.Values)
@@ -94,7 +89,7 @@ public class BigBenchmark
         ctx.SaveChanges();
         ctx.ChangeTracker.Clear();
     }
-    
+
     [Benchmark]
     public void Update_All()
     {
