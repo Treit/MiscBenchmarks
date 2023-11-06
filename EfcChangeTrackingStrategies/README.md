@@ -1,4 +1,4 @@
-# Small DBO
+# Big DBO
 
 ## Benchmark with 502 Properties DBO
 
