@@ -32,7 +32,7 @@ public class BigBenchmark
         var ctx = Contexts.Values.First();
         //ctx.Database.Migrate();
 
-        ctx.BigPeople.RemoveRange(ctx.BigPeople.ToList().ToList());
+        ctx.BigPeople.RemoveRange(ctx.BigPeople.ToList());
 
         ctx.SaveChanges();
 
@@ -48,7 +48,7 @@ public class BigBenchmark
     {
         // Each iteration remove all people except the init people
         var ctx1 = Contexts.Values.First();
-        ctx1.BigPeople.RemoveRange(ctx1.BigPeople.ToList().ToList());
+        ctx1.BigPeople.RemoveRange(ctx1.BigPeople.ToList());
         ctx1.SaveChanges();
 
         foreach (var ctx in Contexts.Values)
