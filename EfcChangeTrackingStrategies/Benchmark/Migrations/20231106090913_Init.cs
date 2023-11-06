@@ -5,7 +5,7 @@
 namespace Benchmark.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -516,7 +516,57 @@ namespace Benchmark.Migrations
                     Property497 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Property498 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Property499 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Property500 = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Property500 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property501 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property502 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property503 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property504 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property505 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property506 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property507 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property508 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property509 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property510 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property511 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property512 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property513 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property514 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property515 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property516 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property517 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property518 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property519 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property520 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property521 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property522 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property523 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property524 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property525 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property526 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property527 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property528 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property529 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property530 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property531 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property532 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property533 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property534 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property535 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property536 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property537 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property538 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property539 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property540 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property541 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property542 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property543 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property544 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property545 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property546 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property547 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property548 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property549 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Property550 = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

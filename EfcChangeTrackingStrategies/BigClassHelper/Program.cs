@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Diagnostics;
 using System.Text;
 
 var builder = new StringBuilder();
@@ -6,59 +7,19 @@ builder.AppendLine("public class BigPerson : INotifyPropertyChanged, INotifyProp
 builder.AppendLine("{");
 builder.AppendLine("""
     private long _id;
-
-    public long Id
-    {
-        get => _id;
-        set
-        {
-            if (_id != value)
-            {
-                this.OnPropertyChanging();
-                this._id = value;
-                this.OnPropertyChanged();
-            }
-        }
-    }
+    public long Id { get => _id; set { if (_id != value) { this.OnPropertyChanging(); this._id = value; this.OnPropertyChanged(); } } }
 
     private bool _isInit;
-
-    public bool IsInit
-    {
-        get => _isInit;
-        set
-        {
-
-            if (_isInit != value)
-            {
-                this.OnPropertyChanging();
-                this._isInit = value;
-                this.OnPropertyChanged();
-            }
-        }
-    }
+    public bool IsInit { get => _isInit; set { if (_isInit != value) { this.OnPropertyChanging(); this._isInit = value; this.OnPropertyChanged(); } } }
 
     """);
 
 
-for(int i = 1; i < 501; i++)
+for (int i = 1; i < 501; i++)
 {
     builder.AppendLine($$$"""
     private string? _property{{{i}}};
-
-    public string? Property{{{i}}}
-    {
-        get => _property{{{i}}};
-        set
-        {
-            if (_property{{{i}}} != value)
-            {
-                this.OnPropertyChanging();
-                this._property{{{i}}} = value;
-                this.OnPropertyChanged();
-            }
-        }
-    }
+    public string? Property{{{i}}} { get => _property{{{i}}}; set { if (_property{{{i}}} != value) { this.OnPropertyChanging(); this._property{{{i}}} = value; this.OnPropertyChanged(); } } }
 
     """);
 }
@@ -87,4 +48,4 @@ protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName
 
 builder.AppendLine("}");
 
-Console.WriteLine(builder.ToString());
+File.WriteAllText("output.txt", builder.ToString());
