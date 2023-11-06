@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Test;
 
-//[SimpleJob(launchCount: 1, warmupCount: 2, iterationCount: 3)]
+[Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.Method)]
 public class BigBenchmark
 {
     private const int InitCount = 1_000;
@@ -79,11 +79,11 @@ public class BigBenchmark
     }
 
     [Benchmark]
-    public void Add_HalfOfTotal()
+    public void Add_1k()
     {
         var ctx = Contexts[ChangeTrackingStrategy];
 
-        for (int i = 0; i < (InitCount / 2); i++)
+        for (int i = 0; i < 500; i++)
             ctx.BigPeople.Add(new BigPerson());
 
         ctx.SaveChanges();
@@ -106,22 +106,6 @@ public class BigBenchmark
     }
 
     [Benchmark]
-    public void Update_Half_Init()
-    {
-        var ctx = Contexts[ChangeTrackingStrategy];
-
-        foreach (var person in ctx.BigPeople.ToList().Take(InitCount / 2))
-        {
-            string counter = (++UniqueCounter).ToString();
-            person.Property1 = counter;
-            person.Property250 = counter;
-            person.Property500 = counter;
-        }
-
-        ctx.SaveChanges();
-    }
-
-    [Benchmark]
     public void Update_Quarter_Init()
     {
         var ctx = Contexts[ChangeTrackingStrategy];
@@ -133,22 +117,6 @@ public class BigBenchmark
             person.Property250 = counter;
             person.Property500 = counter;
         }
-        ctx.SaveChanges();
-    }
-
-    [Benchmark]
-    public void Update_10_Init()
-    {
-        var ctx = Contexts[ChangeTrackingStrategy];
-
-        foreach (var person in ctx.BigPeople.ToList().Take(10))
-        {
-            string counter = (++UniqueCounter).ToString();
-            person.Property1 = counter;
-            person.Property250 = counter;
-            person.Property500 = counter;
-        }
-
         ctx.SaveChanges();
     }
 

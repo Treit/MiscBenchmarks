@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 public class SmallPerson : INotifyPropertyChanged, INotifyPropertyChanging

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Benchmark.Migrations
 {
     [DbContext(typeof(SnapshotContext))]
-    [Migration("20231106103642_Init")]
+    [Migration("20231106120014_Init")]
     partial class Init
     {
         /// <inheritdoc />

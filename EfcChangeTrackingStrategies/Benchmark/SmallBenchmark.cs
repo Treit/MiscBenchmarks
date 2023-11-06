@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Test;
 
-[SimpleJob(launchCount: 1, warmupCount: 2, iterationCount: 3)]
+[Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.Method)]
 public class SmallBenchmark
 {
     private const int InitCount = 250_000;
@@ -67,7 +67,7 @@ public class SmallBenchmark
     }
 
     [Benchmark]
-    public void SmallPerson_Add_One()
+    public void Add_One()
     {
         var ctx = Contexts[ChangeTrackingStrategy];
         ctx.SmallPeople.Add(new SmallPerson());
@@ -75,18 +75,18 @@ public class SmallBenchmark
     }
 
     [Benchmark]
-    public void SmallPerson_Add_Half()
+    public void Add_500()
     {
         var ctx = Contexts[ChangeTrackingStrategy];
 
-        for (int i = 0; i < (InitCount / 2); i++)
+        for (int i = 0; i < 500; i++)
             ctx.SmallPeople.Add(new SmallPerson());
 
         ctx.SaveChanges();
     }
 
     [Benchmark]
-    public void SmallPerson_Update_All()
+    public void Update_All()
     {
         var ctx = Contexts[ChangeTrackingStrategy];
 
@@ -97,18 +97,7 @@ public class SmallBenchmark
     }
 
     [Benchmark]
-    public void SmallPerson_Update_Half_Init()
-    {
-        var ctx = Contexts[ChangeTrackingStrategy];
-
-        foreach (var person in ctx.SmallPeople.ToList().Take(InitCount / 2))
-            person.FullName = (++UniqueCounter).ToString();
-
-        ctx.SaveChanges();
-    }
-
-    [Benchmark]
-    public void SmallPerson_Update_Quarter_Init()
+    public void Update_Quarter_Init()
     {
         var ctx = Contexts[ChangeTrackingStrategy];
 
@@ -118,16 +107,5 @@ public class SmallBenchmark
         ctx.SaveChanges();
     }
 
-    [Benchmark]
-    public void SmallPerson_Update_10_Init()
-    {
-        var ctx = Contexts[ChangeTrackingStrategy];
-
-        foreach (var person in ctx.SmallPeople.ToList().Take(10))
-            person.FullName = (++UniqueCounter).ToString();
-
-        ctx.SaveChanges();
-    }
-    
     private static ulong UniqueCounter;
 }
