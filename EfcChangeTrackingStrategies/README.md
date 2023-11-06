@@ -1,4 +1,6 @@
-Benchmark with 500 Properties DBO
+# Small DBO
+
+## Benchmark with 502 Properties DBO
 
 ``` ini
 BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22621.2506)
@@ -8,8 +10,6 @@ AMD Ryzen 7 5800X3D, 1 CPU, 16 logical and 8 physical cores
   Job-KAVUZH : .NET 7.0.13 (7.0.1323.51816), X64 RyuJIT AVX2
 ```
 
-
-InvocationCount=1  UnrollFactor=1
 
 |              Method | ChangeTrackingStrategy |         Mean |      Error |     StdDev |
 |-------------------- |----------------------- |-------------:|-----------:|-----------:|
@@ -35,7 +35,9 @@ InvocationCount=1  UnrollFactor=1
 
 ---
 
-Benchmark with 500 Properties DBO
+# Small DBO
+
+## Benchmark with 3 Properties DBO
 
 ``` ini
 BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22621.2506)
