@@ -79,7 +79,7 @@ public class BigBenchmark
     }
 
     [Benchmark]
-    public void Add_1k()
+    public void Add_500()
     {
         var ctx = Contexts[ChangeTrackingStrategy];
 

@@ -13,10 +13,10 @@ AMD Ryzen 7 5800X3D, 1 CPU, 16 logical and 8 physical cores
 
 |              Method | ChangeTrackingStrategy |         Mean |      Error |     StdDev |
 |-------------------- |----------------------- |-------------:|-----------:|-----------:|
-|              Add_1k |               Snapshot | 1,425.693 ms | 14.3113 ms | 13.3868 ms |
-|              Add_1k |   ChangedNotifications | 1,395.192 ms | 11.5371 ms | 10.7918 ms |
-|              Add_1k |   ChangingAndChangedNotifications | 1,349.691 ms |  9.6848 ms |  9.0592 ms |
-|              Add_1k |   ChangingAndChangedNotificationsWithOriginalValues | 1,399.471 ms |  9.6454 ms |  8.5504 ms |
+|             Add_500 |               Snapshot | 1,425.693 ms | 14.3113 ms | 13.3868 ms |
+|             Add_500 |   ChangedNotifications | 1,395.192 ms | 11.5371 ms | 10.7918 ms |
+|             Add_500 |   ChangingAndChangedNotifications | 1,349.691 ms |  9.6848 ms |  9.0592 ms |
+|             Add_500 |   ChangingAndChangedNotificationsWithOriginalValues | 1,399.471 ms |  9.6454 ms |  8.5504 ms |
 |
 |             Add_One |               Snapshot |     3.774 ms |  0.0748 ms |  0.0998 ms |
 |             Add_One |   ChangedNotifications |     3.743 ms |  0.0746 ms |  0.1184 ms |
