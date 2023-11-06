@@ -8,18 +8,18 @@ public class SmallBenchmark
 {
     private const int InitCount = 250_000;
 
-    private readonly IReadOnlyDictionary<ChangeTrackingStrategy, Context> Contexts = new Dictionary<ChangeTrackingStrategy, Context>()
+    private readonly Dictionary<ChangeTrackingStrategy, IContext> Contexts = new()
     {
-        [ChangeTrackingStrategy.Snapshot] = new Context(ChangeTrackingStrategy.Snapshot),
-        //[ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues] = new Context(ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues),
-        //[ChangeTrackingStrategy.ChangedNotifications] = new Context(ChangeTrackingStrategy.ChangedNotifications),
-        [ChangeTrackingStrategy.ChangingAndChangedNotifications] = new Context(ChangeTrackingStrategy.ChangingAndChangedNotifications)
+        [ChangeTrackingStrategy.Snapshot] = new SnapshotContext(),
+        [ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues] = new ChangingAndChangedNotificationsWithOriginalValuesContext(),
+        [ChangeTrackingStrategy.ChangedNotifications] = new ChangedNotificationsContext(),
+        [ChangeTrackingStrategy.ChangingAndChangedNotifications] = new ChangingAndChangedNotificationsContext()
     };
 
     [Params(
         ChangeTrackingStrategy.Snapshot,
-        //ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues,
-        //ChangeTrackingStrategy.ChangedNotifications,
+        ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues,
+        ChangeTrackingStrategy.ChangedNotifications,
         ChangeTrackingStrategy.ChangingAndChangedNotifications
         )]
     public ChangeTrackingStrategy ChangeTrackingStrategy { get; set; }

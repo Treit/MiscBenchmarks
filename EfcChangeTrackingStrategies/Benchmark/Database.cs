@@ -1,33 +1,80 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.ObjectModel;
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
-public class Context : DbContext
+public interface IContext
+{
+    DbSet<BigPerson> BigPeople { get; }
+    DbSet<SmallPerson> SmallPeople { get; }
+    ChangeTracker ChangeTracker { get; }
+    DatabaseFacade Database { get; }
+    int SaveChanges();
+}
+
+public class SnapshotContext : DbContext, IContext
 {
     public DbSet<SmallPerson> SmallPeople { get; set; }
     public DbSet<BigPerson> BigPeople { get; set; }
 
-    private ChangeTrackingStrategy _changeTrackingStrategy;
-
-    public Context()
-    {
-
-    }
-    public Context(ChangeTrackingStrategy changeTrackingStrategy)
-    {
-        _changeTrackingStrategy = changeTrackingStrategy;
-    }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=.; Integrated Security=sspi; Initial Catalog=EfcChangeTrackingStrategies;Encrypt=false");
-        //optionsBuilder.UseInMemoryDatabase("EfcChangeTrackingStrategies");
+        optionsBuilder.UseSqlite("Data Source=db.sqlite");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.HasChangeTrackingStrategy(ChangeTrackingStrategy.Snapshot);
+    }
+}
 
-        modelBuilder.HasChangeTrackingStrategy(_changeTrackingStrategy);
+public class ChangingAndChangedNotificationsContext : DbContext, IContext
+{
+    public DbSet<SmallPerson> SmallPeople { get; set; }
+    public DbSet<BigPerson> BigPeople { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("Data Source=db.sqlite");
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.HasChangeTrackingStrategy(ChangeTrackingStrategy.ChangingAndChangedNotifications);
+    }
+}
+
+public class ChangedNotificationsContext : DbContext, IContext
+{
+    public DbSet<SmallPerson> SmallPeople { get; set; }
+    public DbSet<BigPerson> BigPeople { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("Data Source=db.sqlite");
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.HasChangeTrackingStrategy(ChangeTrackingStrategy.ChangedNotifications);
+    }
+}
+
+public class ChangingAndChangedNotificationsWithOriginalValuesContext : DbContext, IContext
+{
+    public DbSet<SmallPerson> SmallPeople { get; set; }
+    public DbSet<BigPerson> BigPeople { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("Data Source=db.sqlite");
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.HasChangeTrackingStrategy(ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues);
     }
 }
