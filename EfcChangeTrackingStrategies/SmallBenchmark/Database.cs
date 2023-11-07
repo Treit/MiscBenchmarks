@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 public interface IContext
 {
-    DbSet<BigPerson> BigPeople { get; }
     DbSet<SmallPerson> SmallPeople { get; }
     ChangeTracker ChangeTracker { get; }
     DatabaseFacade Database { get; }
@@ -14,7 +13,6 @@ public interface IContext
 public class SnapshotContext : DbContext, IContext
 {
     public DbSet<SmallPerson> SmallPeople { get; set; }
-    public DbSet<BigPerson> BigPeople { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -31,7 +29,6 @@ public class SnapshotContext : DbContext, IContext
 public class ChangingAndChangedNotificationsContext : DbContext, IContext
 {
     public DbSet<SmallPerson> SmallPeople { get; set; }
-    public DbSet<BigPerson> BigPeople { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -48,7 +45,6 @@ public class ChangingAndChangedNotificationsContext : DbContext, IContext
 public class ChangedNotificationsContext : DbContext, IContext
 {
     public DbSet<SmallPerson> SmallPeople { get; set; }
-    public DbSet<BigPerson> BigPeople { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -65,7 +61,6 @@ public class ChangedNotificationsContext : DbContext, IContext
 public class ChangingAndChangedNotificationsWithOriginalValuesContext : DbContext, IContext
 {
     public DbSet<SmallPerson> SmallPeople { get; set; }
-    public DbSet<BigPerson> BigPeople { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
