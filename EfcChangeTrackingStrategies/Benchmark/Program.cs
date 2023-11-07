@@ -19,12 +19,12 @@ internal class Program
         config.AddValidator(DefaultConfig.Instance.GetValidators().ToArray());
         config.UnionRule = ConfigUnionRule.AlwaysUseGlobal; // Overriding the default
 
-        //var smallSummary = BenchmarkRunner.Run<SmallBenchmark>(config);
+        var smallSummary = BenchmarkRunner.Run<SmallBenchmark>(config);
         var bigSummary = BenchmarkRunner.Run<BigBenchmark>(config);
 
         var logger = ConsoleLogger.Default;
-        //MarkdownExporter.Console.ExportToLog(smallSummary, logger);
-        //ConclusionHelper.Print(logger, smallSummary.BenchmarksCases.First().Config.GetCompositeAnalyser().Analyse(smallSummary).ToList());
+        MarkdownExporter.Console.ExportToLog(smallSummary, logger);
+        ConclusionHelper.Print(logger, smallSummary.BenchmarksCases.First().Config.GetCompositeAnalyser().Analyse(smallSummary).ToList());
 
         MarkdownExporter.Console.ExportToLog(bigSummary, logger);
         ConclusionHelper.Print(logger, bigSummary.BenchmarksCases.First().Config.GetCompositeAnalyser().Analyse(bigSummary).ToList());

@@ -1,37 +1,37 @@
 # Big DBO
 
-## Benchmark with 502 Properties DBO
+## Benchmark with 502 Properties DBO (1/2 int, 1/2 string)
 
 ``` ini
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22621.2506)
-AMD Ryzen 7 5800X3D, 1 CPU, 16 logical and 8 physical cores
+BenchmarkDotNet=v0.13.3, OS=Windows 10 (10.0.19045.3570)
+12th Gen Intel Core i7-1255U, 1 CPU, 12 logical and 10 physical cores
 .NET SDK=8.0.100-rc.2.23502.2
   [Host]     : .NET 7.0.13 (7.0.1323.51816), X64 RyuJIT AVX2
-  Job-KAVUZH : .NET 7.0.13 (7.0.1323.51816), X64 RyuJIT AVX2
+  Job-XLOGWS : .NET 7.0.13 (7.0.1323.51816), X64 RyuJIT AVX2
 ```
-
 
 |              Method | ChangeTrackingStrategy |         Mean |      Error |     StdDev |
 |-------------------- |----------------------- |-------------:|-----------:|-----------:|
-|             Add_500 |               Snapshot | 1,425.693 ms | 14.3113 ms | 13.3868 ms |
-|             Add_500 |   ChangedNotifications | 1,395.192 ms | 11.5371 ms | 10.7918 ms |
-|             Add_500 |   ChangingAndChangedNotifications | 1,349.691 ms |  9.6848 ms |  9.0592 ms |
-|             Add_500 |   ChangingAndChangedNotificationsWithOriginalValues | 1,399.471 ms |  9.6454 ms |  8.5504 ms |
+|             Add_500 |               Snapshot | 1,040.358 ms | 18.2853 ms | 15.2691 ms |
+|             Add_500 |   ChangedNotifications |   994.598 ms | 15.4188 ms | 12.8754 ms |
+|             Add_500 |   ChangingAndChangedNotifications |   973.407 ms |  7.4765 ms |  6.2432 ms |
+|             Add_500 |   ChangingAndChangedNotificationsWithOriginalValues | 1,009.971 ms | 18.2202 ms | 15.2147 ms |
 | | | | | |
-|             Add_One |               Snapshot |     3.774 ms |  0.0748 ms |  0.0998 ms |
-|             Add_One |   ChangedNotifications |     3.743 ms |  0.0746 ms |  0.1184 ms |
-|             Add_One |   ChangingAndChangedNotifications |     3.575 ms |  0.0359 ms |  0.0318 ms |
-|             Add_One |   ChangingAndChangedNotificationsWithOriginalValues |     3.790 ms |  0.0753 ms |  0.1080 ms |
+|             Add_One |               Snapshot |     3.684 ms |  0.0712 ms |  0.1592 ms |
+|             Add_One |   ChangedNotifications |     3.577 ms |  0.0710 ms |  0.2037 ms |
+|             Add_One |   ChangingAndChangedNotifications |     3.460 ms |  0.0685 ms |  0.1628 ms |
+|             Add_One |   ChangingAndChangedNotificationsWithOriginalValues |     3.616 ms |  0.0717 ms |  0.1986 ms |
 | | | | | |
-|          Update_All |               Snapshot |   144.146 ms |  1.5040 ms |  1.3333 ms |
-|          Update_All |   ChangedNotifications |    92.255 ms |  0.8700 ms |  0.7265 ms |
-|          Update_All |   ChangingAndChangedNotifications |    46.085 ms |  0.5827 ms |  0.5165 ms |
-|          Update_All |   ChangingAndChangedNotificationsWithOriginalValues |    46.927 ms |  0.6423 ms |  0.5694 ms |
+|          Update_All |               Snapshot |   126.632 ms |  1.9461 ms |  1.8204 ms |
+|          Update_All |   ChangedNotifications |    69.876 ms |  1.3267 ms |  1.9447 ms |
+|          Update_All |   ChangingAndChangedNotifications |    55.474 ms |  1.0826 ms |  1.3691 ms |
+|          Update_All |   ChangingAndChangedNotificationsWithOriginalValues |    56.346 ms |  0.9987 ms |  1.0686 ms |
 | | | | | |
-| Update_Quarter_Init |               Snapshot |   142.603 ms |  0.8525 ms |  0.7975 ms |
-| Update_Quarter_Init |   ChangedNotifications |    92.323 ms |  1.1483 ms |  1.0179 ms |
-| Update_Quarter_Init |   ChangingAndChangedNotifications |    46.200 ms |  0.6689 ms |  0.5929 ms |
-| Update_Quarter_Init |   ChangingAndChangedNotificationsWithOriginalValues |    46.933 ms |  0.9000 ms |  1.0365 ms |
+| Update_Quarter_Init |               Snapshot |   128.518 ms |  2.5677 ms |  3.1534 ms |
+| Update_Quarter_Init |   ChangedNotifications |    70.205 ms |  1.0912 ms |  1.1206 ms |
+| Update_Quarter_Init |   ChangingAndChangedNotifications |    55.577 ms |  0.9314 ms |  0.8257 ms |
+| Update_Quarter_Init |   ChangingAndChangedNotificationsWithOriginalValues |    54.799 ms |  0.9521 ms |  0.8906 ms |
+
 
 ---
 
@@ -40,32 +40,31 @@ AMD Ryzen 7 5800X3D, 1 CPU, 16 logical and 8 physical cores
 ## Benchmark with 3 Properties DBO
 
 ``` ini
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22621.2506)
-AMD Ryzen 7 5800X3D, 1 CPU, 16 logical and 8 physical cores
+BenchmarkDotNet=v0.13.3, OS=Windows 10 (10.0.19045.3570)
+12th Gen Intel Core i7-1255U, 1 CPU, 12 logical and 10 physical cores
 .NET SDK=8.0.100-rc.2.23502.2
   [Host]     : .NET 7.0.13 (7.0.1323.51816), X64 RyuJIT AVX2
-  Job-KAVUZH : .NET 7.0.13 (7.0.1323.51816), X64 RyuJIT AVX2
+  Job-HMQITW : .NET 7.0.13 (7.0.1323.51816), X64 RyuJIT AVX2
 ```
-
 
 |              Method | ChangeTrackingStrategy |       Mean |      Error |     StdDev |     Median |
 |-------------------- |----------------------- |-----------:|-----------:|-----------:|-----------:|
-|             Add_500 |               Snapshot |  15.222 ms |  0.3017 ms |  0.4028 ms |  15.154 ms |
-|             Add_500 |   ChangedNotifications |  15.150 ms |  0.3027 ms |  0.2973 ms |  15.126 ms |
-|             Add_500 |   ChangingAndChangedNotifications |  15.364 ms |  0.3034 ms |  0.5548 ms |  15.154 ms |
-|             Add_500 |   ChangingAndChangedNotificationsWithOriginalValues |  14.934 ms |  0.2019 ms |  0.1790 ms |  14.921 ms |
+|             Add_500 |               Snapshot |   8.544 ms |  0.1931 ms |  0.5693 ms |   8.500 ms |
+|             Add_500 |   ChangedNotifications |   8.408 ms |  0.1598 ms |  0.3117 ms |   8.381 ms |
+|             Add_500 |   ChangingAndChangedNotifications |   7.486 ms |  0.1640 ms |  0.4758 ms |   7.253 ms |
+|             Add_500 |   ChangingAndChangedNotificationsWithOriginalValues |   7.419 ms |  0.1365 ms |  0.2908 ms |   7.354 ms |
 | | | | | |
-|             Add_One |               Snapshot |   1.110 ms |  0.0213 ms |  0.0498 ms |   1.094 ms |
-|             Add_One |   ChangedNotifications |   1.118 ms |  0.0329 ms |  0.0960 ms |   1.064 ms |
-|             Add_One |   ChangingAndChangedNotifications |   1.054 ms |  0.0196 ms |  0.0354 ms |   1.050 ms |
-|             Add_One |   ChangingAndChangedNotificationsWithOriginalValues |   1.033 ms |  0.0206 ms |  0.0202 ms |   1.030 ms |
+|             Add_One |               Snapshot |   1.321 ms |  0.0466 ms |  0.1359 ms |   1.337 ms |
+|             Add_One |   ChangedNotifications |   1.196 ms |  0.0414 ms |  0.1207 ms |   1.173 ms |
+|             Add_One |   ChangingAndChangedNotifications |   1.154 ms |  0.0406 ms |  0.1165 ms |   1.135 ms |
+|             Add_One |   ChangingAndChangedNotificationsWithOriginalValues |   1.179 ms |  0.0396 ms |  0.1148 ms |   1.164 ms |
 | | | | | |
-|          Update_All |               Snapshot | 684.286 ms | 11.7951 ms | 11.0331 ms | 679.281 ms |
-|          Update_All |   ChangedNotifications | 599.957 ms |  8.2997 ms |  7.7635 ms | 600.404 ms |
-|          Update_All |   ChangingAndChangedNotifications | 573.341 ms |  8.2749 ms |  7.3355 ms | 571.475 ms |
-|          Update_All |   ChangingAndChangedNotificationsWithOriginalValues | 575.693 ms |  2.9184 ms |  2.4370 ms | 575.990 ms |
+|          Update_All |               Snapshot | 631.568 ms | 12.0559 ms | 16.0942 ms | 627.689 ms |
+|          Update_All |   ChangedNotifications | 609.746 ms | 11.3041 ms | 19.1952 ms | 604.924 ms |
+|          Update_All |   ChangingAndChangedNotifications | 541.926 ms |  4.9950 ms |  4.4280 ms | 540.161 ms |
+|          Update_All |   ChangingAndChangedNotificationsWithOriginalValues | 581.040 ms | 11.4865 ms | 20.1176 ms | 576.844 ms |
 | | | | | |
-| Update_Quarter_Init |               Snapshot | 717.805 ms | 12.6788 ms | 11.2394 ms | 719.733 ms |
-| Update_Quarter_Init |   ChangedNotifications | 575.933 ms |  6.2576 ms |  5.8533 ms | 574.887 ms |
-| Update_Quarter_Init |   ChangingAndChangedNotifications | 543.376 ms |  3.0684 ms |  2.8702 ms | 542.503 ms |
-| Update_Quarter_Init |   ChangingAndChangedNotificationsWithOriginalValues | 546.123 ms |  4.6848 ms |  4.3822 ms | 544.370 ms |
+| Update_Quarter_Init |               Snapshot | 646.169 ms | 12.1462 ms | 12.9963 ms | 648.254 ms |
+| Update_Quarter_Init |   ChangedNotifications | 557.612 ms | 11.0603 ms | 22.3424 ms | 550.617 ms |
+| Update_Quarter_Init |   ChangingAndChangedNotifications | 515.369 ms | 10.2457 ms | 16.5450 ms | 508.943 ms |
+| Update_Quarter_Init |   ChangingAndChangedNotificationsWithOriginalValues | 517.236 ms |  6.2605 ms |  6.1487 ms | 518.485 ms |
