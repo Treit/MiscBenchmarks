@@ -28,28 +28,14 @@ public class SmallBenchmark
     public void GlobalSetup()
     {
         var ctx = Contexts.Values.First();
-
-        ctx.SmallPeople.RemoveRange(ctx.SmallPeople.ToList());
-
-        ctx.SaveChanges();
+        ctx.Database.EnsureDeleted();
+        ctx.Database.EnsureCreated();
 
         // Always have initial people to work with
         for (int i = 0; i < InitCount; i++)
             ctx.SmallPeople.Add(new SmallPerson() { IsInit = true });
 
         ctx.SaveChanges();
-    }
-
-    [GlobalCleanup]
-    public void GlobalCleanup()
-    {
-        // Each iteration remove all people except the init people
-        var ctx1 = Contexts.Values.First();
-        ctx1.SmallPeople.RemoveRange(ctx1.SmallPeople.ToList());
-        ctx1.SaveChanges();
-
-        foreach (var ctx in Contexts.Values)
-            ctx.ChangeTracker.Clear();
     }
 
     [IterationCleanup]

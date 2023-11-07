@@ -31,29 +31,14 @@ public class BigBenchmark
     public void GlobalSetup()
     {
         var ctx = Contexts.Values.First();
-        //ctx.Database.Migrate();
-
-        ctx.BigPeople.RemoveRange(ctx.BigPeople.ToList());
-
-        ctx.SaveChanges();
+        ctx.Database.EnsureDeleted();
+        ctx.Database.EnsureCreated();
 
         // Always have initial people to work with
         for (int i = 0; i < InitCount; i++)
             ctx.BigPeople.Add(new BigPerson() { IsInit = true });
 
         ctx.SaveChanges();
-    }
-
-    [GlobalCleanup]
-    public void GlobalCleanup()
-    {
-        // Each iteration remove all people except the init people
-        var ctx1 = Contexts.Values.First();
-        ctx1.BigPeople.RemoveRange(ctx1.BigPeople.ToList());
-        ctx1.SaveChanges();
-
-        foreach (var ctx in Contexts.Values)
-            ctx.ChangeTracker.Clear();
     }
 
     [IterationCleanup]
