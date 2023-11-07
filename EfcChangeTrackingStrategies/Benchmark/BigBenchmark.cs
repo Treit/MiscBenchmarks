@@ -96,10 +96,10 @@ public class BigBenchmark
 
         foreach (var person in ctx.BigPeople.ToList())
         {
-            string counter = (++UniqueCounter).ToString();
+            int counter = ++UniqueCounter;
             person.Property1 = counter;
             person.Property250 = counter;
-            person.Property500 = counter;
+            person.Property500 = counter.ToString();
         }
 
         ctx.SaveChanges();
@@ -112,13 +112,13 @@ public class BigBenchmark
 
         foreach (var person in ctx.BigPeople.ToList().Take(InitCount / 4))
         {
-            string counter = (++UniqueCounter).ToString();
+            int counter = ++UniqueCounter;
             person.Property1 = counter;
             person.Property250 = counter;
-            person.Property500 = counter;
+            person.Property500 = counter.ToString();
         }
         ctx.SaveChanges();
     }
 
-    private static ulong UniqueCounter;
+    private static int UniqueCounter;
 }

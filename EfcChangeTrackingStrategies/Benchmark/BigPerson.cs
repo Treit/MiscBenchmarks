@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
 public class BigPerson : INotifyPropertyChanged, INotifyPropertyChanging
 {
     private long _id;
@@ -8,758 +9,755 @@ public class BigPerson : INotifyPropertyChanged, INotifyPropertyChanging
     private bool _isInit;
     public bool IsInit { get => _isInit; set { if (_isInit != value) { this.OnPropertyChanging(); this._isInit = value; this.OnPropertyChanged(); } } }
 
-    private string? _property1;
-    public string? Property1 { get => _property1; set { if (_property1 != value) { this.OnPropertyChanging(); this._property1 = value; this.OnPropertyChanged(); } } }
+    private int _property1;
+    public int Property1 { get => _property1; set { if (_property1 != value) { this.OnPropertyChanging(); this._property1 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property2;
-    public string? Property2 { get => _property2; set { if (_property2 != value) { this.OnPropertyChanging(); this._property2 = value; this.OnPropertyChanged(); } } }
+    private int _property2;
+    public int Property2 { get => _property2; set { if (_property2 != value) { this.OnPropertyChanging(); this._property2 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property3;
-    public string? Property3 { get => _property3; set { if (_property3 != value) { this.OnPropertyChanging(); this._property3 = value; this.OnPropertyChanged(); } } }
+    private int _property3;
+    public int Property3 { get => _property3; set { if (_property3 != value) { this.OnPropertyChanging(); this._property3 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property4;
-    public string? Property4 { get => _property4; set { if (_property4 != value) { this.OnPropertyChanging(); this._property4 = value; this.OnPropertyChanged(); } } }
+    private int _property4;
+    public int Property4 { get => _property4; set { if (_property4 != value) { this.OnPropertyChanging(); this._property4 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property5;
-    public string? Property5 { get => _property5; set { if (_property5 != value) { this.OnPropertyChanging(); this._property5 = value; this.OnPropertyChanged(); } } }
+    private int _property5;
+    public int Property5 { get => _property5; set { if (_property5 != value) { this.OnPropertyChanging(); this._property5 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property6;
-    public string? Property6 { get => _property6; set { if (_property6 != value) { this.OnPropertyChanging(); this._property6 = value; this.OnPropertyChanged(); } } }
+    private int _property6;
+    public int Property6 { get => _property6; set { if (_property6 != value) { this.OnPropertyChanging(); this._property6 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property7;
-    public string? Property7 { get => _property7; set { if (_property7 != value) { this.OnPropertyChanging(); this._property7 = value; this.OnPropertyChanged(); } } }
+    private int _property7;
+    public int Property7 { get => _property7; set { if (_property7 != value) { this.OnPropertyChanging(); this._property7 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property8;
-    public string? Property8 { get => _property8; set { if (_property8 != value) { this.OnPropertyChanging(); this._property8 = value; this.OnPropertyChanged(); } } }
+    private int _property8;
+    public int Property8 { get => _property8; set { if (_property8 != value) { this.OnPropertyChanging(); this._property8 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property9;
-    public string? Property9 { get => _property9; set { if (_property9 != value) { this.OnPropertyChanging(); this._property9 = value; this.OnPropertyChanged(); } } }
+    private int _property9;
+    public int Property9 { get => _property9; set { if (_property9 != value) { this.OnPropertyChanging(); this._property9 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property10;
-    public string? Property10 { get => _property10; set { if (_property10 != value) { this.OnPropertyChanging(); this._property10 = value; this.OnPropertyChanged(); } } }
+    private int _property10;
+    public int Property10 { get => _property10; set { if (_property10 != value) { this.OnPropertyChanging(); this._property10 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property11;
-    public string? Property11 { get => _property11; set { if (_property11 != value) { this.OnPropertyChanging(); this._property11 = value; this.OnPropertyChanged(); } } }
+    private int _property11;
+    public int Property11 { get => _property11; set { if (_property11 != value) { this.OnPropertyChanging(); this._property11 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property12;
-    public string? Property12 { get => _property12; set { if (_property12 != value) { this.OnPropertyChanging(); this._property12 = value; this.OnPropertyChanged(); } } }
+    private int _property12;
+    public int Property12 { get => _property12; set { if (_property12 != value) { this.OnPropertyChanging(); this._property12 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property13;
-    public string? Property13 { get => _property13; set { if (_property13 != value) { this.OnPropertyChanging(); this._property13 = value; this.OnPropertyChanged(); } } }
+    private int _property13;
+    public int Property13 { get => _property13; set { if (_property13 != value) { this.OnPropertyChanging(); this._property13 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property14;
-    public string? Property14 { get => _property14; set { if (_property14 != value) { this.OnPropertyChanging(); this._property14 = value; this.OnPropertyChanged(); } } }
+    private int _property14;
+    public int Property14 { get => _property14; set { if (_property14 != value) { this.OnPropertyChanging(); this._property14 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property15;
-    public string? Property15 { get => _property15; set { if (_property15 != value) { this.OnPropertyChanging(); this._property15 = value; this.OnPropertyChanged(); } } }
+    private int _property15;
+    public int Property15 { get => _property15; set { if (_property15 != value) { this.OnPropertyChanging(); this._property15 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property16;
-    public string? Property16 { get => _property16; set { if (_property16 != value) { this.OnPropertyChanging(); this._property16 = value; this.OnPropertyChanged(); } } }
+    private int _property16;
+    public int Property16 { get => _property16; set { if (_property16 != value) { this.OnPropertyChanging(); this._property16 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property17;
-    public string? Property17 { get => _property17; set { if (_property17 != value) { this.OnPropertyChanging(); this._property17 = value; this.OnPropertyChanged(); } } }
+    private int _property17;
+    public int Property17 { get => _property17; set { if (_property17 != value) { this.OnPropertyChanging(); this._property17 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property18;
-    public string? Property18 { get => _property18; set { if (_property18 != value) { this.OnPropertyChanging(); this._property18 = value; this.OnPropertyChanged(); } } }
+    private int _property18;
+    public int Property18 { get => _property18; set { if (_property18 != value) { this.OnPropertyChanging(); this._property18 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property19;
-    public string? Property19 { get => _property19; set { if (_property19 != value) { this.OnPropertyChanging(); this._property19 = value; this.OnPropertyChanged(); } } }
+    private int _property19;
+    public int Property19 { get => _property19; set { if (_property19 != value) { this.OnPropertyChanging(); this._property19 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property20;
-    public string? Property20 { get => _property20; set { if (_property20 != value) { this.OnPropertyChanging(); this._property20 = value; this.OnPropertyChanged(); } } }
+    private int _property20;
+    public int Property20 { get => _property20; set { if (_property20 != value) { this.OnPropertyChanging(); this._property20 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property21;
-    public string? Property21 { get => _property21; set { if (_property21 != value) { this.OnPropertyChanging(); this._property21 = value; this.OnPropertyChanged(); } } }
+    private int _property21;
+    public int Property21 { get => _property21; set { if (_property21 != value) { this.OnPropertyChanging(); this._property21 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property22;
-    public string? Property22 { get => _property22; set { if (_property22 != value) { this.OnPropertyChanging(); this._property22 = value; this.OnPropertyChanged(); } } }
+    private int _property22;
+    public int Property22 { get => _property22; set { if (_property22 != value) { this.OnPropertyChanging(); this._property22 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property23;
-    public string? Property23 { get => _property23; set { if (_property23 != value) { this.OnPropertyChanging(); this._property23 = value; this.OnPropertyChanged(); } } }
+    private int _property23;
+    public int Property23 { get => _property23; set { if (_property23 != value) { this.OnPropertyChanging(); this._property23 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property24;
-    public string? Property24 { get => _property24; set { if (_property24 != value) { this.OnPropertyChanging(); this._property24 = value; this.OnPropertyChanged(); } } }
+    private int _property24;
+    public int Property24 { get => _property24; set { if (_property24 != value) { this.OnPropertyChanging(); this._property24 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property25;
-    public string? Property25 { get => _property25; set { if (_property25 != value) { this.OnPropertyChanging(); this._property25 = value; this.OnPropertyChanged(); } } }
+    private int _property25;
+    public int Property25 { get => _property25; set { if (_property25 != value) { this.OnPropertyChanging(); this._property25 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property26;
-    public string? Property26 { get => _property26; set { if (_property26 != value) { this.OnPropertyChanging(); this._property26 = value; this.OnPropertyChanged(); } } }
+    private int _property26;
+    public int Property26 { get => _property26; set { if (_property26 != value) { this.OnPropertyChanging(); this._property26 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property27;
-    public string? Property27 { get => _property27; set { if (_property27 != value) { this.OnPropertyChanging(); this._property27 = value; this.OnPropertyChanged(); } } }
+    private int _property27;
+    public int Property27 { get => _property27; set { if (_property27 != value) { this.OnPropertyChanging(); this._property27 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property28;
-    public string? Property28 { get => _property28; set { if (_property28 != value) { this.OnPropertyChanging(); this._property28 = value; this.OnPropertyChanged(); } } }
+    private int _property28;
+    public int Property28 { get => _property28; set { if (_property28 != value) { this.OnPropertyChanging(); this._property28 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property29;
-    public string? Property29 { get => _property29; set { if (_property29 != value) { this.OnPropertyChanging(); this._property29 = value; this.OnPropertyChanged(); } } }
+    private int _property29;
+    public int Property29 { get => _property29; set { if (_property29 != value) { this.OnPropertyChanging(); this._property29 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property30;
-    public string? Property30 { get => _property30; set { if (_property30 != value) { this.OnPropertyChanging(); this._property30 = value; this.OnPropertyChanged(); } } }
+    private int _property30;
+    public int Property30 { get => _property30; set { if (_property30 != value) { this.OnPropertyChanging(); this._property30 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property31;
-    public string? Property31 { get => _property31; set { if (_property31 != value) { this.OnPropertyChanging(); this._property31 = value; this.OnPropertyChanged(); } } }
+    private int _property31;
+    public int Property31 { get => _property31; set { if (_property31 != value) { this.OnPropertyChanging(); this._property31 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property32;
-    public string? Property32 { get => _property32; set { if (_property32 != value) { this.OnPropertyChanging(); this._property32 = value; this.OnPropertyChanged(); } } }
+    private int _property32;
+    public int Property32 { get => _property32; set { if (_property32 != value) { this.OnPropertyChanging(); this._property32 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property33;
-    public string? Property33 { get => _property33; set { if (_property33 != value) { this.OnPropertyChanging(); this._property33 = value; this.OnPropertyChanged(); } } }
+    private int _property33;
+    public int Property33 { get => _property33; set { if (_property33 != value) { this.OnPropertyChanging(); this._property33 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property34;
-    public string? Property34 { get => _property34; set { if (_property34 != value) { this.OnPropertyChanging(); this._property34 = value; this.OnPropertyChanged(); } } }
+    private int _property34;
+    public int Property34 { get => _property34; set { if (_property34 != value) { this.OnPropertyChanging(); this._property34 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property35;
-    public string? Property35 { get => _property35; set { if (_property35 != value) { this.OnPropertyChanging(); this._property35 = value; this.OnPropertyChanged(); } } }
+    private int _property35;
+    public int Property35 { get => _property35; set { if (_property35 != value) { this.OnPropertyChanging(); this._property35 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property36;
-    public string? Property36 { get => _property36; set { if (_property36 != value) { this.OnPropertyChanging(); this._property36 = value; this.OnPropertyChanged(); } } }
+    private int _property36;
+    public int Property36 { get => _property36; set { if (_property36 != value) { this.OnPropertyChanging(); this._property36 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property37;
-    public string? Property37 { get => _property37; set { if (_property37 != value) { this.OnPropertyChanging(); this._property37 = value; this.OnPropertyChanged(); } } }
+    private int _property37;
+    public int Property37 { get => _property37; set { if (_property37 != value) { this.OnPropertyChanging(); this._property37 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property38;
-    public string? Property38 { get => _property38; set { if (_property38 != value) { this.OnPropertyChanging(); this._property38 = value; this.OnPropertyChanged(); } } }
+    private int _property38;
+    public int Property38 { get => _property38; set { if (_property38 != value) { this.OnPropertyChanging(); this._property38 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property39;
-    public string? Property39 { get => _property39; set { if (_property39 != value) { this.OnPropertyChanging(); this._property39 = value; this.OnPropertyChanged(); } } }
+    private int _property39;
+    public int Property39 { get => _property39; set { if (_property39 != value) { this.OnPropertyChanging(); this._property39 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property40;
-    public string? Property40 { get => _property40; set { if (_property40 != value) { this.OnPropertyChanging(); this._property40 = value; this.OnPropertyChanged(); } } }
+    private int _property40;
+    public int Property40 { get => _property40; set { if (_property40 != value) { this.OnPropertyChanging(); this._property40 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property41;
-    public string? Property41 { get => _property41; set { if (_property41 != value) { this.OnPropertyChanging(); this._property41 = value; this.OnPropertyChanged(); } } }
+    private int _property41;
+    public int Property41 { get => _property41; set { if (_property41 != value) { this.OnPropertyChanging(); this._property41 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property42;
-    public string? Property42 { get => _property42; set { if (_property42 != value) { this.OnPropertyChanging(); this._property42 = value; this.OnPropertyChanged(); } } }
+    private int _property42;
+    public int Property42 { get => _property42; set { if (_property42 != value) { this.OnPropertyChanging(); this._property42 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property43;
-    public string? Property43 { get => _property43; set { if (_property43 != value) { this.OnPropertyChanging(); this._property43 = value; this.OnPropertyChanged(); } } }
+    private int _property43;
+    public int Property43 { get => _property43; set { if (_property43 != value) { this.OnPropertyChanging(); this._property43 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property44;
-    public string? Property44 { get => _property44; set { if (_property44 != value) { this.OnPropertyChanging(); this._property44 = value; this.OnPropertyChanged(); } } }
+    private int _property44;
+    public int Property44 { get => _property44; set { if (_property44 != value) { this.OnPropertyChanging(); this._property44 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property45;
-    public string? Property45 { get => _property45; set { if (_property45 != value) { this.OnPropertyChanging(); this._property45 = value; this.OnPropertyChanged(); } } }
+    private int _property45;
+    public int Property45 { get => _property45; set { if (_property45 != value) { this.OnPropertyChanging(); this._property45 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property46;
-    public string? Property46 { get => _property46; set { if (_property46 != value) { this.OnPropertyChanging(); this._property46 = value; this.OnPropertyChanged(); } } }
+    private int _property46;
+    public int Property46 { get => _property46; set { if (_property46 != value) { this.OnPropertyChanging(); this._property46 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property47;
-    public string? Property47 { get => _property47; set { if (_property47 != value) { this.OnPropertyChanging(); this._property47 = value; this.OnPropertyChanged(); } } }
+    private int _property47;
+    public int Property47 { get => _property47; set { if (_property47 != value) { this.OnPropertyChanging(); this._property47 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property48;
-    public string? Property48 { get => _property48; set { if (_property48 != value) { this.OnPropertyChanging(); this._property48 = value; this.OnPropertyChanged(); } } }
+    private int _property48;
+    public int Property48 { get => _property48; set { if (_property48 != value) { this.OnPropertyChanging(); this._property48 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property49;
-    public string? Property49 { get => _property49; set { if (_property49 != value) { this.OnPropertyChanging(); this._property49 = value; this.OnPropertyChanged(); } } }
+    private int _property49;
+    public int Property49 { get => _property49; set { if (_property49 != value) { this.OnPropertyChanging(); this._property49 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property50;
-    public string? Property50 { get => _property50; set { if (_property50 != value) { this.OnPropertyChanging(); this._property50 = value; this.OnPropertyChanged(); } } }
+    private int _property50;
+    public int Property50 { get => _property50; set { if (_property50 != value) { this.OnPropertyChanging(); this._property50 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property51;
-    public string? Property51 { get => _property51; set { if (_property51 != value) { this.OnPropertyChanging(); this._property51 = value; this.OnPropertyChanged(); } } }
+    private int _property51;
+    public int Property51 { get => _property51; set { if (_property51 != value) { this.OnPropertyChanging(); this._property51 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property52;
-    public string? Property52 { get => _property52; set { if (_property52 != value) { this.OnPropertyChanging(); this._property52 = value; this.OnPropertyChanged(); } } }
+    private int _property52;
+    public int Property52 { get => _property52; set { if (_property52 != value) { this.OnPropertyChanging(); this._property52 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property53;
-    public string? Property53 { get => _property53; set { if (_property53 != value) { this.OnPropertyChanging(); this._property53 = value; this.OnPropertyChanged(); } } }
+    private int _property53;
+    public int Property53 { get => _property53; set { if (_property53 != value) { this.OnPropertyChanging(); this._property53 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property54;
-    public string? Property54 { get => _property54; set { if (_property54 != value) { this.OnPropertyChanging(); this._property54 = value; this.OnPropertyChanged(); } } }
+    private int _property54;
+    public int Property54 { get => _property54; set { if (_property54 != value) { this.OnPropertyChanging(); this._property54 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property55;
-    public string? Property55 { get => _property55; set { if (_property55 != value) { this.OnPropertyChanging(); this._property55 = value; this.OnPropertyChanged(); } } }
+    private int _property55;
+    public int Property55 { get => _property55; set { if (_property55 != value) { this.OnPropertyChanging(); this._property55 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property56;
-    public string? Property56 { get => _property56; set { if (_property56 != value) { this.OnPropertyChanging(); this._property56 = value; this.OnPropertyChanged(); } } }
+    private int _property56;
+    public int Property56 { get => _property56; set { if (_property56 != value) { this.OnPropertyChanging(); this._property56 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property57;
-    public string? Property57 { get => _property57; set { if (_property57 != value) { this.OnPropertyChanging(); this._property57 = value; this.OnPropertyChanged(); } } }
+    private int _property57;
+    public int Property57 { get => _property57; set { if (_property57 != value) { this.OnPropertyChanging(); this._property57 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property58;
-    public string? Property58 { get => _property58; set { if (_property58 != value) { this.OnPropertyChanging(); this._property58 = value; this.OnPropertyChanged(); } } }
+    private int _property58;
+    public int Property58 { get => _property58; set { if (_property58 != value) { this.OnPropertyChanging(); this._property58 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property59;
-    public string? Property59 { get => _property59; set { if (_property59 != value) { this.OnPropertyChanging(); this._property59 = value; this.OnPropertyChanged(); } } }
+    private int _property59;
+    public int Property59 { get => _property59; set { if (_property59 != value) { this.OnPropertyChanging(); this._property59 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property60;
-    public string? Property60 { get => _property60; set { if (_property60 != value) { this.OnPropertyChanging(); this._property60 = value; this.OnPropertyChanged(); } } }
+    private int _property60;
+    public int Property60 { get => _property60; set { if (_property60 != value) { this.OnPropertyChanging(); this._property60 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property61;
-    public string? Property61 { get => _property61; set { if (_property61 != value) { this.OnPropertyChanging(); this._property61 = value; this.OnPropertyChanged(); } } }
+    private int _property61;
+    public int Property61 { get => _property61; set { if (_property61 != value) { this.OnPropertyChanging(); this._property61 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property62;
-    public string? Property62 { get => _property62; set { if (_property62 != value) { this.OnPropertyChanging(); this._property62 = value; this.OnPropertyChanged(); } } }
+    private int _property62;
+    public int Property62 { get => _property62; set { if (_property62 != value) { this.OnPropertyChanging(); this._property62 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property63;
-    public string? Property63 { get => _property63; set { if (_property63 != value) { this.OnPropertyChanging(); this._property63 = value; this.OnPropertyChanged(); } } }
+    private int _property63;
+    public int Property63 { get => _property63; set { if (_property63 != value) { this.OnPropertyChanging(); this._property63 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property64;
-    public string? Property64 { get => _property64; set { if (_property64 != value) { this.OnPropertyChanging(); this._property64 = value; this.OnPropertyChanged(); } } }
+    private int _property64;
+    public int Property64 { get => _property64; set { if (_property64 != value) { this.OnPropertyChanging(); this._property64 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property65;
-    public string? Property65 { get => _property65; set { if (_property65 != value) { this.OnPropertyChanging(); this._property65 = value; this.OnPropertyChanged(); } } }
+    private int _property65;
+    public int Property65 { get => _property65; set { if (_property65 != value) { this.OnPropertyChanging(); this._property65 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property66;
-    public string? Property66 { get => _property66; set { if (_property66 != value) { this.OnPropertyChanging(); this._property66 = value; this.OnPropertyChanged(); } } }
+    private int _property66;
+    public int Property66 { get => _property66; set { if (_property66 != value) { this.OnPropertyChanging(); this._property66 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property67;
-    public string? Property67 { get => _property67; set { if (_property67 != value) { this.OnPropertyChanging(); this._property67 = value; this.OnPropertyChanged(); } } }
+    private int _property67;
+    public int Property67 { get => _property67; set { if (_property67 != value) { this.OnPropertyChanging(); this._property67 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property68;
-    public string? Property68 { get => _property68; set { if (_property68 != value) { this.OnPropertyChanging(); this._property68 = value; this.OnPropertyChanged(); } } }
+    private int _property68;
+    public int Property68 { get => _property68; set { if (_property68 != value) { this.OnPropertyChanging(); this._property68 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property69;
-    public string? Property69 { get => _property69; set { if (_property69 != value) { this.OnPropertyChanging(); this._property69 = value; this.OnPropertyChanged(); } } }
+    private int _property69;
+    public int Property69 { get => _property69; set { if (_property69 != value) { this.OnPropertyChanging(); this._property69 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property70;
-    public string? Property70 { get => _property70; set { if (_property70 != value) { this.OnPropertyChanging(); this._property70 = value; this.OnPropertyChanged(); } } }
+    private int _property70;
+    public int Property70 { get => _property70; set { if (_property70 != value) { this.OnPropertyChanging(); this._property70 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property71;
-    public string? Property71 { get => _property71; set { if (_property71 != value) { this.OnPropertyChanging(); this._property71 = value; this.OnPropertyChanged(); } } }
+    private int _property71;
+    public int Property71 { get => _property71; set { if (_property71 != value) { this.OnPropertyChanging(); this._property71 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property72;
-    public string? Property72 { get => _property72; set { if (_property72 != value) { this.OnPropertyChanging(); this._property72 = value; this.OnPropertyChanged(); } } }
+    private int _property72;
+    public int Property72 { get => _property72; set { if (_property72 != value) { this.OnPropertyChanging(); this._property72 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property73;
-    public string? Property73 { get => _property73; set { if (_property73 != value) { this.OnPropertyChanging(); this._property73 = value; this.OnPropertyChanged(); } } }
+    private int _property73;
+    public int Property73 { get => _property73; set { if (_property73 != value) { this.OnPropertyChanging(); this._property73 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property74;
-    public string? Property74 { get => _property74; set { if (_property74 != value) { this.OnPropertyChanging(); this._property74 = value; this.OnPropertyChanged(); } } }
+    private int _property74;
+    public int Property74 { get => _property74; set { if (_property74 != value) { this.OnPropertyChanging(); this._property74 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property75;
-    public string? Property75 { get => _property75; set { if (_property75 != value) { this.OnPropertyChanging(); this._property75 = value; this.OnPropertyChanged(); } } }
+    private int _property75;
+    public int Property75 { get => _property75; set { if (_property75 != value) { this.OnPropertyChanging(); this._property75 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property76;
-    public string? Property76 { get => _property76; set { if (_property76 != value) { this.OnPropertyChanging(); this._property76 = value; this.OnPropertyChanged(); } } }
+    private int _property76;
+    public int Property76 { get => _property76; set { if (_property76 != value) { this.OnPropertyChanging(); this._property76 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property77;
-    public string? Property77 { get => _property77; set { if (_property77 != value) { this.OnPropertyChanging(); this._property77 = value; this.OnPropertyChanged(); } } }
+    private int _property77;
+    public int Property77 { get => _property77; set { if (_property77 != value) { this.OnPropertyChanging(); this._property77 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property78;
-    public string? Property78 { get => _property78; set { if (_property78 != value) { this.OnPropertyChanging(); this._property78 = value; this.OnPropertyChanged(); } } }
+    private int _property78;
+    public int Property78 { get => _property78; set { if (_property78 != value) { this.OnPropertyChanging(); this._property78 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property79;
-    public string? Property79 { get => _property79; set { if (_property79 != value) { this.OnPropertyChanging(); this._property79 = value; this.OnPropertyChanged(); } } }
+    private int _property79;
+    public int Property79 { get => _property79; set { if (_property79 != value) { this.OnPropertyChanging(); this._property79 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property80;
-    public string? Property80 { get => _property80; set { if (_property80 != value) { this.OnPropertyChanging(); this._property80 = value; this.OnPropertyChanged(); } } }
+    private int _property80;
+    public int Property80 { get => _property80; set { if (_property80 != value) { this.OnPropertyChanging(); this._property80 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property81;
-    public string? Property81 { get => _property81; set { if (_property81 != value) { this.OnPropertyChanging(); this._property81 = value; this.OnPropertyChanged(); } } }
+    private int _property81;
+    public int Property81 { get => _property81; set { if (_property81 != value) { this.OnPropertyChanging(); this._property81 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property82;
-    public string? Property82 { get => _property82; set { if (_property82 != value) { this.OnPropertyChanging(); this._property82 = value; this.OnPropertyChanged(); } } }
+    private int _property82;
+    public int Property82 { get => _property82; set { if (_property82 != value) { this.OnPropertyChanging(); this._property82 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property83;
-    public string? Property83 { get => _property83; set { if (_property83 != value) { this.OnPropertyChanging(); this._property83 = value; this.OnPropertyChanged(); } } }
+    private int _property83;
+    public int Property83 { get => _property83; set { if (_property83 != value) { this.OnPropertyChanging(); this._property83 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property84;
-    public string? Property84 { get => _property84; set { if (_property84 != value) { this.OnPropertyChanging(); this._property84 = value; this.OnPropertyChanged(); } } }
+    private int _property84;
+    public int Property84 { get => _property84; set { if (_property84 != value) { this.OnPropertyChanging(); this._property84 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property85;
-    public string? Property85 { get => _property85; set { if (_property85 != value) { this.OnPropertyChanging(); this._property85 = value; this.OnPropertyChanged(); } } }
+    private int _property85;
+    public int Property85 { get => _property85; set { if (_property85 != value) { this.OnPropertyChanging(); this._property85 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property86;
-    public string? Property86 { get => _property86; set { if (_property86 != value) { this.OnPropertyChanging(); this._property86 = value; this.OnPropertyChanged(); } } }
+    private int _property86;
+    public int Property86 { get => _property86; set { if (_property86 != value) { this.OnPropertyChanging(); this._property86 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property87;
-    public string? Property87 { get => _property87; set { if (_property87 != value) { this.OnPropertyChanging(); this._property87 = value; this.OnPropertyChanged(); } } }
+    private int _property87;
+    public int Property87 { get => _property87; set { if (_property87 != value) { this.OnPropertyChanging(); this._property87 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property88;
-    public string? Property88 { get => _property88; set { if (_property88 != value) { this.OnPropertyChanging(); this._property88 = value; this.OnPropertyChanged(); } } }
+    private int _property88;
+    public int Property88 { get => _property88; set { if (_property88 != value) { this.OnPropertyChanging(); this._property88 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property89;
-    public string? Property89 { get => _property89; set { if (_property89 != value) { this.OnPropertyChanging(); this._property89 = value; this.OnPropertyChanged(); } } }
+    private int _property89;
+    public int Property89 { get => _property89; set { if (_property89 != value) { this.OnPropertyChanging(); this._property89 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property90;
-    public string? Property90 { get => _property90; set { if (_property90 != value) { this.OnPropertyChanging(); this._property90 = value; this.OnPropertyChanged(); } } }
+    private int _property90;
+    public int Property90 { get => _property90; set { if (_property90 != value) { this.OnPropertyChanging(); this._property90 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property91;
-    public string? Property91 { get => _property91; set { if (_property91 != value) { this.OnPropertyChanging(); this._property91 = value; this.OnPropertyChanged(); } } }
+    private int _property91;
+    public int Property91 { get => _property91; set { if (_property91 != value) { this.OnPropertyChanging(); this._property91 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property92;
-    public string? Property92 { get => _property92; set { if (_property92 != value) { this.OnPropertyChanging(); this._property92 = value; this.OnPropertyChanged(); } } }
+    private int _property92;
+    public int Property92 { get => _property92; set { if (_property92 != value) { this.OnPropertyChanging(); this._property92 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property93;
-    public string? Property93 { get => _property93; set { if (_property93 != value) { this.OnPropertyChanging(); this._property93 = value; this.OnPropertyChanged(); } } }
+    private int _property93;
+    public int Property93 { get => _property93; set { if (_property93 != value) { this.OnPropertyChanging(); this._property93 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property94;
-    public string? Property94 { get => _property94; set { if (_property94 != value) { this.OnPropertyChanging(); this._property94 = value; this.OnPropertyChanged(); } } }
+    private int _property94;
+    public int Property94 { get => _property94; set { if (_property94 != value) { this.OnPropertyChanging(); this._property94 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property95;
-    public string? Property95 { get => _property95; set { if (_property95 != value) { this.OnPropertyChanging(); this._property95 = value; this.OnPropertyChanged(); } } }
+    private int _property95;
+    public int Property95 { get => _property95; set { if (_property95 != value) { this.OnPropertyChanging(); this._property95 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property96;
-    public string? Property96 { get => _property96; set { if (_property96 != value) { this.OnPropertyChanging(); this._property96 = value; this.OnPropertyChanged(); } } }
+    private int _property96;
+    public int Property96 { get => _property96; set { if (_property96 != value) { this.OnPropertyChanging(); this._property96 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property97;
-    public string? Property97 { get => _property97; set { if (_property97 != value) { this.OnPropertyChanging(); this._property97 = value; this.OnPropertyChanged(); } } }
+    private int _property97;
+    public int Property97 { get => _property97; set { if (_property97 != value) { this.OnPropertyChanging(); this._property97 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property98;
-    public string? Property98 { get => _property98; set { if (_property98 != value) { this.OnPropertyChanging(); this._property98 = value; this.OnPropertyChanged(); } } }
+    private int _property98;
+    public int Property98 { get => _property98; set { if (_property98 != value) { this.OnPropertyChanging(); this._property98 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property99;
-    public string? Property99 { get => _property99; set { if (_property99 != value) { this.OnPropertyChanging(); this._property99 = value; this.OnPropertyChanged(); } } }
+    private int _property99;
+    public int Property99 { get => _property99; set { if (_property99 != value) { this.OnPropertyChanging(); this._property99 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property100;
-    public string? Property100 { get => _property100; set { if (_property100 != value) { this.OnPropertyChanging(); this._property100 = value; this.OnPropertyChanged(); } } }
+    private int _property100;
+    public int Property100 { get => _property100; set { if (_property100 != value) { this.OnPropertyChanging(); this._property100 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property101;
-    public string? Property101 { get => _property101; set { if (_property101 != value) { this.OnPropertyChanging(); this._property101 = value; this.OnPropertyChanged(); } } }
+    private int _property101;
+    public int Property101 { get => _property101; set { if (_property101 != value) { this.OnPropertyChanging(); this._property101 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property102;
-    public string? Property102 { get => _property102; set { if (_property102 != value) { this.OnPropertyChanging(); this._property102 = value; this.OnPropertyChanged(); } } }
+    private int _property102;
+    public int Property102 { get => _property102; set { if (_property102 != value) { this.OnPropertyChanging(); this._property102 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property103;
-    public string? Property103 { get => _property103; set { if (_property103 != value) { this.OnPropertyChanging(); this._property103 = value; this.OnPropertyChanged(); } } }
+    private int _property103;
+    public int Property103 { get => _property103; set { if (_property103 != value) { this.OnPropertyChanging(); this._property103 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property104;
-    public string? Property104 { get => _property104; set { if (_property104 != value) { this.OnPropertyChanging(); this._property104 = value; this.OnPropertyChanged(); } } }
+    private int _property104;
+    public int Property104 { get => _property104; set { if (_property104 != value) { this.OnPropertyChanging(); this._property104 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property105;
-    public string? Property105 { get => _property105; set { if (_property105 != value) { this.OnPropertyChanging(); this._property105 = value; this.OnPropertyChanged(); } } }
+    private int _property105;
+    public int Property105 { get => _property105; set { if (_property105 != value) { this.OnPropertyChanging(); this._property105 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property106;
-    public string? Property106 { get => _property106; set { if (_property106 != value) { this.OnPropertyChanging(); this._property106 = value; this.OnPropertyChanged(); } } }
+    private int _property106;
+    public int Property106 { get => _property106; set { if (_property106 != value) { this.OnPropertyChanging(); this._property106 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property107;
-    public string? Property107 { get => _property107; set { if (_property107 != value) { this.OnPropertyChanging(); this._property107 = value; this.OnPropertyChanged(); } } }
+    private int _property107;
+    public int Property107 { get => _property107; set { if (_property107 != value) { this.OnPropertyChanging(); this._property107 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property108;
-    public string? Property108 { get => _property108; set { if (_property108 != value) { this.OnPropertyChanging(); this._property108 = value; this.OnPropertyChanged(); } } }
+    private int _property108;
+    public int Property108 { get => _property108; set { if (_property108 != value) { this.OnPropertyChanging(); this._property108 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property109;
-    public string? Property109 { get => _property109; set { if (_property109 != value) { this.OnPropertyChanging(); this._property109 = value; this.OnPropertyChanged(); } } }
+    private int _property109;
+    public int Property109 { get => _property109; set { if (_property109 != value) { this.OnPropertyChanging(); this._property109 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property110;
-    public string? Property110 { get => _property110; set { if (_property110 != value) { this.OnPropertyChanging(); this._property110 = value; this.OnPropertyChanged(); } } }
+    private int _property110;
+    public int Property110 { get => _property110; set { if (_property110 != value) { this.OnPropertyChanging(); this._property110 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property111;
-    public string? Property111 { get => _property111; set { if (_property111 != value) { this.OnPropertyChanging(); this._property111 = value; this.OnPropertyChanged(); } } }
+    private int _property111;
+    public int Property111 { get => _property111; set { if (_property111 != value) { this.OnPropertyChanging(); this._property111 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property112;
-    public string? Property112 { get => _property112; set { if (_property112 != value) { this.OnPropertyChanging(); this._property112 = value; this.OnPropertyChanged(); } } }
+    private int _property112;
+    public int Property112 { get => _property112; set { if (_property112 != value) { this.OnPropertyChanging(); this._property112 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property113;
-    public string? Property113 { get => _property113; set { if (_property113 != value) { this.OnPropertyChanging(); this._property113 = value; this.OnPropertyChanged(); } } }
+    private int _property113;
+    public int Property113 { get => _property113; set { if (_property113 != value) { this.OnPropertyChanging(); this._property113 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property114;
-    public string? Property114 { get => _property114; set { if (_property114 != value) { this.OnPropertyChanging(); this._property114 = value; this.OnPropertyChanged(); } } }
+    private int _property114;
+    public int Property114 { get => _property114; set { if (_property114 != value) { this.OnPropertyChanging(); this._property114 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property115;
-    public string? Property115 { get => _property115; set { if (_property115 != value) { this.OnPropertyChanging(); this._property115 = value; this.OnPropertyChanged(); } } }
+    private int _property115;
+    public int Property115 { get => _property115; set { if (_property115 != value) { this.OnPropertyChanging(); this._property115 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property116;
-    public string? Property116 { get => _property116; set { if (_property116 != value) { this.OnPropertyChanging(); this._property116 = value; this.OnPropertyChanged(); } } }
+    private int _property116;
+    public int Property116 { get => _property116; set { if (_property116 != value) { this.OnPropertyChanging(); this._property116 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property117;
-    public string? Property117 { get => _property117; set { if (_property117 != value) { this.OnPropertyChanging(); this._property117 = value; this.OnPropertyChanged(); } } }
+    private int _property117;
+    public int Property117 { get => _property117; set { if (_property117 != value) { this.OnPropertyChanging(); this._property117 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property118;
-    public string? Property118 { get => _property118; set { if (_property118 != value) { this.OnPropertyChanging(); this._property118 = value; this.OnPropertyChanged(); } } }
+    private int _property118;
+    public int Property118 { get => _property118; set { if (_property118 != value) { this.OnPropertyChanging(); this._property118 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property119;
-    public string? Property119 { get => _property119; set { if (_property119 != value) { this.OnPropertyChanging(); this._property119 = value; this.OnPropertyChanged(); } } }
+    private int _property119;
+    public int Property119 { get => _property119; set { if (_property119 != value) { this.OnPropertyChanging(); this._property119 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property120;
-    public string? Property120 { get => _property120; set { if (_property120 != value) { this.OnPropertyChanging(); this._property120 = value; this.OnPropertyChanged(); } } }
+    private int _property120;
+    public int Property120 { get => _property120; set { if (_property120 != value) { this.OnPropertyChanging(); this._property120 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property121;
-    public string? Property121 { get => _property121; set { if (_property121 != value) { this.OnPropertyChanging(); this._property121 = value; this.OnPropertyChanged(); } } }
+    private int _property121;
+    public int Property121 { get => _property121; set { if (_property121 != value) { this.OnPropertyChanging(); this._property121 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property122;
-    public string? Property122 { get => _property122; set { if (_property122 != value) { this.OnPropertyChanging(); this._property122 = value; this.OnPropertyChanged(); } } }
+    private int _property122;
+    public int Property122 { get => _property122; set { if (_property122 != value) { this.OnPropertyChanging(); this._property122 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property123;
-    public string? Property123 { get => _property123; set { if (_property123 != value) { this.OnPropertyChanging(); this._property123 = value; this.OnPropertyChanged(); } } }
+    private int _property123;
+    public int Property123 { get => _property123; set { if (_property123 != value) { this.OnPropertyChanging(); this._property123 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property124;
-    public string? Property124 { get => _property124; set { if (_property124 != value) { this.OnPropertyChanging(); this._property124 = value; this.OnPropertyChanged(); } } }
+    private int _property124;
+    public int Property124 { get => _property124; set { if (_property124 != value) { this.OnPropertyChanging(); this._property124 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property125;
-    public string? Property125 { get => _property125; set { if (_property125 != value) { this.OnPropertyChanging(); this._property125 = value; this.OnPropertyChanged(); } } }
+    private int _property125;
+    public int Property125 { get => _property125; set { if (_property125 != value) { this.OnPropertyChanging(); this._property125 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property126;
-    public string? Property126 { get => _property126; set { if (_property126 != value) { this.OnPropertyChanging(); this._property126 = value; this.OnPropertyChanged(); } } }
+    private int _property126;
+    public int Property126 { get => _property126; set { if (_property126 != value) { this.OnPropertyChanging(); this._property126 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property127;
-    public string? Property127 { get => _property127; set { if (_property127 != value) { this.OnPropertyChanging(); this._property127 = value; this.OnPropertyChanged(); } } }
+    private int _property127;
+    public int Property127 { get => _property127; set { if (_property127 != value) { this.OnPropertyChanging(); this._property127 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property128;
-    public string? Property128 { get => _property128; set { if (_property128 != value) { this.OnPropertyChanging(); this._property128 = value; this.OnPropertyChanged(); } } }
+    private int _property128;
+    public int Property128 { get => _property128; set { if (_property128 != value) { this.OnPropertyChanging(); this._property128 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property129;
-    public string? Property129 { get => _property129; set { if (_property129 != value) { this.OnPropertyChanging(); this._property129 = value; this.OnPropertyChanged(); } } }
+    private int _property129;
+    public int Property129 { get => _property129; set { if (_property129 != value) { this.OnPropertyChanging(); this._property129 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property130;
-    public string? Property130 { get => _property130; set { if (_property130 != value) { this.OnPropertyChanging(); this._property130 = value; this.OnPropertyChanged(); } } }
+    private int _property130;
+    public int Property130 { get => _property130; set { if (_property130 != value) { this.OnPropertyChanging(); this._property130 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property131;
-    public string? Property131 { get => _property131; set { if (_property131 != value) { this.OnPropertyChanging(); this._property131 = value; this.OnPropertyChanged(); } } }
+    private int _property131;
+    public int Property131 { get => _property131; set { if (_property131 != value) { this.OnPropertyChanging(); this._property131 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property132;
-    public string? Property132 { get => _property132; set { if (_property132 != value) { this.OnPropertyChanging(); this._property132 = value; this.OnPropertyChanged(); } } }
+    private int _property132;
+    public int Property132 { get => _property132; set { if (_property132 != value) { this.OnPropertyChanging(); this._property132 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property133;
-    public string? Property133 { get => _property133; set { if (_property133 != value) { this.OnPropertyChanging(); this._property133 = value; this.OnPropertyChanged(); } } }
+    private int _property133;
+    public int Property133 { get => _property133; set { if (_property133 != value) { this.OnPropertyChanging(); this._property133 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property134;
-    public string? Property134 { get => _property134; set { if (_property134 != value) { this.OnPropertyChanging(); this._property134 = value; this.OnPropertyChanged(); } } }
+    private int _property134;
+    public int Property134 { get => _property134; set { if (_property134 != value) { this.OnPropertyChanging(); this._property134 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property135;
-    public string? Property135 { get => _property135; set { if (_property135 != value) { this.OnPropertyChanging(); this._property135 = value; this.OnPropertyChanged(); } } }
+    private int _property135;
+    public int Property135 { get => _property135; set { if (_property135 != value) { this.OnPropertyChanging(); this._property135 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property136;
-    public string? Property136 { get => _property136; set { if (_property136 != value) { this.OnPropertyChanging(); this._property136 = value; this.OnPropertyChanged(); } } }
+    private int _property136;
+    public int Property136 { get => _property136; set { if (_property136 != value) { this.OnPropertyChanging(); this._property136 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property137;
-    public string? Property137 { get => _property137; set { if (_property137 != value) { this.OnPropertyChanging(); this._property137 = value; this.OnPropertyChanged(); } } }
+    private int _property137;
+    public int Property137 { get => _property137; set { if (_property137 != value) { this.OnPropertyChanging(); this._property137 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property138;
-    public string? Property138 { get => _property138; set { if (_property138 != value) { this.OnPropertyChanging(); this._property138 = value; this.OnPropertyChanged(); } } }
+    private int _property138;
+    public int Property138 { get => _property138; set { if (_property138 != value) { this.OnPropertyChanging(); this._property138 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property139;
-    public string? Property139 { get => _property139; set { if (_property139 != value) { this.OnPropertyChanging(); this._property139 = value; this.OnPropertyChanged(); } } }
+    private int _property139;
+    public int Property139 { get => _property139; set { if (_property139 != value) { this.OnPropertyChanging(); this._property139 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property140;
-    public string? Property140 { get => _property140; set { if (_property140 != value) { this.OnPropertyChanging(); this._property140 = value; this.OnPropertyChanged(); } } }
+    private int _property140;
+    public int Property140 { get => _property140; set { if (_property140 != value) { this.OnPropertyChanging(); this._property140 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property141;
-    public string? Property141 { get => _property141; set { if (_property141 != value) { this.OnPropertyChanging(); this._property141 = value; this.OnPropertyChanged(); } } }
+    private int _property141;
+    public int Property141 { get => _property141; set { if (_property141 != value) { this.OnPropertyChanging(); this._property141 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property142;
-    public string? Property142 { get => _property142; set { if (_property142 != value) { this.OnPropertyChanging(); this._property142 = value; this.OnPropertyChanged(); } } }
+    private int _property142;
+    public int Property142 { get => _property142; set { if (_property142 != value) { this.OnPropertyChanging(); this._property142 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property143;
-    public string? Property143 { get => _property143; set { if (_property143 != value) { this.OnPropertyChanging(); this._property143 = value; this.OnPropertyChanged(); } } }
+    private int _property143;
+    public int Property143 { get => _property143; set { if (_property143 != value) { this.OnPropertyChanging(); this._property143 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property144;
-    public string? Property144 { get => _property144; set { if (_property144 != value) { this.OnPropertyChanging(); this._property144 = value; this.OnPropertyChanged(); } } }
+    private int _property144;
+    public int Property144 { get => _property144; set { if (_property144 != value) { this.OnPropertyChanging(); this._property144 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property145;
-    public string? Property145 { get => _property145; set { if (_property145 != value) { this.OnPropertyChanging(); this._property145 = value; this.OnPropertyChanged(); } } }
+    private int _property145;
+    public int Property145 { get => _property145; set { if (_property145 != value) { this.OnPropertyChanging(); this._property145 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property146;
-    public string? Property146 { get => _property146; set { if (_property146 != value) { this.OnPropertyChanging(); this._property146 = value; this.OnPropertyChanged(); } } }
+    private int _property146;
+    public int Property146 { get => _property146; set { if (_property146 != value) { this.OnPropertyChanging(); this._property146 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property147;
-    public string? Property147 { get => _property147; set { if (_property147 != value) { this.OnPropertyChanging(); this._property147 = value; this.OnPropertyChanged(); } } }
+    private int _property147;
+    public int Property147 { get => _property147; set { if (_property147 != value) { this.OnPropertyChanging(); this._property147 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property148;
-    public string? Property148 { get => _property148; set { if (_property148 != value) { this.OnPropertyChanging(); this._property148 = value; this.OnPropertyChanged(); } } }
+    private int _property148;
+    public int Property148 { get => _property148; set { if (_property148 != value) { this.OnPropertyChanging(); this._property148 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property149;
-    public string? Property149 { get => _property149; set { if (_property149 != value) { this.OnPropertyChanging(); this._property149 = value; this.OnPropertyChanged(); } } }
+    private int _property149;
+    public int Property149 { get => _property149; set { if (_property149 != value) { this.OnPropertyChanging(); this._property149 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property150;
-    public string? Property150 { get => _property150; set { if (_property150 != value) { this.OnPropertyChanging(); this._property150 = value; this.OnPropertyChanged(); } } }
+    private int _property150;
+    public int Property150 { get => _property150; set { if (_property150 != value) { this.OnPropertyChanging(); this._property150 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property151;
-    public string? Property151 { get => _property151; set { if (_property151 != value) { this.OnPropertyChanging(); this._property151 = value; this.OnPropertyChanged(); } } }
+    private int _property151;
+    public int Property151 { get => _property151; set { if (_property151 != value) { this.OnPropertyChanging(); this._property151 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property152;
-    public string? Property152 { get => _property152; set { if (_property152 != value) { this.OnPropertyChanging(); this._property152 = value; this.OnPropertyChanged(); } } }
+    private int _property152;
+    public int Property152 { get => _property152; set { if (_property152 != value) { this.OnPropertyChanging(); this._property152 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property153;
-    public string? Property153 { get => _property153; set { if (_property153 != value) { this.OnPropertyChanging(); this._property153 = value; this.OnPropertyChanged(); } } }
+    private int _property153;
+    public int Property153 { get => _property153; set { if (_property153 != value) { this.OnPropertyChanging(); this._property153 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property154;
-    public string? Property154 { get => _property154; set { if (_property154 != value) { this.OnPropertyChanging(); this._property154 = value; this.OnPropertyChanged(); } } }
+    private int _property154;
+    public int Property154 { get => _property154; set { if (_property154 != value) { this.OnPropertyChanging(); this._property154 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property155;
-    public string? Property155 { get => _property155; set { if (_property155 != value) { this.OnPropertyChanging(); this._property155 = value; this.OnPropertyChanged(); } } }
+    private int _property155;
+    public int Property155 { get => _property155; set { if (_property155 != value) { this.OnPropertyChanging(); this._property155 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property156;
-    public string? Property156 { get => _property156; set { if (_property156 != value) { this.OnPropertyChanging(); this._property156 = value; this.OnPropertyChanged(); } } }
+    private int _property156;
+    public int Property156 { get => _property156; set { if (_property156 != value) { this.OnPropertyChanging(); this._property156 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property157;
-    public string? Property157 { get => _property157; set { if (_property157 != value) { this.OnPropertyChanging(); this._property157 = value; this.OnPropertyChanged(); } } }
+    private int _property157;
+    public int Property157 { get => _property157; set { if (_property157 != value) { this.OnPropertyChanging(); this._property157 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property158;
-    public string? Property158 { get => _property158; set { if (_property158 != value) { this.OnPropertyChanging(); this._property158 = value; this.OnPropertyChanged(); } } }
+    private int _property158;
+    public int Property158 { get => _property158; set { if (_property158 != value) { this.OnPropertyChanging(); this._property158 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property159;
-    public string? Property159 { get => _property159; set { if (_property159 != value) { this.OnPropertyChanging(); this._property159 = value; this.OnPropertyChanged(); } } }
+    private int _property159;
+    public int Property159 { get => _property159; set { if (_property159 != value) { this.OnPropertyChanging(); this._property159 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property160;
-    public string? Property160 { get => _property160; set { if (_property160 != value) { this.OnPropertyChanging(); this._property160 = value; this.OnPropertyChanged(); } } }
+    private int _property160;
+    public int Property160 { get => _property160; set { if (_property160 != value) { this.OnPropertyChanging(); this._property160 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property161;
-    public string? Property161 { get => _property161; set { if (_property161 != value) { this.OnPropertyChanging(); this._property161 = value; this.OnPropertyChanged(); } } }
+    private int _property161;
+    public int Property161 { get => _property161; set { if (_property161 != value) { this.OnPropertyChanging(); this._property161 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property162;
-    public string? Property162 { get => _property162; set { if (_property162 != value) { this.OnPropertyChanging(); this._property162 = value; this.OnPropertyChanged(); } } }
+    private int _property162;
+    public int Property162 { get => _property162; set { if (_property162 != value) { this.OnPropertyChanging(); this._property162 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property163;
-    public string? Property163 { get => _property163; set { if (_property163 != value) { this.OnPropertyChanging(); this._property163 = value; this.OnPropertyChanged(); } } }
+    private int _property163;
+    public int Property163 { get => _property163; set { if (_property163 != value) { this.OnPropertyChanging(); this._property163 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property164;
-    public string? Property164 { get => _property164; set { if (_property164 != value) { this.OnPropertyChanging(); this._property164 = value; this.OnPropertyChanged(); } } }
+    private int _property164;
+    public int Property164 { get => _property164; set { if (_property164 != value) { this.OnPropertyChanging(); this._property164 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property165;
-    public string? Property165 { get => _property165; set { if (_property165 != value) { this.OnPropertyChanging(); this._property165 = value; this.OnPropertyChanged(); } } }
+    private int _property165;
+    public int Property165 { get => _property165; set { if (_property165 != value) { this.OnPropertyChanging(); this._property165 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property166;
-    public string? Property166 { get => _property166; set { if (_property166 != value) { this.OnPropertyChanging(); this._property166 = value; this.OnPropertyChanged(); } } }
+    private int _property166;
+    public int Property166 { get => _property166; set { if (_property166 != value) { this.OnPropertyChanging(); this._property166 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property167;
-    public string? Property167 { get => _property167; set { if (_property167 != value) { this.OnPropertyChanging(); this._property167 = value; this.OnPropertyChanged(); } } }
+    private int _property167;
+    public int Property167 { get => _property167; set { if (_property167 != value) { this.OnPropertyChanging(); this._property167 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property168;
-    public string? Property168 { get => _property168; set { if (_property168 != value) { this.OnPropertyChanging(); this._property168 = value; this.OnPropertyChanged(); } } }
+    private int _property168;
+    public int Property168 { get => _property168; set { if (_property168 != value) { this.OnPropertyChanging(); this._property168 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property169;
-    public string? Property169 { get => _property169; set { if (_property169 != value) { this.OnPropertyChanging(); this._property169 = value; this.OnPropertyChanged(); } } }
+    private int _property169;
+    public int Property169 { get => _property169; set { if (_property169 != value) { this.OnPropertyChanging(); this._property169 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property170;
-    public string? Property170 { get => _property170; set { if (_property170 != value) { this.OnPropertyChanging(); this._property170 = value; this.OnPropertyChanged(); } } }
+    private int _property170;
+    public int Property170 { get => _property170; set { if (_property170 != value) { this.OnPropertyChanging(); this._property170 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property171;
-    public string? Property171 { get => _property171; set { if (_property171 != value) { this.OnPropertyChanging(); this._property171 = value; this.OnPropertyChanged(); } } }
+    private int _property171;
+    public int Property171 { get => _property171; set { if (_property171 != value) { this.OnPropertyChanging(); this._property171 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property172;
-    public string? Property172 { get => _property172; set { if (_property172 != value) { this.OnPropertyChanging(); this._property172 = value; this.OnPropertyChanged(); } } }
+    private int _property172;
+    public int Property172 { get => _property172; set { if (_property172 != value) { this.OnPropertyChanging(); this._property172 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property173;
-    public string? Property173 { get => _property173; set { if (_property173 != value) { this.OnPropertyChanging(); this._property173 = value; this.OnPropertyChanged(); } } }
+    private int _property173;
+    public int Property173 { get => _property173; set { if (_property173 != value) { this.OnPropertyChanging(); this._property173 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property174;
-    public string? Property174 { get => _property174; set { if (_property174 != value) { this.OnPropertyChanging(); this._property174 = value; this.OnPropertyChanged(); } } }
+    private int _property174;
+    public int Property174 { get => _property174; set { if (_property174 != value) { this.OnPropertyChanging(); this._property174 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property175;
-    public string? Property175 { get => _property175; set { if (_property175 != value) { this.OnPropertyChanging(); this._property175 = value; this.OnPropertyChanged(); } } }
+    private int _property175;
+    public int Property175 { get => _property175; set { if (_property175 != value) { this.OnPropertyChanging(); this._property175 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property176;
-    public string? Property176 { get => _property176; set { if (_property176 != value) { this.OnPropertyChanging(); this._property176 = value; this.OnPropertyChanged(); } } }
+    private int _property176;
+    public int Property176 { get => _property176; set { if (_property176 != value) { this.OnPropertyChanging(); this._property176 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property177;
-    public string? Property177 { get => _property177; set { if (_property177 != value) { this.OnPropertyChanging(); this._property177 = value; this.OnPropertyChanged(); } } }
+    private int _property177;
+    public int Property177 { get => _property177; set { if (_property177 != value) { this.OnPropertyChanging(); this._property177 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property178;
-    public string? Property178 { get => _property178; set { if (_property178 != value) { this.OnPropertyChanging(); this._property178 = value; this.OnPropertyChanged(); } } }
+    private int _property178;
+    public int Property178 { get => _property178; set { if (_property178 != value) { this.OnPropertyChanging(); this._property178 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property179;
-    public string? Property179 { get => _property179; set { if (_property179 != value) { this.OnPropertyChanging(); this._property179 = value; this.OnPropertyChanged(); } } }
+    private int _property179;
+    public int Property179 { get => _property179; set { if (_property179 != value) { this.OnPropertyChanging(); this._property179 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property180;
-    public string? Property180 { get => _property180; set { if (_property180 != value) { this.OnPropertyChanging(); this._property180 = value; this.OnPropertyChanged(); } } }
+    private int _property180;
+    public int Property180 { get => _property180; set { if (_property180 != value) { this.OnPropertyChanging(); this._property180 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property181;
-    public string? Property181 { get => _property181; set { if (_property181 != value) { this.OnPropertyChanging(); this._property181 = value; this.OnPropertyChanged(); } } }
+    private int _property181;
+    public int Property181 { get => _property181; set { if (_property181 != value) { this.OnPropertyChanging(); this._property181 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property182;
-    public string? Property182 { get => _property182; set { if (_property182 != value) { this.OnPropertyChanging(); this._property182 = value; this.OnPropertyChanged(); } } }
+    private int _property182;
+    public int Property182 { get => _property182; set { if (_property182 != value) { this.OnPropertyChanging(); this._property182 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property183;
-    public string? Property183 { get => _property183; set { if (_property183 != value) { this.OnPropertyChanging(); this._property183 = value; this.OnPropertyChanged(); } } }
+    private int _property183;
+    public int Property183 { get => _property183; set { if (_property183 != value) { this.OnPropertyChanging(); this._property183 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property184;
-    public string? Property184 { get => _property184; set { if (_property184 != value) { this.OnPropertyChanging(); this._property184 = value; this.OnPropertyChanged(); } } }
+    private int _property184;
+    public int Property184 { get => _property184; set { if (_property184 != value) { this.OnPropertyChanging(); this._property184 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property185;
-    public string? Property185 { get => _property185; set { if (_property185 != value) { this.OnPropertyChanging(); this._property185 = value; this.OnPropertyChanged(); } } }
+    private int _property185;
+    public int Property185 { get => _property185; set { if (_property185 != value) { this.OnPropertyChanging(); this._property185 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property186;
-    public string? Property186 { get => _property186; set { if (_property186 != value) { this.OnPropertyChanging(); this._property186 = value; this.OnPropertyChanged(); } } }
+    private int _property186;
+    public int Property186 { get => _property186; set { if (_property186 != value) { this.OnPropertyChanging(); this._property186 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property187;
-    public string? Property187 { get => _property187; set { if (_property187 != value) { this.OnPropertyChanging(); this._property187 = value; this.OnPropertyChanged(); } } }
+    private int _property187;
+    public int Property187 { get => _property187; set { if (_property187 != value) { this.OnPropertyChanging(); this._property187 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property188;
-    public string? Property188 { get => _property188; set { if (_property188 != value) { this.OnPropertyChanging(); this._property188 = value; this.OnPropertyChanged(); } } }
+    private int _property188;
+    public int Property188 { get => _property188; set { if (_property188 != value) { this.OnPropertyChanging(); this._property188 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property189;
-    public string? Property189 { get => _property189; set { if (_property189 != value) { this.OnPropertyChanging(); this._property189 = value; this.OnPropertyChanged(); } } }
+    private int _property189;
+    public int Property189 { get => _property189; set { if (_property189 != value) { this.OnPropertyChanging(); this._property189 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property190;
-    public string? Property190 { get => _property190; set { if (_property190 != value) { this.OnPropertyChanging(); this._property190 = value; this.OnPropertyChanged(); } } }
+    private int _property190;
+    public int Property190 { get => _property190; set { if (_property190 != value) { this.OnPropertyChanging(); this._property190 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property191;
-    public string? Property191 { get => _property191; set { if (_property191 != value) { this.OnPropertyChanging(); this._property191 = value; this.OnPropertyChanged(); } } }
+    private int _property191;
+    public int Property191 { get => _property191; set { if (_property191 != value) { this.OnPropertyChanging(); this._property191 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property192;
-    public string? Property192 { get => _property192; set { if (_property192 != value) { this.OnPropertyChanging(); this._property192 = value; this.OnPropertyChanged(); } } }
+    private int _property192;
+    public int Property192 { get => _property192; set { if (_property192 != value) { this.OnPropertyChanging(); this._property192 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property193;
-    public string? Property193 { get => _property193; set { if (_property193 != value) { this.OnPropertyChanging(); this._property193 = value; this.OnPropertyChanged(); } } }
+    private int _property193;
+    public int Property193 { get => _property193; set { if (_property193 != value) { this.OnPropertyChanging(); this._property193 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property194;
-    public string? Property194 { get => _property194; set { if (_property194 != value) { this.OnPropertyChanging(); this._property194 = value; this.OnPropertyChanged(); } } }
+    private int _property194;
+    public int Property194 { get => _property194; set { if (_property194 != value) { this.OnPropertyChanging(); this._property194 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property195;
-    public string? Property195 { get => _property195; set { if (_property195 != value) { this.OnPropertyChanging(); this._property195 = value; this.OnPropertyChanged(); } } }
+    private int _property195;
+    public int Property195 { get => _property195; set { if (_property195 != value) { this.OnPropertyChanging(); this._property195 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property196;
-    public string? Property196 { get => _property196; set { if (_property196 != value) { this.OnPropertyChanging(); this._property196 = value; this.OnPropertyChanged(); } } }
+    private int _property196;
+    public int Property196 { get => _property196; set { if (_property196 != value) { this.OnPropertyChanging(); this._property196 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property197;
-    public string? Property197 { get => _property197; set { if (_property197 != value) { this.OnPropertyChanging(); this._property197 = value; this.OnPropertyChanged(); } } }
+    private int _property197;
+    public int Property197 { get => _property197; set { if (_property197 != value) { this.OnPropertyChanging(); this._property197 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property198;
-    public string? Property198 { get => _property198; set { if (_property198 != value) { this.OnPropertyChanging(); this._property198 = value; this.OnPropertyChanged(); } } }
+    private int _property198;
+    public int Property198 { get => _property198; set { if (_property198 != value) { this.OnPropertyChanging(); this._property198 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property199;
-    public string? Property199 { get => _property199; set { if (_property199 != value) { this.OnPropertyChanging(); this._property199 = value; this.OnPropertyChanged(); } } }
+    private int _property199;
+    public int Property199 { get => _property199; set { if (_property199 != value) { this.OnPropertyChanging(); this._property199 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property200;
-    public string? Property200 { get => _property200; set { if (_property200 != value) { this.OnPropertyChanging(); this._property200 = value; this.OnPropertyChanged(); } } }
+    private int _property200;
+    public int Property200 { get => _property200; set { if (_property200 != value) { this.OnPropertyChanging(); this._property200 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property201;
-    public string? Property201 { get => _property201; set { if (_property201 != value) { this.OnPropertyChanging(); this._property201 = value; this.OnPropertyChanged(); } } }
+    private int _property201;
+    public int Property201 { get => _property201; set { if (_property201 != value) { this.OnPropertyChanging(); this._property201 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property202;
-    public string? Property202 { get => _property202; set { if (_property202 != value) { this.OnPropertyChanging(); this._property202 = value; this.OnPropertyChanged(); } } }
+    private int _property202;
+    public int Property202 { get => _property202; set { if (_property202 != value) { this.OnPropertyChanging(); this._property202 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property203;
-    public string? Property203 { get => _property203; set { if (_property203 != value) { this.OnPropertyChanging(); this._property203 = value; this.OnPropertyChanged(); } } }
+    private int _property203;
+    public int Property203 { get => _property203; set { if (_property203 != value) { this.OnPropertyChanging(); this._property203 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property204;
-    public string? Property204 { get => _property204; set { if (_property204 != value) { this.OnPropertyChanging(); this._property204 = value; this.OnPropertyChanged(); } } }
+    private int _property204;
+    public int Property204 { get => _property204; set { if (_property204 != value) { this.OnPropertyChanging(); this._property204 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property205;
-    public string? Property205 { get => _property205; set { if (_property205 != value) { this.OnPropertyChanging(); this._property205 = value; this.OnPropertyChanged(); } } }
+    private int _property205;
+    public int Property205 { get => _property205; set { if (_property205 != value) { this.OnPropertyChanging(); this._property205 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property206;
-    public string? Property206 { get => _property206; set { if (_property206 != value) { this.OnPropertyChanging(); this._property206 = value; this.OnPropertyChanged(); } } }
+    private int _property206;
+    public int Property206 { get => _property206; set { if (_property206 != value) { this.OnPropertyChanging(); this._property206 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property207;
-    public string? Property207 { get => _property207; set { if (_property207 != value) { this.OnPropertyChanging(); this._property207 = value; this.OnPropertyChanged(); } } }
+    private int _property207;
+    public int Property207 { get => _property207; set { if (_property207 != value) { this.OnPropertyChanging(); this._property207 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property208;
-    public string? Property208 { get => _property208; set { if (_property208 != value) { this.OnPropertyChanging(); this._property208 = value; this.OnPropertyChanged(); } } }
+    private int _property208;
+    public int Property208 { get => _property208; set { if (_property208 != value) { this.OnPropertyChanging(); this._property208 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property209;
-    public string? Property209 { get => _property209; set { if (_property209 != value) { this.OnPropertyChanging(); this._property209 = value; this.OnPropertyChanged(); } } }
+    private int _property209;
+    public int Property209 { get => _property209; set { if (_property209 != value) { this.OnPropertyChanging(); this._property209 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property210;
-    public string? Property210 { get => _property210; set { if (_property210 != value) { this.OnPropertyChanging(); this._property210 = value; this.OnPropertyChanged(); } } }
+    private int _property210;
+    public int Property210 { get => _property210; set { if (_property210 != value) { this.OnPropertyChanging(); this._property210 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property211;
-    public string? Property211 { get => _property211; set { if (_property211 != value) { this.OnPropertyChanging(); this._property211 = value; this.OnPropertyChanged(); } } }
+    private int _property211;
+    public int Property211 { get => _property211; set { if (_property211 != value) { this.OnPropertyChanging(); this._property211 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property212;
-    public string? Property212 { get => _property212; set { if (_property212 != value) { this.OnPropertyChanging(); this._property212 = value; this.OnPropertyChanged(); } } }
+    private int _property212;
+    public int Property212 { get => _property212; set { if (_property212 != value) { this.OnPropertyChanging(); this._property212 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property213;
-    public string? Property213 { get => _property213; set { if (_property213 != value) { this.OnPropertyChanging(); this._property213 = value; this.OnPropertyChanged(); } } }
+    private int _property213;
+    public int Property213 { get => _property213; set { if (_property213 != value) { this.OnPropertyChanging(); this._property213 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property214;
-    public string? Property214 { get => _property214; set { if (_property214 != value) { this.OnPropertyChanging(); this._property214 = value; this.OnPropertyChanged(); } } }
+    private int _property214;
+    public int Property214 { get => _property214; set { if (_property214 != value) { this.OnPropertyChanging(); this._property214 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property215;
-    public string? Property215 { get => _property215; set { if (_property215 != value) { this.OnPropertyChanging(); this._property215 = value; this.OnPropertyChanged(); } } }
+    private int _property215;
+    public int Property215 { get => _property215; set { if (_property215 != value) { this.OnPropertyChanging(); this._property215 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property216;
-    public string? Property216 { get => _property216; set { if (_property216 != value) { this.OnPropertyChanging(); this._property216 = value; this.OnPropertyChanged(); } } }
+    private int _property216;
+    public int Property216 { get => _property216; set { if (_property216 != value) { this.OnPropertyChanging(); this._property216 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property217;
-    public string? Property217 { get => _property217; set { if (_property217 != value) { this.OnPropertyChanging(); this._property217 = value; this.OnPropertyChanged(); } } }
+    private int _property217;
+    public int Property217 { get => _property217; set { if (_property217 != value) { this.OnPropertyChanging(); this._property217 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property218;
-    public string? Property218 { get => _property218; set { if (_property218 != value) { this.OnPropertyChanging(); this._property218 = value; this.OnPropertyChanged(); } } }
+    private int _property218;
+    public int Property218 { get => _property218; set { if (_property218 != value) { this.OnPropertyChanging(); this._property218 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property219;
-    public string? Property219 { get => _property219; set { if (_property219 != value) { this.OnPropertyChanging(); this._property219 = value; this.OnPropertyChanged(); } } }
+    private int _property219;
+    public int Property219 { get => _property219; set { if (_property219 != value) { this.OnPropertyChanging(); this._property219 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property220;
-    public string? Property220 { get => _property220; set { if (_property220 != value) { this.OnPropertyChanging(); this._property220 = value; this.OnPropertyChanged(); } } }
+    private int _property220;
+    public int Property220 { get => _property220; set { if (_property220 != value) { this.OnPropertyChanging(); this._property220 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property221;
-    public string? Property221 { get => _property221; set { if (_property221 != value) { this.OnPropertyChanging(); this._property221 = value; this.OnPropertyChanged(); } } }
+    private int _property221;
+    public int Property221 { get => _property221; set { if (_property221 != value) { this.OnPropertyChanging(); this._property221 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property222;
-    public string? Property222 { get => _property222; set { if (_property222 != value) { this.OnPropertyChanging(); this._property222 = value; this.OnPropertyChanged(); } } }
+    private int _property222;
+    public int Property222 { get => _property222; set { if (_property222 != value) { this.OnPropertyChanging(); this._property222 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property223;
-    public string? Property223 { get => _property223; set { if (_property223 != value) { this.OnPropertyChanging(); this._property223 = value; this.OnPropertyChanged(); } } }
+    private int _property223;
+    public int Property223 { get => _property223; set { if (_property223 != value) { this.OnPropertyChanging(); this._property223 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property224;
-    public string? Property224 { get => _property224; set { if (_property224 != value) { this.OnPropertyChanging(); this._property224 = value; this.OnPropertyChanged(); } } }
+    private int _property224;
+    public int Property224 { get => _property224; set { if (_property224 != value) { this.OnPropertyChanging(); this._property224 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property225;
-    public string? Property225 { get => _property225; set { if (_property225 != value) { this.OnPropertyChanging(); this._property225 = value; this.OnPropertyChanged(); } } }
+    private int _property225;
+    public int Property225 { get => _property225; set { if (_property225 != value) { this.OnPropertyChanging(); this._property225 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property226;
-    public string? Property226 { get => _property226; set { if (_property226 != value) { this.OnPropertyChanging(); this._property226 = value; this.OnPropertyChanged(); } } }
+    private int _property226;
+    public int Property226 { get => _property226; set { if (_property226 != value) { this.OnPropertyChanging(); this._property226 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property227;
-    public string? Property227 { get => _property227; set { if (_property227 != value) { this.OnPropertyChanging(); this._property227 = value; this.OnPropertyChanged(); } } }
+    private int _property227;
+    public int Property227 { get => _property227; set { if (_property227 != value) { this.OnPropertyChanging(); this._property227 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property228;
-    public string? Property228 { get => _property228; set { if (_property228 != value) { this.OnPropertyChanging(); this._property228 = value; this.OnPropertyChanged(); } } }
+    private int _property228;
+    public int Property228 { get => _property228; set { if (_property228 != value) { this.OnPropertyChanging(); this._property228 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property229;
-    public string? Property229 { get => _property229; set { if (_property229 != value) { this.OnPropertyChanging(); this._property229 = value; this.OnPropertyChanged(); } } }
+    private int _property229;
+    public int Property229 { get => _property229; set { if (_property229 != value) { this.OnPropertyChanging(); this._property229 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property230;
-    public string? Property230 { get => _property230; set { if (_property230 != value) { this.OnPropertyChanging(); this._property230 = value; this.OnPropertyChanged(); } } }
+    private int _property230;
+    public int Property230 { get => _property230; set { if (_property230 != value) { this.OnPropertyChanging(); this._property230 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property231;
-    public string? Property231 { get => _property231; set { if (_property231 != value) { this.OnPropertyChanging(); this._property231 = value; this.OnPropertyChanged(); } } }
+    private int _property231;
+    public int Property231 { get => _property231; set { if (_property231 != value) { this.OnPropertyChanging(); this._property231 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property232;
-    public string? Property232 { get => _property232; set { if (_property232 != value) { this.OnPropertyChanging(); this._property232 = value; this.OnPropertyChanged(); } } }
+    private int _property232;
+    public int Property232 { get => _property232; set { if (_property232 != value) { this.OnPropertyChanging(); this._property232 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property233;
-    public string? Property233 { get => _property233; set { if (_property233 != value) { this.OnPropertyChanging(); this._property233 = value; this.OnPropertyChanged(); } } }
+    private int _property233;
+    public int Property233 { get => _property233; set { if (_property233 != value) { this.OnPropertyChanging(); this._property233 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property234;
-    public string? Property234 { get => _property234; set { if (_property234 != value) { this.OnPropertyChanging(); this._property234 = value; this.OnPropertyChanged(); } } }
+    private int _property234;
+    public int Property234 { get => _property234; set { if (_property234 != value) { this.OnPropertyChanging(); this._property234 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property235;
-    public string? Property235 { get => _property235; set { if (_property235 != value) { this.OnPropertyChanging(); this._property235 = value; this.OnPropertyChanged(); } } }
+    private int _property235;
+    public int Property235 { get => _property235; set { if (_property235 != value) { this.OnPropertyChanging(); this._property235 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property236;
-    public string? Property236 { get => _property236; set { if (_property236 != value) { this.OnPropertyChanging(); this._property236 = value; this.OnPropertyChanged(); } } }
+    private int _property236;
+    public int Property236 { get => _property236; set { if (_property236 != value) { this.OnPropertyChanging(); this._property236 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property237;
-    public string? Property237 { get => _property237; set { if (_property237 != value) { this.OnPropertyChanging(); this._property237 = value; this.OnPropertyChanged(); } } }
+    private int _property237;
+    public int Property237 { get => _property237; set { if (_property237 != value) { this.OnPropertyChanging(); this._property237 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property238;
-    public string? Property238 { get => _property238; set { if (_property238 != value) { this.OnPropertyChanging(); this._property238 = value; this.OnPropertyChanged(); } } }
+    private int _property238;
+    public int Property238 { get => _property238; set { if (_property238 != value) { this.OnPropertyChanging(); this._property238 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property239;
-    public string? Property239 { get => _property239; set { if (_property239 != value) { this.OnPropertyChanging(); this._property239 = value; this.OnPropertyChanged(); } } }
+    private int _property239;
+    public int Property239 { get => _property239; set { if (_property239 != value) { this.OnPropertyChanging(); this._property239 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property240;
-    public string? Property240 { get => _property240; set { if (_property240 != value) { this.OnPropertyChanging(); this._property240 = value; this.OnPropertyChanged(); } } }
+    private int _property240;
+    public int Property240 { get => _property240; set { if (_property240 != value) { this.OnPropertyChanging(); this._property240 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property241;
-    public string? Property241 { get => _property241; set { if (_property241 != value) { this.OnPropertyChanging(); this._property241 = value; this.OnPropertyChanged(); } } }
+    private int _property241;
+    public int Property241 { get => _property241; set { if (_property241 != value) { this.OnPropertyChanging(); this._property241 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property242;
-    public string? Property242 { get => _property242; set { if (_property242 != value) { this.OnPropertyChanging(); this._property242 = value; this.OnPropertyChanged(); } } }
+    private int _property242;
+    public int Property242 { get => _property242; set { if (_property242 != value) { this.OnPropertyChanging(); this._property242 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property243;
-    public string? Property243 { get => _property243; set { if (_property243 != value) { this.OnPropertyChanging(); this._property243 = value; this.OnPropertyChanged(); } } }
+    private int _property243;
+    public int Property243 { get => _property243; set { if (_property243 != value) { this.OnPropertyChanging(); this._property243 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property244;
-    public string? Property244 { get => _property244; set { if (_property244 != value) { this.OnPropertyChanging(); this._property244 = value; this.OnPropertyChanged(); } } }
+    private int _property244;
+    public int Property244 { get => _property244; set { if (_property244 != value) { this.OnPropertyChanging(); this._property244 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property245;
-    public string? Property245 { get => _property245; set { if (_property245 != value) { this.OnPropertyChanging(); this._property245 = value; this.OnPropertyChanged(); } } }
+    private int _property245;
+    public int Property245 { get => _property245; set { if (_property245 != value) { this.OnPropertyChanging(); this._property245 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property246;
-    public string? Property246 { get => _property246; set { if (_property246 != value) { this.OnPropertyChanging(); this._property246 = value; this.OnPropertyChanged(); } } }
+    private int _property246;
+    public int Property246 { get => _property246; set { if (_property246 != value) { this.OnPropertyChanging(); this._property246 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property247;
-    public string? Property247 { get => _property247; set { if (_property247 != value) { this.OnPropertyChanging(); this._property247 = value; this.OnPropertyChanged(); } } }
+    private int _property247;
+    public int Property247 { get => _property247; set { if (_property247 != value) { this.OnPropertyChanging(); this._property247 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property248;
-    public string? Property248 { get => _property248; set { if (_property248 != value) { this.OnPropertyChanging(); this._property248 = value; this.OnPropertyChanged(); } } }
+    private int _property248;
+    public int Property248 { get => _property248; set { if (_property248 != value) { this.OnPropertyChanging(); this._property248 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property249;
-    public string? Property249 { get => _property249; set { if (_property249 != value) { this.OnPropertyChanging(); this._property249 = value; this.OnPropertyChanged(); } } }
+    private int _property249;
+    public int Property249 { get => _property249; set { if (_property249 != value) { this.OnPropertyChanging(); this._property249 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property250;
-    public string? Property250 { get => _property250; set { if (_property250 != value) { this.OnPropertyChanging(); this._property250 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property251;
-    public string? Property251 { get => _property251; set { if (_property251 != value) { this.OnPropertyChanging(); this._property251 = value; this.OnPropertyChanged(); } } }
+    private int _property250;
+    public int Property250 { get => _property250; set { if (_property250 != value) { this.OnPropertyChanging(); this._property250 = value; this.OnPropertyChanged(); } } }
 
     private string? _property252;
     public string? Property252 { get => _property252; set { if (_property252 != value) { this.OnPropertyChanging(); this._property252 = value; this.OnPropertyChanged(); } } }
@@ -1508,155 +1506,6 @@ public class BigPerson : INotifyPropertyChanged, INotifyPropertyChanging
     private string? _property500;
     public string? Property500 { get => _property500; set { if (_property500 != value) { this.OnPropertyChanging(); this._property500 = value; this.OnPropertyChanged(); } } }
 
-    private string? _property501;
-    public string? Property501 { get => _property501; set { if (_property501 != value) { this.OnPropertyChanging(); this._property501 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property502;
-    public string? Property502 { get => _property502; set { if (_property502 != value) { this.OnPropertyChanging(); this._property502 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property503;
-    public string? Property503 { get => _property503; set { if (_property503 != value) { this.OnPropertyChanging(); this._property503 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property504;
-    public string? Property504 { get => _property504; set { if (_property504 != value) { this.OnPropertyChanging(); this._property504 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property505;
-    public string? Property505 { get => _property505; set { if (_property505 != value) { this.OnPropertyChanging(); this._property505 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property506;
-    public string? Property506 { get => _property506; set { if (_property506 != value) { this.OnPropertyChanging(); this._property506 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property507;
-    public string? Property507 { get => _property507; set { if (_property507 != value) { this.OnPropertyChanging(); this._property507 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property508;
-    public string? Property508 { get => _property508; set { if (_property508 != value) { this.OnPropertyChanging(); this._property508 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property509;
-    public string? Property509 { get => _property509; set { if (_property509 != value) { this.OnPropertyChanging(); this._property509 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property510;
-    public string? Property510 { get => _property510; set { if (_property510 != value) { this.OnPropertyChanging(); this._property510 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property511;
-    public string? Property511 { get => _property511; set { if (_property511 != value) { this.OnPropertyChanging(); this._property511 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property512;
-    public string? Property512 { get => _property512; set { if (_property512 != value) { this.OnPropertyChanging(); this._property512 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property513;
-    public string? Property513 { get => _property513; set { if (_property513 != value) { this.OnPropertyChanging(); this._property513 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property514;
-    public string? Property514 { get => _property514; set { if (_property514 != value) { this.OnPropertyChanging(); this._property514 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property515;
-    public string? Property515 { get => _property515; set { if (_property515 != value) { this.OnPropertyChanging(); this._property515 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property516;
-    public string? Property516 { get => _property516; set { if (_property516 != value) { this.OnPropertyChanging(); this._property516 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property517;
-    public string? Property517 { get => _property517; set { if (_property517 != value) { this.OnPropertyChanging(); this._property517 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property518;
-    public string? Property518 { get => _property518; set { if (_property518 != value) { this.OnPropertyChanging(); this._property518 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property519;
-    public string? Property519 { get => _property519; set { if (_property519 != value) { this.OnPropertyChanging(); this._property519 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property520;
-    public string? Property520 { get => _property520; set { if (_property520 != value) { this.OnPropertyChanging(); this._property520 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property521;
-    public string? Property521 { get => _property521; set { if (_property521 != value) { this.OnPropertyChanging(); this._property521 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property522;
-    public string? Property522 { get => _property522; set { if (_property522 != value) { this.OnPropertyChanging(); this._property522 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property523;
-    public string? Property523 { get => _property523; set { if (_property523 != value) { this.OnPropertyChanging(); this._property523 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property524;
-    public string? Property524 { get => _property524; set { if (_property524 != value) { this.OnPropertyChanging(); this._property524 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property525;
-    public string? Property525 { get => _property525; set { if (_property525 != value) { this.OnPropertyChanging(); this._property525 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property526;
-    public string? Property526 { get => _property526; set { if (_property526 != value) { this.OnPropertyChanging(); this._property526 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property527;
-    public string? Property527 { get => _property527; set { if (_property527 != value) { this.OnPropertyChanging(); this._property527 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property528;
-    public string? Property528 { get => _property528; set { if (_property528 != value) { this.OnPropertyChanging(); this._property528 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property529;
-    public string? Property529 { get => _property529; set { if (_property529 != value) { this.OnPropertyChanging(); this._property529 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property530;
-    public string? Property530 { get => _property530; set { if (_property530 != value) { this.OnPropertyChanging(); this._property530 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property531;
-    public string? Property531 { get => _property531; set { if (_property531 != value) { this.OnPropertyChanging(); this._property531 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property532;
-    public string? Property532 { get => _property532; set { if (_property532 != value) { this.OnPropertyChanging(); this._property532 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property533;
-    public string? Property533 { get => _property533; set { if (_property533 != value) { this.OnPropertyChanging(); this._property533 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property534;
-    public string? Property534 { get => _property534; set { if (_property534 != value) { this.OnPropertyChanging(); this._property534 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property535;
-    public string? Property535 { get => _property535; set { if (_property535 != value) { this.OnPropertyChanging(); this._property535 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property536;
-    public string? Property536 { get => _property536; set { if (_property536 != value) { this.OnPropertyChanging(); this._property536 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property537;
-    public string? Property537 { get => _property537; set { if (_property537 != value) { this.OnPropertyChanging(); this._property537 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property538;
-    public string? Property538 { get => _property538; set { if (_property538 != value) { this.OnPropertyChanging(); this._property538 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property539;
-    public string? Property539 { get => _property539; set { if (_property539 != value) { this.OnPropertyChanging(); this._property539 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property540;
-    public string? Property540 { get => _property540; set { if (_property540 != value) { this.OnPropertyChanging(); this._property540 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property541;
-    public string? Property541 { get => _property541; set { if (_property541 != value) { this.OnPropertyChanging(); this._property541 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property542;
-    public string? Property542 { get => _property542; set { if (_property542 != value) { this.OnPropertyChanging(); this._property542 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property543;
-    public string? Property543 { get => _property543; set { if (_property543 != value) { this.OnPropertyChanging(); this._property543 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property544;
-    public string? Property544 { get => _property544; set { if (_property544 != value) { this.OnPropertyChanging(); this._property544 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property545;
-    public string? Property545 { get => _property545; set { if (_property545 != value) { this.OnPropertyChanging(); this._property545 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property546;
-    public string? Property546 { get => _property546; set { if (_property546 != value) { this.OnPropertyChanging(); this._property546 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property547;
-    public string? Property547 { get => _property547; set { if (_property547 != value) { this.OnPropertyChanging(); this._property547 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property548;
-    public string? Property548 { get => _property548; set { if (_property548 != value) { this.OnPropertyChanging(); this._property548 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property549;
-    public string? Property549 { get => _property549; set { if (_property549 != value) { this.OnPropertyChanging(); this._property549 = value; this.OnPropertyChanged(); } } }
-
-    private string? _property550;
-    public string? Property550 { get => _property550; set { if (_property550 != value) { this.OnPropertyChanging(); this._property550 = value; this.OnPropertyChanged(); } } }
 
     public event PropertyChangingEventHandler? PropertyChanging;
     public event PropertyChangedEventHandler? PropertyChanged;

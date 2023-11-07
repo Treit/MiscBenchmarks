@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System.Diagnostics;
-using System.Text;
+﻿using System.Text;
 
 var builder = new StringBuilder();
 builder.AppendLine("public class BigPerson : INotifyPropertyChanged, INotifyPropertyChanging");
@@ -15,7 +13,15 @@ builder.AppendLine("""
     """);
 
 
-for (int i = 1; i < 501; i++)
+for (int i = 1; i < 251; i++)
+{
+    builder.AppendLine($$$"""
+    private int _property{{{i}}};
+    public int Property{{{i}}} { get => _property{{{i}}}; set { if (_property{{{i}}} != value) { this.OnPropertyChanging(); this._property{{{i}}} = value; this.OnPropertyChanged(); } } }
+
+    """);
+}
+for (int i = 252; i < 501; i++)
 {
     builder.AppendLine($$$"""
     private string? _property{{{i}}};
