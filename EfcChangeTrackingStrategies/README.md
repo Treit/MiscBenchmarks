@@ -1,4 +1,4 @@
-# Big DBO
+# BigBenchmark
 
 ## Benchmark with 502 Properties DBO (1/2 int, 1/2 string)
 
@@ -35,7 +35,7 @@ BenchmarkDotNet=v0.13.3, OS=Windows 10 (10.0.19045.3570)
 
 ---
 
-# Small DBO
+# SmallBenchmark
 
 ## Benchmark with 3 Properties DBO
 
