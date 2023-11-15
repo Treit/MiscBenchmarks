@@ -15,5 +15,5 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 |                Method |      Mean |     Error |    StdDev | Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
 |---------------------- |----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
 |     CheckWithSimpleIf |  1.119 ns | 0.0412 ns | 0.0344 ns |  1.00 |    0.00 |      - |         - |          NA |
-| CheckWitStaticHashSet | 11.767 ns | 0.2707 ns | 0.4294 ns | 10.67 |    0.51 |      - |         - |          NA |
+| CheckWithStaticHashSet | 11.767 ns | 0.2707 ns | 0.4294 ns | 10.67 |    0.51 |      - |         - |          NA |
 |   CheckWithNewHashSet | 75.784 ns | 1.4703 ns | 1.5099 ns | 67.97 |    1.96 | 0.0408 |     176 B |          NA |

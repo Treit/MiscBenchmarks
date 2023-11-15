@@ -24,7 +24,7 @@
         }
 
         [Benchmark]
-        public bool CheckWitStaticHashSet()
+        public bool CheckWithStaticHashSet()
         {
             return _values.Contains(_value);
         }
