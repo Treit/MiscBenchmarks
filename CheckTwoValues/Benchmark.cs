@@ -8,26 +8,31 @@
     [MemoryDiagnoser]
     public class Benchmark
     {
-        private string _value;
-
-        public int Count { get; set; }
+        private static string _value = "something";
+        private static HashSet<string> _values = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "wpox", "wpod" };
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            _value = "something";
         }
 
         [Benchmark(Baseline = true)]
         public bool CheckWithSimpleIf()
         {
-            return _value == "wpxfeed" || _value == "wpohp";
+            return _value.Equals("wpxfeed", StringComparison.OrdinalIgnoreCase)
+                || _value.Equals("wpohp", StringComparison.OrdinalIgnoreCase);
         }
 
         [Benchmark]
-        public bool CheckWithNewHashTable()
+        public bool CheckWitStaticHashSet()
         {
-            return new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "wpoxfeed", "wpodhp" }.Contains(_value);
+            return _values.Contains(_value);
+        }
+
+        [Benchmark]
+        public bool CheckWithNewHashSet()
+        {
+            return new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "wpox", "wpod" }.Contains(_value);
         }
     }
 }
