@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Threading;
 
     public class Benchmark
@@ -12,6 +13,7 @@
         public int Count { get; set; }
 
         private Dictionary<int, string> _dict;
+        private ReadOnlyDictionary<int, string> _readOnlyDict;
         private ConcurrentDictionary<int, string> _concurrentdict;
         private ReaderWriterLock _rwlock = new ReaderWriterLock();
         private ReaderWriterLockSlim _rwlockslim = new ReaderWriterLockSlim();
@@ -21,6 +23,7 @@
         public void GlobalSetup()
         {
             _dict = new Dictionary<int, string>(Count);
+            _readOnlyDict = new ReadOnlyDictionary<int, string>(_dict);
             _concurrentdict = new ConcurrentDictionary<int, string>(8, Count);
 
             var r = new Random(Count);
@@ -37,6 +40,12 @@
         public string KeyLookupUsingDictionary()
         {
             return _dict[Count / 2];
+        }
+
+        [Benchmark]
+        public string KeyLookupUsingReadOnlyDictionary()
+        {
+            return _readOnlyDict[Count / 2];
         }
 
         [Benchmark]
