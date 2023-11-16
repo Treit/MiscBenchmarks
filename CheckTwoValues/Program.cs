@@ -13,6 +13,15 @@
 #else
             Benchmark b = new Benchmark();
             b.GlobalSetup();
+            b.Value = "needle_in_a_haystack";
+            var answerA = b.CheckWithSimpleIf();
+            var answerB = b.CheckWithNewHashSet();
+            var answerC = b.CheckWithStaticHashSet();
+            var answerD = b.CheckWithCharListPattern();
+            Console.WriteLine($"CheckWithSimpleIf: {answerA}");
+            Console.WriteLine($"CheckWithNewHashSet: {answerB}");
+            Console.WriteLine($"CheckWithStaticHashSet: {answerC}");
+            Console.WriteLine($"CheckWithCharListPattern: {answerD}");
 #endif
         }
     }
