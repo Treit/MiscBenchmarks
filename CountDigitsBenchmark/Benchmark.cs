@@ -2,6 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
+    using Miz.Util.IntExtensions;
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
@@ -77,6 +78,19 @@
             {
                 // DigitsInLong code written by MaxMahem from the C# discord server.
                 total += DigitsInLong(_values[i]);
+            }
+
+            return total;
+        }
+
+        [Benchmark]
+        public int CountDigitsUsingMaxMahemDigitsLengthConditonalLookup()
+        {
+            int total = 0;
+
+            for (int i = 0; i < _values.Count; i++)
+            {
+                total += _values[i].DigitsLengthConditonalLookup();
             }
 
             return total;
