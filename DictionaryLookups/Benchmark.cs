@@ -42,7 +42,6 @@
             concurrentDictionaryLookup = new ConcurrentDictionary<int, SomeClass>();
             orderedDictionary = new OrderedDictionary();
             hashTable = new Hashtable();
-            frozenDictionary = FrozenDictionary.ToFrozenDictionary(dictionaryLookup);
 
             for (int i = 0; i < len; i++)
             {
@@ -53,6 +52,8 @@
                 orderedDictionary.Add(i, new SomeClass());
                 hashTable.Add(i, new SomeClass());
             }
+
+            frozenDictionary = FrozenDictionary.ToFrozenDictionary(dictionaryLookup);
         }
 
         [Benchmark(Baseline = true)]
