@@ -3,7 +3,9 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
     using System;
+    using System.Collections;
     using System.Collections.Concurrent;
+    using System.Collections.Frozen;
     using System.Collections.Generic;
     using System.Collections.Specialized;
 
@@ -26,6 +28,8 @@
         private SortedDictionary<int, SomeClass> sortedDictionaryLookup;
         private ConcurrentDictionary<int, SomeClass> concurrentDictionaryLookup;
         private OrderedDictionary orderedDictionary;
+        private Hashtable hashTable;
+        private FrozenDictionary<int, SomeClass> frozenDictionary;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -37,6 +41,8 @@
             sortedDictionaryLookup = new SortedDictionary<int, SomeClass>();
             concurrentDictionaryLookup = new ConcurrentDictionary<int, SomeClass>();
             orderedDictionary = new OrderedDictionary();
+            hashTable = new Hashtable();
+            frozenDictionary = FrozenDictionary.ToFrozenDictionary(dictionaryLookup);
 
             for (int i = 0; i < len; i++)
             {
@@ -45,6 +51,7 @@
                 sortedDictionaryLookup.Add(i, new SomeClass());
                 concurrentDictionaryLookup.TryAdd(i, new SomeClass());
                 orderedDictionary.Add(i, new SomeClass());
+                hashTable.Add(i, new SomeClass());
             }
         }
 
@@ -126,6 +133,40 @@
                 for (int j = 0; j < orderedDictionary.Count; j++)
                 {
                     SomeClass c = (SomeClass)orderedDictionary[j];
+                    result += c.DoSomething();
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long LookupUsingHashtable()
+        {
+            long result = 0;
+
+            for (int i = 0; i < this.Iterations; i++)
+            {
+                for (int j = 0; j < hashTable.Count; j++)
+                {
+                    SomeClass c = (SomeClass)hashTable[j];
+                    result += c.DoSomething();
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long LookupUsingFrozenDictionary()
+        {
+            long result = 0;
+
+            for (int i = 0; i < this.Iterations; i++)
+            {
+                for (int j = 0; j < frozenDictionary.Count; j++)
+                {
+                    SomeClass c = frozenDictionary[j];
                     result += c.DoSomething();
                 }
             }
