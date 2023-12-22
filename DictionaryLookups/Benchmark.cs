@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Collections.Specialized;
 
     public class SomeClass
     {
@@ -24,6 +25,7 @@
         private Dictionary<int, SomeClass> dictionaryLookup;
         private SortedDictionary<int, SomeClass> sortedDictionaryLookup;
         private ConcurrentDictionary<int, SomeClass> concurrentDictionaryLookup;
+        private OrderedDictionary orderedDictionary;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -34,6 +36,7 @@
             dictionaryLookup = new Dictionary<int, SomeClass>(len);
             sortedDictionaryLookup = new SortedDictionary<int, SomeClass>();
             concurrentDictionaryLookup = new ConcurrentDictionary<int, SomeClass>();
+            orderedDictionary = new OrderedDictionary();
 
             for (int i = 0; i < len; i++)
             {
@@ -41,6 +44,7 @@
                 dictionaryLookup.Add(i, new SomeClass());
                 sortedDictionaryLookup.Add(i, new SomeClass());
                 concurrentDictionaryLookup.TryAdd(i, new SomeClass());
+                orderedDictionary.Add(i, new SomeClass());
             }
         }
 
@@ -105,6 +109,23 @@
                 for (int j = 0; j < concurrentDictionaryLookup.Count; j++)
                 {
                     SomeClass c = concurrentDictionaryLookup[j];
+                    result += c.DoSomething();
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long LookupUsingOrderedDictionary()
+        {
+            long result = 0;
+
+            for (int i = 0; i < this.Iterations; i++)
+            {
+                for (int j = 0; j < orderedDictionary.Count; j++)
+                {
+                    SomeClass c = (SomeClass)orderedDictionary[j];
                     result += c.DoSomething();
                 }
             }
