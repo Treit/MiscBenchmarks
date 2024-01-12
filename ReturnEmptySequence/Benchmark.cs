@@ -2,6 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using System.Collections.Generic;
+    using System;
     using System.Linq;
 
     [MemoryDiagnoser]
@@ -16,6 +17,12 @@
         public string EnumerableDotEmpty()
         {
             return Enumerable.Empty<string>().FirstOrDefault();
+        }
+
+        [Benchmark]
+        public string ArrayDotEmpty()
+        {
+            return Array.Empty<string>().FirstOrDefault();
         }
 
         [Benchmark]
