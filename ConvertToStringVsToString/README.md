@@ -1,20 +1,21 @@
 ## object.ToString vs. Convert.ToString
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25305.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.201
-  [Host]     : .NET 7.0.3 (7.0.323.6910), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.3 (7.0.323.6910), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                       Method | Count |       Mean |    Error |    StdDev |     Median | Ratio | RatioSD |
-|----------------------------- |------ |-----------:|---------:|----------:|-----------:|------:|--------:|
-|                 IntsToString | 10000 |   128.2 μs |  2.56 μs |   6.95 μs |   127.2 μs |  1.00 |    0.00 |
-|     IntsToStringUsingConvert | 10000 |   139.4 μs |  6.04 μs |  17.34 μs |   133.5 μs |  1.09 |    0.16 |
-|              DoublesToString | 10000 | 1,360.1 μs | 28.81 μs |  82.18 μs | 1,348.3 μs | 10.63 |    0.81 |
-|  DoublesToStringUsingConvert | 10000 | 1,362.0 μs | 34.45 μs |  97.72 μs | 1,320.3 μs | 10.68 |    0.93 |
-|             DecimalsToString | 10000 |   634.9 μs | 23.89 μs |  68.93 μs |   617.4 μs |  4.90 |    0.58 |
-| DecimalsToStringUsingConvert | 10000 |   837.8 μs | 34.91 μs | 102.92 μs |   817.2 μs |  6.64 |    0.91 |
+|                       Method | Count |        Mean |    Error |   StdDev | Ratio | RatioSD |
+|----------------------------- |------ |------------:|---------:|---------:|------:|--------:|
+|                 IntsToString | 10000 |    69.97 μs | 0.853 μs | 0.756 μs |  1.00 |    0.00 |
+|     IntsToStringUsingConvert | 10000 |    68.69 μs | 0.467 μs | 0.437 μs |  0.98 |    0.01 |
+|              DoublesToString | 10000 | 1,098.80 μs | 1.372 μs | 1.071 μs | 15.69 |    0.18 |
+|  DoublesToStringUsingConvert | 10000 | 1,107.45 μs | 3.403 μs | 3.017 μs | 15.83 |    0.19 |
+|             DecimalsToString | 10000 |   472.31 μs | 1.557 μs | 1.381 μs |  6.75 |    0.08 |
+| DecimalsToStringUsingConvert | 10000 |   472.34 μs | 0.821 μs | 0.727 μs |  6.75 |    0.07 |

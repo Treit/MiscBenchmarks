@@ -1,21 +1,22 @@
 # Turning a single item into an IEnumerable.
 
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25252
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100
-  [Host]     : .NET Core 6.0.11 (CoreCLR 6.0.1122.52304, CoreFX 6.0.1122.52304), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.11 (CoreCLR 6.0.1122.52304, CoreFX 6.0.1122.52304), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                                 Method |     Mean |    Error |   StdDev | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|--------------------------------------- |---------:|---------:|---------:|------:|--------:|-------:|------:|------:|----------:|
-|       SingleItemIntEnumerableDotRepeat | 17.05 ns | 0.375 ns | 0.968 ns |  1.00 |    0.00 | 0.0074 |     - |     - |      32 B |
-|        SingleItemIntEnumerableNewArray | 20.85 ns | 0.441 ns | 0.761 ns |  1.20 |    0.09 | 0.0148 |     - |     - |      64 B |
-|    SingleItemIntEnumerableWrapperClass | 10.08 ns | 0.234 ns | 0.240 ns |  0.55 |    0.03 | 0.0056 |     - |     - |      24 B |
-|    SingleItemStringEnumerableDotRepeat | 18.79 ns | 0.309 ns | 0.274 ns |  1.02 |    0.05 | 0.0093 |     - |     - |      40 B |
-|     SingleItemStringEnumerableNewArray | 25.72 ns | 0.546 ns | 0.765 ns |  1.47 |    0.11 | 0.0148 |     - |     - |      64 B |
-| SingleItemStringEnumerableWrapperClass | 11.88 ns | 0.193 ns | 0.171 ns |  0.65 |    0.03 | 0.0074 |     - |     - |      32 B |
+|                                 Method |      Mean |     Error |    StdDev | Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
+|--------------------------------------- |----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
+|       SingleItemIntEnumerableDotRepeat |  9.073 ns | 0.0715 ns | 0.0669 ns |  1.00 |    0.00 | 0.0019 |      32 B |        1.00 |
+|        SingleItemIntEnumerableNewArray | 13.816 ns | 0.1450 ns | 0.1285 ns |  1.52 |    0.02 | 0.0038 |      64 B |        2.00 |
+|    SingleItemIntEnumerableWrapperClass |  4.090 ns | 0.0380 ns | 0.0337 ns |  0.45 |    0.01 | 0.0014 |      24 B |        0.75 |
+|    SingleItemStringEnumerableDotRepeat |  9.660 ns | 0.0770 ns | 0.0720 ns |  1.06 |    0.01 | 0.0024 |      40 B |        1.25 |
+|     SingleItemStringEnumerableNewArray | 14.302 ns | 0.1243 ns | 0.1162 ns |  1.58 |    0.01 | 0.0038 |      64 B |        2.00 |
+| SingleItemStringEnumerableWrapperClass |  4.756 ns | 0.0552 ns | 0.0517 ns |  0.52 |    0.01 | 0.0019 |      32 B |        1.00 |

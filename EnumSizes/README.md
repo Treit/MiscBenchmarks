@@ -1,17 +1,18 @@
 # Using enums with different underlying types
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25231
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 6.0.10 (CoreCLR 6.0.1022.47605, CoreFX 6.0.1022.47605), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.10 (CoreCLR 6.0.1022.47605, CoreFX 6.0.1022.47605), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|          Method | Count |     Mean |   Error |  StdDev | Ratio | RatioSD |   Gen 0 |   Gen 1 |   Gen 2 | Allocated |
-|---------------- |------ |---------:|--------:|--------:|------:|--------:|--------:|--------:|--------:|----------:|
-| EnumsUsingInt32 | 10000 | 162.2 μs | 3.23 μs | 6.96 μs |  1.00 |    0.00 | 30.2734 |  4.8828 |       - | 128.62 KB |
-| EnumsUsingInt64 | 10000 | 227.2 μs | 4.48 μs | 8.30 μs |  1.41 |    0.08 | 41.5039 | 41.5039 | 41.5039 | 256.62 KB |
-|  EnumsUsingByte | 10000 | 144.2 μs | 2.85 μs | 4.36 μs |  0.89 |    0.05 |  7.5684 |  0.4883 |       - |  32.63 KB |
+|          Method | Count |      Mean |    Error |   StdDev | Ratio | RatioSD |    Gen0 |    Gen1 |    Gen2 | Allocated | Alloc Ratio |
+|---------------- |------ |----------:|---------:|---------:|------:|--------:|--------:|--------:|--------:|----------:|------------:|
+| EnumsUsingInt32 | 10000 |  87.32 μs | 1.151 μs | 1.020 μs |  1.00 |    0.00 |  7.8125 |  1.8311 |       - | 128.62 KB |        1.00 |
+| EnumsUsingInt64 | 10000 | 149.03 μs | 3.193 μs | 9.416 μs |  1.71 |    0.11 | 41.5039 | 41.5039 | 41.5039 | 256.62 KB |        2.00 |
+|  EnumsUsingByte | 10000 |  72.60 μs | 1.210 μs | 1.010 μs |  0.83 |    0.01 |  1.9531 |  0.1221 |       - |  32.63 KB |        0.25 |

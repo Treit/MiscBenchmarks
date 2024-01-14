@@ -10,19 +10,21 @@ to this:
 
 "on advancement complete"
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25155
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 5.0.17 (CoreCLR 5.0.1722.21314, CoreFX 5.0.1722.21314), X64 RyuJIT
-  DefaultJob : .NET Core 5.0.17 (CoreCLR 5.0.1722.21314, CoreFX 5.0.1722.21314), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                   Method |       Mean |    Error |   StdDev | Ratio |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|------------------------- |-----------:|---------:|---------:|------:|-------:|------:|------:|----------:|
-|          ParseUsingRegex | 2,706.0 ns | 53.47 ns | 90.80 ns |  1.00 | 0.0916 |     - |     - |     408 B |
-|  ParseUsingCompiledRegex |   961.2 ns | 15.40 ns | 14.40 ns |  0.36 | 0.0935 |     - |     - |     408 B |
-| ParseUsingTokensViaSplit |   404.7 ns |  6.46 ns |  5.39 ns |  0.15 | 0.1369 |     - |     - |     592 B |
-|   ParseUsingStateMachine |   317.6 ns |  6.09 ns |  5.40 ns |  0.12 | 0.0648 |     - |     - |     280 B |
+|                   Method |       Mean |   Error |  StdDev | Ratio |   Gen0 | Allocated | Alloc Ratio |
+|------------------------- |-----------:|--------:|--------:|------:|-------:|----------:|------------:|
+|          ParseUsingRegex | 1,480.7 ns | 5.02 ns | 4.69 ns |  1.00 | 0.0229 |     408 B |        1.00 |
+|  ParseUsingCompiledRegex |   511.3 ns | 1.20 ns | 1.06 ns |  0.35 | 0.0238 |     408 B |        1.00 |
+| ParseUsingTokensViaSplit |   265.2 ns | 1.33 ns | 1.18 ns |  0.18 | 0.0315 |     528 B |        1.29 |
+|   ParseUsingStateMachine |   159.1 ns | 3.20 ns | 3.14 ns |  0.11 | 0.0167 |     280 B |        0.69 |
+|           ParseUsingSpan |   158.3 ns | 0.60 ns | 0.56 ns |  0.11 | 0.0091 |     152 B |        0.37 |

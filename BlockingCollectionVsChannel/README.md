@@ -1,23 +1,24 @@
 # BlockingCollection vs Channels
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22543
-Unknown processor
-.NET Core SDK=6.0.101
-  [Host]     : .NET Core 6.0.1 (CoreCLR 6.0.121.56705, CoreFX 6.0.121.56705), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.1 (CoreCLR 6.0.121.56705, CoreFX 6.0.121.56705), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                                       Method | Count |      Mean |     Error |    StdDev | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|--------------------------------------------- |------ |----------:|----------:|----------:|------:|--------:|-------:|------:|------:|----------:|
-|    **GetTotalUsingBlockingCollectionSingleTask** |  **1000** |  **2.792 ms** | **0.0554 ms** | **0.1040 ms** |  **1.00** |    **0.00** | **7.8125** |     **-** |     **-** |  **33.51 KB** |
-|               GetTotalUsingChannelSingleTask |  1000 |  3.827 ms | 0.0858 ms | 0.2503 ms |  1.35 |    0.12 | 7.8125 |     - |     - |  33.86 KB |
-| GetTotalUsingBlockingCollectionMultipleTasks |  1000 |  8.597 ms | 0.1708 ms | 0.4378 ms |  3.05 |    0.21 |      - |     - |     - |  39.55 KB |
-|            GetTotalUsingChannelMultipleTasks |  1000 |  7.166 ms | 0.1377 ms | 0.1741 ms |  2.55 |    0.11 | 7.8125 |     - |     - |  39.27 KB |
-|                                              |       |           |           |           |       |         |        |       |       |           |
-|    **GetTotalUsingBlockingCollectionSingleTask** | **10000** | **27.284 ms** | **0.4959 ms** | **0.6271 ms** |  **1.00** |    **0.00** |      **-** |     **-** |     **-** | **258.28 KB** |
-|               GetTotalUsingChannelSingleTask | 10000 | 37.129 ms | 0.7337 ms | 1.3231 ms |  1.36 |    0.06 |      - |     - |     - | 258.65 KB |
-| GetTotalUsingBlockingCollectionMultipleTasks | 10000 | 79.270 ms | 1.5578 ms | 2.5596 ms |  2.89 |    0.15 |      - |     - |     - | 264.27 KB |
-|            GetTotalUsingChannelMultipleTasks | 10000 | 72.187 ms | 0.6395 ms | 0.5669 ms |  2.63 |    0.05 |      - |     - |     - | 264.77 KB |
+|                                       Method | Count |      Mean |     Error |    StdDev | Ratio | RatioSD |    Gen0 |    Gen1 |    Gen2 | Allocated | Alloc Ratio |
+|--------------------------------------------- |------ |----------:|----------:|----------:|------:|--------:|--------:|--------:|--------:|----------:|------------:|
+|    **GetTotalUsingBlockingCollectionSingleTask** |  **1000** |  **1.201 ms** | **0.0028 ms** | **0.0025 ms** |  **1.00** |    **0.00** |  **1.9531** |       **-** |       **-** |  **33.51 KB** |        **1.00** |
+|               GetTotalUsingChannelSingleTask |  1000 |  1.177 ms | 0.0020 ms | 0.0016 ms |  0.98 |    0.00 |  1.9531 |       - |       - |  33.85 KB |        1.01 |
+| GetTotalUsingBlockingCollectionMultipleTasks |  1000 |  7.466 ms | 0.0105 ms | 0.0093 ms |  6.22 |    0.01 |       - |       - |       - |  29.28 KB |        0.87 |
+|            GetTotalUsingChannelMultipleTasks |  1000 |  7.224 ms | 0.0245 ms | 0.0229 ms |  6.01 |    0.03 |       - |       - |       - |  40.17 KB |        1.20 |
+|                                              |       |           |           |           |       |         |         |         |         |           |             |
+|    **GetTotalUsingBlockingCollectionSingleTask** | **10000** | **12.131 ms** | **0.0090 ms** | **0.0084 ms** |  **1.00** |    **0.00** | **15.6250** | **15.6250** | **15.6250** | **258.39 KB** |        **1.00** |
+|               GetTotalUsingChannelSingleTask | 10000 | 11.464 ms | 0.0200 ms | 0.0167 ms |  0.95 |    0.00 | 15.6250 | 15.6250 | 15.6250 | 258.73 KB |        1.00 |
+| GetTotalUsingBlockingCollectionMultipleTasks | 10000 | 75.063 ms | 0.0753 ms | 0.0629 ms |  6.19 |    0.01 |       - |       - |       - | 263.62 KB |        1.02 |
+|            GetTotalUsingChannelMultipleTasks | 10000 | 74.566 ms | 0.2114 ms | 0.1874 ms |  6.15 |    0.02 |       - |       - |       - | 266.18 KB |        1.03 |

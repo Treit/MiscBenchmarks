@@ -2,19 +2,20 @@
 
 
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25987.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=8.0.100-preview.7.23376.3
-  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                    Method |  Count |      Mean |    Error |   StdDev |
-|-------------------------- |------- |----------:|---------:|---------:|
-|                WriteArray | 100000 | 161.53 μs | 3.167 μs | 5.711 μs |
-|        WriteArrayInChunks | 100000 |  69.24 μs | 1.246 μs | 1.826 μs |
-|         WriteMemoryStream | 100000 | 363.24 μs | 7.116 μs | 7.308 μs |
-| WriteMemoryStreamInChunks | 100000 |  67.05 μs | 0.707 μs | 0.626 μs |
+|                    Method |  Count |      Mean |    Error |    StdDev |    Median |
+|-------------------------- |------- |----------:|---------:|----------:|----------:|
+|                WriteArray | 100000 | 123.78 μs | 3.218 μs |  9.488 μs | 123.47 μs |
+|        WriteArrayInChunks | 100000 |  64.76 μs | 3.821 μs | 11.265 μs |  56.91 μs |
+|         WriteMemoryStream | 100000 | 236.36 μs | 1.743 μs |  1.361 μs | 235.90 μs |
+| WriteMemoryStreamInChunks | 100000 |  64.55 μs | 3.616 μs | 10.663 μs |  57.23 μs |

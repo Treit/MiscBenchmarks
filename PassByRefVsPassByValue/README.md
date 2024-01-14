@@ -1,23 +1,24 @@
 # Passing classes vs. structs.
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25915.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.306
-  [Host]     : .NET 6.0.20 (6.0.2023.32017), X64 RyuJIT AVX2
-  DefaultJob : .NET 6.0.20 (6.0.2023.32017), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                 Method | Count |      Mean |    Error |   StdDev | Ratio | RatioSD | Allocated | Alloc Ratio |
-|----------------------- |------ |----------:|---------:|---------:|------:|--------:|----------:|------------:|
-|       Pass16ByteStruct | 10000 |  10.99 μs | 0.092 μs | 0.081 μs |  0.23 |    0.01 |         - |          NA |
-|  Pass16ByteStructByRef | 10000 |  11.16 μs | 0.223 μs | 0.238 μs |  0.23 |    0.01 |         - |          NA |
-|       Pass32ByteStruct | 10000 |  16.72 μs | 0.330 μs | 0.651 μs |  0.35 |    0.02 |         - |          NA |
-|        Pass16ByteClass | 10000 |  16.82 μs | 0.334 μs | 0.856 μs |  0.36 |    0.02 |         - |          NA |
-|  Pass32ByteStructByRef | 10000 |  17.51 μs | 0.338 μs | 0.698 μs |  0.36 |    0.02 |         - |          NA |
-|        Pass32ByteClass | 10000 |  19.00 μs | 0.414 μs | 1.167 μs |  0.40 |    0.03 |         - |          NA |
-|       Pass128ByteClass | 10000 |  48.19 μs | 0.960 μs | 1.682 μs |  1.00 |    0.00 |         - |          NA |
-| Pass128ByteStructByRef | 10000 |  55.21 μs | 1.098 μs | 1.128 μs |  1.15 |    0.04 |         - |          NA |
-|      Pass128ByteStruct | 10000 | 106.48 μs | 1.720 μs | 1.608 μs |  2.22 |    0.08 |         - |          NA |
+|                 Method | Count |      Mean |     Error |    StdDev |    Median | Ratio | RatioSD | Allocated | Alloc Ratio |
+|----------------------- |------ |----------:|----------:|----------:|----------:|------:|--------:|----------:|------------:|
+|  Pass16ByteStructByRef | 10000 |  9.329 μs | 0.0361 μs | 0.0337 μs |  9.312 μs |  0.28 |    0.03 |         - |          NA |
+|       Pass16ByteStruct | 10000 |  9.335 μs | 0.0508 μs | 0.0450 μs |  9.315 μs |  0.29 |    0.03 |         - |          NA |
+|       Pass32ByteStruct | 10000 | 16.595 μs | 0.0939 μs | 0.0879 μs | 16.621 μs |  0.51 |    0.06 |         - |          NA |
+|        Pass16ByteClass | 10000 | 16.649 μs | 0.1719 μs | 0.1524 μs | 16.680 μs |  0.51 |    0.06 |         - |          NA |
+|        Pass32ByteClass | 10000 | 16.652 μs | 0.1328 μs | 0.1177 μs | 16.693 μs |  0.51 |    0.06 |         - |          NA |
+|  Pass32ByteStructByRef | 10000 | 17.142 μs | 0.1293 μs | 0.1210 μs | 17.160 μs |  0.52 |    0.06 |         - |          NA |
+|      Pass128ByteStruct | 10000 | 22.092 μs | 0.8345 μs | 2.4605 μs | 23.448 μs |  0.68 |    0.12 |         - |          NA |
+| Pass128ByteStructByRef | 10000 | 22.713 μs | 0.6798 μs | 2.0045 μs | 23.489 μs |  0.70 |    0.11 |         - |          NA |
+|       Pass128ByteClass | 10000 | 32.799 μs | 1.2329 μs | 3.6352 μs | 34.754 μs |  1.00 |    0.00 |         - |          NA |

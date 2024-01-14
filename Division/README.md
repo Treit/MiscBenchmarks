@@ -1,23 +1,24 @@
 # Dividing
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25158
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|             Method |  Count |          Mean |         Error |        StdDev | Ratio | RatioSD | Gen 0 | Gen 1 | Gen 2 | Allocated |
-|------------------- |------- |--------------:|--------------:|--------------:|------:|--------:|------:|------:|------:|----------:|
-|   **DivideUsingFloat** |    **100** |      **73.91 ns** |      **1.512 ns** |      **3.680 ns** |  **1.00** |    **0.00** |     **-** |     **-** |     **-** |         **-** |
-|  DivideUsingDouble |    100 |      70.96 ns |      1.328 ns |      1.905 ns |  0.95 |    0.06 |     - |     - |     - |         - |
-| DivideUsingDecimal |    100 |   3,502.04 ns |     68.741 ns |    100.759 ns | 46.86 |    2.46 |     - |     - |     - |         - |
-|     DivideUsingInt |    100 |      93.20 ns |      1.623 ns |      2.167 ns |  1.26 |    0.07 |     - |     - |     - |         - |
-|                    |        |               |               |               |       |         |       |       |       |           |
-|   **DivideUsingFloat** | **100000** | **112,037.51 ns** |  **1,136.930 ns** |  **1,063.485 ns** |  **1.00** |    **0.00** |     **-** |     **-** |     **-** |         **-** |
-|  DivideUsingDouble | 100000 | 113,797.89 ns |  1,970.593 ns |  2,269.338 ns |  1.02 |    0.02 |     - |     - |     - |         - |
-| DivideUsingDecimal | 100000 | 654,733.61 ns | 13,037.899 ns | 32,709.540 ns |  5.90 |    0.36 |     - |     - |     - |         - |
-|     DivideUsingInt | 100000 |  85,095.74 ns |  1,639.540 ns |  2,244.221 ns |  0.76 |    0.02 |     - |     - |     - |         - |
+|             Method |  Count |          Mean |      Error |     StdDev | Ratio | RatioSD | Allocated | Alloc Ratio |
+|------------------- |------- |--------------:|-----------:|-----------:|------:|--------:|----------:|------------:|
+|   **DivideUsingFloat** |    **100** |      **59.54 ns** |   **0.107 ns** |   **0.095 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
+|  DivideUsingDouble |    100 |      59.25 ns |   0.066 ns |   0.055 ns |  1.00 |    0.00 |         - |          NA |
+| DivideUsingDecimal |    100 |   2,590.34 ns |   4.520 ns |   4.007 ns | 43.50 |    0.11 |         - |          NA |
+|     DivideUsingInt |    100 |      80.84 ns |   0.108 ns |   0.090 ns |  1.36 |    0.00 |         - |          NA |
+|                    |        |               |            |            |       |         |           |             |
+|   **DivideUsingFloat** | **100000** |  **92,833.39 ns** |  **57.645 ns** |  **48.136 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
+|  DivideUsingDouble | 100000 |  92,893.69 ns | 143.393 ns | 119.740 ns |  1.00 |    0.00 |         - |          NA |
+| DivideUsingDecimal | 100000 | 622,062.61 ns | 566.538 ns | 442.316 ns |  6.70 |    0.01 |         - |          NA |
+|     DivideUsingInt | 100000 |  92,793.78 ns |  40.701 ns |  36.081 ns |  1.00 |    0.00 |         - |          NA |

@@ -1,25 +1,26 @@
 # Async vs. non-async reads of a MemoryStream
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22572
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=6.0.200
-  [Host]     : .NET Core 5.0.12 (CoreCLR 5.0.1221.52207, CoreFX 5.0.1221.52207), X64 RyuJIT
-  DefaultJob : .NET Core 5.0.12 (CoreCLR 5.0.1221.52207, CoreFX 5.0.1221.52207), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                                   Method |   Count |     Mean |    Error |    StdDev | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|----------------------------------------- |-------- |---------:|---------:|----------:|------:|--------:|-------:|------:|------:|----------:|
-|                         **ReadMemoryStream** |    **1000** | **27.07 ns** | **1.486 ns** |  **4.359 ns** |  **1.00** |    **0.00** | **0.0649** |     **-** |     **-** |     **280 B** |
-|                    ReadMemoryStreamAsync |    1000 | 70.99 ns | 3.670 ns | 10.820 ns |  2.68 |    0.52 | 0.0815 |     - |     - |     352 B |
-| ReadMemoryStreamAsyncCancelTokenOverload |    1000 | 92.91 ns | 3.848 ns | 11.102 ns |  3.54 |    0.73 | 0.0815 |     - |     - |     352 B |
-|                                          |         |          |          |           |       |         |        |       |       |           |
-|                         **ReadMemoryStream** |  **100000** | **30.37 ns** | **1.774 ns** |  **5.231 ns** |  **1.00** |    **0.00** | **0.0649** |     **-** |     **-** |     **280 B** |
-|                    ReadMemoryStreamAsync |  100000 | 86.95 ns | 3.974 ns | 11.717 ns |  2.93 |    0.58 | 0.0815 |     - |     - |     352 B |
-| ReadMemoryStreamAsyncCancelTokenOverload |  100000 | 89.40 ns | 3.583 ns | 10.564 ns |  3.03 |    0.62 | 0.0815 |     - |     - |     352 B |
-|                                          |         |          |          |           |       |         |        |       |       |           |
-|                         **ReadMemoryStream** | **1000000** | **27.70 ns** | **1.197 ns** |  **3.530 ns** |  **1.00** |    **0.00** | **0.0649** |     **-** |     **-** |     **280 B** |
-|                    ReadMemoryStreamAsync | 1000000 | 78.98 ns | 3.515 ns | 10.365 ns |  2.91 |    0.57 | 0.0815 |     - |     - |     352 B |
-| ReadMemoryStreamAsyncCancelTokenOverload | 1000000 | 92.77 ns | 4.089 ns | 11.993 ns |  3.41 |    0.63 | 0.0815 |     - |     - |     352 B |
+|                                   Method |   Count |     Mean |    Error |   StdDev | Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
+|----------------------------------------- |-------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+|                         **ReadMemoryStream** |    **1000** | **14.06 ns** | **0.340 ns** | **0.499 ns** |  **1.00** |    **0.00** | **0.0167** |     **280 B** |        **1.00** |
+|                    ReadMemoryStreamAsync |    1000 | 33.78 ns | 0.419 ns | 0.391 ns |  2.41 |    0.07 | 0.0210 |     352 B |        1.26 |
+| ReadMemoryStreamAsyncCancelTokenOverload |    1000 | 53.03 ns | 0.690 ns | 0.646 ns |  3.79 |    0.13 | 0.0210 |     352 B |        1.26 |
+|                                          |         |          |          |          |       |         |        |           |             |
+|                         **ReadMemoryStream** |  **100000** | **14.47 ns** | **0.347 ns** | **0.357 ns** |  **1.00** |    **0.00** | **0.0167** |     **280 B** |        **1.00** |
+|                    ReadMemoryStreamAsync |  100000 | 35.21 ns | 0.733 ns | 0.720 ns |  2.44 |    0.06 | 0.0210 |     352 B |        1.26 |
+| ReadMemoryStreamAsyncCancelTokenOverload |  100000 | 52.81 ns | 0.569 ns | 0.533 ns |  3.66 |    0.09 | 0.0210 |     352 B |        1.26 |
+|                                          |         |          |          |          |       |         |        |           |             |
+|                         **ReadMemoryStream** | **1000000** | **14.03 ns** | **0.241 ns** | **0.213 ns** |  **1.00** |    **0.00** | **0.0167** |     **280 B** |        **1.00** |
+|                    ReadMemoryStreamAsync | 1000000 | 33.91 ns | 0.433 ns | 0.384 ns |  2.42 |    0.05 | 0.0210 |     352 B |        1.26 |
+| ReadMemoryStreamAsyncCancelTokenOverload | 1000000 | 52.25 ns | 0.388 ns | 0.363 ns |  3.72 |    0.06 | 0.0210 |     352 B |        1.26 |

@@ -3,18 +3,20 @@
 
 
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.26002.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=8.0.100-rc.2.23502.2
-  [Host]     : .NET 7.0.14 (7.0.1423.51910), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.14 (7.0.1423.51910), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                         Method |      Mean |     Error |    StdDev | Ratio | RatioSD |
-|------------------------------- |----------:|----------:|----------:|------:|--------:|
-|             LookupUsingHashSet | 10.269 μs | 0.1217 μs | 0.1078 μs |  1.00 |    0.00 |
-|            LookupUsingBitArray |  1.388 μs | 0.0202 μs | 0.0189 μs |  0.14 |    0.00 |
-| LookupUsingBitArrayWithConvert | 17.479 μs | 0.3036 μs | 0.2840 μs |  1.70 |    0.02 |
+|                                Method |      Mean |     Error |    StdDev | Ratio | RatioSD |
+|-------------------------------------- |----------:|----------:|----------:|------:|--------:|
+|                    LookupUsingHashSet |  3.726 μs | 0.0054 μs | 0.0048 μs |  1.00 |    0.00 |
+|       LookupUsingBitArrayWithUnsafeAs |  1.554 μs | 0.0023 μs | 0.0018 μs |  0.42 |    0.00 |
+|           LookupUsingBitArrayWithCast |  1.095 μs | 0.0038 μs | 0.0033 μs |  0.29 |    0.00 |
+| LookupUsingBitArrayWithConvertToInt32 | 24.714 μs | 0.1962 μs | 0.1835 μs |  6.63 |    0.05 |

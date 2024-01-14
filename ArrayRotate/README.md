@@ -1,29 +1,30 @@
 # Rotating an array
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25290.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.102
-  [Host]     : .NET 6.0.13 (6.0.1322.58009), X64 RyuJIT AVX2
-  DefaultJob : .NET 6.0.13 (6.0.1322.58009), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                   Method | Amount |      Mean |    Error |   StdDev |    Median |   Gen0 | Allocated |
-|------------------------- |------- |----------:|---------:|---------:|----------:|-------:|----------:|
-|    **RotateLeftWithReverse** |      **1** |  **37.71 ns** | **0.898 ns** | **2.619 ns** |  **36.88 ns** |      **-** |         **-** |
-|       RotateLeftWithCopy |      1 | 115.31 ns | 2.318 ns | 2.931 ns | 114.42 ns | 0.0185 |      80 B |
-|   RotateLeftWithJuggling |      1 |  65.99 ns | 2.370 ns | 6.799 ns |  64.30 ns |      - |         - |
-| RotateLeftArrayCopyAaron |      1 |  33.26 ns | 1.267 ns | 3.736 ns |  33.12 ns | 0.0185 |      80 B |
-|    **RotateLeftWithReverse** |      **4** |  **40.11 ns** | **1.589 ns** | **4.533 ns** |  **39.44 ns** |      **-** |         **-** |
-|       RotateLeftWithCopy |      4 | 117.18 ns | 2.279 ns | 3.745 ns | 116.38 ns | 0.0185 |      80 B |
-|   RotateLeftWithJuggling |      4 |  71.14 ns | 1.449 ns | 2.538 ns |  70.88 ns |      - |         - |
-| RotateLeftArrayCopyAaron |      4 |  29.53 ns | 1.168 ns | 3.371 ns |  29.22 ns | 0.0185 |      80 B |
-|    **RotateLeftWithReverse** |     **16** |  **46.14 ns** | **2.027 ns** | **5.978 ns** |  **44.73 ns** |      **-** |         **-** |
-|       RotateLeftWithCopy |     16 | 107.85 ns | 1.272 ns | 1.190 ns | 107.92 ns | 0.0185 |      80 B |
-|   RotateLeftWithJuggling |     16 |  96.52 ns | 2.408 ns | 6.753 ns |  94.58 ns |      - |         - |
-| RotateLeftArrayCopyAaron |     16 |  31.10 ns | 1.358 ns | 3.960 ns |  30.52 ns | 0.0185 |      80 B |
-|    **RotateLeftWithReverse** |     **24** |  **41.37 ns** | **0.861 ns** | **2.161 ns** |  **41.39 ns** |      **-** |         **-** |
-|       RotateLeftWithCopy |     24 | 117.24 ns | 2.668 ns | 7.826 ns | 116.75 ns | 0.0184 |      80 B |
-|   RotateLeftWithJuggling |     24 |  70.67 ns | 1.866 ns | 5.293 ns |  70.31 ns |      - |         - |
-| RotateLeftArrayCopyAaron |     24 |  31.73 ns | 1.848 ns | 5.390 ns |  30.34 ns | 0.0185 |      80 B |
+|                   Method | Amount |     Mean |    Error |   StdDev |   Gen0 | Allocated |
+|------------------------- |------- |---------:|---------:|---------:|-------:|----------:|
+|    **RotateLeftWithReverse** |      **1** | **27.38 ns** | **0.205 ns** | **0.171 ns** |      **-** |         **-** |
+|       RotateLeftWithCopy |      1 | 59.61 ns | 0.617 ns | 0.547 ns | 0.0048 |      80 B |
+|   RotateLeftWithJuggling |      1 | 25.89 ns | 0.573 ns | 1.158 ns |      - |         - |
+| RotateLeftArrayCopyAaron |      1 | 17.22 ns | 0.288 ns | 0.269 ns | 0.0048 |      80 B |
+|    **RotateLeftWithReverse** |      **4** | **27.13 ns** | **0.095 ns** | **0.084 ns** |      **-** |         **-** |
+|       RotateLeftWithCopy |      4 | 59.56 ns | 0.690 ns | 0.646 ns | 0.0048 |      80 B |
+|   RotateLeftWithJuggling |      4 | 28.51 ns | 0.173 ns | 0.154 ns |      - |         - |
+| RotateLeftArrayCopyAaron |      4 | 17.22 ns | 0.201 ns | 0.188 ns | 0.0048 |      80 B |
+|    **RotateLeftWithReverse** |     **16** | **26.60 ns** | **0.102 ns** | **0.091 ns** |      **-** |         **-** |
+|       RotateLeftWithCopy |     16 | 59.43 ns | 0.690 ns | 0.612 ns | 0.0048 |      80 B |
+|   RotateLeftWithJuggling |     16 | 38.70 ns | 0.171 ns | 0.152 ns |      - |         - |
+| RotateLeftArrayCopyAaron |     16 | 16.49 ns | 0.123 ns | 0.115 ns | 0.0048 |      80 B |
+|    **RotateLeftWithReverse** |     **24** | **30.08 ns** | **0.271 ns** | **0.253 ns** |      **-** |         **-** |
+|       RotateLeftWithCopy |     24 | 59.49 ns | 0.306 ns | 0.271 ns | 0.0048 |      80 B |
+|   RotateLeftWithJuggling |     24 | 28.08 ns | 0.105 ns | 0.099 ns |      - |         - |
+| RotateLeftArrayCopyAaron |     24 | 15.96 ns | 0.203 ns | 0.190 ns | 0.0048 |      80 B |

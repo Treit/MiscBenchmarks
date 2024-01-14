@@ -1,22 +1,23 @@
 # Initializing Multidimensional vs. Jagged arrays.
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25140
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                           Method | Size |          Mean |       Error |        StdDev |        Median |
-|--------------------------------- |----- |--------------:|------------:|--------------:|--------------:|
-|           **InitJaggedRandomValues** |  **100** |    **136.590 μs** |   **6.1929 μs** |    **18.2599 μs** |    **131.261 μs** |
-| InitMultidimensionalRandomValues |  100 |    115.718 μs |   4.3263 μs |    12.6200 μs |    110.550 μs |
-|             InitJaggedFixedValue |  100 |      8.935 μs |   0.2441 μs |     0.6806 μs |      8.731 μs |
-|   InitMultidimensionalFixedValue |  100 |     18.696 μs |   0.7215 μs |     2.1160 μs |     18.297 μs |
-|           **InitJaggedRandomValues** | **1024** | **14,521.715 μs** | **462.8224 μs** | **1,357.3778 μs** | **14,308.362 μs** |
-| InitMultidimensionalRandomValues | 1024 | 12,599.513 μs | 464.9211 μs | 1,333.9457 μs | 12,369.759 μs |
-|             InitJaggedFixedValue | 1024 |    805.751 μs |  20.8999 μs |    60.3009 μs |    790.840 μs |
-|   InitMultidimensionalFixedValue | 1024 |  1,878.145 μs |  61.3491 μs |   172.0295 μs |  1,817.200 μs |
+|                           Method | Size |         Mean |      Error |     StdDev |
+|--------------------------------- |----- |-------------:|-----------:|-----------:|
+|           **InitJaggedRandomValues** |  **100** |    **41.775 μs** |  **0.8302 μs** |  **2.0520 μs** |
+| InitMultidimensionalRandomValues |  100 |    48.587 μs |  0.6195 μs |  0.7134 μs |
+|             InitJaggedFixedValue |  100 |     8.415 μs |  0.1683 μs |  0.2467 μs |
+|   InitMultidimensionalFixedValue |  100 |    26.939 μs |  0.5388 μs |  1.5371 μs |
+|           **InitJaggedRandomValues** | **1024** | **8,583.438 μs** | **40.8345 μs** | **31.8809 μs** |
+| InitMultidimensionalRandomValues | 1024 | 9,302.991 μs | 86.9615 μs | 77.0891 μs |
+|             InitJaggedFixedValue | 1024 |   775.637 μs |  5.3668 μs |  5.0201 μs |
+|   InitMultidimensionalFixedValue | 1024 | 2,589.272 μs |  4.9434 μs |  4.1280 μs |

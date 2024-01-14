@@ -1,17 +1,18 @@
 # Comparing two byte arrays
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25206
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 6.0.9 (CoreCLR 6.0.922.41905, CoreFX 6.0.922.41905), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.9 (CoreCLR 6.0.922.41905, CoreFX 6.0.922.41905), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                    Method | Count |       Mean |    Error |    StdDev | Ratio | Gen 0 | Gen 1 | Gen 2 | Allocated |
-|-------------------------- |------ |-----------:|---------:|----------:|------:|------:|------:|------:|----------:|
-|             CompareNormal | 10000 | 4,635.0 ns | 91.83 ns | 243.51 ns |  1.00 |     - |     - |     - |         - |
-|   CompareUnsafeHandRolled | 10000 |   572.5 ns |  9.33 ns |   9.16 ns |  0.12 |     - |     - |     - |         - |
-| CompareSpanSequenceEquals | 10000 |   198.3 ns |  3.65 ns |   7.12 ns |  0.04 |     - |     - |     - |         - |
+|                   Method | Count |       Mean |    Error |   StdDev | Ratio | Allocated | Alloc Ratio |
+|------------------------- |------ |-----------:|---------:|---------:|------:|----------:|------------:|
+|            CompareNormal | 10000 | 3,117.8 ns | 16.02 ns | 14.20 ns |  1.00 |         - |          NA |
+|  CompareUnsafeHandRolled | 10000 |   782.4 ns |  2.27 ns |  2.01 ns |  0.25 |         - |          NA |
+| CompareSpanSequenceEqual | 10000 |   195.4 ns |  0.19 ns |  0.17 ns |  0.06 |         - |          NA |

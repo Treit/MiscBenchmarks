@@ -1,22 +1,23 @@
 # Checking if a dictionary contains a key
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22000
-AMD Ryzen Threadripper 3960X, 1 CPU, 48 logical and 24 physical cores
-.NET Core SDK=6.0.201
-  [Host]     : .NET Core 5.0.7 (CoreCLR 5.0.721.25508, CoreFX 5.0.721.25508), X64 RyuJIT
-  DefaultJob : .NET Core 5.0.7 (CoreCLR 5.0.721.25508, CoreFX 5.0.721.25508), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                              Method | Count |               Mean |            Error |           StdDev |
-|------------------------------------ |------ |-------------------:|-----------------:|-----------------:|
-|               **DictionaryContainsKey** |    **10** |           **687.5 ns** |          **5.53 ns** |          **5.17 ns** |
-|     ConcurrentDictionaryContainsKey |    10 |           798.0 ns |         14.40 ns |         13.47 ns |
-|           DictionaryKeysDotContains |    10 |           715.3 ns |         10.18 ns |          9.52 ns |
-| ConcurrentDictionaryKeysDotContains |    10 |         6,568.2 ns |         63.27 ns |         59.18 ns |
-|               **DictionaryContainsKey** | **10000** |       **417,190.4 ns** |      **7,837.56 ns** |      **7,331.26 ns** |
-|     ConcurrentDictionaryContainsKey | 10000 |       448,793.0 ns |      3,101.03 ns |      2,900.71 ns |
-|           DictionaryKeysDotContains | 10000 |       443,778.2 ns |        901.14 ns |        798.84 ns |
-| ConcurrentDictionaryKeysDotContains | 10000 | 1,753,222,520.0 ns | 17,785,566.39 ns | 16,636,629.83 ns |
+|                              Method | Count |               Mean |           Error |          StdDev |
+|------------------------------------ |------ |-------------------:|----------------:|----------------:|
+|               **DictionaryContainsKey** |    **10** |           **619.7 ns** |         **2.26 ns** |         **2.12 ns** |
+|     ConcurrentDictionaryContainsKey |    10 |           615.6 ns |         2.03 ns |         1.58 ns |
+|           DictionaryKeysDotContains |    10 |           624.0 ns |         3.26 ns |         3.05 ns |
+| ConcurrentDictionaryKeysDotContains |    10 |         2,468.1 ns |        16.88 ns |        15.79 ns |
+|               **DictionaryContainsKey** | **10000** |       **412,762.4 ns** |     **1,805.72 ns** |     **1,689.07 ns** |
+|     ConcurrentDictionaryContainsKey | 10000 |       370,226.1 ns |     1,651.52 ns |     1,544.84 ns |
+|           DictionaryKeysDotContains | 10000 |       417,660.7 ns |     2,014.34 ns |     1,785.66 ns |
+| ConcurrentDictionaryKeysDotContains | 10000 | 1,159,663,840.0 ns | 7,746,638.16 ns | 7,246,210.14 ns |

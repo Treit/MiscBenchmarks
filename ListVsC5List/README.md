@@ -1,23 +1,24 @@
 # List<T> vs. [C5](https://github.com/sestoft/C5) ArrayList<T>
 
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25290.1010)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.102
-  [Host]     : .NET 6.0.13 (6.0.1322.58009), X64 RyuJIT AVX2
-  DefaultJob : .NET 6.0.13 (6.0.1322.58009), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                     Method |  Count |        Mean |     Error |    StdDev |      Median | Ratio | RatioSD |     Gen0 |     Gen1 |     Gen2 | Allocated | Alloc Ratio |
-|--------------------------- |------- |------------:|----------:|----------:|------------:|------:|--------:|---------:|---------:|---------:|----------:|------------:|
-|     CreateC5ArrayListOfInt | 100000 |  1,243.1 μs |  24.46 μs |  50.51 μs |  1,227.0 μs |  7.38 |    0.51 | 152.3438 | 123.0469 | 123.0469 | 1049624 B |          NA |
-|            CreateListOfInt | 100000 |    749.2 μs |  14.97 μs |  15.37 μs |    750.1 μs |  4.59 |    0.21 |  64.4531 |  36.1328 |  34.1797 | 1049097 B |          NA |
-|  CreateC5ArrayListOfObject | 100000 | 12,602.9 μs | 253.58 μs | 743.71 μs | 12,685.0 μs | 76.57 |    6.73 | 781.2500 | 500.0000 | 281.2500 | 5297478 B |          NA |
-|         CreateListOfObject | 100000 | 12,169.4 μs | 242.51 μs | 608.42 μs | 12,055.1 μs | 73.57 |    5.89 | 796.8750 | 531.2500 | 281.2500 | 5297312 B |          NA |
-|    IterateC5ArrayListOfInt | 100000 |    616.1 μs |  14.03 μs |  40.48 μs |    608.3 μs |  3.75 |    0.33 |        - |        - |        - |      49 B |          NA |
-|           IterateListOfInt | 100000 |    164.6 μs |   3.26 μs |   9.09 μs |    164.1 μs |  1.00 |    0.00 |        - |        - |        - |         - |          NA |
-| IterateC5ArrayListOfObject | 100000 |    719.7 μs |  16.92 μs |  48.82 μs |    701.6 μs |  4.38 |    0.30 |        - |        - |        - |      57 B |          NA |
-|        IterateListOfObject | 100000 |    162.3 μs |   3.24 μs |   7.82 μs |    160.9 μs |  0.97 |    0.07 |        - |        - |        - |         - |          NA |
+|                     Method |  Count |        Mean |      Error |     StdDev |  Ratio | RatioSD |     Gen0 |     Gen1 |     Gen2 | Allocated | Alloc Ratio |
+|--------------------------- |------- |------------:|-----------:|-----------:|-------:|--------:|---------:|---------:|---------:|----------:|------------:|
+|     CreateC5ArrayListOfInt | 100000 |   674.27 μs |   6.865 μs |   6.422 μs |  10.85 |    0.11 | 115.2344 | 107.4219 | 107.4219 | 1049714 B |          NA |
+|            CreateListOfInt | 100000 |   314.06 μs |   6.070 μs |   6.233 μs |   5.05 |    0.10 |  64.4531 |  56.6406 |  56.6406 | 1049370 B |          NA |
+|  CreateC5ArrayListOfObject | 100000 | 7,469.18 μs |  48.062 μs |  42.606 μs | 120.23 |    0.70 | 468.7500 | 460.9375 | 273.4375 | 5288134 B |          NA |
+|         CreateListOfObject | 100000 | 7,403.89 μs | 121.213 μs | 113.383 μs | 119.35 |    1.85 | 468.7500 | 460.9375 | 273.4375 | 5288056 B |          NA |
+|    IterateC5ArrayListOfInt | 100000 |   144.83 μs |   0.078 μs |   0.069 μs |   2.33 |    0.00 |        - |        - |        - |      48 B |          NA |
+|           IterateListOfInt | 100000 |    62.14 μs |   0.093 μs |   0.078 μs |   1.00 |    0.00 |        - |        - |        - |         - |          NA |
+| IterateC5ArrayListOfObject | 100000 |   242.06 μs |   4.815 μs |   9.726 μs |   3.90 |    0.17 |        - |        - |        - |      56 B |          NA |
+|        IterateListOfObject | 100000 |   104.46 μs |   0.220 μs |   0.195 μs |   1.68 |    0.00 |        - |        - |        - |         - |          NA |

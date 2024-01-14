@@ -1,19 +1,20 @@
 # Updating an existing dictionary entry.
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25951.1010)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=8.0.100-preview.7.23376.3
-  [Host]     : .NET 6.0.21 (6.0.2123.36311), X64 RyuJIT AVX2
-  DefaultJob : .NET 6.0.21 (6.0.2123.36311), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                             Method | Count |           Mean |        Error |       StdDev | Ratio | RatioSD |    Gen0 | Allocated | Alloc Ratio |
-|----------------------------------- |------ |---------------:|-------------:|-------------:|------:|--------:|--------:|----------:|------------:|
-|           **IncrementUsingDictionary** |    **10** |       **452.1 ns** |      **8.69 ns** |      **8.13 ns** |  **1.00** |    **0.00** |       **-** |         **-** |          **NA** |
-| IncrementUsingConcurrentDictionary |    10 |       828.6 ns |      6.47 ns |      5.05 ns |  1.84 |    0.03 |       - |         - |          NA |
-|                                    |       |                |              |              |       |         |         |           |             |
-|           **IncrementUsingDictionary** | **10000** |   **748,989.8 ns** |  **8,683.68 ns** |  **7,697.86 ns** |  **1.00** |    **0.00** | **73.2422** |  **319681 B** |        **1.00** |
-| IncrementUsingConcurrentDictionary | 10000 | 1,239,282.7 ns | 24,509.28 ns | 35,925.39 ns |  1.66 |    0.05 | 72.2656 |  319681 B |        1.00 |
+|                             Method | Count |         Mean |       Error |      StdDev | Ratio |    Gen0 | Allocated | Alloc Ratio |
+|----------------------------------- |------ |-------------:|------------:|------------:|------:|--------:|----------:|------------:|
+|           **IncrementUsingDictionary** |    **10** |     **296.5 ns** |     **0.39 ns** |     **0.35 ns** |  **1.00** |       **-** |         **-** |          **NA** |
+| IncrementUsingConcurrentDictionary |    10 |     549.3 ns |     1.37 ns |     1.21 ns |  1.85 |       - |         - |          NA |
+|                                    |       |              |             |             |       |         |           |             |
+|           **IncrementUsingDictionary** | **10000** | **524,790.1 ns** | **1,538.09 ns** | **1,438.73 ns** |  **1.00** | **18.5547** |  **310400 B** |        **1.00** |
+| IncrementUsingConcurrentDictionary | 10000 | 796,425.9 ns | 1,906.04 ns | 1,591.63 ns |  1.52 | 18.5547 |  310400 B |        1.00 |

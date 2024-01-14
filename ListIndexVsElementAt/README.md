@@ -1,18 +1,19 @@
 # List index vs. ElementAt
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25936.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.400
-  [Host]     : .NET 6.0.21 (6.0.2123.36311), X64 RyuJIT AVX2
-  DefaultJob : .NET 6.0.21 (6.0.2123.36311), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                      Method |   Count |         Mean |      Error |     StdDev |
-|---------------------------- |-------- |-------------:|-----------:|-----------:|
-|  **LookupElementsWithIndexing** |   **10000** |     **41.24 μs** |   **0.586 μs** |   **0.519 μs** |
-| LookupElementsWithElementAt |   10000 |    159.88 μs |   3.008 μs |   2.954 μs |
-|  **LookupElementsWithIndexing** | **1000000** |  **4,620.15 μs** |  **91.280 μs** | **112.099 μs** |
-| LookupElementsWithElementAt | 1000000 | 16,102.71 μs | 288.861 μs | 385.622 μs |
+|                      Method |   Count |        Mean |    Error |   StdDev |
+|---------------------------- |-------- |------------:|---------:|---------:|
+|  **LookupElementsWithIndexing** |   **10000** |    **13.93 μs** | **0.042 μs** | **0.037 μs** |
+| LookupElementsWithElementAt |   10000 |    63.20 μs | 0.634 μs | 0.593 μs |
+|  **LookupElementsWithIndexing** | **1000000** | **5,061.04 μs** | **2.137 μs** | **1.895 μs** |
+| LookupElementsWithElementAt | 1000000 | 8,670.99 μs | 8.414 μs | 7.026 μs |

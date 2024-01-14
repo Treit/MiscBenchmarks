@@ -1,19 +1,20 @@
 # Getting the string representations of many items by calling ToString() vs. caching the string value.
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25140
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 5.0.17 (CoreCLR 5.0.1722.21314, CoreFX 5.0.1722.21314), X64 RyuJIT
-  DefaultJob : .NET Core 5.0.17 (CoreCLR 5.0.1722.21314, CoreFX 5.0.1722.21314), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                      Method |   Count |        Mean |       Error |      StdDev |      Median | Ratio | RatioSD |      Gen 0 | Gen 1 | Gen 2 |  Allocated |
-|---------------------------- |-------- |------------:|------------:|------------:|------------:|------:|--------:|-----------:|------:|------:|-----------:|
-|     **ProcessDataWithToString** |   **10000** |    **576.8 μs** |    **10.63 μs** |    **28.92 μs** |    **569.7 μs** |  **1.00** |    **0.00** |   **128.9063** |     **-** |     **-** |   **559749 B** |
-| ProcessDataWithCachedString |   10000 |    286.6 μs |     2.20 μs |     1.72 μs |    286.9 μs |  0.51 |    0.02 |          - |     - |     - |          - |
-|                             |         |             |             |             |             |       |         |            |       |       |            |
-|     **ProcessDataWithToString** | **1000000** | **61,546.1 μs** | **1,321.86 μs** | **3,771.35 μs** | **60,456.0 μs** |  **1.00** |    **0.00** | **14625.0000** |     **-** |     **-** | **63207468 B** |
-| ProcessDataWithCachedString | 1000000 | 29,211.3 μs |   566.54 μs | 1,541.31 μs | 28,706.4 μs |  0.48 |    0.03 |          - |     - |     - |          - |
+|                      Method |   Count |        Mean |     Error |    StdDev | Ratio | RatioSD |      Gen0 |  Allocated | Alloc Ratio |
+|---------------------------- |-------- |------------:|----------:|----------:|------:|--------:|----------:|-----------:|------------:|
+|     **ProcessDataWithToString** |   **10000** |    **264.6 μs** |   **3.45 μs** |   **3.23 μs** |  **1.00** |    **0.00** |   **32.7148** |   **550416 B** |        **1.00** |
+| ProcessDataWithCachedString |   10000 |    325.5 μs |   1.88 μs |   1.76 μs |  1.23 |    0.02 |         - |          - |        0.00 |
+|                             |         |             |           |           |       |         |           |            |             |
+|     **ProcessDataWithToString** | **1000000** | **31,814.1 μs** | **151.34 μs** | **141.57 μs** |  **1.00** |    **0.00** | **3750.0000** | **63192224 B** |        **1.00** |
+| ProcessDataWithCachedString | 1000000 | 30,774.1 μs |  32.90 μs |  30.78 μs |  0.97 |    0.00 |         - |          - |        0.00 |

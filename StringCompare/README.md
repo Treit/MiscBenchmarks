@@ -1,20 +1,21 @@
 # Searching for substrings using Contains
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25163
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
 |                     Method | Count |      Mean |    Error |   StdDev | Ratio | RatioSD |
 |--------------------------- |------ |----------:|---------:|---------:|------:|--------:|
-|                    Ordinal |  1000 |  21.11 μs | 0.417 μs | 0.556 μs |  1.00 |    0.00 |
-|          OrdinalIgnoreCase |  1000 | 348.11 μs | 6.838 μs | 5.710 μs | 16.56 |    0.33 |
-|             CurrentCulture |  1000 | 268.12 μs | 2.382 μs | 2.111 μs | 12.75 |    0.36 |
-|   CurrentCultureIgnoreCase |  1000 | 325.52 μs | 4.218 μs | 3.522 μs | 15.49 |    0.50 |
-|           InvariantCulture |  1000 | 270.37 μs | 5.364 μs | 8.509 μs | 12.90 |    0.57 |
-| InvariantCultureIgnoreCase |  1000 | 346.59 μs | 6.723 μs | 9.202 μs | 16.44 |    0.52 |
+|                    Ordinal |  1000 |  10.39 μs | 0.011 μs | 0.009 μs |  1.00 |    0.00 |
+|          OrdinalIgnoreCase |  1000 |  12.90 μs | 0.014 μs | 0.011 μs |  1.24 |    0.00 |
+|             CurrentCulture |  1000 | 143.35 μs | 0.364 μs | 0.322 μs | 13.80 |    0.04 |
+|   CurrentCultureIgnoreCase |  1000 | 202.12 μs | 0.428 μs | 0.357 μs | 19.46 |    0.04 |
+|           InvariantCulture |  1000 | 142.64 μs | 0.188 μs | 0.167 μs | 13.73 |    0.02 |
+| InvariantCultureIgnoreCase |  1000 | 202.63 μs | 0.416 μs | 0.389 μs | 19.50 |    0.04 |
