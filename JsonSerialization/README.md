@@ -1,27 +1,28 @@
 # Serializing and deserializng JSON
 
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25982.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=8.0.100-preview.7.23376.3
-  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                                             Method | Count |         Mean |      Error |      StdDev |       Median |      Gen0 |   Gen1 |  Allocated |
-|--------------------------------------------------- |------ |-------------:|-----------:|------------:|-------------:|----------:|-------:|-----------:|
-|                         **SerializeAndDeserializeSTJ** |    **10** |    **10.386 μs** |  **0.4277 μs** |   **1.2475 μs** |     **9.901 μs** |    **0.8087** |      **-** |    **3.44 KB** |
-|            SerializeAndDeserializeSTJCachedOptions |    10 |    12.134 μs |  0.9411 μs |   2.7304 μs |    11.319 μs |    0.8087 |      - |    3.44 KB |
-|                SerializeAndDeserializeSTJSourceGen |    10 |     9.650 μs |  0.1984 μs |   0.5757 μs |     9.490 μs |    0.7477 |      - |     3.2 KB |
-|          SerializeAndDeserializeSTJCaseInsensitive |    10 |    10.906 μs |  0.3941 μs |   1.1306 μs |    10.533 μs |    0.8392 |      - |    3.67 KB |
-| SerializeAndDeserializeSTJCaseInsensitiveSourceGen |    10 |    10.994 μs |  0.4345 μs |   1.2468 μs |    10.610 μs |    0.7935 | 0.0153 |    3.44 KB |
-|                  SerializeAndDeserializeNewtonsoft |    10 |    19.735 μs |  0.4642 μs |   1.3318 μs |    19.260 μs |   10.0098 |      - |   42.27 KB |
-|                         **SerializeAndDeserializeSTJ** |  **1000** |   **928.660 μs** | **18.5310 μs** |  **40.2848 μs** |   **915.122 μs** |   **84.9609** |      **-** |  **359.22 KB** |
-|            SerializeAndDeserializeSTJCachedOptions |  1000 |   963.821 μs | 19.0245 μs |  47.7287 μs |   948.244 μs |   83.9844 |      - |  359.22 KB |
-|                SerializeAndDeserializeSTJSourceGen |  1000 | 1,010.360 μs | 27.0858 μs |  75.5043 μs |   990.459 μs |   79.1016 |      - |  335.78 KB |
-|          SerializeAndDeserializeSTJCaseInsensitive |  1000 |   975.879 μs | 21.1928 μs |  58.3710 μs |   963.194 μs |   84.9609 |      - |  359.47 KB |
-| SerializeAndDeserializeSTJCaseInsensitiveSourceGen |  1000 | 1,023.682 μs | 40.1027 μs | 116.9815 μs |   974.491 μs |   79.1016 |      - |     336 KB |
-|                  SerializeAndDeserializeNewtonsoft |  1000 | 2,107.577 μs | 68.1222 μs | 199.7905 μs | 2,077.829 μs | 1003.9063 |      - | 4242.03 KB |
+|                                             Method | Count |         Mean |      Error |     StdDev |     Gen0 |   Gen1 |  Allocated |
+|--------------------------------------------------- |------ |-------------:|-----------:|-----------:|---------:|-------:|-----------:|
+|                         **SerializeAndDeserializeSTJ** |    **10** |     **6.044 μs** |  **0.0159 μs** |  **0.0141 μs** |   **0.1526** |      **-** |    **2.58 KB** |
+|            SerializeAndDeserializeSTJCachedOptions |    10 |     5.902 μs |  0.0355 μs |  0.0332 μs |   0.1526 |      - |    2.58 KB |
+|                SerializeAndDeserializeSTJSourceGen |    10 |     6.137 μs |  0.0340 μs |  0.0318 μs |   0.1373 |      - |    2.34 KB |
+|          SerializeAndDeserializeSTJCaseInsensitive |    10 |     6.626 μs |  0.0180 μs |  0.0159 μs |   0.1602 | 0.0076 |    2.75 KB |
+| SerializeAndDeserializeSTJCaseInsensitiveSourceGen |    10 |     6.520 μs |  0.0147 μs |  0.0138 μs |   0.1526 | 0.0076 |    2.52 KB |
+|                  SerializeAndDeserializeNewtonsoft |    10 |    11.077 μs |  0.1248 μs |  0.1168 μs |   2.5787 | 0.0153 |   42.27 KB |
+|                         **SerializeAndDeserializeSTJ** |  **1000** |   **616.725 μs** |  **2.3846 μs** |  **2.2305 μs** |  **16.6016** |      **-** |  **273.28 KB** |
+|            SerializeAndDeserializeSTJCachedOptions |  1000 |   617.210 μs |  1.3512 μs |  1.1283 μs |  16.6016 |      - |  273.28 KB |
+|                SerializeAndDeserializeSTJSourceGen |  1000 |   623.769 μs |  2.0513 μs |  1.9188 μs |  14.6484 |      - |  249.84 KB |
+|          SerializeAndDeserializeSTJCaseInsensitive |  1000 |   612.225 μs |  1.7566 μs |  1.5572 μs |  16.6016 |      - |  273.47 KB |
+| SerializeAndDeserializeSTJCaseInsensitiveSourceGen |  1000 |   625.236 μs |  1.9212 μs |  1.7031 μs |  14.6484 |      - |  250.01 KB |
+|                  SerializeAndDeserializeNewtonsoft |  1000 | 1,070.701 μs | 11.6657 μs | 10.9121 μs | 257.8125 |      - | 4242.03 KB |

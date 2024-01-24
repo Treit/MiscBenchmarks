@@ -1,19 +1,20 @@
 # Returning an empty sequence
 
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.26026.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=8.0.100
-  [Host]     : .NET 7.0.14 (7.0.1423.51910), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.14 (7.0.1423.51910), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
 |             Method |      Mean |     Error |    StdDev | Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
 |------------------- |----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
-| EnumerableDotEmpty |  5.723 ns | 0.1251 ns | 0.1109 ns |  1.00 |    0.00 |      - |         - |          NA |
-|      ArrayDotEmpty | 21.463 ns | 0.1869 ns | 0.1459 ns |  3.77 |    0.05 |      - |         - |          NA |
-|      NewEmptyArray | 24.193 ns | 0.5053 ns | 0.8983 ns |  4.29 |    0.20 | 0.0055 |      24 B |          NA |
-|       NewEmptyList | 18.030 ns | 0.4189 ns | 0.4302 ns |  3.14 |    0.08 | 0.0074 |      32 B |          NA |
+| EnumerableDotEmpty |  5.301 ns | 0.0270 ns | 0.0240 ns |  1.00 |    0.00 |      - |         - |          NA |
+|      ArrayDotEmpty | 16.846 ns | 0.0343 ns | 0.0287 ns |  3.18 |    0.01 |      - |         - |          NA |
+|      NewEmptyArray | 18.721 ns | 0.0483 ns | 0.0403 ns |  3.53 |    0.02 | 0.0014 |      24 B |          NA |
+|       NewEmptyList | 12.560 ns | 0.1293 ns | 0.1079 ns |  2.37 |    0.02 | 0.0019 |      32 B |          NA |

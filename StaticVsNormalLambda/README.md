@@ -1,18 +1,19 @@
 # Calling static vs. normal lambda.
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25956.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=8.0.100-preview.7.23376.3
-  [Host]     : .NET 7.0.10 (7.0.1023.36312), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.10 (7.0.1023.36312), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|       Method |  Count |         Mean |       Error |      StdDev | Allocated |
-|------------- |------- |-------------:|------------:|------------:|----------:|
-| **StaticLambda** |    **100** |     **224.4 ns** |     **2.24 ns** |     **2.09 ns** |         **-** |
-| NormalLambda |    100 |     223.5 ns |     1.78 ns |     1.49 ns |         - |
-| **StaticLambda** | **100000** | **219,485.5 ns** | **1,792.58 ns** | **1,589.07 ns** |         **-** |
-| NormalLambda | 100000 | 218,740.3 ns | 1,182.48 ns |   987.43 ns |         - |
+|       Method |  Count |         Mean |     Error |    StdDev | Allocated |
+|------------- |------- |-------------:|----------:|----------:|----------:|
+| **StaticLambda** |    **100** |     **68.33 ns** |  **0.047 ns** |  **0.041 ns** |         **-** |
+| NormalLambda |    100 |     68.30 ns |  0.044 ns |  0.035 ns |         - |
+| **StaticLambda** | **100000** | **62,383.80 ns** | **97.923 ns** | **81.770 ns** |         **-** |
+| NormalLambda | 100000 | 62,328.41 ns | 64.926 ns | 57.555 ns |         - |

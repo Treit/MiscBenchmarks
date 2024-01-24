@@ -2,19 +2,20 @@
 
 
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25982.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=8.0.100-preview.7.23376.3
-  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
 |                              Method |      Mean |     Error |    StdDev |   Gen0 | Allocated |
 |------------------------------------ |----------:|----------:|----------:|-------:|----------:|
-|                 SetPropertyNormally |  8.729 ns | 0.4682 ns | 1.3282 ns | 0.0055 |      24 B |
-|             SetPropertyUsingDynamic | 18.029 ns | 0.2170 ns | 0.1812 ns | 0.0055 |      24 B |
-|          SetPropertyUsingReflection | 70.170 ns | 1.4724 ns | 2.1116 ns | 0.0055 |      24 B |
-| SetPropertyUsingNonGenericInterface | 15.461 ns | 0.1316 ns | 0.1166 ns | 0.0055 |      24 B |
+|                 SetPropertyNormally |  7.871 ns | 0.0360 ns | 0.0319 ns | 0.0014 |      24 B |
+|             SetPropertyUsingDynamic | 12.707 ns | 0.0757 ns | 0.0708 ns | 0.0014 |      24 B |
+|          SetPropertyUsingReflection | 43.126 ns | 0.0752 ns | 0.0628 ns | 0.0014 |      24 B |
+| SetPropertyUsingNonGenericInterface | 12.008 ns | 0.0562 ns | 0.0469 ns | 0.0014 |      24 B |

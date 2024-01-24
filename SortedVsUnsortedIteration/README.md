@@ -1,23 +1,28 @@
 # ForEach vs. directly using the enumerator.
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22504
-Unknown processor
-.NET Core SDK=6.0.100
-  [Host]     : .NET Core 6.0.0 (CoreCLR 6.0.21.52210, CoreFX 6.0.21.52210), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.0 (CoreCLR 6.0.21.52210, CoreFX 6.0.21.52210), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                 Method |  Count |         Mean |       Error |      StdDev | Ratio | RatioSD |
-|----------------------- |------- |-------------:|------------:|------------:|------:|--------:|
-| **SumWithForEachUnsorted** |   **1000** |     **639.5 ns** |    **16.12 ns** |    **47.53 ns** |  **1.14** |    **0.12** |
-|   SumWithForEachSorted |   1000 |     667.2 ns |    13.92 ns |    41.04 ns |  1.19 |    0.11 |
-| MaxWithForEachUnsorted |   1000 |   1,259.6 ns |    23.53 ns |    60.32 ns |  2.22 |    0.19 |
-|   MaxWithForEachSorted |   1000 |     565.2 ns |    14.61 ns |    43.07 ns |  1.00 |    0.00 |
-|                        |        |              |             |             |       |         |
-| **SumWithForEachUnsorted** | **100000** |  **63,024.6 ns** | **1,649.82 ns** | **4,838.62 ns** |  **1.17** |    **0.12** |
-|   SumWithForEachSorted | 100000 |  64,656.0 ns | 1,397.74 ns | 4,121.26 ns |  1.20 |    0.12 |
-| MaxWithForEachUnsorted | 100000 | 119,881.9 ns | 2,488.12 ns | 7,336.28 ns |  2.23 |    0.23 |
-|   MaxWithForEachSorted | 100000 |  54,187.3 ns | 1,429.39 ns | 4,124.12 ns |  1.00 |    0.00 |
+|                 Method |  Count |        Mean |    Error |   StdDev | Ratio |
+|----------------------- |------- |------------:|---------:|---------:|------:|
+| **SumWithForEachUnsorted** |   **1000** |    **317.7 ns** |  **0.27 ns** |  **0.23 ns** |  **1.00** |
+|   SumWithForEachSorted |   1000 |    318.7 ns |  1.64 ns |  1.46 ns |  1.00 |
+| MaxWithForEachUnsorted |   1000 |    360.7 ns |  2.37 ns |  2.22 ns |  1.13 |
+|   MaxWithForEachSorted |   1000 |    317.7 ns |  0.48 ns |  0.40 ns |  1.00 |
+|                KoziMax |   1000 |    296.7 ns |  0.12 ns |  0.11 ns |  0.93 |
+|          KoziMaxSorted |   1000 |    297.4 ns |  1.16 ns |  1.09 ns |  0.94 |
+|                        |        |             |          |          |       |
+| **SumWithForEachUnsorted** | **100000** | **31,205.5 ns** | **53.57 ns** | **47.49 ns** |  **1.00** |
+|   SumWithForEachSorted | 100000 | 31,202.4 ns | 30.35 ns | 23.69 ns |  1.00 |
+| MaxWithForEachUnsorted | 100000 | 31,353.1 ns | 60.92 ns | 56.98 ns |  1.00 |
+|   MaxWithForEachSorted | 100000 | 31,193.5 ns | 90.14 ns | 75.27 ns |  1.00 |
+|                KoziMax | 100000 | 31,184.7 ns | 35.30 ns | 31.30 ns |  1.00 |
+|          KoziMaxSorted | 100000 | 31,173.8 ns | 22.08 ns | 19.58 ns |  1.00 |

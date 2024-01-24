@@ -1,17 +1,18 @@
 # String replace - does the StringComparison parameter matter?
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25252
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100
-  [Host]     : .NET Core 6.0.11 (CoreCLR 6.0.1122.52304, CoreFX 6.0.1122.52304), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.11 (CoreCLR 6.0.1122.52304, CoreFX 6.0.1122.52304), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                                   Method | Count |     Mean |     Error |    StdDev | Ratio | RatioSD |
-|----------------------------------------- |------ |---------:|----------:|----------:|------:|--------:|
-|                ReplaceNoStringComparison | 10000 | 1.053 ms | 0.0210 ms | 0.0405 ms |  1.00 |    0.00 |
-|           ReplaceStringComparisonOrdinal | 10000 | 1.131 ms | 0.0226 ms | 0.0603 ms |  1.10 |    0.07 |
-| ReplaceStringComparisonOrdinalIgnoreCase | 10000 | 2.775 ms | 0.0488 ms | 0.0855 ms |  2.65 |    0.16 |
+|                                   Method | Count |       Mean |   Error |  StdDev | Ratio |
+|----------------------------------------- |------ |-----------:|--------:|--------:|------:|
+|                ReplaceNoStringComparison | 10000 |   793.4 μs | 2.20 μs | 1.83 μs |  1.00 |
+|           ReplaceStringComparisonOrdinal | 10000 |   799.3 μs | 3.81 μs | 3.38 μs |  1.01 |
+| ReplaceStringComparisonOrdinalIgnoreCase | 10000 | 1,168.7 μs | 3.57 μs | 3.16 μs |  1.47 |

@@ -2,17 +2,18 @@
 
 (Don't ask me why.)
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22455
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=6.0.100-preview.7.21379.14
-  [Host]     : .NET Core 5.0.9 (CoreCLR 5.0.921.35908, CoreFX 5.0.921.35908), X64 RyuJIT
-  DefaultJob : .NET Core 5.0.9 (CoreCLR 5.0.921.35908, CoreFX 5.0.921.35908), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
 |                        Method |    Mean |    Error |   StdDev | Ratio | RatioSD |
 |------------------------------ |--------:|---------:|---------:|------:|--------:|
-| BuildCodeThatUsesExplicitType | 3.093 s | 0.0483 s | 0.0428 s |  1.00 |    0.00 |
-|          BuildCodeThatUsesVar | 3.460 s | 0.0587 s | 0.0521 s |  1.12 |    0.03 |
+| BuildCodeThatUsesExplicitType | 2.333 s | 0.0289 s | 0.0256 s |  1.00 |    0.00 |
+|          BuildCodeThatUsesVar | 2.597 s | 0.0454 s | 0.0425 s |  1.11 |    0.03 |

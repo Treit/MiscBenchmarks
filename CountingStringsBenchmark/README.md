@@ -1,75 +1,74 @@
 ## Counting strings
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22463
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=6.0.100-preview.7.21379.14
-  [Host]   : .NET Core 5.0.9 (CoreCLR 5.0.921.35908, CoreFX 5.0.921.35908), X64 RyuJIT
-  ShortRun : .NET Core 5.0.9 (CoreCLR 5.0.921.35908, CoreFX 5.0.921.35908), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
-Job=ShortRun  IterationCount=3  LaunchCount=1  
-WarmupCount=3  
 
 ```
-|                                         Method |   Count |            Mean |            Error |         StdDev | Ratio | RatioSD |
-|----------------------------------------------- |-------- |----------------:|-----------------:|---------------:|------:|--------:|
-|              **ForLoopCountUsingLengthEqualsZero** |      **10** |        **14.86 ns** |        **17.133 ns** |       **0.939 ns** |  **0.46** |    **0.03** |
-| ForLoopCountUsingLengthEqualsZeroWithNullCheck |      10 |        13.16 ns |        16.342 ns |       0.896 ns |  0.40 |    0.02 |
-|  ForLoopCountUsingLengthEqualsZeroWithTryCatch |      10 |        22.99 ns |         8.962 ns |       0.491 ns |  0.71 |    0.02 |
-|            ForLoopCountUsingEmptyStringLiteral |      10 |        32.49 ns |         6.712 ns |       0.368 ns |  1.00 |    0.00 |
-|                ForLoopCountUsingStringDotEmpty |      10 |        40.43 ns |        19.059 ns |       1.045 ns |  1.24 |    0.03 |
-|          ForEachLoopCountUsingLengthEqualsZero |      10 |        59.18 ns |        13.503 ns |       0.740 ns |  1.82 |    0.03 |
-|        ForEachLoopCountUsingEmptyStringLiteral |      10 |        81.58 ns |        15.111 ns |       0.828 ns |  2.51 |    0.02 |
-|            ForEachLoopCountUsingStringDotEmpty |      10 |        77.92 ns |        28.103 ns |       1.540 ns |  2.40 |    0.07 |
-|                 ForLoopCountUsingIsNullOrEmpty |      10 |        14.51 ns |         3.465 ns |       0.190 ns |  0.45 |    0.01 |
-|          CountUsingLinqWhereEmptyStringLiteral |      10 |        90.78 ns |        75.952 ns |       4.163 ns |  2.79 |    0.14 |
-|            CountUsingLinqWhereLengthEqualsZero |      10 |        71.53 ns |        35.422 ns |       1.942 ns |  2.20 |    0.06 |
-|                                                |         |                 |                  |                |       |         |
-|              **ForLoopCountUsingLengthEqualsZero** |     **100** |       **130.46 ns** |        **30.573 ns** |       **1.676 ns** |  **0.34** |    **0.06** |
-| ForLoopCountUsingLengthEqualsZeroWithNullCheck |     100 |       131.29 ns |        76.808 ns |       4.210 ns |  0.34 |    0.07 |
-|  ForLoopCountUsingLengthEqualsZeroWithTryCatch |     100 |       228.60 ns |       107.254 ns |       5.879 ns |  0.59 |    0.10 |
-|            ForLoopCountUsingEmptyStringLiteral |     100 |       393.62 ns |     1,491.388 ns |      81.748 ns |  1.00 |    0.00 |
-|                ForLoopCountUsingStringDotEmpty |     100 |       416.58 ns |       684.451 ns |      37.517 ns |  1.09 |    0.27 |
-|          ForEachLoopCountUsingLengthEqualsZero |     100 |       448.61 ns |       199.312 ns |      10.925 ns |  1.17 |    0.24 |
-|        ForEachLoopCountUsingEmptyStringLiteral |     100 |       732.12 ns |       338.861 ns |      18.574 ns |  1.92 |    0.40 |
-|            ForEachLoopCountUsingStringDotEmpty |     100 |       804.55 ns |       306.149 ns |      16.781 ns |  2.09 |    0.36 |
-|                 ForLoopCountUsingIsNullOrEmpty |     100 |       144.74 ns |       149.831 ns |       8.213 ns |  0.38 |    0.09 |
-|          CountUsingLinqWhereEmptyStringLiteral |     100 |       521.26 ns |       666.709 ns |      36.545 ns |  1.36 |    0.30 |
-|            CountUsingLinqWhereLengthEqualsZero |     100 |       334.15 ns |       260.454 ns |      14.276 ns |  0.87 |    0.17 |
-|                                                |         |                 |                  |                |       |         |
-|              **ForLoopCountUsingLengthEqualsZero** |    **1000** |     **1,369.41 ns** |     **1,052.789 ns** |      **57.707 ns** |  **0.36** |    **0.03** |
-| ForLoopCountUsingLengthEqualsZeroWithNullCheck |    1000 |     1,418.30 ns |       899.839 ns |      49.323 ns |  0.37 |    0.01 |
-|  ForLoopCountUsingLengthEqualsZeroWithTryCatch |    1000 |     2,319.83 ns |     1,387.024 ns |      76.027 ns |  0.61 |    0.01 |
-|            ForLoopCountUsingEmptyStringLiteral |    1000 |     3,792.07 ns |     3,381.720 ns |     185.363 ns |  1.00 |    0.00 |
-|                ForLoopCountUsingStringDotEmpty |    1000 |     3,856.43 ns |       175.930 ns |       9.643 ns |  1.02 |    0.05 |
-|          ForEachLoopCountUsingLengthEqualsZero |    1000 |     4,123.44 ns |       780.448 ns |      42.779 ns |  1.09 |    0.06 |
-|        ForEachLoopCountUsingEmptyStringLiteral |    1000 |     7,721.44 ns |     1,375.936 ns |      75.420 ns |  2.04 |    0.12 |
-|            ForEachLoopCountUsingStringDotEmpty |    1000 |     7,239.80 ns |     2,461.560 ns |     134.926 ns |  1.91 |    0.06 |
-|                 ForLoopCountUsingIsNullOrEmpty |    1000 |     1,508.91 ns |       713.393 ns |      39.103 ns |  0.40 |    0.02 |
-|          CountUsingLinqWhereEmptyStringLiteral |    1000 |     4,543.22 ns |     1,731.213 ns |      94.894 ns |  1.20 |    0.08 |
-|            CountUsingLinqWhereLengthEqualsZero |    1000 |     2,704.77 ns |       451.970 ns |      24.774 ns |  0.71 |    0.04 |
-|                                                |         |                 |                  |                |       |         |
-|              **ForLoopCountUsingLengthEqualsZero** |  **100000** |   **164,119.17 ns** |   **136,708.474 ns** |   **7,493.453 ns** |  **0.49** |    **0.02** |
-| ForLoopCountUsingLengthEqualsZeroWithNullCheck |  100000 |   158,877.75 ns |    88,827.349 ns |   4,868.927 ns |  0.47 |    0.00 |
-|  ForLoopCountUsingLengthEqualsZeroWithTryCatch |  100000 |   249,793.42 ns |   357,039.465 ns |  19,570.538 ns |  0.75 |    0.08 |
-|            ForLoopCountUsingEmptyStringLiteral |  100000 |   334,669.06 ns |   222,391.128 ns |  12,190.008 ns |  1.00 |    0.00 |
-|                ForLoopCountUsingStringDotEmpty |  100000 |   395,725.46 ns |   196,639.200 ns |  10,778.458 ns |  1.18 |    0.06 |
-|          ForEachLoopCountUsingLengthEqualsZero |  100000 |   440,902.90 ns |    78,054.647 ns |   4,278.439 ns |  1.32 |    0.06 |
-|        ForEachLoopCountUsingEmptyStringLiteral |  100000 |   718,218.21 ns |   187,283.582 ns |  10,265.645 ns |  2.15 |    0.05 |
-|            ForEachLoopCountUsingStringDotEmpty |  100000 |   776,621.63 ns |   549,504.903 ns |  30,120.218 ns |  2.32 |    0.01 |
-|                 ForLoopCountUsingIsNullOrEmpty |  100000 |   162,762.04 ns |    42,569.017 ns |   2,333.351 ns |  0.49 |    0.02 |
-|          CountUsingLinqWhereEmptyStringLiteral |  100000 |   398,692.73 ns |    42,154.938 ns |   2,310.654 ns |  1.19 |    0.04 |
-|            CountUsingLinqWhereLengthEqualsZero |  100000 |   283,709.59 ns |   199,009.159 ns |  10,908.364 ns |  0.85 |    0.01 |
-|                                                |         |                 |                  |                |       |         |
-|              **ForLoopCountUsingLengthEqualsZero** | **1000000** | **3,771,292.84 ns** | **2,321,924.990 ns** | **127,272.544 ns** |  **0.88** |    **0.03** |
-| ForLoopCountUsingLengthEqualsZeroWithNullCheck | 1000000 | 3,636,951.30 ns | 1,441,576.908 ns |  79,017.695 ns |  0.85 |    0.01 |
-|  ForLoopCountUsingLengthEqualsZeroWithTryCatch | 1000000 | 4,015,237.24 ns | 1,732,758.983 ns |  94,978.367 ns |  0.94 |    0.02 |
-|            ForLoopCountUsingEmptyStringLiteral | 1000000 | 4,293,148.44 ns |   696,583.631 ns |  38,182.099 ns |  1.00 |    0.00 |
-|                ForLoopCountUsingStringDotEmpty | 1000000 | 4,746,605.99 ns | 1,988,887.121 ns | 109,017.614 ns |  1.11 |    0.02 |
-|          ForEachLoopCountUsingLengthEqualsZero | 1000000 | 5,527,450.52 ns | 9,594,842.037 ns | 525,925.668 ns |  1.29 |    0.13 |
-|        ForEachLoopCountUsingEmptyStringLiteral | 1000000 | 7,940,907.29 ns |   798,182.235 ns |  43,751.062 ns |  1.85 |    0.01 |
-|            ForEachLoopCountUsingStringDotEmpty | 1000000 | 7,817,611.46 ns | 4,636,638.464 ns | 254,149.800 ns |  1.82 |    0.08 |
-|                 ForLoopCountUsingIsNullOrEmpty | 1000000 | 3,658,824.48 ns | 2,943,548.516 ns | 161,345.827 ns |  0.85 |    0.04 |
-|          CountUsingLinqWhereEmptyStringLiteral | 1000000 | 4,581,021.09 ns | 1,374,380.923 ns |  75,334.456 ns |  1.07 |    0.01 |
-|            CountUsingLinqWhereLengthEqualsZero | 1000000 | 3,905,742.19 ns | 3,047,263.333 ns | 167,030.786 ns |  0.91 |    0.03 |
+|                                         Method |   Count |             Mean |          Error |         StdDev |           Median | Ratio | RatioSD |
+|----------------------------------------------- |-------- |-----------------:|---------------:|---------------:|-----------------:|------:|--------:|
+|              **ForLoopCountUsingLengthEqualsZero** |      **10** |         **7.851 ns** |      **0.0644 ns** |      **0.0603 ns** |         **7.843 ns** |  **0.85** |    **0.01** |
+| ForLoopCountUsingLengthEqualsZeroWithNullCheck |      10 |         9.942 ns |      0.1823 ns |      0.1423 ns |        10.015 ns |  1.08 |    0.02 |
+|  ForLoopCountUsingLengthEqualsZeroWithTryCatch |      10 |        28.951 ns |      0.0343 ns |      0.0286 ns |        28.961 ns |  3.13 |    0.01 |
+|            ForLoopCountUsingEmptyStringLiteral |      10 |         9.241 ns |      0.0281 ns |      0.0263 ns |         9.231 ns |  1.00 |    0.00 |
+|                ForLoopCountUsingStringDotEmpty |      10 |         9.178 ns |      0.0130 ns |      0.0116 ns |         9.181 ns |  0.99 |    0.00 |
+|          ForEachLoopCountUsingLengthEqualsZero |      10 |         9.228 ns |      0.0160 ns |      0.0141 ns |         9.230 ns |  1.00 |    0.00 |
+|        ForEachLoopCountUsingEmptyStringLiteral |      10 |         9.254 ns |      0.0448 ns |      0.0397 ns |         9.252 ns |  1.00 |    0.00 |
+|            ForEachLoopCountUsingStringDotEmpty |      10 |         9.267 ns |      0.0605 ns |      0.0537 ns |         9.258 ns |  1.00 |    0.01 |
+|                 ForLoopCountUsingIsNullOrEmpty |      10 |         9.071 ns |      0.0477 ns |      0.0423 ns |         9.057 ns |  0.98 |    0.01 |
+|          CountUsingLinqWhereEmptyStringLiteral |      10 |        35.809 ns |      0.1946 ns |      0.1820 ns |        35.842 ns |  3.88 |    0.02 |
+|            CountUsingLinqWhereLengthEqualsZero |      10 |        36.353 ns |      0.2076 ns |      0.1942 ns |        36.311 ns |  3.93 |    0.02 |
+|                                                |         |                  |                |                |                  |       |         |
+|              **ForLoopCountUsingLengthEqualsZero** |     **100** |        **79.478 ns** |      **1.6031 ns** |      **2.2473 ns** |        **78.707 ns** |  **0.90** |    **0.04** |
+| ForLoopCountUsingLengthEqualsZeroWithNullCheck |     100 |       105.773 ns |      2.1095 ns |      2.9572 ns |       105.610 ns |  1.19 |    0.05 |
+|  ForLoopCountUsingLengthEqualsZeroWithTryCatch |     100 |       288.837 ns |      0.3133 ns |      0.2446 ns |       288.837 ns |  3.22 |    0.09 |
+|            ForLoopCountUsingEmptyStringLiteral |     100 |        89.117 ns |      1.8143 ns |      2.2944 ns |        88.050 ns |  1.00 |    0.00 |
+|                ForLoopCountUsingStringDotEmpty |     100 |        88.499 ns |      1.3487 ns |      1.1262 ns |        88.214 ns |  0.99 |    0.03 |
+|          ForEachLoopCountUsingLengthEqualsZero |     100 |        86.502 ns |      1.2237 ns |      1.1446 ns |        86.360 ns |  0.97 |    0.03 |
+|        ForEachLoopCountUsingEmptyStringLiteral |     100 |        85.611 ns |      1.7375 ns |      2.0683 ns |        85.367 ns |  0.96 |    0.04 |
+|            ForEachLoopCountUsingStringDotEmpty |     100 |        85.345 ns |      1.7111 ns |      3.1288 ns |        83.789 ns |  0.96 |    0.04 |
+|                 ForLoopCountUsingIsNullOrEmpty |     100 |       106.569 ns |      2.1363 ns |      4.8219 ns |       105.287 ns |  1.21 |    0.06 |
+|          CountUsingLinqWhereEmptyStringLiteral |     100 |       181.659 ns |      1.3118 ns |      1.2271 ns |       181.567 ns |  2.04 |    0.05 |
+|            CountUsingLinqWhereLengthEqualsZero |     100 |       197.956 ns |      0.6431 ns |      0.6015 ns |       197.708 ns |  2.22 |    0.06 |
+|                                                |         |                  |                |                |                  |       |         |
+|              **ForLoopCountUsingLengthEqualsZero** |    **1000** |       **795.147 ns** |      **4.6790 ns** |      **4.3768 ns** |       **795.259 ns** |  **0.95** |    **0.01** |
+| ForLoopCountUsingLengthEqualsZeroWithNullCheck |    1000 |       974.424 ns |      7.0511 ns |      6.2506 ns |       971.075 ns |  1.17 |    0.01 |
+|  ForLoopCountUsingLengthEqualsZeroWithTryCatch |    1000 |     2,477.346 ns |      3.3265 ns |      2.9488 ns |     2,476.763 ns |  2.97 |    0.01 |
+|            ForLoopCountUsingEmptyStringLiteral |    1000 |       833.147 ns |      2.7537 ns |      2.4410 ns |       833.437 ns |  1.00 |    0.00 |
+|                ForLoopCountUsingStringDotEmpty |    1000 |       830.837 ns |      6.1445 ns |      5.1309 ns |       829.876 ns |  1.00 |    0.01 |
+|          ForEachLoopCountUsingLengthEqualsZero |    1000 |     1,086.975 ns |     16.8031 ns |     15.7177 ns |     1,089.228 ns |  1.30 |    0.02 |
+|        ForEachLoopCountUsingEmptyStringLiteral |    1000 |     1,079.211 ns |     32.7452 ns |     96.5499 ns |     1,076.861 ns |  1.17 |    0.09 |
+|            ForEachLoopCountUsingStringDotEmpty |    1000 |     1,072.033 ns |     28.1473 ns |     82.1070 ns |     1,082.022 ns |  1.24 |    0.11 |
+|                 ForLoopCountUsingIsNullOrEmpty |    1000 |     1,030.842 ns |     20.0800 ns |     23.1242 ns |     1,030.297 ns |  1.25 |    0.03 |
+|          CountUsingLinqWhereEmptyStringLiteral |    1000 |     1,638.214 ns |     32.5062 ns |     48.6538 ns |     1,638.823 ns |  1.95 |    0.06 |
+|            CountUsingLinqWhereLengthEqualsZero |    1000 |     1,762.709 ns |     34.0672 ns |     43.0841 ns |     1,770.843 ns |  2.12 |    0.05 |
+|                                                |         |                  |                |                |                  |       |         |
+|              **ForLoopCountUsingLengthEqualsZero** |  **100000** |    **80,263.787 ns** |    **915.5618 ns** |    **856.4171 ns** |    **80,060.364 ns** |  **0.96** |    **0.01** |
+| ForLoopCountUsingLengthEqualsZeroWithNullCheck |  100000 |    99,172.591 ns |  1,130.6460 ns |  1,002.2882 ns |    98,884.674 ns |  1.18 |    0.01 |
+|  ForLoopCountUsingLengthEqualsZeroWithTryCatch |  100000 |   250,145.274 ns |    947.3474 ns |    839.7988 ns |   249,900.732 ns |  2.99 |    0.01 |
+|            ForLoopCountUsingEmptyStringLiteral |  100000 |    83,654.400 ns |    273.6504 ns |    213.6482 ns |    83,620.435 ns |  1.00 |    0.00 |
+|                ForLoopCountUsingStringDotEmpty |  100000 |    83,023.118 ns |    611.1712 ns |    510.3557 ns |    83,152.502 ns |  0.99 |    0.01 |
+|          ForEachLoopCountUsingLengthEqualsZero |  100000 |    78,735.225 ns |    675.8142 ns |    599.0917 ns |    78,545.142 ns |  0.94 |    0.01 |
+|        ForEachLoopCountUsingEmptyStringLiteral |  100000 |    81,881.831 ns |    208.7432 ns |    185.0454 ns |    81,858.636 ns |  0.98 |    0.00 |
+|            ForEachLoopCountUsingStringDotEmpty |  100000 |    82,069.562 ns |    376.0619 ns |    314.0287 ns |    82,053.552 ns |  0.98 |    0.01 |
+|                 ForLoopCountUsingIsNullOrEmpty |  100000 |    96,549.447 ns |  1,681.4887 ns |  1,490.5959 ns |    96,345.093 ns |  1.15 |    0.02 |
+|          CountUsingLinqWhereEmptyStringLiteral |  100000 |   153,777.393 ns |  1,371.4308 ns |  1,215.7377 ns |   153,380.078 ns |  1.84 |    0.02 |
+|            CountUsingLinqWhereLengthEqualsZero |  100000 |   150,611.897 ns |    776.2059 ns |    648.1671 ns |   150,494.458 ns |  1.80 |    0.01 |
+|                                                |         |                  |                |                |                  |       |         |
+|              **ForLoopCountUsingLengthEqualsZero** | **1000000** | **1,679,634.102 ns** | **27,418.5616 ns** | **25,647.3395 ns** | **1,674,949.414 ns** |  **0.97** |    **0.02** |
+| ForLoopCountUsingLengthEqualsZeroWithNullCheck | 1000000 | 1,747,750.605 ns | 28,044.2578 ns | 26,232.6161 ns | 1,743,471.582 ns |  1.00 |    0.02 |
+|  ForLoopCountUsingLengthEqualsZeroWithTryCatch | 1000000 | 2,716,787.249 ns | 22,845.0399 ns | 20,251.5328 ns | 2,708,007.422 ns |  1.56 |    0.02 |
+|            ForLoopCountUsingEmptyStringLiteral | 1000000 | 1,741,087.402 ns | 26,194.0088 ns | 23,220.3066 ns | 1,741,923.242 ns |  1.00 |    0.00 |
+|                ForLoopCountUsingStringDotEmpty | 1000000 | 1,725,645.306 ns | 14,428.4584 ns | 13,496.3890 ns | 1,727,054.004 ns |  0.99 |    0.02 |
+|          ForEachLoopCountUsingLengthEqualsZero | 1000000 | 1,693,758.073 ns | 12,988.9063 ns | 12,149.8310 ns | 1,691,600.977 ns |  0.97 |    0.02 |
+|        ForEachLoopCountUsingEmptyStringLiteral | 1000000 | 1,756,840.684 ns | 16,976.7910 ns | 15,880.1008 ns | 1,752,925.684 ns |  1.01 |    0.01 |
+|            ForEachLoopCountUsingStringDotEmpty | 1000000 | 1,753,434.362 ns | 16,963.4217 ns | 15,867.5952 ns | 1,751,710.156 ns |  1.01 |    0.02 |
+|                 ForLoopCountUsingIsNullOrEmpty | 1000000 | 1,706,080.957 ns | 15,891.9670 ns | 14,087.8148 ns | 1,711,966.797 ns |  0.98 |    0.02 |
+|          CountUsingLinqWhereEmptyStringLiteral | 1000000 | 2,111,925.000 ns | 24,662.3562 ns | 20,594.1844 ns | 2,110,482.812 ns |  1.21 |    0.02 |
+|            CountUsingLinqWhereLengthEqualsZero | 1000000 | 2,114,545.647 ns | 17,426.1838 ns | 15,447.8580 ns | 2,117,649.219 ns |  1.21 |    0.02 |

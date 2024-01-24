@@ -1,25 +1,25 @@
 # Property access vs. Local variable access
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25915.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.306
-  [Host]     : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|              Method |  Count |           Mean |       Error |      StdDev | Ratio | RatioSD | Code Size |
-|-------------------- |------- |---------------:|------------:|------------:|------:|--------:|----------:|
-|      **PropertyAccess** |      **1** |      **0.2306 ns** |   **0.0307 ns** |   **0.0354 ns** |  **0.83** |    **0.16** |      **32 B** |
-| LocalVariableAccess |      1 |      0.2826 ns |   0.0198 ns |   0.0185 ns |  1.00 |    0.00 |      44 B |
-|                     |        |                |             |             |       |         |           |
-|      **PropertyAccess** | **100000** | **27,932.9821 ns** | **312.2310 ns** | **276.7847 ns** |  **1.01** |    **0.01** |      **32 B** |
-| LocalVariableAccess | 100000 | 27,740.4292 ns | 167.6411 ns | 139.9879 ns |  1.00 |    0.00 |      44 B |
+|              Method |  Count |           Mean |       Error |      StdDev |         Median | Ratio | RatioSD | Code Size |
+|-------------------- |------- |---------------:|------------:|------------:|---------------:|------:|--------:|----------:|
+|      **PropertyAccess** |      **1** |      **0.0000 ns** |   **0.0000 ns** |   **0.0000 ns** |      **0.0000 ns** |     **?** |       **?** |      **32 B** |
+| LocalVariableAccess |      1 |      0.0019 ns |   0.0033 ns |   0.0029 ns |      0.0000 ns |     ? |       ? |      34 B |
+|                     |        |                |             |             |                |       |         |           |
+|      **PropertyAccess** | **100000** | **30,968.6646 ns** |  **25.5553 ns** |  **21.3398 ns** | **30,961.7737 ns** |  **1.00** |    **0.00** |      **32 B** |
+| LocalVariableAccess | 100000 | 31,048.7701 ns | 164.0543 ns | 145.4298 ns | 30,987.4512 ns |  1.00 |    0.00 |      44 B |
 
-
-## .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.PropertyAccess()
 ;             long result = 0;
@@ -47,7 +47,7 @@ M00_L01:
 ; Total bytes of code 32
 ```
 
-## .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.LocalVariableAccess()
 ;             long result = 0;
@@ -68,7 +68,6 @@ M00_L01:
        test      ecx,ecx
        jle       short M00_L01
        mov       edx,edx
-       nop       word ptr [rax+rax]
 M00_L00:
        add       rax,rdx
        inc       r8d
@@ -76,10 +75,10 @@ M00_L00:
        jl        short M00_L00
 M00_L01:
        ret
-; Total bytes of code 44
+; Total bytes of code 34
 ```
 
-## .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.PropertyAccess()
 ;             long result = 0;
@@ -107,7 +106,7 @@ M00_L01:
 ; Total bytes of code 32
 ```
 
-## .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.LocalVariableAccess()
 ;             long result = 0;

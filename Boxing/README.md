@@ -1,19 +1,20 @@
 # Illustrating the overhead of boxing
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25140
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.6 (CoreCLR 6.0.622.26707, CoreFX 6.0.622.26707), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                    Method |  Count |         Mean |      Error |     StdDev | Ratio | RatioSD |    Gen 0 |    Gen 1 |    Gen 2 |  Allocated |
-|-------------------------- |------- |-------------:|-----------:|-----------:|------:|--------:|---------:|---------:|---------:|-----------:|
-| **BuildIntListWithoutBoxing** |   **1000** |     **2.027 μs** |  **0.0842 μs** |  **0.2442 μs** |  **1.00** |    **0.00** |   **0.9384** |        **-** |        **-** |    **3.96 KB** |
-|     BuildIntListWitBoxing |   1000 |     9.512 μs |  0.1876 μs |  0.3335 μs |  4.72 |    0.53 |   7.4158 |   0.0153 |        - |    31.3 KB |
-|                           |        |              |            |            |       |         |          |          |          |            |
-| **BuildIntListWithoutBoxing** | **100000** |   **223.226 μs** |  **7.9368 μs** | **23.4018 μs** |  **1.00** |    **0.00** | **124.7559** | **124.7559** | **124.7559** |  **390.72 KB** |
-|     BuildIntListWitBoxing | 100000 | 4,786.679 μs | 91.8320 μs | 85.8997 μs | 24.99 |    1.88 | 492.1875 | 242.1875 | 242.1875 | 3125.14 KB |
+|                    Method |  Count |         Mean |      Error |     StdDev |       Median | Ratio | RatioSD |     Gen0 |     Gen1 |     Gen2 |  Allocated | Alloc Ratio |
+|-------------------------- |------- |-------------:|-----------:|-----------:|-------------:|------:|--------:|---------:|---------:|---------:|-----------:|------------:|
+| **BuildIntListWithoutBoxing** |   **1000** |     **1.125 μs** |  **0.0114 μs** |  **0.0106 μs** |     **1.124 μs** |  **1.00** |    **0.00** |   **0.2422** |   **0.0019** |        **-** |    **3.96 KB** |        **1.00** |
+|     BuildIntListWitBoxing |   1000 |     7.005 μs |  0.0669 μs |  0.0626 μs |     6.998 μs |  6.23 |    0.09 |   1.9150 |   0.3815 |        - |    31.3 KB |        7.90 |
+|                           |        |              |            |            |              |       |         |          |          |          |            |             |
+| **BuildIntListWithoutBoxing** | **100000** |   **120.035 μs** |  **0.5416 μs** |  **0.4801 μs** |   **120.028 μs** |  **1.00** |    **0.00** | **124.8779** | **124.8779** | **124.8779** |  **390.72 KB** |        **1.00** |
+|     BuildIntListWitBoxing | 100000 | 1,817.119 μs | 35.8911 μs | 44.0775 μs | 1,790.007 μs | 15.20 |    0.39 | 248.0469 | 248.0469 | 248.0469 | 3125.14 KB |        8.00 |

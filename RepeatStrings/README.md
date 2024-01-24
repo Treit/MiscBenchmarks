@@ -1,28 +1,29 @@
 # Repeating strings
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22518
-Unknown processor
-.NET Core SDK=6.0.101
-  [Host]     : .NET Core 6.0.1 (CoreCLR 6.0.121.56705, CoreFX 6.0.121.56705), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.1 (CoreCLR 6.0.121.56705, CoreFX 6.0.121.56705), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                       Method | Count |        Mean |     Error |    StdDev | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|----------------------------- |------ |------------:|----------:|----------:|------:|--------:|-------:|------:|------:|----------:|
-|   **DupeUsingStringBuilderLoop** |     **3** |    **44.42 ns** |  **0.964 ns** |  **1.557 ns** |  **1.00** |    **0.00** | **0.0315** |     **-** |     **-** |     **136 B** |
-|        DupeUsingStringCreate |     3 |    30.15 ns |  0.702 ns |  1.466 ns |  0.68 |    0.04 | 0.0241 |     - |     - |     104 B |
-| DupeUsingStackOverflowAnswer |     3 |    79.76 ns |  1.666 ns |  3.477 ns |  1.82 |    0.12 | 0.0592 |     - |     - |     256 B |
-|    DupeUsingEnumerableRepeat |     3 |    67.38 ns |  1.304 ns |  2.513 ns |  1.53 |    0.09 | 0.0185 |     - |     - |      80 B |
-|                              |       |             |           |           |       |         |        |       |       |           |
-|   **DupeUsingStringBuilderLoop** |    **50** |   **368.56 ns** |  **7.444 ns** | **14.164 ns** |  **1.00** |    **0.00** | **0.1631** |     **-** |     **-** |     **704 B** |
-|        DupeUsingStringCreate |    50 |   274.73 ns |  5.533 ns | 10.922 ns |  0.75 |    0.04 | 0.0906 |     - |     - |     392 B |
-| DupeUsingStackOverflowAnswer |    50 |   923.33 ns | 17.688 ns | 20.370 ns |  2.53 |    0.10 | 0.3462 |     - |     - |    1496 B |
-|    DupeUsingEnumerableRepeat |    50 |   570.13 ns | 10.895 ns | 23.217 ns |  1.55 |    0.08 | 0.0849 |     - |     - |     368 B |
-|                              |       |             |           |           |       |         |        |       |       |           |
-|   **DupeUsingStringBuilderLoop** |   **100** |   **687.39 ns** | **13.570 ns** | **26.786 ns** |  **1.00** |    **0.00** | **0.3004** |     **-** |     **-** |    **1296 B** |
-|        DupeUsingStringCreate |   100 |   509.74 ns | 10.156 ns | 20.746 ns |  0.74 |    0.04 | 0.1593 |     - |     - |     688 B |
-| DupeUsingStackOverflowAnswer |   100 | 1,658.66 ns | 32.777 ns | 64.699 ns |  2.42 |    0.14 | 0.5970 |     - |     - |    2576 B |
-|    DupeUsingEnumerableRepeat |   100 | 1,133.86 ns | 22.615 ns | 41.352 ns |  1.65 |    0.08 | 0.1526 |     - |     - |     664 B |
+|                       Method | Count |      Mean |     Error |    StdDev |    Median | Ratio | RatioSD |   Gen0 |   Gen1 | Allocated | Alloc Ratio |
+|----------------------------- |------ |----------:|----------:|----------:|----------:|------:|--------:|-------:|-------:|----------:|------------:|
+|   **DupeUsingStringBuilderLoop** |     **3** |  **29.31 ns** |  **0.643 ns** |  **0.601 ns** |  **29.45 ns** |  **1.00** |    **0.00** | **0.0081** |      **-** |     **136 B** |        **1.00** |
+|        DupeUsingStringCreate |     3 |  18.74 ns |  0.221 ns |  0.196 ns |  18.77 ns |  0.64 |    0.02 | 0.0062 |      - |     104 B |        0.76 |
+| DupeUsingStackOverflowAnswer |     3 |  55.78 ns |  0.994 ns |  0.930 ns |  55.80 ns |  1.90 |    0.05 | 0.0153 |      - |     256 B |        1.88 |
+|    DupeUsingEnumerableRepeat |     3 |  35.36 ns |  0.179 ns |  0.167 ns |  35.37 ns |  1.21 |    0.03 | 0.0048 |      - |      80 B |        0.59 |
+|                              |       |           |           |           |           |       |         |        |        |           |             |
+|   **DupeUsingStringBuilderLoop** |    **50** | **239.78 ns** |  **2.471 ns** |  **2.311 ns** | **240.59 ns** |  **1.00** |    **0.00** | **0.0420** |      **-** |     **704 B** |        **1.00** |
+|        DupeUsingStringCreate |    50 | 158.01 ns |  3.207 ns |  8.505 ns | 153.36 ns |  0.68 |    0.05 | 0.0234 |      - |     392 B |        0.56 |
+| DupeUsingStackOverflowAnswer |    50 | 479.63 ns |  3.056 ns |  2.858 ns | 478.97 ns |  2.00 |    0.03 | 0.0887 |      - |    1496 B |        2.12 |
+|    DupeUsingEnumerableRepeat |    50 | 239.86 ns |  1.356 ns |  1.268 ns | 239.54 ns |  1.00 |    0.01 | 0.0219 |      - |     368 B |        0.52 |
+|                              |       |           |           |           |           |       |         |        |        |           |             |
+|   **DupeUsingStringBuilderLoop** |   **100** | **510.73 ns** |  **4.415 ns** |  **4.130 ns** | **509.95 ns** |  **1.00** |    **0.00** | **0.0772** |      **-** |    **1296 B** |        **1.00** |
+|        DupeUsingStringCreate |   100 | 295.44 ns |  2.575 ns |  2.283 ns | 294.96 ns |  0.58 |    0.01 | 0.0410 |      - |     688 B |        0.53 |
+| DupeUsingStackOverflowAnswer |   100 | 911.28 ns | 13.074 ns | 12.230 ns | 908.29 ns |  1.78 |    0.03 | 0.1535 | 0.0010 |    2576 B |        1.99 |
+|    DupeUsingEnumerableRepeat |   100 | 494.52 ns |  1.070 ns |  0.948 ns | 494.56 ns |  0.97 |    0.01 | 0.0391 |      - |     664 B |        0.51 |

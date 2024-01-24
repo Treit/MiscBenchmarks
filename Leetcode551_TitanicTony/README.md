@@ -1,18 +1,19 @@
 # Leetcode problem 551 Student Attendance Record 1 from Discord user TitanicTony#9947
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25227
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 6.0.10 (CoreCLR 6.0.1022.47605, CoreFX 6.0.1022.47605), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.10 (CoreCLR 6.0.1022.47605, CoreFX 6.0.1022.47605), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|       Method | Count |         Mean |        Error |      StdDev |       Median |
-|------------- |------ |-------------:|-------------:|------------:|-------------:|
-| **TestVersionA** |    **10** |     **202.5 ns** |      **4.71 ns** |    **13.67 ns** |     **199.7 ns** |
-| TestVersionB |    10 |     177.0 ns |      6.36 ns |    18.14 ns |     171.2 ns |
-| **TestVersionA** | **10000** | **547,882.9 ns** | **10,604.15 ns** | **9,919.13 ns** | **549,219.4 ns** |
-| TestVersionB | 10000 | 489,727.1 ns |  8,634.97 ns | 8,077.16 ns | 489,427.7 ns |
+|       Method | Count |         Mean |     Error |    StdDev |
+|------------- |------ |-------------:|----------:|----------:|
+| **TestVersionA** |    **10** |     **136.1 ns** |   **1.77 ns** |   **1.57 ns** |
+| TestVersionB |    10 |     111.2 ns |   1.30 ns |   1.22 ns |
+| **TestVersionA** | **10000** | **382,845.6 ns** | **550.06 ns** | **487.62 ns** |
+| TestVersionB | 10000 | 380,428.0 ns | 304.57 ns | 254.33 ns |

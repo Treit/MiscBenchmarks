@@ -1,21 +1,22 @@
 # Adding items to a list
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25905.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.300-preview.23179.2
-  [Host]     : .NET 6.0.18 (6.0.1823.26907), X64 RyuJIT AVX2
-  Job-QTLXZY : .NET 6.0.18 (6.0.1823.26907), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  Job-UPNOOR : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 InvocationCount=1  UnrollFactor=1  
 
 ```
 |                  Method |   Count |           Mean |         Error |        StdDev |         Median | Allocated |
 |------------------------ |-------- |---------------:|--------------:|--------------:|---------------:|----------:|
-|         **AddToListNormal** |     **100** |     **2,990.7 ns** |     **157.10 ns** |     **455.77 ns** |     **3,000.0 ns** |    **1696 B** |
-| AddToListPresetCapacity |     100 |       256.0 ns |      22.77 ns |      67.15 ns |       250.0 ns |     544 B |
-|         **AddToListNormal** |   **10000** |    **29,873.7 ns** |   **1,403.82 ns** |   **4,117.15 ns** |    **27,900.0 ns** |  **131912 B** |
-| AddToListPresetCapacity |   10000 |    15,281.2 ns |     311.18 ns |     751.52 ns |    15,100.0 ns |     544 B |
-|         **AddToListNormal** | **1000000** | **3,122,931.0 ns** | **301,138.76 ns** | **887,914.44 ns** | **3,280,300.0 ns** | **8389592 B** |
-| AddToListPresetCapacity | 1000000 | 2,379,170.0 ns | 313,845.21 ns | 925,379.67 ns | 2,541,350.0 ns |     544 B |
+|         **AddToListNormal** |     **100** |     **3,830.0 ns** |     **713.22 ns** |   **2,102.93 ns** |     **2,500.0 ns** |         **-** |
+| AddToListPresetCapacity |     100 |       800.0 ns |       0.00 ns |       0.00 ns |       800.0 ns |         - |
+|         **AddToListNormal** |   **10000** |    **25,866.1 ns** |     **470.82 ns** |   **1,043.31 ns** |    **25,700.0 ns** |  **131432 B** |
+| AddToListPresetCapacity |   10000 |    21,140.0 ns |     238.37 ns |     222.97 ns |    21,100.0 ns |         - |
+|         **AddToListNormal** | **1000000** | **2,148,787.0 ns** | **200,093.72 ns** | **589,980.86 ns** | **2,076,200.0 ns** | **8389448 B** |
+| AddToListPresetCapacity | 1000000 | 1,754,420.0 ns | 270,866.81 ns | 798,656.90 ns | 1,577,950.0 ns |         - |

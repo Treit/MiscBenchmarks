@@ -1,22 +1,23 @@
 # ArrayList vs List
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25252
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100
-  [Host]     : .NET Core 6.0.11 (CoreCLR 6.0.1122.52304, CoreFX 6.0.1122.52304), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.11 (CoreCLR 6.0.1122.52304, CoreFX 6.0.1122.52304), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                   Method |  Count |        Mean |     Error |    StdDev |      Median | Ratio | RatioSD |    Gen 0 |    Gen 1 |    Gen 2 | Allocated |
-|------------------------- |------- |------------:|----------:|----------:|------------:|------:|--------:|---------:|---------:|---------:|----------:|
-|     CreateArrayListOfInt | 100000 |  8,767.7 μs | 222.09 μs | 647.83 μs |  8,632.7 μs | 62.54 |    4.32 | 625.0000 | 453.1250 | 265.6250 | 4497639 B |
-|          CreateListOfInt | 100000 |    550.1 μs |  10.85 μs |  17.21 μs |    552.3 μs |  3.84 |    0.11 |  55.6641 |  25.3906 |  25.3906 | 1049083 B |
-|  CreateArrayListOfObject | 100000 | 10,829.0 μs | 216.50 μs | 514.52 μs | 10,798.4 μs | 76.21 |    2.94 | 734.3750 | 468.7500 | 281.2500 | 5297462 B |
-|       CreateListOfObject | 100000 | 11,333.5 μs | 226.36 μs | 584.30 μs | 11,288.1 μs | 78.49 |    4.76 | 734.3750 | 421.8750 | 250.0000 | 5297534 B |
-|    IterateArrayListOfInt | 100000 |    910.1 μs |  70.87 μs | 208.96 μs |    822.2 μs |  5.38 |    0.34 |        - |        - |        - |      48 B |
-|         IterateListOfInt | 100000 |    141.7 μs |   1.57 μs |   1.31 μs |    141.8 μs |  1.00 |    0.00 |        - |        - |        - |         - |
-| IterateArrayListOfObject | 100000 |    767.1 μs |  22.25 μs |  62.77 μs |    748.8 μs |  5.60 |    0.34 |        - |        - |        - |      48 B |
-|      IterateListOfObject | 100000 |    162.2 μs |   3.20 μs |   4.60 μs |    161.4 μs |  1.15 |    0.04 |        - |        - |        - |         - |
+|                   Method |  Count |        Mean |      Error |     StdDev |  Ratio | RatioSD |     Gen0 |     Gen1 |     Gen2 | Allocated | Alloc Ratio |
+|------------------------- |------- |------------:|-----------:|-----------:|-------:|--------:|---------:|---------:|---------:|----------:|------------:|
+|     CreateArrayListOfInt | 100000 | 5,996.43 μs | 119.211 μs | 266.633 μs |  95.13 |    4.02 | 359.3750 | 351.5625 | 210.9375 | 4497597 B |          NA |
+|          CreateListOfInt | 100000 |   279.88 μs |   5.503 μs |   6.960 μs |   4.47 |    0.12 |  56.1523 |  48.3398 |  48.3398 | 1049268 B |          NA |
+|  CreateArrayListOfObject | 100000 | 7,419.57 μs | 147.026 μs | 191.175 μs | 118.82 |    3.57 | 406.2500 | 398.4375 | 210.9375 | 5288061 B |          NA |
+|       CreateListOfObject | 100000 | 7,528.05 μs | 149.499 μs | 199.577 μs | 121.37 |    2.81 | 406.2500 | 398.4375 | 210.9375 | 5288062 B |          NA |
+|    IterateArrayListOfInt | 100000 |   284.05 μs |   0.548 μs |   0.458 μs |   4.57 |    0.01 |        - |        - |        - |      48 B |          NA |
+|         IterateListOfInt | 100000 |    62.20 μs |   0.148 μs |   0.131 μs |   1.00 |    0.00 |        - |        - |        - |         - |          NA |
+| IterateArrayListOfObject | 100000 |   261.55 μs |   0.744 μs |   0.660 μs |   4.21 |    0.02 |        - |        - |        - |      48 B |          NA |
+|      IterateListOfObject | 100000 |   104.49 μs |   0.335 μs |   0.297 μs |   1.68 |    0.01 |        - |        - |        - |         - |          NA |

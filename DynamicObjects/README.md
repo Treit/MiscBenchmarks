@@ -1,18 +1,17 @@
 # Dynamic vs regular C# types
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25915.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.306
-  [Host]     : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                 Method | Size |      Mean |     Error |    StdDev |    Median |      Gen0 |      Gen1 |      Gen2 | Allocated |
-|----------------------- |----- |----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
-|        InitJaggedArray | 1024 |  1.017 ms | 0.0201 ms | 0.0346 ms |  1.001 ms |  187.5000 |  142.5781 |         - |   1.03 MB |
-| InitDynamicJaggedArray | 1024 | 97.397 ms | 1.7376 ms | 1.4510 ms | 97.744 ms | 6333.3333 | 3833.3333 | 1000.0000 |  32.03 MB |
-
-
+|                 Method | Size |        Mean |       Error |      StdDev |      Gen0 |      Gen1 |     Gen2 | Allocated |
+|----------------------- |----- |------------:|------------:|------------:|----------:|----------:|---------:|----------:|
+|        InitJaggedArray | 1024 |    770.9 μs |    12.84 μs |    11.38 μs |   64.4531 |   32.2266 |        - |   1.03 MB |
+| InitDynamicJaggedArray | 1024 | 63,448.3 μs | 1,260.52 μs | 2,870.85 μs | 2777.7778 | 2666.6667 | 777.7778 |  32.03 MB |

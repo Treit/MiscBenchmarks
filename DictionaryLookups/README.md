@@ -3,30 +3,31 @@
 
 
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.26020.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=8.0.100
-  [Host]     : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.0 (8.0.23.53103), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                          Method | Iterations |            Mean |         Error |        StdDev |          Median | Ratio | RatioSD |       Gen0 |   Allocated | Alloc Ratio |
-|-------------------------------- |----------- |----------------:|--------------:|--------------:|----------------:|------:|--------:|-----------:|------------:|------------:|
-|           **LookupUsingDictionary** |         **10** |        **16.11 μs** |      **0.321 μs** |      **0.619 μs** |        **16.00 μs** |  **1.00** |    **0.00** |          **-** |           **-** |          **NA** |
-|           LookupUsingSortedList |         10 |        20.94 μs |      0.624 μs |      1.800 μs |        20.42 μs |  1.30 |    0.11 |          - |           - |          NA |
-|     LookupUsingSortedDictionary |         10 |        30.64 μs |      1.299 μs |      3.788 μs |        29.49 μs |  1.98 |    0.23 |          - |           - |          NA |
-| LookupUsingConcurrentDictionary |         10 |       150.03 μs |      2.970 μs |      3.536 μs |       149.73 μs |  9.28 |    0.38 |          - |           - |          NA |
-|    LookupUsingOrderedDictionary |         10 |        15.77 μs |      0.466 μs |      1.373 μs |        15.30 μs |  1.02 |    0.10 |          - |           - |          NA |
-|            LookupUsingHashtable |         10 |        22.66 μs |      0.746 μs |      2.153 μs |        21.95 μs |  1.43 |    0.16 |     2.7771 |     12000 B |          NA |
-|     LookupUsingFrozenDictionary |         10 |        16.10 μs |      0.320 μs |      0.886 μs |        15.90 μs |  1.01 |    0.06 |          - |           - |          NA |
-|                                 |            |                 |               |               |                 |       |         |            |             |             |
-|           **LookupUsingDictionary** |     **100000** |   **156,994.77 μs** |  **3,125.455 μs** |  **4,957.303 μs** |   **155,782.55 μs** |  **1.00** |    **0.00** |          **-** |           **-** |          **NA** |
-|           LookupUsingSortedList |     100000 |   198,710.55 μs |  4,532.363 μs | 12,783.611 μs |   195,809.63 μs |  1.25 |    0.08 |          - |           - |          NA |
-|     LookupUsingSortedDictionary |     100000 |   270,938.61 μs |  7,856.901 μs | 22,031.593 μs |   268,510.40 μs |  1.76 |    0.18 |          - |           - |          NA |
-| LookupUsingConcurrentDictionary |     100000 | 1,530,218.06 μs | 30,284.663 μs | 70,789.422 μs | 1,498,882.00 μs |  9.82 |    0.53 |          - |           - |          NA |
-|    LookupUsingOrderedDictionary |     100000 |   160,466.70 μs |  5,694.025 μs | 16,788.960 μs |   154,646.80 μs |  0.94 |    0.07 |          - |           - |          NA |
-|            LookupUsingHashtable |     100000 |   232,084.28 μs |  6,839.540 μs | 19,733.636 μs |   225,975.55 μs |  1.51 |    0.12 | 27500.0000 | 120000368 B |          NA |
-|     LookupUsingFrozenDictionary |     100000 |   165,822.00 μs |  5,428.790 μs | 16,006.910 μs |   161,618.56 μs |  1.02 |    0.06 |          - |           - |          NA |
+|                          Method | Iterations |            Mean |      Error |     StdDev | Ratio | RatioSD |      Gen0 |   Allocated | Alloc Ratio |
+|-------------------------------- |----------- |----------------:|-----------:|-----------:|------:|--------:|----------:|------------:|------------:|
+|           **LookupUsingDictionary** |         **10** |        **19.54 μs** |   **0.040 μs** |   **0.034 μs** |  **1.00** |    **0.00** |         **-** |           **-** |          **NA** |
+|           LookupUsingSortedList |         10 |        21.18 μs |   0.134 μs |   0.119 μs |  1.08 |    0.01 |         - |           - |          NA |
+|     LookupUsingSortedDictionary |         10 |        27.74 μs |   0.082 μs |   0.072 μs |  1.42 |    0.00 |         - |           - |          NA |
+| LookupUsingConcurrentDictionary |         10 |       131.57 μs |   0.810 μs |   0.718 μs |  6.73 |    0.04 |         - |           - |          NA |
+|    LookupUsingOrderedDictionary |         10 |        18.77 μs |   0.044 μs |   0.041 μs |  0.96 |    0.00 |         - |           - |          NA |
+|            LookupUsingHashtable |         10 |        20.94 μs |   0.059 μs |   0.052 μs |  1.07 |    0.00 |    0.7019 |     12000 B |          NA |
+|     LookupUsingFrozenDictionary |         10 |        18.94 μs |   0.036 μs |   0.030 μs |  0.97 |    0.00 |         - |           - |          NA |
+|                                 |            |                 |            |            |       |         |           |             |             |
+|           **LookupUsingDictionary** |     **100000** |   **195,208.77 μs** | **310.770 μs** | **259.507 μs** |  **1.00** |    **0.00** |         **-** |           **-** |          **NA** |
+|           LookupUsingSortedList |     100000 |   210,128.63 μs | 284.415 μs | 266.042 μs |  1.08 |    0.00 |         - |           - |          NA |
+|     LookupUsingSortedDictionary |     100000 |   274,705.82 μs | 148.241 μs | 123.788 μs |  1.41 |    0.00 |         - |           - |          NA |
+| LookupUsingConcurrentDictionary |     100000 | 1,314,361.63 μs | 702.067 μs | 548.127 μs |  6.73 |    0.01 |         - |           - |          NA |
+|    LookupUsingOrderedDictionary |     100000 |   185,826.20 μs |  83.916 μs |  70.074 μs |  0.95 |    0.00 |         - |           - |          NA |
+|            LookupUsingHashtable |     100000 |   208,842.84 μs | 643.035 μs | 536.964 μs |  1.07 |    0.00 | 7000.0000 | 120000245 B |          NA |
+|     LookupUsingFrozenDictionary |     100000 |   189,302.52 μs | 660.850 μs | 515.948 μs |  0.97 |    0.00 |         - |           - |          NA |

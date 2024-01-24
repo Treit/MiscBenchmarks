@@ -1,39 +1,38 @@
 ## Reversing a string
 
+
 ``` ini
 
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.22478
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=6.0.100-rc.1.21463.6
-  [Host]   : .NET Core 5.0.10 (CoreCLR 5.0.1021.41214, CoreFX 5.0.1021.41214), X64 RyuJIT
-  ShortRun : .NET Core 5.0.10 (CoreCLR 5.0.1021.41214, CoreFX 5.0.1021.41214), X64 RyuJIT
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
-Job=ShortRun  IterationCount=3  LaunchCount=1  
-WarmupCount=3  
 
 ```
-|                             Method | Count |            Mean |           Error |        StdDev | Ratio | RatioSD |     Gen 0 | Gen 1 | Gen 2 |  Allocated |
-|----------------------------------- |------ |----------------:|----------------:|--------------:|------:|--------:|----------:|------:|------:|-----------:|
-|       **ReverseStringUsingLinqAndNew** |    **10** |      **5,629.2 ns** |      **2,354.7 ns** |     **129.07 ns** |  **1.00** |    **0.00** |    **1.3504** |     **-** |     **-** |     **5840 B** |
-|      ReverseStringUsingLinqAndJoin |    10 |     10,174.8 ns |      6,955.8 ns |     381.27 ns |  1.81 |    0.11 |    3.2501 |     - |     - |    14080 B |
-|     ReverseStringUsingExplicitCopy |    10 |        796.5 ns |        813.2 ns |      44.58 ns |  0.14 |    0.01 |    0.4444 |     - |     - |     1920 B |
-|     ReverseStringUsingStringCreate |    10 |        446.9 ns |        179.6 ns |       9.84 ns |  0.08 |    0.00 |    0.2222 |     - |     - |      960 B |
-|     ReverseStringUsingArrayReverse |    10 |        473.8 ns |        332.8 ns |      18.24 ns |  0.08 |    0.00 |    0.4444 |     - |     - |     1920 B |
-| ReverseStringUsingStringCreateKozi |    10 |        413.0 ns |        400.9 ns |      21.98 ns |  0.07 |    0.00 |    0.2222 |     - |     - |      960 B |
-|         RevereStringEnumerableKesa |    10 |      5,654.0 ns |      3,529.0 ns |     193.44 ns |  1.01 |    0.06 |    1.2741 |     - |     - |     5520 B |
-|                                    |       |                 |                 |               |       |         |           |       |       |            |
-|       **ReverseStringUsingLinqAndNew** |   **100** |     **59,634.5 ns** |     **37,803.8 ns** |   **2,072.15 ns** |  **1.00** |    **0.00** |   **13.4888** |     **-** |     **-** |    **58400 B** |
-|      ReverseStringUsingLinqAndJoin |   100 |     99,450.1 ns |     59,255.2 ns |   3,247.98 ns |  1.67 |    0.10 |   32.5928 |     - |     - |   140800 B |
-|     ReverseStringUsingExplicitCopy |   100 |      7,829.5 ns |      1,574.0 ns |      86.28 ns |  0.13 |    0.01 |    4.4403 |     - |     - |    19200 B |
-|     ReverseStringUsingStringCreate |   100 |      4,974.5 ns |      2,016.7 ns |     110.54 ns |  0.08 |    0.00 |    2.2202 |     - |     - |     9600 B |
-|     ReverseStringUsingArrayReverse |   100 |      4,511.2 ns |      1,803.7 ns |      98.87 ns |  0.08 |    0.00 |    4.4479 |     - |     - |    19200 B |
-| ReverseStringUsingStringCreateKozi |   100 |      3,695.7 ns |      2,512.8 ns |     137.74 ns |  0.06 |    0.00 |    2.2240 |     - |     - |     9600 B |
-|         RevereStringEnumerableKesa |   100 |     58,342.8 ns |     71,413.6 ns |   3,914.42 ns |  0.98 |    0.09 |   12.7563 |     - |     - |    55200 B |
-|                                    |       |                 |                 |               |       |         |           |       |       |            |
-|       **ReverseStringUsingLinqAndNew** | **10000** |  **5,463,144.9 ns** |  **1,521,092.1 ns** |  **83,376.19 ns** |  **1.00** |    **0.00** | **1351.5625** |     **-** |     **-** |  **5840000 B** |
-|      ReverseStringUsingLinqAndJoin | 10000 | 10,129,041.9 ns | 10,008,567.7 ns | 548,603.37 ns |  1.85 |    0.07 | 3250.0000 |     - |     - | 14080000 B |
-|     ReverseStringUsingExplicitCopy | 10000 |    778,019.5 ns |     32,219.2 ns |   1,766.04 ns |  0.14 |    0.00 |  444.3359 |     - |     - |  1920000 B |
-|     ReverseStringUsingStringCreate | 10000 |    478,656.3 ns |    290,261.2 ns |  15,910.20 ns |  0.09 |    0.00 |  222.1680 |     - |     - |   960000 B |
-|     ReverseStringUsingArrayReverse | 10000 |    458,900.9 ns |     87,866.8 ns |   4,816.27 ns |  0.08 |    0.00 |  444.8242 |     - |     - |  1920000 B |
-| ReverseStringUsingStringCreateKozi | 10000 |    366,558.5 ns |    188,889.5 ns |  10,353.67 ns |  0.07 |    0.00 |  222.1680 |     - |     - |   960000 B |
-|         RevereStringEnumerableKesa | 10000 |  5,590,750.9 ns |  3,059,727.3 ns | 167,713.98 ns |  1.02 |    0.04 | 1273.4375 |     - |     - |  5520000 B |
+|                             Method | Count |           Mean |        Error |       StdDev | Ratio | RatioSD |     Gen0 | Allocated | Alloc Ratio |
+|----------------------------------- |------ |---------------:|-------------:|-------------:|------:|--------:|---------:|----------:|------------:|
+|       **ReverseStringUsingLinqAndNew** |    **10** |     **2,650.9 ns** |     **21.94 ns** |     **20.52 ns** |  **1.00** |    **0.00** |   **0.3471** |    **5840 B** |        **1.00** |
+|      ReverseStringUsingLinqAndJoin |    10 |     2,585.2 ns |     25.02 ns |     23.40 ns |  0.98 |    0.01 |   0.3242 |    5440 B |        0.93 |
+|     ReverseStringUsingExplicitCopy |    10 |       432.0 ns |      3.59 ns |      3.00 ns |  0.16 |    0.00 |   0.1144 |    1920 B |        0.33 |
+|     ReverseStringUsingStringCreate |    10 |       312.7 ns |      1.65 ns |      1.54 ns |  0.12 |    0.00 |   0.0572 |     960 B |        0.16 |
+|     ReverseStringUsingArrayReverse |    10 |       267.5 ns |      3.29 ns |      2.75 ns |  0.10 |    0.00 |   0.1144 |    1920 B |        0.33 |
+| ReverseStringUsingStringCreateKozi |    10 |       230.4 ns |      3.47 ns |      3.25 ns |  0.09 |    0.00 |   0.0572 |     960 B |        0.16 |
+|         RevereStringEnumerableKesa |    10 |     2,622.7 ns |     15.84 ns |     14.82 ns |  0.99 |    0.01 |   0.3281 |    5520 B |        0.95 |
+|                                    |       |                |              |              |       |         |          |           |             |
+|       **ReverseStringUsingLinqAndNew** |   **100** |    **26,676.3 ns** |    **121.88 ns** |    **114.01 ns** |  **1.00** |    **0.00** |   **3.4790** |   **58400 B** |        **1.00** |
+|      ReverseStringUsingLinqAndJoin |   100 |    26,061.5 ns |    240.44 ns |    224.91 ns |  0.98 |    0.01 |   3.2349 |   54400 B |        0.93 |
+|     ReverseStringUsingExplicitCopy |   100 |     4,235.8 ns |     64.22 ns |     60.07 ns |  0.16 |    0.00 |   1.1444 |   19200 B |        0.33 |
+|     ReverseStringUsingStringCreate |   100 |     3,134.0 ns |     22.16 ns |     20.73 ns |  0.12 |    0.00 |   0.5722 |    9600 B |        0.16 |
+|     ReverseStringUsingArrayReverse |   100 |     2,674.3 ns |     45.39 ns |     42.46 ns |  0.10 |    0.00 |   1.1444 |   19200 B |        0.33 |
+| ReverseStringUsingStringCreateKozi |   100 |     2,269.6 ns |     30.23 ns |     26.80 ns |  0.09 |    0.00 |   0.5722 |    9600 B |        0.16 |
+|         RevereStringEnumerableKesa |   100 |    26,155.3 ns |    129.23 ns |    114.56 ns |  0.98 |    0.01 |   3.2959 |   55200 B |        0.95 |
+|                                    |       |                |              |              |       |         |          |           |             |
+|       **ReverseStringUsingLinqAndNew** | **10000** | **2,785,042.6 ns** | **35,260.60 ns** | **31,257.60 ns** |  **1.00** |    **0.00** | **347.6563** | **5840002 B** |        **1.00** |
+|      ReverseStringUsingLinqAndJoin | 10000 | 2,605,588.5 ns | 47,262.02 ns | 59,771.33 ns |  0.94 |    0.03 | 324.2188 | 5440002 B |        0.93 |
+|     ReverseStringUsingExplicitCopy | 10000 |   436,051.3 ns |  6,713.04 ns |  6,279.38 ns |  0.16 |    0.00 | 114.7461 | 1920000 B |        0.33 |
+|     ReverseStringUsingStringCreate | 10000 |   314,435.7 ns |  1,903.58 ns |  1,589.57 ns |  0.11 |    0.00 |  57.1289 |  960000 B |        0.16 |
+|     ReverseStringUsingArrayReverse | 10000 |   275,920.7 ns |  3,480.23 ns |  3,085.13 ns |  0.10 |    0.00 | 114.7461 | 1920000 B |        0.33 |
+| ReverseStringUsingStringCreateKozi | 10000 |   230,678.2 ns |  3,493.03 ns |  3,267.38 ns |  0.08 |    0.00 |  57.3730 |  960000 B |        0.16 |
+|         RevereStringEnumerableKesa | 10000 | 2,588,375.9 ns | 13,187.14 ns | 11,690.06 ns |  0.93 |    0.01 | 328.1250 | 5520002 B |        0.95 |

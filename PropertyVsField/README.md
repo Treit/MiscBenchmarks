@@ -1,156 +1,121 @@
 # Properties vs. Fields
 
+
 ``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.25915.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.306
-  [Host]     : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=8.0.101
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                        Method |       Mean |    Error |   StdDev |     Median | Code Size |
-|------------------------------ |-----------:|---------:|---------:|-----------:|----------:|
-|                   GetProperty | 3,175.2 ns | 62.16 ns | 51.91 ns | 3,160.7 ns |     122 B |
-| GetPropertyAggressiveInlining |   395.1 ns |  9.84 ns | 27.74 ns |   387.2 ns |      71 B |
-|                      GetField |   318.2 ns |  6.43 ns | 11.10 ns |   316.2 ns |      67 B |
+|                        Method |     Mean |   Error |  StdDev | Code Size |
+|------------------------------ |---------:|--------:|--------:|----------:|
+|                   GetProperty | 317.9 ns | 0.69 ns | 0.58 ns |      69 B |
+| GetPropertyAggressiveInlining | 318.9 ns | 2.57 ns | 2.28 ns |      69 B |
+|                      GetField | 317.4 ns | 0.31 ns | 0.27 ns |      69 B |
 
-``` ini
-
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.25163
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=7.0.100-preview.5.22307.18
-  [Host]     : .NET Core 6.0.7 (CoreCLR 6.0.722.32202, CoreFX 6.0.722.32202), X64 RyuJIT
-  DefaultJob : .NET Core 6.0.7 (CoreCLR 6.0.722.32202, CoreFX 6.0.722.32202), X64 RyuJIT
-
-
-## .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.GetProperty()
-       push      rdi
        push      rsi
        push      rbx
-       sub       rsp,30
+       mov       rbx,rdx
+       xor       edx,edx
+       xor       esi,esi
        xor       eax,eax
-       mov       [rsp+20],rax
-       mov       [rsp+28],rax
-       mov       rsi,rcx
-       mov       rdi,rdx
-       xor       ebx,ebx
-       cmp       dword ptr [rsi+10],0
+       mov       r8d,[rcx+10]
+       test      r8d,r8d
+       mov       r10,rdx
        jle       short M00_L01
+       mov       rdx,[rcx+8]
+       mov       rcx,[rdx+10]
+       mov       rdx,[rdx+8]
 M00_L00:
-       lea       rdx,[rsp+20]
-       mov       rcx,rsi
-       call      qword ptr [7FFF2ACC7948]; Test.Benchmark.DoGetProperty()
-       inc       ebx
-       cmp       ebx,[rsi+10]
+       mov       rsi,rcx
+       mov       r10,rdx
+       inc       eax
+       cmp       eax,r8d
        jl        short M00_L00
 M00_L01:
-       mov       rdx,[rsp+20]
-       mov       rcx,rdi
+       mov       rcx,rbx
+       mov       rdx,r10
        call      CORINFO_HELP_CHECKED_ASSIGN_REF
-       mov       rax,[rsp+28]
-       mov       [rdi+8],rax
-       mov       rax,rdi
-       add       rsp,30
+       mov       [rbx+8],rsi
+       mov       rax,rbx
        pop       rbx
        pop       rsi
-       pop       rdi
        ret
-; Total bytes of code 87
-```
-```assembly
-; Test.Benchmark.DoGetProperty()
-       push      rdi
-       push      rsi
-       mov       rsi,rdx
-       mov       rdx,[rcx+8]
-       mov       rdi,[rdx+10]
-       mov       rdx,[rdx+8]
-       mov       rcx,rsi
-       call      CORINFO_HELP_CHECKED_ASSIGN_REF
-       mov       [rsi+8],rdi
-       mov       rax,rsi
-       pop       rsi
-       pop       rdi
-       ret
-; Total bytes of code 35
+; Total bytes of code 69
 ```
 
-## .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.GetPropertyAggressiveInlining()
-       push      rdi
        push      rsi
-       push      rbp
        push      rbx
-       mov       rsi,rdx
+       mov       rbx,rdx
        xor       edx,edx
-       xor       edi,edi
-       xor       ebx,ebx
-       mov       ebp,[rcx+10]
-       test      ebp,ebp
+       xor       esi,esi
+       xor       eax,eax
+       mov       r8d,[rcx+10]
+       test      r8d,r8d
+       mov       r10,rdx
        jle       short M00_L01
-       mov       rax,[rcx+8]
-       mov       rdx,[rax+10]
-       nop       dword ptr [rax]
+       mov       rdx,[rcx+8]
+       mov       rcx,[rdx+10]
+       mov       rdx,[rdx+8]
 M00_L00:
-       mov       rdi,rdx
-       mov       rcx,rax
-       mov       rcx,[rcx+8]
-       inc       ebx
-       cmp       ebx,ebp
+       mov       rsi,rcx
+       mov       r10,rdx
+       inc       eax
+       cmp       eax,r8d
        jl        short M00_L00
-       mov       rdx,rcx
 M00_L01:
-       mov       rcx,rsi
+       mov       rcx,rbx
+       mov       rdx,r10
        call      CORINFO_HELP_CHECKED_ASSIGN_REF
-       mov       [rsi+8],rdi
-       mov       rax,rsi
+       mov       [rbx+8],rsi
+       mov       rax,rbx
        pop       rbx
-       pop       rbp
        pop       rsi
-       pop       rdi
        ret
-; Total bytes of code 71
+; Total bytes of code 69
 ```
 
-## .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
+## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.GetField()
-       push      rdi
        push      rsi
-       push      rbp
        push      rbx
-       mov       rsi,rdx
+       mov       rbx,rdx
        xor       edx,edx
-       xor       edi,edi
-       xor       ebx,ebx
-       mov       ebp,[rcx+10]
-       test      ebp,ebp
+       xor       esi,esi
+       xor       eax,eax
+       mov       r8d,[rcx+10]
+       test      r8d,r8d
+       mov       r10,rdx
        jle       short M00_L01
-       mov       rax,[rcx+8]
-       mov       rdx,[rax+10]
-       mov       rax,[rax+8]
+       mov       rdx,[rcx+8]
+       mov       rcx,[rdx+10]
+       mov       rdx,[rdx+8]
 M00_L00:
-       mov       rdi,rdx
-       mov       rcx,rax
-       inc       ebx
-       cmp       ebx,ebp
+       mov       rsi,rcx
+       mov       r10,rdx
+       inc       eax
+       cmp       eax,r8d
        jl        short M00_L00
-       mov       rdx,rcx
 M00_L01:
-       mov       rcx,rsi
+       mov       rcx,rbx
+       mov       rdx,r10
        call      CORINFO_HELP_CHECKED_ASSIGN_REF
-       mov       [rsi+8],rdi
-       mov       rax,rsi
+       mov       [rbx+8],rsi
+       mov       rax,rbx
        pop       rbx
-       pop       rbp
        pop       rsi
-       pop       rdi
        ret
-; Total bytes of code 67
+; Total bytes of code 69
 ```
 
