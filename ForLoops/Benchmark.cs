@@ -2,8 +2,28 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    // ViceroyPenguin implementation.
+    public static class Extensions
+    {
+        public static RangeEnumerator GetEnumerator(this Range range)
+        {
+            return new RangeEnumerator(range.End.Value, range.Start.Value);
+        }
+
+        public struct RangeEnumerator(int end, int current)
+        {
+            private readonly int _end = end;
+
+            public int Current { get; private set; } = current - 1;
+
+            public bool MoveNext() =>
+                ++Current < _end;
+        }
+    }
 
     public class Benchmark
     {
@@ -71,7 +91,20 @@
         {
             long result = 0;
 
-            foreach (int i in Enumerable.Range(0, _data.Count()))
+            foreach (int i in Enumerable.Range(0, _data.Count))
+            {
+                result += _data[i];
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long LoopUsingRangeEnumerator()
+        {
+            long result = 0;
+
+            foreach (int i in 0.._data.Count)
             {
                 result += _data[i];
             }
