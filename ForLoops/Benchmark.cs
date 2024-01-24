@@ -3,9 +3,8 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
     using System.Collections.Generic;
+    using System.Linq;
 
-    [SimpleJob(RuntimeMoniker.Net60)]
-    [SimpleJob(RuntimeMoniker.Net70)]
     public class Benchmark
     {
         [Params(100, 1_000_000)]
@@ -62,6 +61,19 @@
             if (++i < Count)
             {
                 goto loop;
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long LoopUsingEnumerableRange()
+        {
+            long result = 0;
+
+            foreach (int i in Enumerable.Range(0, _data.Count()))
+            {
+                result += _data[i];
             }
 
             return result;
