@@ -9,7 +9,6 @@
     using System.Runtime.InteropServices;
     using System.Runtime.Intrinsics;
 
-    [SimpleJob(RuntimeMoniker.Net70)]
     public class Benchmark
     {
         private byte[,] _mdim;
