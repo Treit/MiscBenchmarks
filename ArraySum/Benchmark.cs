@@ -11,7 +11,6 @@ namespace Test
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
 
-    [SimpleJob(RuntimeMoniker.Net70)]
     public class Benchmark
     {
         private byte[,] _mdim;
