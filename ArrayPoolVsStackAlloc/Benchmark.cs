@@ -4,7 +4,6 @@
     using System;
     using System.Buffers;
     using System.Collections.Generic;
-    using System.Runtime.InteropServices;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -34,7 +33,7 @@
                 var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_@!#$%^&*()+{}[]";
                 var len = r.Next(maxLength);
                 var sb = new StringBuilder(len);
-                
+
                 for (int i = 0; i < len; i++)
                 {
                     sb.Append(alphabet[r.Next(alphabet.Length)]);
