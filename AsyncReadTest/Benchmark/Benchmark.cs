@@ -12,14 +12,23 @@
         const int One_MB = 1024 * 1024;
         const int Ten_MB = 10 * 1024 * 1024;
         const int Fifty_MB = 50 * 1024 * 1024;
+        TestReads _testReads;
 
         [Params(One_KB, One_MB, Ten_MB, Fifty_MB)]
         public int NumBytes;
 
+        [GlobalSetup]
+        public void GlobalSetup()
+        {
+            _testReads = new TestReads(NumBytes);
+        }
+
         [Benchmark]
         public int NonAsync()
         {
-            TestReads tr = new TestReads(this.NumBytes);
+            var tr = _testReads;
+            tr.Reset();
+
             bool finished = false;
             int final = -1;
 
@@ -36,7 +45,9 @@
         [Benchmark]
         public int NonAsyncWithArrayPool()
         {
-            TestReads tr = new TestReads(this.NumBytes);
+            var tr = _testReads;
+            tr.Reset();
+
             bool finished = false;
             int final = -1;
 
@@ -53,7 +64,9 @@
         [Benchmark]
         public int NonAsyncWithFixedBuffer()
         {
-            TestReads tr = new TestReads(this.NumBytes);
+            var tr = _testReads;
+            tr.Reset();
+
             bool finished = false;
             int final = -1;
 
@@ -71,7 +84,9 @@
         public int Async()
         {
             CancellationTokenSource cts = new CancellationTokenSource();
-            TestReads tr = new TestReads(this.NumBytes);
+            var tr = _testReads;
+            tr.Reset();
+
             bool finished = false;
             int final = -1;
 
@@ -94,7 +109,9 @@
             async Task<int> DoItAsync()
             {
                 CancellationTokenSource cts = new CancellationTokenSource();
-                TestReads tr = new TestReads(this.NumBytes);
+                var tr = _testReads;
+                tr.Reset();
+
                 bool finished = false;
 
                 while (!finished)
@@ -111,13 +128,15 @@
         [Benchmark]
         public int RawBytesAndSpan()
         {
-            TestReads tr = new TestReads(this.NumBytes);
+            var tr = _testReads;
+            tr.Reset();
+
             bool finished = false;
             int final = -1;
 
             while (!finished)
             {
-                var (more, val) = tr.ReadNextWithSpan(this.NumBytes);
+                var (more, val) = tr.ReadNextWithSpan(NumBytes);
                 finished = !more;
                 final = val;
             }

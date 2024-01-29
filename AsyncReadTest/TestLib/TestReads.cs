@@ -9,16 +9,22 @@
 
     public class TestReads
     {
-        private MemoryStream ms;
-        private byte[] bytes;
-        int currpos = 0;
+        private MemoryStream _ms;
+        private byte[] _bytes;
+        int _currpos = 0;
 
-        byte[] fixedBuffer = new byte[sizeof(int)];
+        byte[] _fixexdBuffer = new byte[sizeof(int)];
 
         public TestReads(int sizeInBytes)
         {
-            ms = Populate(sizeInBytes);
-            bytes = ms.ToArray();
+            _ms = Populate(sizeInBytes);
+            _bytes = _ms.ToArray();
+        }
+
+        public void Reset()
+        {
+            _currpos = 0;
+            _ms.Seek(0, SeekOrigin.Begin);
         }
 
         public (bool hasNext, int value) ReadNext()
@@ -28,7 +34,7 @@
 
             var buffer = new byte[sizeof(int)];
 
-            if (ms.Read(buffer, 0, buffer.Length) > 0)
+            if (_ms.Read(buffer, 0, buffer.Length) > 0)
             {
                 hasNext = true;
                 value = BitConverter.ToInt32(buffer, 0);
@@ -44,7 +50,7 @@
 
             var buffer = ArrayPool<byte>.Shared.Rent(sizeof(int));
 
-            if (ms.Read(buffer, 0, sizeof(int)) > 0)
+            if (_ms.Read(buffer, 0, sizeof(int)) > 0)
             {
                 hasNext = true;
                 value = BitConverter.ToInt32(buffer, 0);
@@ -60,9 +66,9 @@
             bool hasNext = false;
             int value = -1;
 
-            var buffer = this.fixedBuffer;
+            var buffer = _fixexdBuffer;
 
-            if (ms.Read(buffer, 0, sizeof(int)) > 0)
+            if (_ms.Read(buffer, 0, sizeof(int)) > 0)
             {
                 hasNext = true;
                 value = BitConverter.ToInt32(buffer, 0);
@@ -77,7 +83,7 @@
             int value = -1;
 
             var buffer = new byte[sizeof(int)];
-            if (await ms.ReadAsync(buffer, 0, buffer.Length, ct) > 0)
+            if (await _ms.ReadAsync(buffer, 0, buffer.Length, ct) > 0)
             {
                 hasNext = true;
                 value = BitConverter.ToInt32(buffer, 0);
@@ -89,10 +95,10 @@
         public (bool hasNext, int value) ReadNextWithSpan(int sizeInBytes)
         {
             bool hasNext = false;
-            int value = BinaryPrimitives.ReadInt32LittleEndian(new Span<byte>(this.bytes, currpos, sizeof(int)));
-            this.currpos += sizeof(int);
+            int value = BinaryPrimitives.ReadInt32LittleEndian(new Span<byte>(_bytes, _currpos, sizeof(int)));
+            _currpos += sizeof(int);
 
-            if (currpos < this.bytes.Length)
+            if (_currpos < _bytes.Length)
             {
                 hasNext = true;
             }
