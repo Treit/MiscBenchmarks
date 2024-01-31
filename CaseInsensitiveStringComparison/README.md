@@ -1,7 +1,5 @@
 # Case insensitive string comparisons.
 
-
-
 ```
 
 BenchmarkDotNet v0.13.12, Windows 11 (10.0.26045.1000)
@@ -12,16 +10,16 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-| Method                                     | Count | Mean      | Error    | StdDev    | Median    | Ratio | RatioSD | Gen0    | Code Size | Allocated | Alloc Ratio |
-|------------------------------------------- |------ |----------:|---------:|----------:|----------:|------:|--------:|--------:|----------:|----------:|------------:|
-| ToLower                                    | 1000  |  89.22 μs | 1.731 μs |  1.619 μs |  89.74 μs |  1.00 |    0.00 | 33.5693 |   1,884 B |  144936 B |        1.00 |
-| ToUpper                                    | 1000  |  86.38 μs | 1.727 μs |  2.933 μs |  85.77 μs |  0.98 |    0.03 | 25.1465 |   1,542 B |  108736 B |        0.75 |
-| ToLowerInvariant                           | 1000  |  91.82 μs | 2.919 μs |  8.137 μs |  90.83 μs |  1.00 |    0.11 | 33.5693 |   1,265 B |  144936 B |        1.00 |
-| ToUpperInvariant                           | 1000  |  90.43 μs | 2.445 μs |  7.016 μs |  89.18 μs |  1.06 |    0.07 | 25.1465 |   1,268 B |  108736 B |        0.75 |
-| StringComparisonIgnoreCaseFlag             | 1000  | 207.03 μs | 5.312 μs | 15.580 μs | 205.15 μs |  2.32 |    0.14 |       - |     824 B |         - |        0.00 |
-| StringComparisonOrdinalIgnoreCase          | 1000  |  61.48 μs | 1.226 μs |  3.098 μs |  60.81 μs |  0.69 |    0.03 |       - |     257 B |         - |        0.00 |
-| StringComparisonInvariantCultureIgnoreCase | 1000  | 210.63 μs | 6.930 μs | 19.994 μs | 202.88 μs |  2.26 |    0.10 |       - |     516 B |         - |        0.00 |
-| StringComparisonCurrentCultureIgnoreCase   | 1000  | 210.42 μs | 8.802 μs | 25.395 μs | 202.13 μs |  2.62 |    0.26 |       - |   1,541 B |         - |        0.00 |
+| Method                                     | Count | Mean      | Error    | StdDev    | Median    | Ratio | RatioSD | Gen0    | Allocated | Alloc Ratio |
+|------------------------------------------- |------ |----------:|---------:|----------:|----------:|------:|--------:|--------:|----------:|------------:|
+| StringComparisonOrdinalIgnoreCase          | 1000  |  61.48 μs | 1.161 μs |  2.803 μs |  61.04 μs |  1.00 |    0.00 |       - |         - |          NA |
+| ToLower                                    | 1000  |  92.19 μs | 3.754 μs | 10.588 μs |  87.37 μs |  1.50 |    0.20 | 33.5693 |  144936 B |          NA |
+| ToUpper                                    | 1000  |  86.21 μs | 2.143 μs |  6.046 μs |  84.81 μs |  1.41 |    0.14 | 25.1465 |  108736 B |          NA |
+| ToLowerInvariant                           | 1000  |  85.47 μs | 2.563 μs |  7.355 μs |  82.97 μs |  1.39 |    0.14 | 33.5693 |  144936 B |          NA |
+| ToUpperInvariant                           | 1000  |  80.09 μs | 1.587 μs |  3.484 μs |  79.03 μs |  1.30 |    0.08 | 25.1465 |  108736 B |          NA |
+| StringComparisonIgnoreCaseFlag             | 1000  | 209.28 μs | 7.041 μs | 20.314 μs | 202.55 μs |  3.42 |    0.35 |       - |         - |          NA |
+| StringComparisonInvariantCultureIgnoreCase | 1000  | 196.41 μs | 3.904 μs | 11.010 μs | 194.82 μs |  3.21 |    0.24 |       - |         - |          NA |
+| StringComparisonCurrentCultureIgnoreCase   | 1000  | 205.47 μs | 6.015 μs | 17.640 μs | 200.60 μs |  3.37 |    0.28 |       - |         - |          NA |
 
 ## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly

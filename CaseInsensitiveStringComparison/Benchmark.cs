@@ -2,10 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
-    [DisassemblyDiagnoser]
     [MemoryDiagnoser]
     public class Benchmark
     {
@@ -34,6 +31,23 @@
         }
 
         [Benchmark(Baseline = true)]
+        public int StringComparisonOrdinalIgnoreCase()
+        {
+            var pairs = _stringPairs;
+            var result = 0;
+
+            foreach (var (first, second) in pairs)
+            {
+                if (string.Compare(first, second, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    result++;
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
         public int ToLower()
         {
             var pairs = _stringPairs;
@@ -110,23 +124,6 @@
             foreach (var (first, second) in pairs)
             {
                 if (string.Compare(first, second, true) == 0)
-                {
-                    result++;
-                }
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public int StringComparisonOrdinalIgnoreCase()
-        {
-            var pairs = _stringPairs;
-            var result = 0;
-
-            foreach (var (first, second) in pairs)
-            {
-                if (string.Compare(first, second, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     result++;
                 }
