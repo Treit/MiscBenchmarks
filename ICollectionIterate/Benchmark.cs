@@ -7,6 +7,7 @@
     using System.Runtime.InteropServices;
 
     [MemoryDiagnoser]
+    [MemoryRandomization]
     public class Benchmark
     {
         private string[] _stringArray;
@@ -106,7 +107,7 @@
                 }
                 else
                 {
-                    return CalcNormal(arr);
+                    return CalcArray(arr);
                 }
             }
 
