@@ -36,13 +36,19 @@
         [Benchmark(Baseline = true)]
         public long ICollectionForLoopWithCastToArray()
         {
-            return DoLoopOnICollection(_stringArray);
+            return DoLoopOnICollection(_stringArray, true);
         }
 
         [Benchmark]
-        public long ICollectionForEachLoopWithList()
+        public long ICollectionForEachLoopWithArrayAsICollection()
         {
-            return DoLoopOnICollection(_stringList);
+            return DoLoopOnICollection(_stringArray, false);
+        }
+
+        [Benchmark]
+        public long ICollectionForEachLoopWithListAsICollection()
+        {
+            return DoLoopOnICollection(_stringList, false);
         }
 
         [Benchmark]
@@ -75,11 +81,11 @@
             return DoForEachLoopOnICollection(_stringSet, false);
         }
 
-        private long DoLoopOnICollection(ICollection<string> items)
+        private long DoLoopOnICollection(ICollection<string> items, bool castToArray)
         {
             var result = 0L;
 
-            if (items is string[] arr)
+            if (castToArray && items is string[] arr)
             {
                 for (int i = 0; i < arr.Length; i++)
                 {
@@ -119,7 +125,7 @@
                 }
                 else
                 {
-                    return CalcNormal(list);
+                    return CalcList(list);
                 }
             }
 
@@ -138,6 +144,18 @@
             }
 
             static long CalcArray(string[] items)
+            {
+                var result = 0L;
+
+                foreach (var str in items)
+                {
+                    result += str.Length;
+                }
+
+                return result;
+            }
+
+            static long CalcList(List<string> items)
             {
                 var result = 0L;
 
