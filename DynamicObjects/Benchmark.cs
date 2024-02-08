@@ -17,7 +17,7 @@
         {
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public void InitJaggedArray()
         {
             _jagged = new byte[Size][];

@@ -13,6 +13,8 @@
             Benchmark b = new Benchmark();
             b.Size = 1024;
             b.GlobalSetup();
+            b.InitJaggedArray();
+            b.InitDynamicJaggedArray();
 #endif
 
         }
