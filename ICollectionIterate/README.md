@@ -1,8 +1,4 @@
-# Test that converting an ICollection to an array yields better enumeration performance.
-
-
-
-
+# Test performance of iterating over ICollection.
 
 ```
 
@@ -10,27 +6,27 @@ BenchmarkDotNet v0.13.12, Windows 11 (10.0.26052.1000)
 Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 .NET SDK 8.0.101
   [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  Job-RBLWVN : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  Job-HFAZRI : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 OutlierMode=DontRemove  MemoryRandomization=True  
 
 ```
-| Method                                                    | Count  | Mean           | Error          | StdDev         | Median         | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------------------------------------------------- |------- |---------------:|---------------:|---------------:|---------------:|------:|--------:|-------:|----------:|------------:|
-| **ICollectionForLoopWithCastToArray**                         | **10**     |       **8.517 ns** |      **0.2105 ns** |      **0.4106 ns** |       **8.430 ns** |  **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-| ICollectionForEachLoopWithArrayAsICollection              | 10     |      36.410 ns |      1.8147 ns |      5.3508 ns |      34.389 ns |  4.19 |    0.42 | 0.0074 |      32 B |          NA |
-| ICollectionForEachLoopWithListAsICollection               | 10     |      52.195 ns |      1.6668 ns |      4.9145 ns |      50.698 ns |  6.01 |    0.59 | 0.0092 |      40 B |          NA |
-| ICollectionForEachLoopWithCastToArray                     | 10     |       9.048 ns |      0.6196 ns |      1.8270 ns |       8.520 ns |  1.02 |    0.15 |      - |         - |          NA |
-| ICollectionForEachLoopWithCastToList                      | 10     |      13.510 ns |      0.9510 ns |      2.8040 ns |      12.603 ns |  1.62 |    0.33 |      - |         - |          NA |
-| ICollectionForEachLoopWithCastToListAndSpan               | 10     |      11.095 ns |      0.6760 ns |      1.9931 ns |      10.578 ns |  1.20 |    0.20 |      - |         - |          NA |
-| ICollectionForEachLoopWithCastToArrayAndSpan              | 10     |       5.957 ns |      0.2064 ns |      0.6085 ns |       5.779 ns |  0.70 |    0.08 |      - |         - |          NA |
-| ICollectionForEachLoopNoCastUnderlyingCollectionIsHashSet | 10     |      60.131 ns |      1.9180 ns |      5.6554 ns |      58.718 ns |  7.11 |    0.78 | 0.0092 |      40 B |          NA |
-|                                                           |        |                |                |                |                |       |         |        |           |             |
-| **ICollectionForLoopWithCastToArray**                         | **100000** | **143,876.393 ns** |  **3,042.7067 ns** |  **8,971.4895 ns** | **143,784.534 ns** |  **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-| ICollectionForEachLoopWithArrayAsICollection              | 100000 | 231,109.802 ns | 10,403.9318 ns | 30,676.2277 ns | 219,864.124 ns |  1.62 |    0.26 |      - |      32 B |          NA |
-| ICollectionForEachLoopWithListAsICollection               | 100000 | 293,033.076 ns |  8,917.2177 ns | 26,292.6176 ns | 283,443.799 ns |  2.05 |    0.23 |      - |      40 B |          NA |
-| ICollectionForEachLoopWithCastToArray                     | 100000 | 146,608.669 ns |  3,013.4406 ns |  8,885.1975 ns | 146,828.906 ns |  1.02 |    0.10 |      - |         - |          NA |
-| ICollectionForEachLoopWithCastToList                      | 100000 | 162,822.462 ns |  4,149.3638 ns | 12,234.4927 ns | 159,293.750 ns |  1.14 |    0.11 |      - |         - |          NA |
-| ICollectionForEachLoopWithCastToListAndSpan               | 100000 | 143,386.690 ns |  2,842.0047 ns |  7,130.0342 ns | 143,528.052 ns |  1.00 |    0.09 |      - |         - |          NA |
-| ICollectionForEachLoopWithCastToArrayAndSpan              | 100000 | 146,875.931 ns |  2,932.5745 ns |  8,461.1480 ns | 147,056.995 ns |  1.03 |    0.09 |      - |         - |          NA |
-| ICollectionForEachLoopNoCastUnderlyingCollectionIsHashSet | 100000 | 440,779.542 ns | 14,419.5262 ns | 42,516.2985 ns | 427,799.268 ns |  3.08 |    0.36 |      - |      40 B |          NA |
+| Method                                                    | Count  | Mean           | Error          | StdDev          | Median         | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------------------------------------------------- |------- |---------------:|---------------:|----------------:|---------------:|------:|--------:|-------:|----------:|------------:|
+| **ICollectionForLoopWithCastToArray**                         | **10**     |       **8.260 ns** |      **0.2652 ns** |       **0.7820 ns** |       **7.968 ns** |  **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
+| ICollectionForEachLoopWithArrayAsICollection              | 10     |      35.997 ns |      1.5504 ns |       4.5713 ns |      34.223 ns |  4.40 |    0.73 | 0.0074 |      32 B |          NA |
+| ICollectionForEachLoopWithListAsICollection               | 10     |      50.477 ns |      1.9486 ns |       5.7455 ns |      48.438 ns |  6.15 |    0.83 | 0.0092 |      40 B |          NA |
+| ICollectionForEachLoopWithCastToArray                     | 10     |       7.683 ns |      0.3875 ns |       1.1425 ns |       7.334 ns |  0.94 |    0.15 |      - |         - |          NA |
+| ICollectionForEachLoopWithCastToList                      | 10     |      12.259 ns |      0.4333 ns |       1.2776 ns |      11.989 ns |  1.50 |    0.20 |      - |         - |          NA |
+| ICollectionForEachLoopWithCastToListAndSpan               | 10     |       8.951 ns |      0.3649 ns |       1.0758 ns |       8.566 ns |  1.09 |    0.15 |      - |         - |          NA |
+| ICollectionForEachLoopWithCastToArrayAndSpan              | 10     |       7.010 ns |      0.4223 ns |       1.2451 ns |       6.669 ns |  0.86 |    0.18 |      - |         - |          NA |
+| ICollectionForEachLoopNoCastUnderlyingCollectionIsHashSet | 10     |      62.799 ns |      2.4518 ns |       7.2293 ns |      60.809 ns |  7.68 |    1.25 | 0.0092 |      40 B |          NA |
+|                                                           |        |                |                |                 |                |       |         |        |           |             |
+| **ICollectionForLoopWithCastToArray**                         | **100000** | **153,221.874 ns** |  **3,041.7087 ns** |   **8,428.5605 ns** | **153,355.273 ns** |  **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
+| ICollectionForEachLoopWithArrayAsICollection              | 100000 | 239,202.620 ns | 11,108.1366 ns |  32,752.5914 ns | 226,282.153 ns |  1.58 |    0.25 |      - |      32 B |          NA |
+| ICollectionForEachLoopWithListAsICollection               | 100000 | 331,337.549 ns | 19,846.7992 ns |  58,518.7352 ns | 311,830.591 ns |  2.20 |    0.41 |      - |      40 B |          NA |
+| ICollectionForEachLoopWithCastToArray                     | 100000 | 151,079.233 ns |  3,016.1736 ns |   6,869.3536 ns | 151,540.820 ns |  0.99 |    0.08 |      - |         - |          NA |
+| ICollectionForEachLoopWithCastToList                      | 100000 | 166,390.001 ns |  4,075.1070 ns |  12,015.5450 ns | 162,763.940 ns |  1.10 |    0.11 |      - |         - |          NA |
+| ICollectionForEachLoopWithCastToListAndSpan               | 100000 | 151,261.844 ns |  2,995.1079 ns |   7,784.6836 ns | 151,160.498 ns |  0.99 |    0.07 |      - |         - |          NA |
+| ICollectionForEachLoopWithCastToArrayAndSpan              | 100000 | 150,688.917 ns |  2,973.5464 ns |   5,511.6589 ns | 151,038.623 ns |  0.98 |    0.07 |      - |         - |          NA |
+| ICollectionForEachLoopNoCastUnderlyingCollectionIsHashSet | 100000 | 468,197.918 ns | 35,811.7629 ns | 105,591.7908 ns | 417,217.725 ns |  3.11 |    0.74 |      - |      40 B |          NA |
