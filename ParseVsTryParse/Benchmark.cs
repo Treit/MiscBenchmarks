@@ -32,7 +32,7 @@
             }
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public int FindValidIntsWithParse()
         {
             int validCount = 0;
@@ -53,7 +53,7 @@
             return validCount;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int FindValidIntsWithTryParse()
         {
             int validCount = 0;
