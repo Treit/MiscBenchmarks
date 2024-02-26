@@ -8,11 +8,13 @@
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(1_000_000)]
+        [Params(10_000)]
         public int Count { get; set; }
 
         int _counter = 0;
         object _lock = new object();
+        Semaphore _semaphore = new Semaphore(1, 1);
+        SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -44,6 +46,46 @@
                 lock (_lock)
                 {
                     _counter++;
+                }
+            });
+
+            return _counter;
+
+        }
+
+        [Benchmark]
+        public int IncrementUsingSemaphore()
+        {
+            Parallel.For(0, Count, _ =>
+            {
+                _semaphore.WaitOne();
+                try 
+                {
+                    _counter++; 
+                }
+                finally
+                {
+                    _semaphore.Release();
+                }
+            });
+
+            return _counter;
+
+        }
+
+        [Benchmark]
+        public int IncrementUsingSemaphoreSlim()
+        {
+            Parallel.For(0, Count, _ =>
+            {
+                _semaphoreSlim.Wait();
+                try 
+                {
+                    _counter++; 
+                }
+                finally
+                {
+                    _semaphoreSlim.Release();
                 }
             });
 
