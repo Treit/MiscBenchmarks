@@ -2,20 +2,21 @@
 
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.26063.1)
+Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 8.0.200
+  [Host]     : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  DefaultJob : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 
 ```
-|        Method |     Count |             Mean |          Error |         StdDev | Ratio | Allocated | Alloc Ratio |
-|-------------- |---------- |-----------------:|---------------:|---------------:|------:|----------:|------------:|
-|   **MaxWithLoop** |      **1000** |        **337.45 ns** |       **2.312 ns** |       **2.163 ns** |  **1.00** |         **-** |          **NA** |
-| EnumerableMax |      1000 |         57.75 ns |       0.043 ns |       0.040 ns |  0.17 |         - |          NA |
-|               |           |                  |                |                |       |           |             |
-|   **MaxWithLoop** | **100000000** | **33,197,994.44 ns** | **167,429.735 ns** | **156,613.878 ns** |  **1.00** |         **-** |          **NA** |
-| EnumerableMax | 100000000 | 16,747,956.92 ns |  74,852.511 ns |  66,354.801 ns |  0.50 |         - |          NA |
+| Method        | Count   | Mean          | Error         | StdDev        | Median        | Ratio | RatioSD | Allocated | Alloc Ratio |
+|-------------- |-------- |--------------:|--------------:|--------------:|--------------:|------:|--------:|----------:|------------:|
+| **MaxWithLoop**   | **1000**    |     **394.86 ns** |      **7.926 ns** |     **21.429 ns** |     **387.45 ns** |  **7.63** |    **0.36** |         **-** |          **NA** |
+| EnumerableMax | 1000    |      52.69 ns |      0.865 ns |      0.767 ns |      52.55 ns |  1.00 |    0.00 |         - |          NA |
+|               |         |               |               |               |               |       |         |           |             |
+| **MaxWithLoop**   | **1000000** | **393,478.85 ns** | **13,379.548 ns** | **38,603.055 ns** | **381,792.50 ns** |  **3.05** |    **0.43** |         **-** |          **NA** |
+| EnumerableMax | 1000000 | 130,437.69 ns |  4,334.770 ns | 12,713.131 ns | 128,087.89 ns |  1.00 |    0.00 |         - |          NA |
