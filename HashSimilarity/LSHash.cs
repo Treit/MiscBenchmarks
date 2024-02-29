@@ -11,6 +11,29 @@ namespace Test
         const int THRESHOLD = 90;
         const int HASH_LENGTH = 64;
 
+        public static int ConfidenceNoLookup(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
+        {
+            int diff = 0;
+
+            for (int i = 0; i < first.Length; i++)
+            {
+                byte v = (byte)(first[i] ^ second[i]);
+
+                diff +=
+                      ((v & 0xC0) == 0 ? 1 : 0)  // 11000000
+                    + ((v & 0x30) == 0 ? 1 : 0)  // 00110000
+                    + ((v & 0x0C) == 0 ? 1 : 0)  // 00001100
+                    + ((v & 0x03) == 0 ? 1 : 0); // 00000011
+            }
+
+            if (diff > 128 + THRESHOLD)
+            {
+                return ((diff - 128) * 100) / 128;
+            }
+
+            return 0;
+        }
+
         public static int Confidence(ReadOnlySpan<byte> first, ReadOnlySpan<byte> second)
         {
             int diff = 0;
@@ -219,7 +242,6 @@ namespace Test
                 Vector128<ushort> secondVec = Unsafe.As<ushort, Vector128<ushort>>(ref s);
                 Vector128<ushort> xor = Sse2.Xor(firstVec, secondVec);
 
-
                 diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 0));
 
                 diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 1));
@@ -235,7 +257,6 @@ namespace Test
                 diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 6));
 
                 diff1 += Unsafe.Add(ref table, (nint)(nuint)Sse2.Extract(xor, 7));
-
 
                 f = ref Unsafe.Add(ref f, 8);
                 s = ref Unsafe.Add(ref s, 8);
