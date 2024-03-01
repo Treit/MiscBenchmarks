@@ -11,7 +11,7 @@
     [MemoryRandomization]
     public class Benchmark
     {
-        [Params(100, 100_000)]
+        [Params(8, 100, 100_000, 1_000_000)]
         public int Count { get; set; }
 
         private List<SomeData> _values;
