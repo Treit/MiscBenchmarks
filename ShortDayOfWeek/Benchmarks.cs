@@ -31,6 +31,21 @@ namespace ShortDayOfWeek
             };
         }
 
+        public static string ToShortDayOfWeekSwitchExpressionNoThrow(this DateTime date)
+        {
+            return date.DayOfWeek switch
+            {
+                DayOfWeek.Sunday => "SUN",
+                DayOfWeek.Monday => "MON",
+                DayOfWeek.Tuesday => "TUE",
+                DayOfWeek.Wednesday => "WED",
+                DayOfWeek.Thursday => "THU",
+                DayOfWeek.Friday => "FRI",
+                DayOfWeek.Saturday => "SAT",
+                _ => string.Empty
+            };
+        }
+
         public static string ToShortDayOfWeekLookup(this DateTime date)
         {
             return ShortDateLookup[(int)date.DayOfWeek];
@@ -78,6 +93,19 @@ namespace ShortDayOfWeek
             foreach (var day in _days)
             {
                 result += day.ToShortDayOfWeekSwitchExpression().Length;
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long GetDayOfWeekSwitchExpressionNoThrow()
+        {
+            var result = 0L;
+
+            foreach (var day in _days)
+            {
+                result += day.ToShortDayOfWeekSwitchExpressionNoThrow().Length;
             }
 
             return result;
