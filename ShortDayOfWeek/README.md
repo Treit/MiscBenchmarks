@@ -1,6 +1,7 @@
 # Getting a short day of week abbreviaton.
 
 
+
 ```
 
 BenchmarkDotNet v0.13.12, Windows 11 (10.0.26063.1)
@@ -11,8 +12,8 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-| Method                       | Count | Mean      | Error     | StdDev    | Gen0    | Allocated |
-|----------------------------- |------ |----------:|----------:|----------:|--------:|----------:|
-| GetDayOfWeekSubstring        | 1000  | 38.817 μs | 0.6208 μs | 0.5807 μs | 20.3857 |   88013 B |
-| GetDayOfWeekSwitchExpression | 1000  | 12.031 μs | 0.1940 μs | 0.1719 μs |       - |         - |
-| GetDayOfWeekLookup           | 1000  |  3.238 μs | 0.0273 μs | 0.0292 μs |       - |         - |
+| Method                       | Count | Mean      | Error     | StdDev    | Median    | Ratio | RatioSD | Gen0    | Allocated | Alloc Ratio |
+|----------------------------- |------ |----------:|----------:|----------:|----------:|------:|--------:|--------:|----------:|------------:|
+| GetDayOfWeekSubstring        | 1000  | 39.453 μs | 0.7775 μs | 1.2332 μs | 39.025 μs | 12.20 |    0.35 | 20.3857 |   88013 B |          NA |
+| GetDayOfWeekSwitchExpression | 1000  | 12.238 μs | 0.2417 μs | 0.4827 μs | 11.977 μs |  3.81 |    0.20 |       - |         - |          NA |
+| GetDayOfWeekLookup           | 1000  |  3.258 μs | 0.0407 μs | 0.0381 μs |  3.264 μs |  1.00 |    0.00 |       - |         - |          NA |

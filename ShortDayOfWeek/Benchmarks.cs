@@ -38,6 +38,7 @@ namespace ShortDayOfWeek
     }
 
     [MemoryDiagnoser]
+    [DisassemblyDiagnoser]
     public class Benchmarks
     {
         private List<DateTime> _days;
@@ -82,7 +83,7 @@ namespace ShortDayOfWeek
             return result;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public long GetDayOfWeekLookup()
         {
             var result = 0L;
