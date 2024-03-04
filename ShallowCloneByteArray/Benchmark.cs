@@ -44,5 +44,11 @@
             Buffer.BlockCopy(_data, 0, result, 0, _data.Length);
             return result;
         }
+
+        [Benchmark]
+        public byte[] CloneWithAsSpanToArray()
+        {
+            return _data.AsSpan().ToArray();
+        }        
     }
 }
