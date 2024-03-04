@@ -11,7 +11,7 @@
             BenchmarkRunner.Run<Benchmark>();
 #else
             Benchmark b = new Benchmark();
-            b.GlobalSetup();
+            b.IterationSetup();
 #endif
         }
     }
