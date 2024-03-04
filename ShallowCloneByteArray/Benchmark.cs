@@ -10,7 +10,7 @@
     {
         private byte[] _data;
 
-        [Params(10, 100_000)]
+        [Params(10, 100, 10_000)]
         public int Count { get; set; }
 
         [GlobalSetup]
@@ -38,7 +38,7 @@
         }
 
         [Benchmark]
-        public byte[] CloneWithOther()
+        public byte[] CloneWithBufferBlockCopy()
         {
             var result = new byte[_data.Length];
             Buffer.BlockCopy(_data, 0, result, 0, _data.Length);
