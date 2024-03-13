@@ -6,7 +6,6 @@
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
 
-    [MemoryDiagnoser]
     public class Benchmark
     {
         [Params(100_000)]
@@ -43,8 +42,8 @@
             return result;
         }
 
-        [Benchmark]
-        public long SumUsingForEachCollectionMarshalAsSpan()
+        [Benchmark(Baseline = true)]
+        public long SumUsingForEachCollectionsMarshalAsSpan()
         {
             var result = 0L;
             var data = CollectionsMarshal.AsSpan(_data);
