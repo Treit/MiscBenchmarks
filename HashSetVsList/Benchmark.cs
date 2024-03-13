@@ -3,15 +3,16 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 
     [MemoryDiagnoser]
     public class Benchmark
     {
         [Params(10, 100, 100_000)]
         public int Count { get; set; }
+
+        [Params(1, 50, 1000)]
+        public int NumberOfLookups { get; set; }
 
         private List<int> _list;
         private HashSet<int> _set;
@@ -32,21 +33,41 @@
         }
 
         [Benchmark(Baseline = true)]
-        public bool FindUsingList()
+        public int FindUsingList()
         {
             var list = _list;
             var r = new Random(Count);
             var needle = r.Next(Count);
-            return list.Contains(needle);
+            var result = 0;
+
+            for (int i = 0; i < NumberOfLookups; i++)
+            {
+                if (list.Contains(needle))
+                {
+                    result++;
+                }
+            }
+
+            return result;
         }
 
         [Benchmark]
-        public bool FindUsingHashSet()
+        public int FindUsingHashSet()
         {
             var set = _set;
             var r = new Random(Count);
             var needle = r.Next(Count);
-            return set.Contains(needle);
+            var result = 0;
+
+            for (int i = 0; i < NumberOfLookups; i++)
+            {
+                if (set.Contains(needle))
+                {
+                    result++;
+                }
+            }
+
+            return result;
         }
     }
 }
