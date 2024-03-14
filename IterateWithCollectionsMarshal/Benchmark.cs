@@ -29,11 +29,13 @@
         }
 
         [Benchmark]
-        public long SumUsingForEach()
+        public long IterateUsingForEach()
         {
             var result = 0L;
             var data = _data;
 
+            // The sum here is just to do some work inside the loop.
+            // It is not the focus of the benchmark.
             foreach (int val in data)
             {
                 result += val;
@@ -43,11 +45,13 @@
         }
 
         [Benchmark(Baseline = true)]
-        public long SumUsingForEachCollectionsMarshalAsSpan()
+        public long IterateUsingForEachCollectionsMarshalAsSpan()
         {
             var result = 0L;
             var data = CollectionsMarshal.AsSpan(_data);
 
+            // The sum here is just to do some work inside the loop.
+            // It is not the focus of the benchmark.
             foreach (int val in data)
             {
                 result += val;
