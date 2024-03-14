@@ -1,6 +1,7 @@
 ﻿namespace Test
 {
     using BenchmarkDotNet.Running;
+    using System;
 
     internal class Program
     {
@@ -12,6 +13,10 @@
             Benchmark b = new Benchmark();
             b.Count = 1000;
             b.GlobalSetup();
+            var first = b.CheckWithForEachSinglePass();
+            var second = b.CheckWithMultipleContainsCalls();
+            Console.WriteLine(first);
+            Console.WriteLine(second);
 #endif
         }
     }
