@@ -43,6 +43,25 @@
         }
 
         [Benchmark]
+        public int Nameof()
+        {
+            int result = 0;
+
+            for (var i = 0; i < Count; i++)
+            {
+                var a = nameof(SomeEnum.SomeValueA);
+                var b = nameof(SomeEnum.SomeValueB);
+                var c = nameof(SomeEnum.SomeValueC);
+                var d = nameof(SomeEnum.SomeValueD);
+                var e = nameof(SomeEnum.SomeNewValue);
+
+                result += a.Length + b.Length + c.Length + d.Length + e.Length;
+            }
+
+            return result;
+        }
+
+        [Benchmark]
         public int CustomGetStringUsingSwitch()
         {
             int result = 0;
