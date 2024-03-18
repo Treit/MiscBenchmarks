@@ -6,8 +6,6 @@
     public class Benchmark
     {
         private List<string>? _strings;
-        private readonly string needleA = "find_me";
-        private readonly string needleB = "hiding_from_you";
 
         [Params(100_000)]
         public int Count { get; set; }
