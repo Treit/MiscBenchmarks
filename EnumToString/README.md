@@ -2,17 +2,19 @@
 
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3296/23H2/2023Update/SunValley3)
+13th Gen Intel Core i7-1370P, 1 CPU, 20 logical and 14 physical cores
+.NET SDK 8.0.202
+  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
 
 
 ```
-|                     Method | Count |      Mean |    Error |   StdDev | Ratio |    Gen0 |  Allocated | Alloc Ratio |
-|--------------------------- |------ |----------:|---------:|---------:|------:|--------:|-----------:|------------:|
-|               EnumToString | 10000 | 432.16 μs | 5.238 μs | 4.899 μs |  1.00 | 71.2891 | 1171.91 KB |        1.00 |
-| CustomGetStringUsingSwitch | 10000 |  90.96 μs | 0.846 μs | 0.792 μs |  0.21 | 14.2822 |  234.38 KB |        0.20 |
+| Method                     | Count | Mean       | Error     | StdDev     | Median     | Ratio | RatioSD | Gen0    | Allocated | Alloc Ratio |
+|--------------------------- |------ |-----------:|----------:|-----------:|-----------:|------:|--------:|--------:|----------:|------------:|
+| EnumToString               | 10000 | 399.591 μs | 8.9481 μs | 26.2431 μs | 407.078 μs | 1.000 |    0.00 | 95.2148 | 1200053 B |        1.00 |
+| Nameof                     | 10000 |   3.437 μs | 0.0669 μs |  0.1678 μs |   3.478 μs | 0.009 |    0.00 |       - |         - |        0.00 |
+| CustomGetStringUsingSwitch | 10000 |  74.637 μs | 4.8791 μs | 14.3862 μs |  78.609 μs | 0.188 |    0.04 | 19.1040 |  240011 B |        0.20 |
