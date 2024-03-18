@@ -1,22 +1,22 @@
 # Adding items to a list
 
+```
 
-``` ini
-
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  Job-UPNOOR : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3296/23H2/2023Update/SunValley3)
+13th Gen Intel Core i7-1370P, 1 CPU, 20 logical and 14 physical cores
+.NET SDK 8.0.202
+  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
+  Job-UFXLNI : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX2
 
 InvocationCount=1  UnrollFactor=1  
 
 ```
-|                  Method |   Count |           Mean |         Error |        StdDev |         Median | Allocated |
-|------------------------ |-------- |---------------:|--------------:|--------------:|---------------:|----------:|
-|         **AddToListNormal** |     **100** |     **3,830.0 ns** |     **713.22 ns** |   **2,102.93 ns** |     **2,500.0 ns** |         **-** |
-| AddToListPresetCapacity |     100 |       800.0 ns |       0.00 ns |       0.00 ns |       800.0 ns |         - |
-|         **AddToListNormal** |   **10000** |    **25,866.1 ns** |     **470.82 ns** |   **1,043.31 ns** |    **25,700.0 ns** |  **131432 B** |
-| AddToListPresetCapacity |   10000 |    21,140.0 ns |     238.37 ns |     222.97 ns |    21,100.0 ns |         - |
-|         **AddToListNormal** | **1000000** | **2,148,787.0 ns** | **200,093.72 ns** | **589,980.86 ns** | **2,076,200.0 ns** | **8389448 B** |
-| AddToListPresetCapacity | 1000000 | 1,754,420.0 ns | 270,866.81 ns | 798,656.90 ns | 1,577,950.0 ns |         - |
+| Method                  | Count   | Mean           | Error         | StdDev        | Median         | Ratio | RatioSD | Gen0      | Gen1      | Gen2      | Allocated   | Alloc Ratio |
+|------------------------ |-------- |---------------:|--------------:|--------------:|---------------:|------:|--------:|----------:|----------:|----------:|------------:|------------:|
+| **AddToListNormal**         | **100**     |       **3.772 μs** |     **0.1681 μs** |     **0.4903 μs** |       **3.700 μs** |  **1.46** |    **0.23** |         **-** |         **-** |         **-** |      **1552 B** |        **3.88** |
+| AddToListPresetCapacity | 100     |       2.606 μs |     0.0948 μs |     0.2780 μs |       2.600 μs |  1.00 |    0.00 |         - |         - |         - |       400 B |        1.00 |
+| AddToListWithAppend     | 100     |      10.124 μs |     0.3730 μs |     1.0761 μs |       9.800 μs |  3.92 |    0.42 |         - |         - |         - |     12032 B |       30.08 |
+|                         |         |                |               |               |                |       |         |           |           |           |             |             |
+| **AddToListNormal**         | **1000000** |   **3,233.462 μs** |   **101.2360 μs** |   **298.4966 μs** |   **3,208.000 μs** |  **2.41** |    **1.02** |         **-** |         **-** |         **-** |   **8389448 B** |   **20,973.62** |
+| AddToListPresetCapacity | 1000000 |   1,565.334 μs |   187.5348 μs |   552.9506 μs |   1,520.050 μs |  1.00 |    0.00 |         - |         - |         - |       400 B |        1.00 |
+| AddToListWithAppend     | 1000000 | 116,235.698 μs | 2,888.1572 μs | 8,470.4651 μs | 118,742.200 μs | 84.80 |   31.74 | 9000.0000 | 5000.0000 | 2000.0000 | 116001112 B |  290,002.78 |
