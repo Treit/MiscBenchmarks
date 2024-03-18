@@ -3,6 +3,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3296/23H2/2023Update/SunValley3)
@@ -13,8 +14,11 @@ BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3296/23H2/2023Update/SunValley3
 
 
 ```
-| Method                     | Count | Mean       | Error     | StdDev     | Median     | Ratio | RatioSD | Gen0    | Allocated | Alloc Ratio |
-|--------------------------- |------ |-----------:|----------:|-----------:|-----------:|------:|--------:|--------:|----------:|------------:|
-| EnumToString               | 10000 | 399.591 μs | 8.9481 μs | 26.2431 μs | 407.078 μs | 1.000 |    0.00 | 95.2148 | 1200053 B |        1.00 |
-| Nameof                     | 10000 |   3.437 μs | 0.0669 μs |  0.1678 μs |   3.478 μs | 0.009 |    0.00 |       - |         - |        0.00 |
-| CustomGetStringUsingSwitch | 10000 |  74.637 μs | 4.8791 μs | 14.3862 μs |  78.609 μs | 0.188 |    0.04 | 19.1040 |  240011 B |        0.20 |
+| Method                       | Count | Mean       | Error     | StdDev     | Ratio  | RatioSD | Gen0    | Allocated | Alloc Ratio |
+|----------------------------- |------ |-----------:|----------:|-----------:|-------:|--------:|--------:|----------:|------------:|
+| EnumToString                 | 10000 | 281.236 μs | 5.5822 μs | 10.6206 μs | 121.93 |    3.85 | 95.2148 | 1200053 B |          NA |
+| Nameof                       | 10000 |   2.324 μs | 0.0130 μs |  0.0122 μs |   1.00 |    0.00 |       - |         - |          NA |
+| CustomGetStringUsingSwitch   | 10000 |  53.386 μs | 0.9859 μs |  1.6741 μs |  23.38 |    0.81 | 19.1040 |  240011 B |          NA |
+| EnumVariableToString         | 10000 | 293.633 μs | 5.2462 μs | 11.6252 μs | 130.17 |    3.41 | 95.2148 | 1200053 B |          NA |
+| EnumVariableDictionaryLookup | 10000 | 120.352 μs | 2.4044 μs |  4.2111 μs |  51.38 |    1.50 |       - |         - |          NA |
+| EnumVariableArrayLookup      | 10000 |  11.312 μs | 0.2261 μs |  0.5877 μs |   4.69 |    0.19 |       - |         - |          NA |
