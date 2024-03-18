@@ -1,13 +1,13 @@
 ﻿namespace Test
 {
     using BenchmarkDotNet.Attributes;
-    using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(100, 10_000, 1_000_000)]
+        [Params(100, 1_000_000)]
         public int Count { get; set; }
 
         private List<int> _listNormal;
@@ -21,7 +21,7 @@
         }
 
         [Benchmark]
-        public List<int> AddToListNormal()
+        public long AddToListNormal()
         {
             var list = _listNormal;
 
@@ -30,11 +30,11 @@
                 list.Add(i);
             }
 
-            return list;
+            return list.Max();
         }
 
-        [Benchmark]
-        public List<int> AddToListPresetCapacity()
+        [Benchmark(Baseline = true)]
+        public long AddToListPresetCapacity()
         {
             var list = _listWithCapacity;
 
@@ -43,7 +43,20 @@
                 list.Add(i);
             }
 
-            return list;
+            return list.Max();
         }
+
+        [Benchmark]
+        public long AddToListWithAppend()
+        {
+            IEnumerable<int> list = _listNormal;
+
+            for (int i = 0; i < Count; i++)
+            {
+                list = list.Append(i);
+            }
+
+            return list.Max();
+        }        
     }
 }
