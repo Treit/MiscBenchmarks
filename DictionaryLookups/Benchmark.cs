@@ -7,6 +7,7 @@
     using System.Collections.Concurrent;
     using System.Collections.Frozen;
     using System.Collections.Generic;
+    using System.Collections.Immutable;
     using System.Collections.Specialized;
 
     public class SomeClass
@@ -23,6 +24,9 @@
         [Params(10, 100_000)]
         public int Iterations { get; set; }
 
+        [Params(50, 1_000_000)]
+        public int ItemCount { get; set; }
+
         private SortedList<int, SomeClass> sortedListLookup;
         private Dictionary<int, SomeClass> dictionaryLookup;
         private SortedDictionary<int, SomeClass> sortedDictionaryLookup;
@@ -30,11 +34,12 @@
         private OrderedDictionary orderedDictionary;
         private Hashtable hashTable;
         private FrozenDictionary<int, SomeClass> frozenDictionary;
+        private ImmutableDictionary<int, SomeClass> immutableDictionary;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            int len = 50;
+            int len = ItemCount;
 
             sortedListLookup = new SortedList<int, SomeClass>(len);
             dictionaryLookup = new Dictionary<int, SomeClass>(len);
@@ -54,6 +59,7 @@
             }
 
             frozenDictionary = FrozenDictionary.ToFrozenDictionary(dictionaryLookup);
+            immutableDictionary = ImmutableDictionary.CreateRange(dictionaryLookup);
         }
 
         [Benchmark(Baseline = true)]
@@ -61,7 +67,7 @@
         {
             long result = 0;
 
-            for (int i = 0; i < this.Iterations; i++)
+            for (int i = 0; i < Iterations; i++)
             {
                 for (int j = 0; j < sortedListLookup.Count; j++)
                 {
@@ -78,7 +84,7 @@
         {
             long result = 0;
 
-            for (int i = 0; i < this.Iterations; i++)
+            for (int i = 0; i < Iterations; i++)
             {
                 for (int j = 0; j < sortedListLookup.Count; j++)
                 {
@@ -95,7 +101,7 @@
         {
             long result = 0;
 
-            for (int i = 0; i < this.Iterations; i++)
+            for (int i = 0; i < Iterations; i++)
             {
                 for (int j = 0; j < sortedDictionaryLookup.Count; j++)
                 {
@@ -112,7 +118,7 @@
         {
             long result = 0;
 
-            for (int i = 0; i < this.Iterations; i++)
+            for (int i = 0; i < Iterations; i++)
             {
                 for (int j = 0; j < concurrentDictionaryLookup.Count; j++)
                 {
@@ -129,7 +135,7 @@
         {
             long result = 0;
 
-            for (int i = 0; i < this.Iterations; i++)
+            for (int i = 0; i < Iterations; i++)
             {
                 for (int j = 0; j < orderedDictionary.Count; j++)
                 {
@@ -146,7 +152,7 @@
         {
             long result = 0;
 
-            for (int i = 0; i < this.Iterations; i++)
+            for (int i = 0; i < Iterations; i++)
             {
                 for (int j = 0; j < hashTable.Count; j++)
                 {
@@ -163,7 +169,7 @@
         {
             long result = 0;
 
-            for (int i = 0; i < this.Iterations; i++)
+            for (int i = 0; i < Iterations; i++)
             {
                 for (int j = 0; j < frozenDictionary.Count; j++)
                 {
@@ -174,5 +180,22 @@
 
             return result;
         }
+
+        [Benchmark]
+        public long LookupUsingImmutableDictionary()
+        {
+            long result = 0;
+
+            for (int i = 0; i < Iterations; i++)
+            {
+                for (int j = 0; j < immutableDictionary.Count; j++)
+                {
+                    SomeClass c = immutableDictionary[j];
+                    result += c.DoSomething();
+                }
+            }
+
+            return result;
+        }        
     }
 }
