@@ -4,7 +4,7 @@ using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
+using SuperLinq;
 
 public record MyClass(int Id, string Name);
 
@@ -40,5 +40,17 @@ public class Benchmark
     public MyClass OrderByDescendingFirst()
     {
         return _data.OrderByDescending(x => x.Id).FirstOrDefault();
+    }
+
+    [Benchmark]
+    public MyClass OrderByDescendingFirstWithUnnecessaryToList()
+    {
+        return _data.OrderByDescending(x => x.Id).ToList().FirstOrDefault();
+    }
+
+    [Benchmark]
+    public MyClass SuperLinqPartialSortByDescendingFirst()
+    {
+        return _data.PartialSortBy(1, x => x.Id, OrderByDirection.Descending).FirstOrDefault();
     }
 }

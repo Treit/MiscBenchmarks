@@ -10,13 +10,19 @@ internal class Program
 #if RELEASE
         BenchmarkRunner.Run<Benchmark>();
 #else
-        Benchmark b = new Benchmark();
-        b.Count = 10000;
+        var b = new Benchmark()
+        {
+            Count = 10000
+        };
         b.GlobalSetup();
         var first = b.OrderByDescendingFirst();
         var second = b.MaxBy();
+        var third = b.OrderByDescendingFirstWithUnnecessaryToList();
+        var fourth = b.SuperLinqPartialSortByDescendingFirst();
         Console.WriteLine(first);
         Console.WriteLine(second);
+        Console.WriteLine(third);
+        Console.WriteLine(fourth);
 
 #endif
     }
