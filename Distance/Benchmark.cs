@@ -19,7 +19,7 @@
         [Params(1000)]
         public int Iterations { get; set; }
 
-        [Params(1024)]
+        [Params(2, 8, 100, 1024)]
         public int VectorLength { get; set; }
 
         [GlobalSetup]
