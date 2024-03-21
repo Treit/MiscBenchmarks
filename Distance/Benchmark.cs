@@ -6,11 +6,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Numerics;
+    using System.Numerics.Tensors;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
 
     [MemoryDiagnoser]
-    [ShortRunJob]
     public class Benchmark
     {
         private double[] _vec1;
@@ -21,7 +21,6 @@
 
         [Params(1024)]
         public int VectorLength { get; set; }
-
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -82,6 +81,19 @@
             return distance;
         }
 
+        [Benchmark]
+        public double ComputeDistanceTensorPrimitives()
+        {
+            var distance = 0.0D;
+
+            for (int i = 0; i < Iterations; i++)
+            {
+                distance = ComputeDistanceTensorPrimitives(_vec1, _vec2);
+            }
+
+            return distance;
+        }
+
         public static double ComputeDistance(IList<double> x, IList<double> y)
         {
             var sumXY = x.Zip(y, (o1, o2) => o1 * o2).Sum();
@@ -123,7 +135,6 @@
 
             return dot;
         }
-
 
         double Magnitude(double[] vec, int len)
         {
@@ -233,6 +244,15 @@
                 dot += e * e;
             }
             return dot;
+        }
+
+        private static double ComputeDistanceTensorPrimitives(ReadOnlySpan<double> vec1, ReadOnlySpan<double> vec2)
+        {
+            var dot = TensorPrimitives.Dot(vec1, vec2);
+            var magA = double.Sqrt(TensorPrimitives.SumOfSquares(vec1));
+            var magB = double.Sqrt(TensorPrimitives.SumOfSquares(vec2));
+
+            return 1 - dot / (magA * magB + double.Epsilon);
         }
     }
 }
