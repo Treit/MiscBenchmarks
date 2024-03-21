@@ -81,6 +81,19 @@
             return distance;
         }
 
+        [Benchmark(Baseline = true)]
+        public double ComputeDistanceVectorizedAaron2()
+        {
+            var distance = 0.0D;
+
+            for (int i = 0; i < Iterations; i++)
+            {
+                distance = ComputeDistanceVectorizedAaron2(_vec1, _vec2);
+            }
+
+            return distance;
+        }
+
         [Benchmark]
         public double ComputeDistanceTensorPrimitives()
         {
@@ -246,6 +259,37 @@
             return dot;
         }
 
+        private static double ComputeDistanceVectorizedAaron2(ReadOnlySpan<double> vec1, ReadOnlySpan<double> vec2)
+        {
+            ref var first1 = ref MemoryMarshal.GetReference(vec1);
+            ref var first2 = ref MemoryMarshal.GetReference(vec2);
+            nint vecLength = vec1.Length - vec1.Length % Vector<double>.Count;
+            var magnitudeV1 = Vector<double>.Zero;
+            var magnitudeV2 = Vector<double>.Zero;
+            var dotV = Vector<double>.Zero;
+            nint i;
+            for (i = 0; i < vecLength; i += Vector<double>.Count)
+            {
+                var v1 = Vector.LoadUnsafe(ref Unsafe.Add(ref first1, i));
+                var v2 = Vector.LoadUnsafe(ref Unsafe.Add(ref first2, i));
+                magnitudeV1 += v1 * v1;
+                magnitudeV2 += v2 * v2;
+                dotV += v1 * v2;
+            }
+            var magnitude1 = Vector.Sum(magnitudeV1);
+            var magnitude2 = Vector.Sum(magnitudeV2);
+            var dot = Vector.Sum(dotV);
+            for (; i < vec1.Length; i++)
+            {
+                var e1 = Unsafe.Add(ref first1, i);
+                var e2 = Unsafe.Add(ref first2, i);
+                magnitude1 += e1 * e1;
+                magnitude2 += e2 * e2;
+                dot += e1 * e2;
+            }
+
+            return 1d - dot / (double.Sqrt(magnitude1) * double.Sqrt(magnitude2) + double.Epsilon);
+        }
         private static double ComputeDistanceTensorPrimitives(ReadOnlySpan<double> vec1, ReadOnlySpan<double> vec2)
         {
             var dot = TensorPrimitives.Dot(vec1, vec2);
