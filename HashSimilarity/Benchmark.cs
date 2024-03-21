@@ -5,9 +5,10 @@
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
 
+    [MemoryRandomization]
     public class Benchmark
     {
-        [Params(100, 100_000)]
+        [Params(100, 10_000)]
         public int Count { get; set; }
 
         private List<byte[]> _buffers;
@@ -26,8 +27,27 @@
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public int CheckHashesOriginal()
+        [Benchmark]
+        public int CheckHashesNoLookup()
+        {
+            Span<byte> target = _buffers[0].AsSpan();
+            int maxConfidence = 0;
+
+            foreach (var buffer in _buffers)
+            {
+                var confidence = LSHash.ConfidenceNoLookup(target, buffer.AsSpan());
+
+                if (confidence > maxConfidence)
+                {
+                    maxConfidence = confidence;
+                }
+            }
+
+            return maxConfidence;
+        }
+
+        [Benchmark]
+        public int CheckHashesOriginalWithLookup()
         {
             Span<byte> target = _buffers[0].AsSpan();
             int maxConfidence = 0;
@@ -280,7 +300,7 @@
             return maxConfidence;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int CheckHashesSauceControlFourthAvx()
         {
             var target = _buffers[0];

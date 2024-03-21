@@ -8,7 +8,7 @@ using System.Linq;
 [MemoryDiagnoser]
 public class Benchmark
 {
-    [Params(1_000, 100_000_000)]
+    [Params(1_000, 1_000_000)]
     public int Count { get; set; } = 100_000;
 
     Random ran;
@@ -25,7 +25,7 @@ public class Benchmark
         }
     }
 
-    [Benchmark(Baseline = true)]
+    [Benchmark]
     public int MaxWithLoop()
     {
         var result = int.MinValue;
@@ -37,7 +37,7 @@ public class Benchmark
         return result;
     }
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int EnumerableMax()
     {
         IEnumerable<int> numbers = _numbers;

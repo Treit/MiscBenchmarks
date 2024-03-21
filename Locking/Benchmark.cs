@@ -12,20 +12,21 @@
     public class Benchmark
     {
         static object syncobj = new();
-        static SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+        static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
+        static Semaphore semaphore = new Semaphore(1, 1);
         static AsyncMonitor asyncMonitor = new AsyncMonitor();
 
-        public int Count { get; set; } = 100;
+        public int Count { get; set; } = 10000;
 
         List<int> _data = new();
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        [IterationSetup]
+        public void IterationSetup()
         {
             _data.Clear();
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public void RegularLock()
         {
             Parallel.For(0, Count, i =>
@@ -38,13 +39,13 @@
         }
 
         [Benchmark]
-        public void SemaphoreSlim()
+        public void SemaphoreWait()
         {
-            Parallel.For(0, Count, async i =>
+            Parallel.For(0, Count, i =>
             {
                 try
                 {
-                    await semaphore.WaitAsync();
+                    semaphore.WaitOne();
                     _data.Add(i);
                 }
                 finally
@@ -56,7 +57,43 @@
         }
 
         [Benchmark]
-        public void AsyncMonitor()
+        public void SemaphoreSlimWait()
+        {
+            Parallel.For(0, Count, i =>
+            {
+                try
+                {
+                    semaphoreSlim.Wait();
+                    _data.Add(i);
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
+                }
+
+            });
+        }
+
+        [Benchmark]
+        public void SemaphoreSlimWaitAsync()
+        {
+            Parallel.For(0, Count, async i =>
+            {
+                try
+                {
+                    await semaphoreSlim.WaitAsync();
+                    _data.Add(i);
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
+                }
+
+            });
+        }
+
+        [Benchmark]
+        public void NitoAsyncMonitor()
         {
             Parallel.For(0, Count, async i =>
             {

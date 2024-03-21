@@ -35,7 +35,7 @@ namespace Test
             }
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public long SerializeAndDeserializeSTJ()
         {
             long total = 0;

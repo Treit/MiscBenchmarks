@@ -1,5 +1,6 @@
 ﻿namespace Test
 {
+    using System;
     using BenchmarkDotNet.Running;
 
     internal class Program
@@ -8,9 +9,12 @@
         {
 #if DEBUG
             Benchmark b = new Benchmark();
-            b.GlobalSetup();
             b.Iterations = 100;
-            b.LookupUsingDictionary();
+            b.ItemCount = 1000;
+            b.GlobalSetup();
+            var first = b.LookupUsingDictionary();
+            var second = b.LookupUsingImmutableDictionary();
+            Console.WriteLine($"First: {first}, Second: {second}");
 #else
             BenchmarkRunner.Run<Benchmark>();
 #endif

@@ -3,8 +3,11 @@ var tmp = $"{readme}.tmp";
 var dir = new DirectoryInfo(Directory.GetCurrentDirectory());
 var projectName = dir.Name;
 
-var resultsPath = Path.Combine(dir.FullName, @"BenchmarkDotNet.Artifacts\results\Test.Benchmark-report-github.md");
-var resultsAsmPath = Path.Combine(dir.FullName, @"BenchmarkDotNet.Artifacts\results\Test.Benchmark-asm.md");
+var resultsDir = new DirectoryInfo(Path.Combine(dir.FullName, @"BenchmarkDotNet.Artifacts\results"));
+var resultFiles = resultsDir.GetFiles("*.md");
+
+var resultsPath = resultFiles.FirstOrDefault(x => x.Name.Contains("Benchmark-report-github.md"))?.FullName;
+var resultsAsmPath = resultFiles.FirstOrDefault(x => x.Name.Contains("Benchmark-asm.md"))?.FullName;
 
 if (!File.Exists(resultsPath))
 {
