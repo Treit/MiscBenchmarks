@@ -4,9 +4,8 @@
     using System;
     using System.Buffers.Binary;
     using System.IO;
-    using System.Linq;
+    using System.Numerics;
     using System.Runtime.InteropServices;
-    using System.Text;
 
     [MemoryDiagnoser]
     public class Benchmark
@@ -32,11 +31,12 @@
         [GlobalCleanup]
         public void GlobalCleanup()
         {
+            Console.WriteLine("DELETING!");
             File.Delete(s_fileName);
         }
 
         [Benchmark]
-        public long ReadDataUsingBitConverter()
+        public long SumDataBitConverter()
         {
             using var fs = new FileStream(s_fileName, FileMode.Open, FileAccess.Read);
             var buffer = new byte[sizeof(int)];
@@ -52,7 +52,8 @@
         }
 
         [Benchmark]
-        public long ReadDataUsingBinaryPrimitivesAndSpan()
+        public long SumDataBinaryPrimitives
+            ()
         {
             var buffer = new byte[1024 * 4];
             using var fs = new FileStream(s_fileName, FileMode.Open, FileAccess.Read);
@@ -78,8 +79,8 @@
             return sum;
         }
 
-        [Benchmark(Baseline = true)]
-        public long ReadDataUsingBinaryPrimitivesAndSpanWithReinterpretCast()
+        [Benchmark]
+        public long SumDataMemoryMarshalCast()
         {
             var buffer = new byte[1024 * 4];
             using var fs = new FileStream(s_fileName, FileMode.Open, FileAccess.Read);
@@ -98,6 +99,43 @@
                 foreach (var num in integers)
                 {
                     sum += num;
+                }
+            }
+
+            return sum;
+        }
+
+        [Benchmark(Baseline = true)]
+        public long SumDataMemoryMarshalCastAndVectorizedSum()
+        {
+            var buffer = new byte[1024 * 4];
+            using var fs = new FileStream(s_fileName, FileMode.Open, FileAccess.Read);
+            var read = 0;
+            var sum = 0L;
+
+            while ((read = fs.Read(buffer)) > 0)
+            {
+                if (read < 4)
+                {
+                    break;
+                }
+
+                var span = buffer.AsSpan(0, read);
+                var integers = MemoryMarshal.Cast<byte, int>(span);
+                int vectorSize = Vector<int>.Count;
+                Vector<int> vectorSum = Vector<int>.Zero;
+
+                int i = 0;
+                for (; i <= integers.Length - vectorSize; i += vectorSize)
+                {
+                    var v = new Vector<int>(integers.Slice(i, vectorSize));
+                    vectorSum += v;
+                }
+
+                sum += Vector.Dot(vectorSum, Vector<int>.One);
+                for (; i < integers.Length; i++)
+                {
+                    sum += integers[i];
                 }
             }
 

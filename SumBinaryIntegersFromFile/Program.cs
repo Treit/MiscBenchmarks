@@ -13,13 +13,15 @@
             Benchmark b = new Benchmark();
             b.Count = 10_000;
             b.GlobalSetup();
-            var first = b.ReadDataUsingBitConverter();
-            var second = b.ReadDataUsingBinaryPrimitivesAndSpan();
-            var third = b.ReadDataUsingBinaryPrimitivesAndSpanWithReinterpretCast();
+            var first = b.SumDataBinaryPrimitives();
+            var second = b.SumDataBitConverter();
+            var third = b.SumDataMemoryMarshalCast();
+            var fourth = b.SumDataMemoryMarshalCastAndVectorizedSum();
 
             Console.WriteLine(first);
             Console.WriteLine(second);
             Console.WriteLine(third);
+            Console.WriteLine(fourth);
 #endif
 
         }
