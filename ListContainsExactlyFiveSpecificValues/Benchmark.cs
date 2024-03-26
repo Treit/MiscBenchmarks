@@ -54,12 +54,23 @@
         }
 
         [Benchmark]
-        public bool ListIsExactlyFiveValuesBitmaskSet()
+        public bool ListIsExactlyFiveValuesBitmaskSetSetEquals()
         {
             return _bitmaskSet.SetEquals([1, 2, 3, 4, 5]);
         }
 
         [Benchmark]
+        public bool ListIsExactlyFiveValuesBitmaskSetContains()
+        {
+            if (_bitmaskSet.Count != 5)
+            {
+                return false;
+            }
+
+            return _bitmaskSet.Contains(1) && _bitmaskSet.Contains(2) && _bitmaskSet.Contains(3) && _bitmaskSet.Contains(4) && _bitmaskSet.Contains(5);
+        }
+
+        [Benchmark(Baseline = true)]
         public bool ListIsExactlyFiveValuesPatternMatchingLulz()
         {
             return _values is [1, 2, 3, 4, 5] or
