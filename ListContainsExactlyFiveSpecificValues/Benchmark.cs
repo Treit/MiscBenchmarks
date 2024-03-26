@@ -7,7 +7,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Numerics;
-    using System.Security.Cryptography;
+    using SuperLinq;
 
     [MemoryDiagnoser]
     public class Benchmark
@@ -68,6 +68,12 @@
             }
 
             return _bitmaskSet.Contains(1) && _bitmaskSet.Contains(2) && _bitmaskSet.Contains(3) && _bitmaskSet.Contains(4) && _bitmaskSet.Contains(5);
+        }
+
+        [Benchmark]
+        public bool ListIsExactlyFiveValuesSuperLinqCollectionEqual()
+        {
+            return _values.CollectionEqual([1, 2, 3, 4, 5]);
         }
 
         [Benchmark(Baseline = true)]
