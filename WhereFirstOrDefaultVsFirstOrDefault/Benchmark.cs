@@ -24,13 +24,13 @@
             _strings[_strings.Count - 1] = needle;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public string WhereThenFirstOrDefault()
         {
             return _strings.Where(x => x == needle).FirstOrDefault();
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public string FirstOrDefault()
         {
             return _strings.FirstOrDefault(x => x == needle);
