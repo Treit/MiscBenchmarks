@@ -38,7 +38,7 @@
             _containerType = _container.GetType();
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public Container<Payload> SetPropertyNormally()
         {
             _container.Data = new Payload { Message = "TEST" };
