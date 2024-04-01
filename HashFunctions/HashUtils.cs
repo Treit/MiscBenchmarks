@@ -1,6 +1,7 @@
 ﻿namespace Test
 {
     using System;
+    using System.ComponentModel;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -273,6 +274,19 @@
                 var hash = md5.ComputeHash(data);
                 return BitConverter.ToInt64(hash, 0);
             }
+        }
+
+        // Answer from Google Gemini
+        public static int Get32BitHashCodeMD5(byte[] data)
+        {
+            // Use a cryptographic hash function (MD5 for this example)
+            MD5 md5 = MD5.Create();
+            byte[] hashBytes = md5.ComputeHash(data);
+
+            // Truncate to 32 bits
+            int hash = BitConverter.ToInt32(hashBytes, 0);
+
+            return hash;
         }
 
     }

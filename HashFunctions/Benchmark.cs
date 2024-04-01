@@ -61,13 +61,19 @@
         }
 
         [Benchmark]
+        public int HashMD5GoogleGemini()
+        {
+            return HashUtils.Get32BitHashCodeMD5(_data);
+        }
+
+        [Benchmark]
         public long HashFNV1_64()
         {
             return HashUtils.FNV1_64(_data);
         }
 
         [Benchmark]
-        public long HashFNV1_32_StackOverflowLinq()
+        public int HashFNV1_32_StackOverflowLinq()
         {
             return FNVConstants.CreateHash(_data);
         }

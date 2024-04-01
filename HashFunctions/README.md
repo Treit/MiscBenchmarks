@@ -1,25 +1,28 @@
 # Hash functions.
 
 
-``` ini
-
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
 
 ```
-|                        Method | Size |       Mean |   Error |  StdDev | Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
-|------------------------------ |----- |-----------:|--------:|--------:|------:|--------:|-------:|----------:|------------:|
-|                   HashJenkins | 1024 | 1,574.0 ns | 0.56 ns | 0.44 ns |  7.45 |    0.03 |      - |         - |          NA |
-|                     HashCRC32 | 1024 | 2,519.7 ns | 1.79 ns | 1.67 ns | 11.92 |    0.05 |      - |         - |          NA |
-|      HashSystemIOHashingCRC32 | 1024 | 2,532.9 ns | 3.03 ns | 2.69 ns | 11.99 |    0.05 |      - |      56 B |          NA |
-|                  HashMurmur32 | 1024 |   391.2 ns | 0.13 ns | 0.12 ns |  1.85 |    0.01 |      - |         - |          NA |
-|                   HashFNV1_32 | 1024 | 1,248.2 ns | 0.52 ns | 0.43 ns |  5.91 |    0.02 |      - |         - |          NA |
-|                  HashMurmur64 | 1024 |   211.3 ns | 0.86 ns | 0.81 ns |  1.00 |    0.00 |      - |         - |          NA |
-|                   HashFNV1_64 | 1024 | 1,248.8 ns | 0.37 ns | 0.29 ns |  5.91 |    0.02 |      - |         - |          NA |
-| HashFNV1_32_StackOverflowLinq | 1024 | 1,281.6 ns | 0.64 ns | 0.54 ns |  6.07 |    0.02 | 0.0019 |      32 B |          NA |
-|            Hash64BitUsingSHA2 | 1024 | 1,117.0 ns | 3.33 ns | 2.78 ns |  5.29 |    0.02 | 0.0134 |     240 B |          NA |
-|      Hash64BitUsingMD5ChatGPT | 1024 | 2,702.6 ns | 5.74 ns | 5.37 ns | 12.79 |    0.05 | 0.0114 |     208 B |          NA |
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.26096.1)
+Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 9.0.100-preview.2.24157.14
+  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+
+
+```
+| Method                        | Size | Mean       | Error    | StdDev    | Median     | Ratio | RatioSD | Gen0   | Gen1   | Allocated | Alloc Ratio |
+|------------------------------ |----- |-----------:|---------:|----------:|-----------:|------:|--------:|-------:|-------:|----------:|------------:|
+| HashJenkins                   | 1024 | 1,402.6 ns | 19.91 ns |  18.62 ns | 1,403.4 ns |  6.40 |    0.16 |      - |      - |         - |          NA |
+| HashCRC32                     | 1024 | 2,060.4 ns | 20.61 ns |  19.28 ns | 2,050.3 ns |  9.39 |    0.18 |      - |      - |         - |          NA |
+| HashSystemIOHashingCRC32      | 1024 | 2,295.2 ns | 44.60 ns |  56.41 ns | 2,286.1 ns | 10.52 |    0.38 | 0.0114 |      - |      56 B |          NA |
+| HashMurmur32                  | 1024 |   377.4 ns |  8.24 ns |  22.83 ns |   368.2 ns |  1.81 |    0.13 |      - |      - |         - |          NA |
+| HashFNV1_32                   | 1024 | 1,120.2 ns | 16.97 ns |  15.87 ns | 1,119.5 ns |  5.12 |    0.09 |      - |      - |         - |          NA |
+| HashMurmur64                  | 1024 |   219.2 ns |  4.34 ns |   3.84 ns |   217.9 ns |  1.00 |    0.00 |      - |      - |         - |          NA |
+| HashMD5GoogleGemini           | 1024 | 2,897.9 ns | 52.07 ns |  43.48 ns | 2,913.2 ns | 13.21 |    0.33 | 0.0458 | 0.0420 |     208 B |          NA |
+| HashFNV1_64                   | 1024 | 1,120.8 ns | 19.54 ns |  18.28 ns | 1,124.8 ns |  5.12 |    0.12 |      - |      - |         - |          NA |
+| HashFNV1_32_StackOverflowLinq | 1024 | 1,676.0 ns | 11.69 ns |   9.76 ns | 1,672.8 ns |  7.64 |    0.13 | 0.0057 |      - |      32 B |          NA |
+| Hash64BitUsingSHA2            | 1024 | 3,526.3 ns | 83.29 ns | 233.55 ns | 3,440.6 ns | 16.10 |    1.22 | 0.0534 |      - |     240 B |          NA |
+| Hash64BitUsingMD5ChatGPT      | 1024 | 2,551.5 ns | 50.36 ns |  49.46 ns | 2,549.4 ns | 11.68 |    0.34 | 0.0458 |      - |     208 B |          NA |
