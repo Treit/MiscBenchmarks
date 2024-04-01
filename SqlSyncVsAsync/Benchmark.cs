@@ -20,7 +20,7 @@
             _conn.Open();
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public long SynchronousExecuteAndSynchronousReadAllRows()
         {
             var sql = "select * from Sales.SalesOrderDetail";
@@ -38,7 +38,7 @@
             return result;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public async Task<long> AsynchronousExecuteAndSynchronousReadAllRows()
         {
             var sql = "select * from Sales.SalesOrderDetail";
