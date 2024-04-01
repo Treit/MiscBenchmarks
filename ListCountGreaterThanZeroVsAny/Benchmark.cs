@@ -56,6 +56,24 @@
         }
 
         [Benchmark]
+        public bool IListAnyResultsToListThenListDotCount()
+        {
+            return _toCheck.ToList().Count > 0;
+        }
+
+        [Benchmark]
+        public bool IListAnyResultsPatternMatchOnCountPropertyKesa()
+        {
+            return _toCheck is { Count: > 0 };
+        }
+
+        [Benchmark]
+        public bool IListAnyResultsPatternMatchOnListPatternAaron()
+        {
+            return _toCheck is [_, ..];
+        }
+
+        [Benchmark]
         public bool IEnumerableAnyResultsLinqAny()
         {
             return _toCheckEnumerable.Any();
