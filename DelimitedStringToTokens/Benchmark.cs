@@ -3,11 +3,13 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
     using System;
+    using System.Text.RegularExpressions;
 
     [MemoryDiagnoser]
     public class Benchmark
     {
-        string[] _delimitedStrings;
+        private static string[] _delimitedStrings;
+        private static Regex _regex;
 
         [Params(1, 1000)]
         public int Count { get; set; }
@@ -20,6 +22,8 @@
             {
                 _delimitedStrings[i] = $"SomeValue{i},SomeOtherValue{i}";
             }
+
+            _regex = new Regex("^(.+?),(.+)$", RegexOptions.Compiled);
         }
 
         [Benchmark]
@@ -62,6 +66,22 @@
                 var index = _delimitedStrings[i].IndexOf(',');
                 var strA = _delimitedStrings[i][..index];
                 var strB = _delimitedStrings[i][(index + 1)..];
+                result = (strA, strB);
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public (string, string) TokenizeWithRegex()
+        {
+            var result = ("", "");
+
+            for (var i = 0; i < Count; i++)
+            {
+                var m = _regex.Match(_delimitedStrings[i]);
+                var strA = m.Result("$1");
+                var strB = m.Result("$2");
                 result = (strA, strB);
             }
 
