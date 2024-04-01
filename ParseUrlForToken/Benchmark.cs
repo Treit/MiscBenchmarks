@@ -73,7 +73,7 @@
             return count;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int GetTokenFromUrlToStringWithIndexOfAndSubstring()
         {
             var count = 0;
@@ -88,6 +88,45 @@
                 }
 
                 var str = item.Url.ToString();
+                var start = str.LastIndexOf('/');
+                if (start == -1)
+                {
+                    continue;
+                }
+
+                var loc = str.IndexOf('-', start + 1);
+
+                if (loc == -1)
+                {
+                    continue;
+                }
+
+                var needle = str.Substring(start + 1, loc - start - 1);
+
+                if (needle != string.Empty)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        [Benchmark]
+        public int GetTokenFromUrlAbsolutePathWithIndexOfAndSubstring()
+        {
+            var count = 0;
+
+            for (var i = 0; i < Count; i++)
+            {
+                var item = _data![i];
+
+                if (item.Url is null)
+                {
+                    continue;
+                }
+
+                var str = item.Url.AbsolutePath;
                 var start = str.LastIndexOf('/');
                 if (start == -1)
                 {

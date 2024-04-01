@@ -16,7 +16,9 @@
             var first = b.GetTokenFromUrlToStringSplitWithLinqAndUnnecessaryNullChecks();
             var second = b.GetTokenFromUrlToStringSplitWithLinq();
             var third = b.GetTokenFromUrlToStringWithIndexOfAndSubstring();
+            var fourth = b.GetTokenFromUrlAbsolutePathWithIndexOfAndSubstring();
             Console.WriteLine($"First: {first}, Second: {second}, Third: {third}");
+            Console.WriteLine($"Fourth: {fourth}");
 #endif
         }
     }
