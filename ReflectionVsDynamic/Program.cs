@@ -22,7 +22,7 @@ public class Bench
     public static readonly MethodInfoInvokerExtensions.InvokerDelegate instanceMethodInvoker = instanceMethod.GetInvoker(true);
 
     public static readonly Func<object, int, int, int> instanceMethodFunc = GenerateFunc();
-    
+
     private static Func<object, int, int, int> GenerateFunc()
     {
         var dm = new DynamicMethod("lollmao2", MethodAttributes.Static | MethodAttributes.Public, CallingConventions.Standard, typeof(int),
@@ -53,7 +53,7 @@ public class Bench
     }
 
     private static readonly object[] ReflectionArgs = { 2, 2 };
-    
+
     [Benchmark]
     public int ReflectionCachedFully()
     {
