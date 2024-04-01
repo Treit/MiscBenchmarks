@@ -16,11 +16,13 @@
             var tupA = b.TokenizeWithStringSplit();
             var tupB = b.TokenizeWithSubstring();
             var tupC = b.TokenizeWithRangeOperator();
-            var tupD = b.TokenizeWithStringCreate();
+            var tupD = b.TokenizeWithRegexGroupsDotValue();
+            var tupE = b.TokenizeWithRegexMatchDotResult();
             Console.WriteLine(tupA);
             Console.WriteLine(tupB);
             Console.WriteLine(tupC);
             Console.WriteLine(tupD);
+            Console.WriteLine(tupE);
 #endif
         }
     }

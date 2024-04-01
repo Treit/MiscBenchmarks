@@ -73,7 +73,7 @@
         }
 
         [Benchmark]
-        public (string, string) TokenizeWithRegex()
+        public (string, string) TokenizeWithRegexMatchDotResult()
         {
             var result = ("", "");
 
@@ -82,6 +82,22 @@
                 var m = _regex.Match(_delimitedStrings[i]);
                 var strA = m.Result("$1");
                 var strB = m.Result("$2");
+                result = (strA, strB);
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public (string, string) TokenizeWithRegexGroupsDotValue()
+        {
+            var result = ("", "");
+
+            for (var i = 0; i < Count; i++)
+            {
+                var m = _regex.Match(_delimitedStrings[i]);
+                var strA = m.Groups[1].Value;
+                var strB = m.Groups[2].Value;
                 result = (strA, strB);
             }
 
