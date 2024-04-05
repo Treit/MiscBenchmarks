@@ -13,7 +13,7 @@
     {
         private int[] _array;
 
-        [Params(100_000)]
+        [Params(10000)]
         public int Count { get; set; }
 
         [GlobalSetup]
@@ -245,7 +245,7 @@
             int count = Vector256.Sum(vsum);
             for (; i < array.Length; i++)
             {
-                count += array[i];
+                count += array[i] & 1;
             }
             return (ulong)(array.Length - count);
         }
@@ -279,7 +279,7 @@
             int count = Vector256.Sum(vsum);
             for (; i < array.Length; i++)
             {
-                count += array[i];
+                count += array[i] & 1;
             }
             return (ulong)(array.Length - count);
         }

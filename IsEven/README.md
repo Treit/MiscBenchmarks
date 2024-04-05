@@ -2,30 +2,31 @@
 
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.26096.1)
+Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 9.0.100-preview.2.24157.14
+  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 
 ```
-|                               Method |  Count |          Mean |       Error |      StdDev |  Ratio | RatioSD | Code Size |      Gen0 |   Allocated | Alloc Ratio |
-|------------------------------------- |------- |--------------:|------------:|------------:|-------:|--------:|----------:|----------:|------------:|------------:|
-|                       IsEvenUsingMod | 100000 |    393.659 μs |   7.7923 μs |   8.9737 μs |   1.00 |    0.00 |      74 B |         - |           - |          NA |
-|      IsEvenUsingINumberIsEvenInteger | 100000 |    389.137 μs |   4.5960 μs |   3.5883 μs |   0.99 |    0.03 |      74 B |         - |           - |          NA |
-|                      IsEvenlyxerexyl | 100000 |    909.729 μs |   0.6912 μs |   0.6127 μs |   2.32 |    0.05 |     236 B |         - |           - |          NA |
-|                       IsEvenMrCarrot | 100000 |    389.472 μs |   3.3301 μs |   2.9521 μs |   0.99 |    0.02 |      74 B |         - |           - |          NA |
-|                          IsEvenAaron | 100000 |    393.427 μs |   6.0610 μs |   5.6695 μs |   1.00 |    0.03 |      88 B |         - |           - |          NA |
-|        IsEvenAaronUnsafeBitConverter | 100000 |    550.735 μs |   0.5483 μs |   0.4579 μs |   1.40 |    0.03 |      97 B |         - |           - |          NA |
-| IsEvenCrabFuelCursedRecursiveVersion | 100000 |  1,211.545 μs |   0.9120 μs |   0.8084 μs |   3.08 |    0.06 |     153 B |         - |           - |          NA |
-|            IsEvenNotWorthUsingJester | 100000 | 61,711.031 μs | 431.8164 μs | 382.7940 μs | 157.05 |    3.41 |     536 B | 6666.6667 | 112741972 B |          NA |
-|                         IsEvenAkseli | 100000 |      4.600 μs |   0.0069 μs |   0.0054 μs |   0.01 |    0.00 |     133 B |         - |           - |          NA |
-|                       IsEvenAkseliV2 | 100000 |      4.261 μs |   0.0116 μs |   0.0109 μs |   0.01 |    0.00 |     269 B |         - |           - |          NA |
+| Method                               | Count | Mean            | Error         | StdDev          | Median          | Ratio  | RatioSD | Code Size | Gen0      | Allocated  | Alloc Ratio |
+|------------------------------------- |------ |----------------:|--------------:|----------------:|----------------:|-------:|--------:|----------:|----------:|-----------:|------------:|
+| IsEvenUsingMod                       | 10000 |     43,257.2 ns |     858.43 ns |     2,504.08 ns |     42,786.1 ns |   1.00 |    0.00 |      76 B |         - |          - |          NA |
+| IsEvenUsingINumberIsEvenInteger      | 10000 |     41,733.1 ns |     760.23 ns |     1,668.73 ns |     41,255.7 ns |   0.96 |    0.06 |      76 B |         - |          - |          NA |
+| IsEvenlyxerexyl                      | 10000 |     96,203.6 ns |   1,908.69 ns |     5,257.10 ns |     95,088.6 ns |   2.23 |    0.18 |     236 B |         - |          - |          NA |
+| IsEvenMrCarrot                       | 10000 |     41,215.0 ns |     814.87 ns |     1,550.38 ns |     40,590.2 ns |   0.95 |    0.07 |      76 B |         - |          - |          NA |
+| IsEvenAaron                          | 10000 |     39,044.3 ns |     779.65 ns |     1,118.14 ns |     38,564.8 ns |   0.90 |    0.05 |      90 B |         - |          - |          NA |
+| IsEvenAaronUnsafeBitConverter        | 10000 |     60,946.4 ns |   1,207.36 ns |     3,159.46 ns |     60,756.3 ns |   1.40 |    0.12 |      99 B |         - |          - |          NA |
+| IsEvenCrabFuelCursedRecursiveVersion | 10000 |    136,227.0 ns |   2,662.78 ns |     2,360.48 ns |    135,710.9 ns |   3.25 |    0.13 |     153 B |         - |          - |          NA |
+| IsEvenNotWorthUsingJester            | 10000 | 10,676,524.3 ns | 632,235.97 ns | 1,814,003.52 ns | 10,202,451.6 ns | 248.28 |   49.66 |     536 B | 2609.3750 | 11274284 B |          NA |
+| IsEvenAkseli                         | 10000 |        849.9 ns |      23.92 ns |        70.54 ns |        831.5 ns |   0.02 |    0.00 |     141 B |         - |          - |          NA |
+| IsEvenAkseliV2                       | 10000 |        741.2 ns |      22.28 ns |        65.69 ns |        767.9 ns |   0.02 |    0.00 |     262 B |         - |          - |          NA |
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenUsingMod()
        sub       rsp,28
@@ -39,11 +40,10 @@ AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
        nop       word ptr [rax+rax]
 M00_L00:
        cmp       r8d,r10d
-       jae       short M00_L03
+       jae       short M00_L04
        mov       r9d,r8d
        test      byte ptr [rcx+r9*4+10],1
-       jne       short M00_L01
-       inc       rdx
+       je        short M00_L03
 M00_L01:
        inc       r8d
        cmp       [rax+8],r8d
@@ -53,12 +53,15 @@ M00_L02:
        add       rsp,28
        ret
 M00_L03:
+       inc       rdx
+       jmp       short M00_L01
+M00_L04:
        call      CORINFO_HELP_RNGCHKFAIL
        int       3
-; Total bytes of code 74
+; Total bytes of code 76
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenUsingINumberIsEvenInteger()
        sub       rsp,28
@@ -72,11 +75,10 @@ M00_L03:
        nop       word ptr [rax+rax]
 M00_L00:
        cmp       r8d,r10d
-       jae       short M00_L03
+       jae       short M00_L04
        mov       r9d,r8d
        test      byte ptr [rcx+r9*4+10],1
-       jne       short M00_L01
-       inc       rdx
+       je        short M00_L03
 M00_L01:
        inc       r8d
        cmp       [rax+8],r8d
@@ -86,12 +88,15 @@ M00_L02:
        add       rsp,28
        ret
 M00_L03:
+       inc       rdx
+       jmp       short M00_L01
+M00_L04:
        call      CORINFO_HELP_RNGCHKFAIL
        int       3
-; Total bytes of code 74
+; Total bytes of code 76
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenlyxerexyl()
        push      r14
@@ -113,7 +118,7 @@ M00_L00:
        jae       short M00_L03
        mov       ecx,ebp
        mov       ecx,[rsi+rcx*4+10]
-       call      qword ptr [7FFBFDCBEEE0]; Test.Benchmark.<IsEvenlyxerexyl>g__IsEven|8_0(Int32)
+       call      qword ptr [7FF9128BEEE0]; Test.Benchmark.<IsEvenlyxerexyl>g__IsEven|8_0(Int32)
        test      eax,eax
        je        short M00_L01
        inc       rdi
@@ -145,14 +150,14 @@ M00_L03:
        jl        short M01_L03
        cmp       ebx,12C
        jae       short M01_L04
-       mov       rcx,288D9000260
+       mov       rcx,204C4C00260
        mov       rcx,[rcx]
        mov       eax,ebx
        mov       rax,[rcx+rax*8+10]
        test      rax,rax
        jne       short M01_L00
        mov       ecx,ebx
-       call      qword ptr [7FFBFDB44F00]
+       call      qword ptr [7FF912744F00]; System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|70_0(UInt32)
 M01_L00:
        mov       ecx,[rax+8]
        lea       edx,[rcx-1]
@@ -177,15 +182,15 @@ M01_L02:
        pop       rbx
        ret
 M01_L03:
-       call      qword ptr [7FFBFDC1E370]
+       call      qword ptr [7FF91281E370]; System.Globalization.NumberFormatInfo.get_CurrentInfo()
        mov       r8,[rax+28]
        mov       ecx,ebx
        mov       edx,0FFFFFFFF
-       call      qword ptr [7FFBFDB44318]
+       call      qword ptr [7FF912744318]
        jmp       short M01_L00
 M01_L04:
        mov       ecx,ebx
-       call      qword ptr [7FFBFDB44498]
+       call      qword ptr [7FF912744498]; System.Number.UInt32ToDecStr_NoSmallNumberCheck(UInt32)
        jmp       short M01_L00
 M01_L05:
        call      CORINFO_HELP_RNGCHKFAIL
@@ -193,7 +198,7 @@ M01_L05:
 ; Total bytes of code 147
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenMrCarrot()
        sub       rsp,28
@@ -207,11 +212,10 @@ M01_L05:
        nop       word ptr [rax+rax]
 M00_L00:
        cmp       r8d,r10d
-       jae       short M00_L03
+       jae       short M00_L04
        mov       r9d,r8d
        test      byte ptr [rcx+r9*4+10],1
-       jne       short M00_L01
-       inc       rdx
+       je        short M00_L03
 M00_L01:
        inc       r8d
        cmp       [rax+8],r8d
@@ -221,12 +225,15 @@ M00_L02:
        add       rsp,28
        ret
 M00_L03:
+       inc       rdx
+       jmp       short M00_L01
+M00_L04:
        call      CORINFO_HELP_RNGCHKFAIL
        int       3
-; Total bytes of code 74
+; Total bytes of code 76
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenAaron()
        sub       rsp,28
@@ -240,14 +247,13 @@ M00_L03:
        nop       word ptr [rax+rax]
 M00_L00:
        cmp       r8d,r10d
-       jae       short M00_L03
+       jae       short M00_L04
        mov       r9d,r8d
        mov       r9d,[rcx+r9*4+10]
        mov       r11d,1
        andn      r9d,r9d,r11d
        cmp       r9d,1
-       jne       short M00_L01
-       inc       rdx
+       je        short M00_L03
 M00_L01:
        inc       r8d
        cmp       [rax+8],r8d
@@ -257,12 +263,15 @@ M00_L02:
        add       rsp,28
        ret
 M00_L03:
+       inc       rdx
+       jmp       short M00_L01
+M00_L04:
        call      CORINFO_HELP_RNGCHKFAIL
        int       3
-; Total bytes of code 88
+; Total bytes of code 90
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenAaronUnsafeBitConverter()
        sub       rsp,28
@@ -276,7 +285,7 @@ M00_L03:
        nop       word ptr [rax+rax]
 M00_L00:
        cmp       r8d,r10d
-       jae       short M00_L03
+       jae       short M00_L04
        mov       r9d,r8d
        mov       r9d,[rcx+r9*4+10]
        mov       [rsp+24],r9d
@@ -284,8 +293,7 @@ M00_L00:
        and       r9d,1
        mov       [rsp+24],r9d
        cmp       byte ptr [rsp+24],0
-       jne       short M00_L01
-       inc       rdx
+       je        short M00_L03
 M00_L01:
        inc       r8d
        cmp       [rax+8],r8d
@@ -295,12 +303,15 @@ M00_L02:
        add       rsp,28
        ret
 M00_L03:
+       inc       rdx
+       jmp       short M00_L01
+M00_L04:
        call      CORINFO_HELP_RNGCHKFAIL
        int       3
-; Total bytes of code 97
+; Total bytes of code 99
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenCrabFuelCursedRecursiveVersion()
        push      r14
@@ -325,7 +336,7 @@ M00_L00:
        cmp       ecx,1
        je        short M00_L01
        dec       ecx
-       call      qword ptr [7FFBFDCCEF40]; Test.Benchmark.<IsEvenCrabFuelCursedRecursiveVersion>g__IsEven|12_0(Int32)
+       call      qword ptr [7FF91288EF40]; Test.Benchmark.<IsEvenCrabFuelCursedRecursiveVersion>g__IsEven|12_0(Int32)
        test      eax,eax
        jne       short M00_L01
        inc       rdi
@@ -359,7 +370,7 @@ M01_L00:
        cmp       ecx,1
        je        short M01_L03
        dec       ecx
-       call      qword ptr [7FFBFDCCEF40]
+       call      qword ptr [7FF91288EF40]
        xor       ebx,ebx
        test      eax,eax
        sete      bl
@@ -381,7 +392,7 @@ M01_L03:
 ; Total bytes of code 57
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenNotWorthUsingJester()
        push      r14
@@ -403,7 +414,7 @@ M00_L00:
        jae       short M00_L03
        mov       ecx,ebp
        mov       ecx,[rsi+rcx*4+10]
-       call      qword ptr [7FFBFDCAEF58]; Test.Benchmark.<IsEvenNotWorthUsingJester>g__IsEven|13_0(Int32)
+       call      qword ptr [7FF9128BEF58]; Test.Benchmark.<IsEvenNotWorthUsingJester>g__IsEven|13_0(Int32)
        test      eax,eax
        je        short M00_L01
        inc       rdi
@@ -435,11 +446,11 @@ M00_L03:
        sub       rsp,28
        xor       eax,eax
        mov       [rsp+20],rax
-       mov       r9,231DD000428
+       mov       r9,1CBBA400428
        mov       r9,[r9]
-       mov       r8,2318030A738
+       mov       r8,1CB8020AC90
        mov       edx,0FFFFFFFF
-       call      qword ptr [7FFBFDB34DE0]; System.Number.<FormatInt32>g__FormatInt32Slow|41_0(Int32, Int32, System.String, System.IFormatProvider)
+       call      qword ptr [7FF912744DE0]; System.Number.<FormatInt32>g__FormatInt32Slow|41_0(Int32, Int32, System.String, System.IFormatProvider)
        mov       rbx,rax
        mov       esi,[rbx+8]
        mov       edi,esi
@@ -454,34 +465,34 @@ M00_L03:
        lea       rcx,[rbp+0C]
        mov       edx,edi
        mov       r8d,30
-       call      qword ptr [7FFBFDE1C780]; System.SpanHelpers.Fill[[System.Char, System.Private.CoreLib]](Char ByRef, UIntPtr, Char)
+       call      qword ptr [7FF912A465B0]; System.SpanHelpers.Fill[[System.Char, System.Private.CoreLib]](Char ByRef, UIntPtr, Char)
        movsxd    r8,edi
        lea       rcx,[rbp+r8*2+0C]
        lea       rdx,[rbx+0C]
        movsxd    r8,esi
        add       r8,r8
-       call      qword ptr [7FFBFDAC5B78]; System.Buffer.Memmove(Byte ByRef, Byte ByRef, UIntPtr)
+       call      qword ptr [7FF9126D5B78]; System.Buffer.Memmove(Byte ByRef, Byte ByRef, UIntPtr)
 M01_L00:
-       mov       r8,231DD006058
+       mov       r8,1CBBA4061C8
        mov       r8,[r8]
        test      r8,r8
        je        near ptr M01_L05
 M01_L01:
        mov       rdx,rbp
        mov       rcx,offset MD_System.Linq.Enumerable.Select[[System.Char, System.Private.CoreLib],[System.String, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Char>, System.Func`2<Char,System.String>)
-       call      qword ptr [7FFBFDE5D428]; System.Linq.Enumerable.Select[[System.Char, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Char>, System.Func`2<Char,System.__Canon>)
+       call      qword ptr [7FF912A96E50]; System.Linq.Enumerable.Select[[System.Char, System.Private.CoreLib],[System.__Canon, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Char>, System.Func`2<Char,System.__Canon>)
        mov       rsi,rax
-       mov       r8,231DD006048
+       mov       r8,1CBBA4061B8
        mov       r8,[r8]
        test      r8,r8
        je        near ptr M01_L06
 M01_L02:
        mov       rdx,rsi
        mov       rcx,offset MD_System.Linq.Enumerable.Select[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<System.String>, System.Func`2<System.String,Int32>)
-       call      qword ptr [7FFBFDE5D458]; System.Linq.Enumerable.Select[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<System.__Canon>, System.Func`2<System.__Canon,Int32>)
+       call      qword ptr [7FF912A96E80]; System.Linq.Enumerable.Select[[System.__Canon, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<System.__Canon>, System.Func`2<System.__Canon,Int32>)
        mov       rcx,rax
        lea       rdx,[rsp+20]
-       call      qword ptr [7FFBFDE84858]; System.Linq.Enumerable.TryGetLast[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>, Boolean ByRef)
+       call      qword ptr [7FF912A9E478]; System.Linq.Enumerable.TryGetLast[[System.Int32, System.Private.CoreLib]](System.Collections.Generic.IEnumerable`1<Int32>, Boolean ByRef)
        cmp       byte ptr [rsp+20],0
        je        near ptr M01_L07
        test      eax,eax
@@ -506,12 +517,12 @@ M01_L05:
        mov       rcx,offset MT_System.Func`2[[System.Char, System.Private.CoreLib],[System.String, System.Private.CoreLib]]
        call      CORINFO_HELP_NEWSFAST
        mov       rsi,rax
-       mov       rdx,231DD006050
+       mov       rdx,1CBBA4061C0
        mov       rdx,[rdx]
        mov       rcx,rsi
-       mov       r8,7FFBFDE593B0
-       call      qword ptr [7FFBFDA14210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
-       mov       rcx,231DD006058
+       mov       r8,7FF912A92DD8
+       call      qword ptr [7FF912624210]; System.MulticastDelegate.CtorClosed(System.Object, IntPtr)
+       mov       rcx,1CBBA4061C8
        mov       rdx,rsi
        call      CORINFO_HELP_ASSIGN_REF
        mov       r8,rsi
@@ -523,15 +534,15 @@ M01_L06:
        mov       rcx,rdi
        xor       edx,edx
        mov       r8,offset System.Int32.Parse(System.String)
-       mov       r9,7FFBFD8CD170
-       call      qword ptr [7FFBFDA14258]
-       mov       rcx,231DD006048
+       mov       r9,7FF9124DD170
+       call      qword ptr [7FF912624258]; System.MulticastDelegate.CtorOpened(System.Object, IntPtr, IntPtr)
+       mov       rcx,1CBBA4061B8
        mov       rdx,rdi
        call      CORINFO_HELP_ASSIGN_REF
        mov       r8,rdi
        jmp       near ptr M01_L02
 M01_L07:
-       call      qword ptr [7FFBFDCA7A68]
+       call      qword ptr [7FF9128B7A68]
        int       3
 M01_L08:
        mov       edi,0FFFFFFFF
@@ -539,7 +550,7 @@ M01_L08:
 ; Total bytes of code 447
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenAkseli()
        sub       rsp,28
@@ -553,7 +564,7 @@ M01_L08:
        movsxd    r10,r10d
        test      r10,r10
        jl        short M00_L01
-       vmovups   ymm1,[7FFBFDA47200]
+       vmovups   ymm1,[7FF912628700]
 M00_L00:
        vpand     ymm2,ymm1,[rcx+rdx*4]
        vpaddd    ymm0,ymm0,ymm2
@@ -573,7 +584,9 @@ M00_L01:
 M00_L02:
        cmp       rdx,r10
        jae       short M00_L04
-       add       ecx,[rax+rdx*4+10]
+       mov       r9d,[rax+rdx*4+10]
+       and       r9d,1
+       add       ecx,r9d
        inc       rdx
        cmp       r10,rdx
        jg        short M00_L02
@@ -586,10 +599,10 @@ M00_L03:
 M00_L04:
        call      CORINFO_HELP_RNGCHKFAIL
        int       3
-; Total bytes of code 133
+; Total bytes of code 141
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+## .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 ```assembly
 ; Test.Benchmark.IsEvenAkseliV2()
        sub       rsp,28
@@ -603,7 +616,7 @@ M00_L04:
        cdqe
        test      rax,rax
        jl        short M00_L01
-       vmovups   ymm1,[7FFBFDA47600]
+       vmovups   ymm1,[7FF912628820]
        nop       dword ptr [rax]
 M00_L00:
        vpand     ymm2,ymm1,[rdx+r8*4]
@@ -621,54 +634,54 @@ M00_L01:
        lea       eax,[r10-10]
        cdqe
        cmp       rax,r8
-       jge       short M00_L05
-       lea       eax,[r10-8]
-       cdqe
-       cmp       rax,r8
-       jge       short M00_L06
-M00_L02:
-       vphaddd   ymm1,ymm0,ymm0
-       vphaddd   ymm0,ymm1,ymm1
-       vextracti128 xmm1,ymm0,1
-       vpaddd    xmm0,xmm1,xmm0
-       vmovd     eax,xmm0
-       mov       edx,r10d
-       cmp       rdx,r8
-       jle       short M00_L04
-       nop       word ptr [rax+rax]
-M00_L03:
-       cmp       r8,rdx
-       jae       short M00_L07
-       add       eax,[rcx+r8*4+10]
-       inc       r8
-       cmp       rdx,r8
-       jg        short M00_L03
-M00_L04:
-       sub       r10d,eax
-       movsxd    rax,r10d
-       vzeroupper
-       add       rsp,28
-       ret
-M00_L05:
-       vmovups   ymm1,[7FFBFDA47600]
+       jl        short M00_L02
+       vmovups   ymm1,[7FF912628820]
        vpand     ymm2,ymm1,[rdx+r8*4]
        vpaddd    ymm0,ymm0,ymm2
        vpand     ymm1,ymm1,[rdx+r8*4+20]
        vpaddd    ymm0,ymm0,ymm1
        add       r8,10
+M00_L02:
        lea       eax,[r10-8]
        cdqe
        cmp       rax,r8
-       jl        short M00_L02
+       jge       short M00_L06
+M00_L03:
+       vphaddd   ymm0,ymm0,ymm0
+       vphaddd   ymm0,ymm0,ymm0
+       vextracti128 xmm1,ymm0,1
+       vpaddd    xmm0,xmm1,xmm0
+       vmovd     edx,xmm0
+       mov       eax,r10d
+       cmp       rax,r8
+       jg        short M00_L05
+M00_L04:
+       sub       r10d,edx
+       movsxd    rax,r10d
+       vzeroupper
+       add       rsp,28
+       ret
+M00_L05:
+       mov       eax,r10d
+       cmp       r8,rax
+       jae       short M00_L07
+       mov       eax,[rcx+r8*4+10]
+       and       eax,1
+       add       edx,eax
+       inc       r8
+       mov       eax,r10d
+       cmp       rax,r8
+       jg        short M00_L05
+       jmp       short M00_L04
 M00_L06:
-       vmovups   ymm1,[7FFBFDA47600]
+       vmovups   ymm1,[7FF912628820]
        vpand     ymm1,ymm1,[rdx+r8*4]
        vpaddd    ymm0,ymm0,ymm1
        add       r8,8
-       jmp       near ptr M00_L02
+       jmp       short M00_L03
 M00_L07:
        call      CORINFO_HELP_RNGCHKFAIL
        int       3
-; Total bytes of code 269
+; Total bytes of code 262
 ```
 
