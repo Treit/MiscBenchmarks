@@ -290,10 +290,10 @@
             var array = _array;
             ref readonly int start = ref MemoryMarshal.GetArrayDataReference(array);
 
-            Vector256<int> oddcum1 = Vector256<int>.Zero;
-            Vector256<int> oddcum2 = Vector256<int>.Zero;
-            Vector256<int> oddcum3 = Vector256<int>.Zero;
-            Vector256<int> oddcum4 = Vector256<int>.Zero;
+            Vector256<int> oddsum1 = Vector256<int>.Zero;
+            Vector256<int> oddsum2 = Vector256<int>.Zero;
+            Vector256<int> oddsum3 = Vector256<int>.Zero;
+            Vector256<int> oddsum4 = Vector256<int>.Zero;
 
             var ander = Vector256.Create(1);
 
@@ -304,31 +304,31 @@
                 Vector256<int> reg1, reg2, reg3, reg4;
                 reg1 = Vector256.LoadUnsafe(in start, offset) & ander;
                 reg2 = Vector256.LoadUnsafe(in start, offset + 8) & ander;
-                oddcum1 += reg1;
-                oddcum2 += reg2;
+                oddsum1 += reg1;
+                oddsum2 += reg2;
 
                 reg3 = Vector256.LoadUnsafe(in start, offset + 8 * 2) & ander;
                 reg4 = Vector256.LoadUnsafe(in start, offset + 8 * 3) & ander;
-                oddcum3 += reg3;
-                oddcum4 += reg4;
+                oddsum3 += reg3;
+                oddsum4 += reg4;
 
                 reg1 = Vector256.LoadUnsafe(in start, offset + 8 * 4) & ander;
                 reg2 = Vector256.LoadUnsafe(in start, offset + 8 * 5) & ander;
-                oddcum1 += reg1;
-                oddcum2 += reg2;
+                oddsum1 += reg1;
+                oddsum2 += reg2;
 
                 reg3 = Vector256.LoadUnsafe(in start, offset + 8 * 6) & ander;
                 reg4 = Vector256.LoadUnsafe(in start, offset + 8 * 7) & ander;
-                oddcum3 += reg3;
-                oddcum4 += reg4;
+                oddsum3 += reg3;
+                oddsum4 += reg4;
             }
 
             for (; offset < arrlen - 8; offset += 8)
             {
-                oddcum1 += Vector256.LoadUnsafe(in start, offset) & ander;
+                oddsum1 += Vector256.LoadUnsafe(in start, offset) & ander;
             }
 
-            int sum = Vector256.Sum(oddcum1 + oddcum2 + oddcum3 + oddcum4);
+            int sum = Vector256.Sum(oddsum1 + oddsum2 + oddsum3 + oddsum4);
 
             for (; offset < arrlen; offset++)
             {
