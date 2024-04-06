@@ -61,6 +61,12 @@
                 Console.WriteLine($"Incorrect algorithm detected: {nameof(b.IsEvenAkseliV2)} gave result {tenth} instead of expected {first}.");
             }
 
+            var eleventh = b.IsEvenSandra();
+            if (eleventh != first)
+            {
+                Console.WriteLine($"Incorrect algorithm detected: {nameof(b.IsEvenSandra)} gave result {eleventh} instead of expected {first}.");
+            }
+
             Console.WriteLine(first);
             Console.WriteLine(second);
             Console.WriteLine(third);
@@ -71,6 +77,8 @@
             Console.WriteLine(eighth);
             Console.WriteLine(ninth);
             Console.WriteLine(tenth);
+            Console.WriteLine(eleventh);
+
 #endif
         }
     }
