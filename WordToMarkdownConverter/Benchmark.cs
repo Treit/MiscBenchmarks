@@ -1,10 +1,7 @@
 namespace Test
 {
     using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
@@ -77,7 +74,7 @@ namespace Test
             }
         }
         [Benchmark(Baseline = true)]
-        public bool ConvertPandocParrallelForEach()
+        public bool ConvertPandocParallelForEach()
         {
             string[] files = Directory.GetFiles(s_targetDir, "*.docx");
 
@@ -89,7 +86,7 @@ namespace Test
             return true;
         }
         [Benchmark]
-        public async Task<bool> ConvertPandocParrallelForEachAsync()
+        public async Task<bool> ConvertPandocParallelForEachAsync()
         {
             string[] files = Directory.GetFiles(s_targetDir, "*.docx");
 
