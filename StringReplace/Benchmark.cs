@@ -36,6 +36,19 @@
         }
 
         [Benchmark]
+        public int? ReplaceNoStringComparisonUnnecessaryNullCheck()
+        {
+            int? total = 0;
+
+            for (int i = 0; i < _strings.Count; i++)
+            {
+                total += _strings[i].Replace("-", string.Empty)?.Length; ;
+            }
+
+            return total;
+        }        
+
+        [Benchmark]
         public int ReplaceStringComparisonOrdinal()
         {
             int total = 0;
