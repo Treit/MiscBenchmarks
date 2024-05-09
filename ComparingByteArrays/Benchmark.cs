@@ -3,6 +3,7 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
     using System;
+    using System.Collections;
     using System.Linq;
 
     [MemoryDiagnoser]
@@ -34,6 +35,18 @@
         }
 
         [Benchmark]
+        public bool CompareStructuralEqualityComparer()
+        {
+            return DoCompareUsingStructuralEqualityComparer(_bufferA, _bufferB);
+        }
+
+        [Benchmark]
+        public bool CompareIStructuralEquatable()
+        {
+            return DoCompareUsingIStructuralEquatable(_bufferA, _bufferB);
+        }
+
+        [Benchmark]
         public bool CompareSpanSequenceEqual()
         {
             return _bufferA.AsSpan().SequenceEqual(_bufferB);
@@ -55,6 +68,17 @@
             }
 
             return true;
+        }
+
+        static bool DoCompareUsingStructuralEqualityComparer(byte[] x, byte[] y)
+        {
+           return StructuralComparisons.StructuralEqualityComparer.Equals(x, y);
+        }
+
+        static bool DoCompareUsingIStructuralEquatable(byte[] x, byte[] y)
+        {
+            IStructuralEquatable structuralEquatable = x;
+            return structuralEquatable.Equals(y, StructuralComparisons.StructuralEqualityComparer);
         }
 
         public static bool Compare(byte[] x, byte[] y)
