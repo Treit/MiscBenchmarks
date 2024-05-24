@@ -6,16 +6,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-<!--
-    Stuff to possibly enable in the future!
-    <AnalysisLevel>preview</AnalysisLevel>
-    <WarningsAsErrors />
-    <Features>strict</Features>
--->
-    <!--
-    This disables the architecture-mismatch compiler warning. There might be some projects where this could be useful.
-    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
--->
+    <BenchmarkDotNetVersion>0.13.12</BenchmarkDotNetVersion>
   </PropertyGroup>
 
 </Project>

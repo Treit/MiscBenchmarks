@@ -35,7 +35,15 @@
         [Benchmark]
         public int DedupeWithRemoveDuplicateFunction()
         {
+            var result = 0;
             var deduped = RemoveDuplicates(_delimitedString).Split(',');
+
+            foreach (var item in deduped)
+            {
+                result += item.Length;
+            }
+
+            return result;
 
             static string RemoveDuplicates(string nameList)
             {
@@ -68,5 +76,20 @@
 
             return result;
         }
+
+        [Benchmark]
+        public int DedupeWithLinqDistinctStringSplitOptions()
+        {
+            var result = 0;
+            var opts = StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries;
+            var deduped = _delimitedString.Split(',', opts).Distinct();
+
+            foreach (var item in deduped)
+            {
+                result += item.Length;
+            }
+
+            return result;
+        }        
     }
 }
