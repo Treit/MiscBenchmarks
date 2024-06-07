@@ -1,4 +1,4 @@
-# Linq 'All' vs 'Except' to find if one list is a subset of another
+# Using unnecessary Select calls like `.Select(x => x)`
 
 
 
