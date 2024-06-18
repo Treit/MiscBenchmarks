@@ -1,22 +1,14 @@
-﻿using System;
-namespace Test
+﻿namespace Test
 {
-    public struct Xorshift
+    public struct Xorshift(uint seed)
     {
-        private uint _state;
-
-        public Xorshift(uint seed)
-        {
-            _state = seed;
-        }
-
         public uint Next()
         {
-            uint state = _state;
+            uint state = seed;
             state ^= state << 13;
             state ^= state >> 17;
             state ^= state << 5;
-            _state = state;
+            seed = state;
             return state;
         }
 

@@ -2,10 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
-    using BenchmarkDotNet.Order;
     using System;
-    using System.Linq;
-    using System.Text;
 
     [MemoryDiagnoser]
     public class Benchmark
