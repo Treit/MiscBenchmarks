@@ -17,11 +17,23 @@
         {
         }
 
+        [Benchmark]
+        public bool CheckWithNewHashSet()
+        {
+            return new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "needle", "needle_in_a_haystack" }.Contains(Value);
+        }
+
         [Benchmark(Baseline = true)]
         public bool CheckWithSimpleIf()
         {
             return Value.Equals("needle", StringComparison.OrdinalIgnoreCase)
                 || Value.Equals("needle_in_a_haystack", StringComparison.OrdinalIgnoreCase);
+        }
+
+        [Benchmark]
+        public bool CheckWithStaticHashSet()
+        {
+            return _values.Contains(Value);
         }
 
         [Benchmark]
@@ -35,18 +47,6 @@
                  'y' or 'Y', 's' or 'S', 't' or 'T', 'a' or 'A', 'c' or 'C', 'k' or 'K'] => true,
                 _ => false
             };
-        }
-
-        [Benchmark]
-        public bool CheckWithStaticHashSet()
-        {
-            return _values.Contains(Value);
-        }
-
-        [Benchmark]
-        public bool CheckWithNewHashSet()
-        {
-            return new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "needle", "needle_in_a_haystack" }.Contains(Value);
         }
     }
 }
