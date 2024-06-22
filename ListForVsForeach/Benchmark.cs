@@ -32,9 +32,10 @@
         public int ForLoopCount()
         {
             int count = 0;
-            for (int i = 0; i < _strings.Count; i++)
+            var temp = _strings;
+            for (int i = 0; i < temp.Count; i++)
             {
-                if (_strings[i].Length == 0)
+                if (temp[i].Length == 0)
                 {
                     count++;
                 }
