@@ -29,12 +29,28 @@
         }
 
         [Benchmark]
-        public int ForLoopCount()
+        public int ForLoopCountFieldAccess()
         {
             int count = 0;
             for (int i = 0; i < _strings.Length; i++)
             {
                 if (_strings[i].Length == 0)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        [Benchmark]
+        public int ForLoopCountLocalAccess()
+        {
+            int count = 0;
+            var local = _strings;
+            for (int i = 0; i < local.Length; i++)
+            {
+                if (local[i].Length == 0)
                 {
                     count++;
                 }
