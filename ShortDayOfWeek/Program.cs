@@ -16,7 +16,7 @@ namespace ShortDayOfWeek
             b.Count = 1000;
             b.GlobalSetup();
             var first = b.GetDayOfWeekSubstring();
-            var second = b.GetDayOfWeekLookup();
+            var second = b.GetDayOfWeekArrayLookup();
             var third = b.GetDayOfWeekSwitchExpression();
             Console.WriteLine($"Substring: {first}, Lookup: {second}, SwitchExpression: {third}");
 #endif

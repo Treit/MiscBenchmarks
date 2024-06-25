@@ -11,6 +11,17 @@ namespace ShortDayOfWeek
             "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"
         };
 
+        static Dictionary<DayOfWeek, string> ShortDateDictionary = new Dictionary<DayOfWeek, string>
+        {
+            { DayOfWeek.Sunday, "SUN" },
+            { DayOfWeek.Monday, "MON" },
+            { DayOfWeek.Tuesday, "TUE" },
+            { DayOfWeek.Wednesday, "WED" },
+            { DayOfWeek.Thursday, "THU" },
+            { DayOfWeek.Friday, "FRI" },
+            { DayOfWeek.Saturday, "SAT" }
+        };
+
         public static string ToShortDayOfWeekSubstring(this DateTime date)
         {
             return date.DayOfWeek.ToString().Substring(0, 3).ToUpperInvariant();
@@ -50,10 +61,14 @@ namespace ShortDayOfWeek
         {
             return ShortDateLookup[(int)date.DayOfWeek];
         }
+
+        public static string ToShortDayOfWeekLookupDictionary(this DateTime date)
+        {
+            return ShortDateDictionary[date.DayOfWeek];
+        }
     }
 
     [MemoryDiagnoser]
-    [DisassemblyDiagnoser]
     public class Benchmarks
     {
         private List<DateTime> _days;
@@ -112,13 +127,26 @@ namespace ShortDayOfWeek
         }
 
         [Benchmark(Baseline = true)]
-        public long GetDayOfWeekLookup()
+        public long GetDayOfWeekArrayLookup()
         {
             var result = 0L;
 
             foreach (var day in _days)
             {
                 result += day.ToShortDayOfWeekLookup().Length;
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long GetDayOfWeekDictionaryLookup()
+        {
+            var result = 0L;
+
+            foreach (var day in _days)
+            {
+                result += day.ToShortDayOfWeekLookupDictionary().Length;
             }
 
             return result;
