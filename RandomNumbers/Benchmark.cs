@@ -54,6 +54,20 @@
         }
 
         [Benchmark]
+        public long SystemRandomNewInstanceNoSeed()
+        {
+            long result = 0;
+            var random = new Random();
+
+            for (int i = 0; i < Count; i++)
+            {
+                result += random.Next();
+            }
+
+            return result;
+        }
+
+        [Benchmark]
         public long SystemRandomWithLock()
         {
             long result = 0;
