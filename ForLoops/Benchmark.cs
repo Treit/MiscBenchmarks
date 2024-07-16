@@ -25,6 +25,7 @@
         }
     }
 
+    [MemoryDiagnoser]
     public class Benchmark
     {
         [Params(100, 1_000_000)]

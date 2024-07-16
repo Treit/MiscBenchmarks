@@ -3,6 +3,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.13.12, Windows 11 (10.0.26254.5000)
@@ -13,18 +14,18 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-| Method                                     | Count   | Mean             | Error          | StdDev         | Median           | Ratio | RatioSD |
-|------------------------------------------- |-------- |-----------------:|---------------:|---------------:|-----------------:|------:|--------:|
-| **ClassicForLoop**                             | **100**     |         **69.92 ns** |       **1.330 ns** |       **1.179 ns** |         **69.47 ns** |  **1.00** |    **0.00** |
-| ForLoopPrefixIncrementInsideConditionCheck | 100     |         73.15 ns |       1.471 ns |       3.290 ns |         71.98 ns |  1.04 |    0.04 |
-| LoopUsingGoto                              | 100     |         78.36 ns |       1.349 ns |       1.196 ns |         78.00 ns |  1.12 |    0.03 |
-| LoopUsingEnumerableRange                   | 100     |        280.46 ns |       5.231 ns |       4.893 ns |        281.44 ns |  4.02 |    0.09 |
-| LoopUsingRangeEnumerator                   | 100     |         76.71 ns |       1.639 ns |       4.729 ns |         75.86 ns |  1.16 |    0.07 |
-| LoopUsingSkipAny                           | 100     |      2,421.20 ns |      66.377 ns |     191.513 ns |      2,399.12 ns | 33.22 |    2.31 |
-|                                            |         |                  |                |                |                  |       |         |
-| **ClassicForLoop**                             | **1000000** |    **653,696.34 ns** |  **12,174.939 ns** |  **20,673.970 ns** |    **650,860.79 ns** |  **1.00** |    **0.00** |
-| ForLoopPrefixIncrementInsideConditionCheck | 1000000 |    663,523.77 ns |  13,018.490 ns |  33,136.214 ns |    654,743.95 ns |  1.03 |    0.06 |
-| LoopUsingGoto                              | 1000000 |    735,450.62 ns |  12,494.472 ns |  10,433.450 ns |    735,412.60 ns |  1.11 |    0.04 |
-| LoopUsingEnumerableRange                   | 1000000 |  2,546,854.69 ns |  32,810.804 ns |  43,801.481 ns |  2,541,549.22 ns |  3.89 |    0.16 |
-| LoopUsingRangeEnumerator                   | 1000000 |    650,641.05 ns |  12,834.649 ns |  13,732.930 ns |    649,753.71 ns |  0.99 |    0.04 |
-| LoopUsingSkipAny                           | 1000000 | 21,412,228.94 ns | 424,269.928 ns | 594,767.184 ns | 21,204,153.12 ns | 32.71 |    0.92 |
+| Method                                     | Count   | Mean             | Error          | StdDev         | Median           | Ratio | RatioSD | Gen0       | Allocated  | Alloc Ratio |
+|------------------------------------------- |-------- |-----------------:|---------------:|---------------:|-----------------:|------:|--------:|-----------:|-----------:|------------:|
+| **ClassicForLoop**                             | **100**     |         **68.68 ns** |       **1.392 ns** |       **1.710 ns** |         **68.14 ns** |  **1.00** |    **0.00** |          **-** |          **-** |          **NA** |
+| ForLoopPrefixIncrementInsideConditionCheck | 100     |         69.11 ns |       0.797 ns |       0.745 ns |         68.93 ns |  1.00 |    0.03 |          - |          - |          NA |
+| LoopUsingGoto                              | 100     |         79.13 ns |       1.629 ns |       3.100 ns |         77.87 ns |  1.17 |    0.05 |          - |          - |          NA |
+| LoopUsingEnumerableRange                   | 100     |        265.66 ns |       2.154 ns |       2.015 ns |        265.29 ns |  3.86 |    0.11 |     0.0091 |       40 B |          NA |
+| LoopUsingRangeEnumerator                   | 100     |         71.29 ns |       1.461 ns |       1.624 ns |         70.68 ns |  1.04 |    0.04 |          - |          - |          NA |
+| LoopUsingSkipAny                           | 100     |      2,117.01 ns |      38.128 ns |      52.191 ns |      2,100.20 ns | 30.94 |    1.08 |     1.1215 |     4848 B |          NA |
+|                                            |         |                  |                |                |                  |       |         |            |            |             |
+| **ClassicForLoop**                             | **1000000** |    **621,601.79 ns** |   **4,292.268 ns** |   **3,804.984 ns** |    **621,258.54 ns** |  **1.00** |    **0.00** |          **-** |          **-** |          **NA** |
+| ForLoopPrefixIncrementInsideConditionCheck | 1000000 |    634,262.15 ns |  11,845.962 ns |  13,641.827 ns |    628,994.82 ns |  1.02 |    0.02 |          - |          - |          NA |
+| LoopUsingGoto                              | 1000000 |    736,970.26 ns |  14,663.823 ns |  40,876.879 ns |    720,258.35 ns |  1.28 |    0.07 |          - |          - |          NA |
+| LoopUsingEnumerableRange                   | 1000000 |  2,446,004.27 ns |  11,932.605 ns |  11,161.766 ns |  2,444,328.12 ns |  3.93 |    0.03 |          - |       42 B |          NA |
+| LoopUsingRangeEnumerator                   | 1000000 |    661,470.06 ns |  15,670.585 ns |  44,454.843 ns |    645,006.93 ns |  1.04 |    0.04 |          - |          - |          NA |
+| LoopUsingSkipAny                           | 1000000 | 21,023,507.14 ns | 407,560.965 ns | 485,172.337 ns | 20,955,762.50 ns | 33.86 |    0.92 | 11125.0000 | 48000060 B |          NA |
