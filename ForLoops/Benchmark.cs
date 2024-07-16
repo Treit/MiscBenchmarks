@@ -111,5 +111,18 @@
 
             return result;
         }
+
+        [Benchmark]
+        public long LoopUsingSkipAny()
+        {
+            long result = 0;
+
+            for (int i = 0; _data.Skip(i).Any(); i++)
+            {
+                result += _data[i];
+            }
+
+            return result;
+        }
     }
 }
