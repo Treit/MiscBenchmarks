@@ -3,18 +3,15 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(2, 100_000)]
+        [Params(100)]
         public int BucketCount { get; set; }
 
-        [Params(2, 1_000)]
-        public int KeyCount { get; set; }
+        public int KeyCount { get; set; } = 100;
 
         private IList<long> _buckets;
         private IList<string> _keys;
@@ -63,6 +60,18 @@
                 var str = _keys[i];
                 var hash = str.GetDeterministicHashCode();
                 var idx = (hash < 0 ? -hash : hash) % _buckets.Count;
+                _buckets[idx]++;
+            }
+        }
+
+        [Benchmark(Baseline = true)]
+        public void IndexViaBitwiseAnd()
+        {
+            for (var i = 0; i < KeyCount; i++)
+            {
+                var str = _keys[i];
+                var hash = str.GetDeterministicHashCode();
+                var idx = (hash & 0x7FFFFFFF) % _buckets.Count;
                 _buckets[idx]++;
             }
         }
