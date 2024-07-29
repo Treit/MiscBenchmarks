@@ -1,0 +1,51 @@
+﻿namespace Test
+{
+    using BenchmarkDotNet.Attributes;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    [MemoryDiagnoser]
+    public class Benchmark
+    {
+        [Params(100, 1_000_000)]
+        public int ListSize { get; set; }
+
+        private List<KeyValuePair<string, int>> _kvps;
+
+        [GlobalSetup]
+        public void GlobalSetup()
+        {
+            _kvps = new (ListSize);
+
+            for (int i = 0; i < ListSize; i++)
+            {
+                _kvps.Add(new KeyValuePair<string, int>(i.ToString(), i));
+            }
+        }
+
+        [Benchmark]
+        public List<string> SelectDotToListDotGetRange()
+        {
+            return _kvps.Select(item => item.Key).ToList().GetRange(0, Math.Min(_kvps.Count, 5));
+        }
+
+        [Benchmark]
+        public List<string> GetRangeDotSelectDotToList()
+        {
+            return _kvps.GetRange(0, Math.Min(_kvps.Count, 5)).Select(item => item.Key).ToList();
+        }
+
+        [Benchmark(Baseline = true)]
+        public List<string> SelectDotTakeDotToList()
+        {
+            return _kvps.Select(item => item.Key).Take(5).ToList();
+        }
+
+        [Benchmark]
+        public List<string> TakeDotSelectDotToList()
+        {
+            return _kvps.Take(5).Select(item => item.Key).ToList();
+        }
+    }
+}
