@@ -17,10 +17,12 @@
             var second = b.GetRangeDotSelectDotToList();
             var third = b.SelectDotTakeDotToList();
             var fourth = b.SelectDotToListDotGetRange();
+            var fifth = b.NewListAndForLoop();
             Console.WriteLine(string.Join(',', first));
             Console.WriteLine(string.Join(',', second));
             Console.WriteLine(string.Join(',', third));
             Console.WriteLine(string.Join(',', fourth));
+            Console.WriteLine(string.Join(',', fifth));
 #endif
 
         }
