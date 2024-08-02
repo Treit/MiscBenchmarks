@@ -40,5 +40,13 @@
         {
             return _left.ToHashSet().Intersect(_right).ToList().Count();
         }
+
+        [Benchmark]
+        public int CountUsingToHashSetIntersectWith()
+        {
+            var set = _left.ToHashSet();
+            set.IntersectWith(_right);
+            return set.Count;
+        }
     }
 }
