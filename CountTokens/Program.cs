@@ -17,7 +17,15 @@
             var second = b.CountTokensUsingSpanCount();
             var third = b.CountTokensUsingSplitToListAndCount();
             var fourth = b.CountTokensUsingSplitAndLength();
+            var fifth = b.CountTokensUsingHandWrittenForEachLoopWithShortCircuit();
+            var sixth = b.CountTokensUsingHandWrittenForEachLoopWithIndexOf();
+            var seventh = b.CountTokensUsingHandWrittenForEachLoopWithIndexOfAaron();
+            var eight = b.CountTokensUsingHandWrittenForEachLoopWithRegex();
+            var nine = b.CountTokensUsingHandWrittenForEachLoopWithSourceGenRegex();
             Console.WriteLine($"First: {first}, Second: {second}, Third: {third}, Fourth: {fourth}");
+            Console.WriteLine($"Fifth: {fifth}, Sixth: {sixth}, Seventh: {seventh}");
+            Console.WriteLine($"Eight: {eight}");
+            Console.WriteLine($"Nine: {nine}");
 #endif
         }
     }
