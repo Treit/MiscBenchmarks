@@ -66,6 +66,54 @@
         }
 
         [Benchmark]
+        public long CountTokensUsingHandWrittenForEachLoop()
+        {
+            var result = 0L;
+            foreach (var s in _delimitedStrings)
+            {
+                var count = 0;
+                foreach (var c in s)
+                {
+                    if (c == _separator)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count == 1)
+                {
+                    result++;
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long CountTokensUsingHandWrittenForLoop()
+        {
+            var result = 0L;
+            foreach (var s in _delimitedStrings)
+            {
+                var count = 0;
+                for (int i = 0; i < s.Length; i++)
+                {
+                    if (s[i] == _separator)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count == 1)
+                {
+                    result++;
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
         public long CountTokensUsingSplitAndLength()
         {
             var result = 0L;
