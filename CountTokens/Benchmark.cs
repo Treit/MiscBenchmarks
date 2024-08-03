@@ -180,7 +180,7 @@
                     continue;
                 }
 
-                if (s[(firstIndex + 1)..].IndexOf('-') == -1)
+                if (s.AsSpan()[(firstIndex + 1)..].IndexOf('-') == -1)
                 {
                     result++;
                 }
