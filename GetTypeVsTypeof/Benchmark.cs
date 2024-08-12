@@ -28,7 +28,7 @@
             }
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public Type UsingSwitchAndTypeOf()
         {
             Type t = null;
