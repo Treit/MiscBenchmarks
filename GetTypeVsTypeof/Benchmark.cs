@@ -31,8 +31,8 @@
         [Benchmark]
         public Type UsingSwitchAndTypeOf()
         {
-            Type t = null
-                ;
+            Type t = null;
+
             foreach (object o in _values)
             {
                 t = DoSwitchAndTypeof(o);
@@ -44,8 +44,8 @@
         [Benchmark]
         public Type UsingTypeOfExtensionMethod()
         {
-            Type t = null
-                ;
+            Type t = null;
+
             foreach (object o in _values)
             {
                 t = o.GetType2();
