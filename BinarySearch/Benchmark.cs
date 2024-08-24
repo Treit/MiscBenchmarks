@@ -4,6 +4,10 @@
     using BenchmarkDotNet.Diagnosers;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Numerics;
+    using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
 
     [MemoryDiagnoser]
     public class Benchmark
@@ -48,6 +52,12 @@
             return Array.BinarySearch(s_data, target);
         }
 
+        [Benchmark]
+        public int BinarySearchGenericBCLImpl()
+        {
+            var target = 1_000_000;
+            return BinarySearch<int>(s_data, 0, s_data.Length, target);
+        }
 
         private static int BinarySearch(int[] array, int numberToFind)
         {
@@ -101,6 +111,42 @@
             }
 
             return -1;
+        }
+
+        private static int BinarySearch<T>(T[] array, int index, int length, T value)
+            where T : IComparable<T>
+        {
+            int lo = index;
+            int hi = index + length - 1;
+            while (lo <= hi)
+            {
+                int i = lo + ((hi - lo) >> 1);
+                int order;
+                if (array[i] == null)
+                {
+                    order = (value == null) ? 0 : -1;
+                }
+                else
+                {
+                    order = array[i].CompareTo(value);
+                }
+
+                if (order == 0)
+                {
+                    return i;
+                }
+
+                if (order < 0)
+                {
+                    lo = i + 1;
+                }
+                else
+                {
+                    hi = i - 1;
+                }
+            }
+
+            return ~lo;
         }
     }
 }

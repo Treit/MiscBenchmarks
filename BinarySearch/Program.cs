@@ -16,9 +16,11 @@
             var first = b.BinarySearchWithDivide();
             var second = b.BinarySearchWithShift();
             var third = b.BinarySearchBCLImplementation();
+            var fourth = b.BinarySearchGenericBCLImpl();
             Console.WriteLine(first);
             Console.WriteLine(second);
             Console.WriteLine(third);
+            Console.WriteLine(fourth);
 #endif
         }
     }
