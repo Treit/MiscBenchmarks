@@ -16,10 +16,12 @@
             var second = b.LastTwoTokensWithRegex();
             var third = b.LastTwoTokensWithReverseAndSubstring();
             var fourth = b.LastTwoTokensWalkingBackwards();
+            var fifth = b.LastTwoTokensWithSpanAndLastIndexOf();
             Console.WriteLine(first);
             Console.WriteLine(second);
             Console.WriteLine(third);
             Console.WriteLine(fourth);
+            Console.WriteLine(fifth);
 #endif
         }
     }

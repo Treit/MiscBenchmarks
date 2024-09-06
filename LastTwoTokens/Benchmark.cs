@@ -28,7 +28,7 @@
             return result;
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public (string, string) LastTwoTokensWithRegex()
         {
             var match = _regex.Match(_delimitedString);
@@ -72,7 +72,7 @@
             return (first, second);
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public (string, string) LastTwoTokensWalkingBackwards()
         {
             var firstDelim = 0;
@@ -98,6 +98,26 @@
             var second = _delimitedString.Substring(firstDelim + 1);
             return (first, second);
 
+        }
+
+        [Benchmark]
+        public (string, string) LastTwoTokensWithSpanAndLastIndexOf()
+        {
+            var span = _delimitedString.AsSpan();
+            var first = span;
+            var second = span;
+
+            var end = span.LastIndexOf(',');
+
+            if (end != -1)
+            {
+                end = span.Slice(0, end).LastIndexOf(',');
+                span = span.Slice(end + 1);
+                first = span.Slice(0, span.IndexOf(','));
+                second = span.Slice(span.IndexOf(',') + 1);
+            }
+
+            return (first.ToString(), second.ToString());
         }
     }
 }
