@@ -115,6 +115,30 @@
         }
 
         [Benchmark]
+        public dynamic FisherYatesDynamic()
+        {
+            dynamic zero = 0;
+            dynamic one = 1;
+            dynamic values = _values;
+            dynamic random = _random;
+
+            for (dynamic i = values.Count - one; i > zero; --i)
+            {
+                dynamic n = random.Next(zero, i + one);
+                Swap(i, n);
+            }
+
+            void Swap(dynamic x, dynamic y)
+            {
+                dynamic tmp = values[x];
+                values[x] = values[y];
+                values[y] = tmp;
+            }
+
+            return values[zero];
+        }
+
+        [Benchmark]
         public int Sattolo()
         {
             for (int i = 0; i < _values.Count - 1; i++)
