@@ -10,53 +10,80 @@
         [Params(100, 1_000_000)]
         public int Count { get; set; }
 
-        private List<int> _listNormal;
-        private List<int> _listWithCapacity;
+        private IEnumerable<int> _itemsToAppend;
 
-        [IterationSetup]
-        public void IterationSetup()
+        [GlobalSetup]
+        public void GlobalSetup()
         {
-            _listNormal = new List<int>();
-            _listWithCapacity = new List<int>(Count);
+            var temp = new List<int>();
+
+            for (int i = 0; i < Count; i++)
+            {
+                temp.Add(i);
+            }
+
+            _itemsToAppend = temp;
         }
 
         [Benchmark]
-        public long AddToListNormal()
+        public long AddToListWithForEachLoop()
         {
-            var list = _listNormal;
+            var list = new List<int>();
 
-            for (int i = 0; i < Count; i++)
+            foreach (var i in _itemsToAppend)
             {
                 list.Add(i);
             }
 
-            return list.Max();
+            return list.Count;
+        }
+
+        [Benchmark]
+        public long AddToListPresetCapacity()
+        {
+            var list = new List<int>(Count);
+
+            foreach (var i in _itemsToAppend)
+            {
+                list.Add(i);
+            }
+
+            return list.Count;
+        }
+
+        [Benchmark]
+        public long AddToListWithToListDotForEach()
+        {
+            var list = new List<int>();
+
+            _itemsToAppend.ToList().ForEach(i => list.Add(i));
+
+            return list.Count;
+        }
+
+        [Benchmark]
+        public long AddToListWithAddRange()
+        {
+            var list = new List<int>();
+            list.AddRange(_itemsToAppend);
+
+            return list.Count;
+        }
+
+        [Benchmark]
+        public long AddToListPresetCapacityAddRange()
+        {
+            var list = new List<int>(Count);
+            list.AddRange(_itemsToAppend);
+
+            return list.Count;
         }
 
         [Benchmark(Baseline = true)]
-        public long AddToListPresetCapacity()
+        public long AddToListWithConstructor()
         {
-            var list = _listWithCapacity;
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(i);
-            }
-
-            return list.Max();
+            var list = new List<int>(_itemsToAppend);
+            return list.Count;
         }
-
-        [Benchmark]
-        public long AddToListWithAppend()
-        {
-            IEnumerable<int> list = _listNormal;
-
-            for (int i = 0; i < Count; i++)
-            {
-                list = list.Append(i);
-            }
-
-            return list.Max();
-        }        
     }
 }
