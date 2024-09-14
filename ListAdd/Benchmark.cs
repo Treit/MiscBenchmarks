@@ -10,7 +10,7 @@
         [Params(100, 1_000_000)]
         public int Count { get; set; }
 
-        private IEnumerable<int> _itemsToAppend;
+        private IList<int> _itemsToAppend;
 
         [GlobalSetup]
         public void GlobalSetup()
