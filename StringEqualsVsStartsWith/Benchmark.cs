@@ -64,6 +64,22 @@
         }
 
         [Benchmark]
+        public int EqualStringsCompareWithEqualsMethodOrdinal()
+        {
+            var count = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].Equals(_values2[i], StringComparison.Ordinal))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        [Benchmark]
         public int EqualStringsCompareWithStartsWithMethod()
         {
             var count = 0;
@@ -71,6 +87,22 @@
             for (int i = 0; i < this.Count; i++)
             {
                 if (_values[i].StartsWith(_values2[i]))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        [Benchmark]
+        public int EqualStringsCompareWithStartsWithMethodOrdinal()
+        {
+            var count = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].StartsWith(_values2[i], StringComparison.Ordinal))
                 {
                     count++;
                 }
