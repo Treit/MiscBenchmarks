@@ -64,6 +64,22 @@
         }
 
         [Benchmark]
+        public int EqualStringsCompareWithEqualsMethodIgnoreCase()
+        {
+            var count = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].Equals(_values2[i], StringComparison.InvariantCultureIgnoreCase))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        [Benchmark]
         public int EqualStringsCompareWithEqualsMethodOrdinal()
         {
             var count = 0;
@@ -103,6 +119,22 @@
             for (int i = 0; i < this.Count; i++)
             {
                 if (_values[i].StartsWith(_values2[i]))
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        [Benchmark]
+        public int EqualStringsCompareWithStartsWithMethodIgnoreCase()
+        {
+            var count = 0;
+
+            for (int i = 0; i < this.Count; i++)
+            {
+                if (_values[i].StartsWith(_values2[i], StringComparison.InvariantCultureIgnoreCase))
                 {
                     count++;
                 }
