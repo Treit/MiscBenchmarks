@@ -5,6 +5,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.13.12, Windows 11 (10.0.27708.1000)
@@ -15,16 +16,20 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-| Method                                         | Count | Mean            | Error         | StdDev        | Ratio | RatioSD | Allocated | Alloc Ratio |
-|----------------------------------------------- |------ |----------------:|--------------:|--------------:|------:|--------:|----------:|------------:|
-| **EqualStringsCompareWithEqualsOperator**          | **10**    |        **85.53 ns** |      **1.749 ns** |      **2.149 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| EqualStringsCompareWithEqualsMethod            | 10    |        83.02 ns |      1.238 ns |      1.033 ns |  0.98 |    0.03 |         - |          NA |
-| EqualStringsCompareWithEqualsMethodOrdinal     | 10    |        82.89 ns |      1.543 ns |      1.585 ns |  0.97 |    0.02 |         - |          NA |
-| EqualStringsCompareWithStartsWithMethod        | 10    |     1,419.01 ns |     25.420 ns |     34.795 ns | 16.63 |    0.59 |         - |          NA |
-| EqualStringsCompareWithStartsWithMethodOrdinal | 10    |        97.54 ns |      1.960 ns |      3.220 ns |  1.15 |    0.05 |         - |          NA |
-|                                                |       |                 |               |               |       |         |           |             |
-| **EqualStringsCompareWithEqualsOperator**          | **10000** |   **156,852.44 ns** |  **3,001.269 ns** |  **2,660.547 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| EqualStringsCompareWithEqualsMethod            | 10000 |   157,177.70 ns |  2,994.616 ns |  3,075.250 ns |  1.01 |    0.02 |         - |          NA |
-| EqualStringsCompareWithEqualsMethodOrdinal     | 10000 |   165,510.58 ns |  4,535.054 ns | 12,791.201 ns |  1.03 |    0.03 |         - |          NA |
-| EqualStringsCompareWithStartsWithMethod        | 10000 | 1,181,338.61 ns | 12,216.081 ns | 11,426.930 ns |  7.53 |    0.14 |       1 B |          NA |
-| EqualStringsCompareWithStartsWithMethodOrdinal | 10000 |   179,651.18 ns |  3,583.731 ns |  4,784.178 ns |  1.15 |    0.03 |         - |          NA |
+| Method                                                   | Count | Mean            | Error         | StdDev        | Median          | Ratio | RatioSD | Allocated | Alloc Ratio |
+|--------------------------------------------------------- |------ |----------------:|--------------:|--------------:|----------------:|------:|--------:|----------:|------------:|
+| **EqualStringsCompareWithEqualsOperator**                    | **10**    |        **85.49 ns** |      **1.434 ns** |      **1.197 ns** |        **85.62 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
+| EqualStringsCompareWithEqualsMethod                      | 10    |        84.58 ns |      1.717 ns |      3.096 ns |        83.99 ns |  0.99 |    0.05 |         - |          NA |
+| EqualStringsCompareWithEqualsMethodOrdinal               | 10    |        82.06 ns |      1.581 ns |      1.320 ns |        81.81 ns |  0.96 |    0.02 |         - |          NA |
+| EqualStringsCompareWithEqualsMethodOrdinalIgnoreCase     | 10    |       268.63 ns |     21.711 ns |     64.014 ns |       237.35 ns |  2.77 |    0.55 |         - |          NA |
+| EqualStringsCompareWithStartsWithMethod                  | 10    |     1,643.45 ns |     66.552 ns |    195.184 ns |     1,581.21 ns | 18.08 |    1.07 |         - |          NA |
+| EqualStringsCompareWithStartsWithMethodOrdinal           | 10    |       113.18 ns |      5.266 ns |     15.528 ns |       109.61 ns |  1.39 |    0.17 |         - |          NA |
+| EqualStringsCompareWithStartsWithMethodOrdinalIgnoreCase | 10    |       231.74 ns |      9.609 ns |     28.181 ns |       217.93 ns |  2.77 |    0.36 |         - |          NA |
+|                                                          |       |                 |               |               |                 |       |         |           |             |
+| **EqualStringsCompareWithEqualsOperator**                    | **10000** |   **165,186.26 ns** |  **3,276.682 ns** |  **8,802.592 ns** |   **161,894.21 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
+| EqualStringsCompareWithEqualsMethod                      | 10000 |   161,873.61 ns |  2,974.680 ns |  7,352.673 ns |   158,798.82 ns |  0.98 |    0.07 |         - |          NA |
+| EqualStringsCompareWithEqualsMethodOrdinal               | 10000 |   155,677.63 ns |  3,107.142 ns |  6,485.763 ns |   153,162.05 ns |  0.94 |    0.07 |         - |          NA |
+| EqualStringsCompareWithEqualsMethodOrdinalIgnoreCase     | 10000 |   364,660.82 ns |  7,212.821 ns | 19,500.281 ns |   360,589.84 ns |  2.21 |    0.16 |         - |          NA |
+| EqualStringsCompareWithStartsWithMethod                  | 10000 | 1,233,097.77 ns | 24,497.704 ns | 51,673.972 ns | 1,226,883.01 ns |  7.45 |    0.52 |       1 B |          NA |
+| EqualStringsCompareWithStartsWithMethodOrdinal           | 10000 |   180,982.16 ns |  2,173.755 ns |  1,815.184 ns |   180,694.87 ns |  1.10 |    0.07 |         - |          NA |
+| EqualStringsCompareWithStartsWithMethodOrdinalIgnoreCase | 10000 |   343,166.32 ns |  6,837.011 ns | 10,844.223 ns |   340,719.56 ns |  2.08 |    0.13 |         - |          NA |
