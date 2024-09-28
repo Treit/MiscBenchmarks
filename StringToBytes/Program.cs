@@ -16,8 +16,10 @@
             b.GlobalSetup();
             var first = b.StringToBytesUsingUnicodeEncoding();
             var second = b.StringToBytesUsingUnicodeEncoding();
+            var third = b.StringToBytesUsingMemoryMarshal();
             Console.WriteLine(first);
             Console.WriteLine(second);
+            Console.WriteLine(third);
 #endif
         }
     }

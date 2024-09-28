@@ -8,6 +8,7 @@ namespace Test
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.InteropServices;
 
     [MemoryDiagnoser]
     public class Benchmark
@@ -58,6 +59,24 @@ namespace Test
             return result;
         }
 
+        [Benchmark]
+        public long StringToBytesUsingMemoryMarshal()
+        {
+            var result = 0L;
+
+            foreach (var str in _strings)
+            {
+                var bytes = StringToBytesMemoryMarshal(str);
+                result += bytes.Length;
+            }
+
+            return result;
+        }
+
+        static byte[] StringToBytesMemoryMarshal(string str)
+        {
+            return MemoryMarshal.AsBytes(str.AsSpan()).ToArray();
+        }
         static string RandomStringCreate(Random random, string alphabet, int fixedLength)
         {
             var len = fixedLength;
