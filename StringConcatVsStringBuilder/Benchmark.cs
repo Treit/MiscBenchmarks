@@ -171,7 +171,7 @@
         }
 
         [Benchmark]
-        public int BuildStringWithDefaultInterpolatedStringHanlder333Fred()
+        public int BuildStringWithDefaultInterpolatedStringHandler333Fred()
         {
             DefaultInterpolatedStringHandler handler = new(
                 literalLength: 0,
