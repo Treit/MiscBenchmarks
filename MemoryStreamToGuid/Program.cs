@@ -18,10 +18,12 @@
             var second = b.MemoryStreamToGuidUsingToHexString();
             var third = b.MemoryStreamToGuidUsingSpanAndBigEndian();
             var fourth = b.MemoryStreamToGuidUsingBinaryPrimitivesChatGPT();
+            var fifth = b.MemoryStreamToGuidUsingReadByteOrThrowChatGPT();
             Console.WriteLine(first);
             Console.WriteLine(second);
             Console.WriteLine(third);
             Console.WriteLine(fourth);
+            Console.WriteLine(fifth);
 #endif
         }
     }
