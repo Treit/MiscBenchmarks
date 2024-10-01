@@ -16,8 +16,10 @@
             b.GlobalSetup();
             var first = b.MoveUsingRandomIndex();
             var second = b.MoveUsingLinqOrderByRandomWithUnecessaryToList();
+            var third = b.MoveUsingCollectionsMarshal();
             Console.WriteLine(first);
             Console.WriteLine(second);
+            Console.WriteLine(third);
 #endif
         }
     }

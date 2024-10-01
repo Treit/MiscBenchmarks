@@ -15,7 +15,7 @@ namespace Test
     {
         private List<string> _strings;
 
-        [Params(1000)]
+        [Params(5, 100, 1_000_000)]
         public int Count { get; set; }
 
         [GlobalSetup]
@@ -45,11 +45,24 @@ namespace Test
         [Benchmark]
         public string MoveUsingLinqOrderByRandomWithUnecessaryToList()
         {
-            Random rdm = new Random(Count);
-            var temp = _strings.OrderBy(a => rdm.Next()).ToList().First();
+            Random random = new Random(Count);
+            var temp = _strings.OrderBy(a => random.Next()).ToList().First();
             _strings.Remove(temp);
             _strings.Insert(0, temp);
             return temp;
+        }
+
+        [Benchmark]
+        public string MoveUsingCollectionsMarshal()
+        {
+            var random = new Random(Count);
+            var index = random.Next(_strings.Count);
+            var span = CollectionsMarshal.AsSpan(_strings);
+            var item = span[index];
+            var length = span.Length - index - 1;
+            span[..length].CopyTo(span[1..]);
+            span[0] = item;
+            return item;
         }
 
         static string RandomStringCreate(Random random, string alphabet, int fixedLength)
