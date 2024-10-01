@@ -31,17 +31,6 @@ namespace Test
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public string MoveUsingRandomIndex()
-        {
-            var random = new Random(Count);
-            var index = random.Next(_strings.Count);
-            var temp = _strings[index];
-            _strings.RemoveAt(index);
-            _strings.Insert(0, temp);
-            return temp;
-        }
-
         [Benchmark]
         public string MoveUsingLinqOrderByRandomWithUnecessaryToList()
         {
@@ -53,10 +42,33 @@ namespace Test
         }
 
         [Benchmark]
+        public string MoveUsingRandomIndex()
+        {
+            var random = new Random(Count);
+            var index = random.Next(_strings.Count);
+            var temp = _strings[index];
+            _strings.RemoveAt(index);
+            _strings.Insert(0, temp);
+            return temp;
+        }
+
+        [Benchmark]
         public string MoveUsingCollectionsMarshal()
         {
             var random = new Random(Count);
             var index = random.Next(_strings.Count);
+            var span = CollectionsMarshal.AsSpan(_strings);
+            var item = span[index];
+            var length = span.Length - index - 1;
+            span[..length].CopyTo(span[1..]);
+            span[0] = item;
+            return item;
+        }
+
+        [Benchmark(Baseline = true)]
+        public string MoveUsingCollectionsMarshalAndSharedRandom()
+        {
+            var index = Random.Shared.Next(_strings.Count);
             var span = CollectionsMarshal.AsSpan(_strings);
             var item = span[index];
             var length = span.Length - index - 1;

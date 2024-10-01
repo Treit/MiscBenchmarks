@@ -1,6 +1,7 @@
 # Move a random item to the front of the list, leaving the rest in existing order
 
 
+
 ```
 
 BenchmarkDotNet v0.13.12, Windows 11 (10.0.27718.1000)
@@ -11,16 +12,19 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-| Method                                         | Count   | Mean             | Error            | StdDev           | Median           | Ratio  | RatioSD | Gen0   | Allocated  | Alloc Ratio |
-|----------------------------------------------- |-------- |-----------------:|-----------------:|-----------------:|-----------------:|-------:|--------:|-------:|-----------:|------------:|
-| **MoveUsingRandomIndex**                           | **5**       |         **537.9 ns** |         **10.52 ns** |         **12.52 ns** |         **533.6 ns** |   **1.00** |    **0.00** | **0.0696** |      **304 B** |        **1.00** |
-| MoveUsingLinqOrderByRandomWithUnecessaryToList | 5       |         769.5 ns |          8.71 ns |          6.80 ns |         766.3 ns |   1.43 |    0.03 | 0.1907 |      824 B |        2.71 |
-| MoveUsingCollectionsMarshal                    | 5       |         515.4 ns |          5.50 ns |          5.14 ns |         514.1 ns |   0.95 |    0.03 | 0.0696 |      304 B |        1.00 |
-|                                                |         |                  |                  |                  |                  |        |         |        |            |             |
-| **MoveUsingRandomIndex**                           | **100**     |         **546.6 ns** |          **5.95 ns** |          **5.56 ns** |         **546.9 ns** |   **1.00** |    **0.00** | **0.0696** |      **304 B** |        **1.00** |
-| MoveUsingLinqOrderByRandomWithUnecessaryToList | 100     |       4,239.9 ns |         81.08 ns |         67.71 ns |       4,218.5 ns |   7.75 |    0.13 | 0.7172 |     3096 B |       10.18 |
-| MoveUsingCollectionsMarshal                    | 100     |         514.8 ns |          6.04 ns |          5.35 ns |         513.8 ns |   0.94 |    0.01 | 0.0696 |      304 B |        1.00 |
-|                                                |         |                  |                  |                  |                  |        |         |        |            |             |
-| **MoveUsingRandomIndex**                           | **1000000** |     **929,834.9 ns** |     **51,352.98 ns** |    **148,165.09 ns** |     **873,086.0 ns** |   **1.00** |    **0.00** |      **-** |      **304 B** |        **1.00** |
-| MoveUsingLinqOrderByRandomWithUnecessaryToList | 1000000 | 271,516,547.9 ns | 14,439,200.07 ns | 41,195,850.29 ns | 257,470,300.0 ns | 296.55 |   56.51 |      - | 24000829 B |   78,950.10 |
-| MoveUsingCollectionsMarshal                    | 1000000 |     503,043.2 ns |     14,105.15 ns |     38,849.67 ns |     496,153.2 ns |   0.55 |    0.09 |      - |      304 B |        1.00 |
+| Method                                         | Count   | Mean              | Error            | StdDev            | Median            | Ratio    | RatioSD | Gen0   | Allocated  | Alloc Ratio |
+|----------------------------------------------- |-------- |------------------:|-----------------:|------------------:|------------------:|---------:|--------:|-------:|-----------:|------------:|
+| **MoveUsingLinqOrderByRandomWithUnecessaryToList** | **5**       |         **829.62 ns** |        **16.554 ns** |         **39.981 ns** |         **818.46 ns** |    **31.38** |    **2.01** | **0.1907** |      **824 B** |          **NA** |
+| MoveUsingRandomIndex                           | 5       |         530.43 ns |         7.098 ns |          6.640 ns |         527.53 ns |    19.83 |    0.79 | 0.0696 |      304 B |          NA |
+| MoveUsingCollectionsMarshal                    | 5       |         528.83 ns |        10.594 ns |         10.404 ns |         529.49 ns |    19.78 |    0.77 | 0.0696 |      304 B |          NA |
+| MoveUsingCollectionsMarshalAndSharedRandom     | 5       |          26.59 ns |         0.601 ns |          0.936 ns |          26.27 ns |     1.00 |    0.00 |      - |          - |          NA |
+|                                                |         |                   |                  |                   |                   |          |         |        |            |             |
+| **MoveUsingLinqOrderByRandomWithUnecessaryToList** | **100**     |       **4,494.08 ns** |        **89.452 ns** |        **241.840 ns** |       **4,457.41 ns** |    **99.86** |    **3.76** | **0.7172** |     **3096 B** |          **NA** |
+| MoveUsingRandomIndex                           | 100     |         583.39 ns |        11.588 ns |         23.932 ns |         583.14 ns |    13.56 |    0.42 | 0.0696 |      304 B |          NA |
+| MoveUsingCollectionsMarshal                    | 100     |         528.62 ns |         9.175 ns |         10.566 ns |         530.06 ns |    12.26 |    0.33 | 0.0696 |      304 B |          NA |
+| MoveUsingCollectionsMarshalAndSharedRandom     | 100     |          43.05 ns |         0.781 ns |          0.652 ns |          43.02 ns |     1.00 |    0.00 |      - |          - |          NA |
+|                                                |         |                   |                  |                   |                   |          |         |        |            |             |
+| **MoveUsingLinqOrderByRandomWithUnecessaryToList** | **1000000** | **239,864,207.53 ns** | **6,095,922.145 ns** | **17,293,116.494 ns** | **231,849,066.67 ns** | **1,182.39** |  **108.84** |      **-** | **24000733 B** |          **NA** |
+| MoveUsingRandomIndex                           | 1000000 |     910,403.01 ns |    29,666.038 ns |     83,673.587 ns |     903,627.49 ns |     4.51 |    0.51 |      - |      304 B |          NA |
+| MoveUsingCollectionsMarshal                    | 1000000 |     488,304.22 ns |     9,050.197 ns |     13,545.909 ns |     486,468.75 ns |     2.33 |    0.20 |      - |      304 B |          NA |
+| MoveUsingCollectionsMarshalAndSharedRandom     | 1000000 |     202,910.59 ns |     4,458.490 ns |     12,354.454 ns |     198,901.00 ns |     1.00 |    0.00 |      - |          - |          NA |
