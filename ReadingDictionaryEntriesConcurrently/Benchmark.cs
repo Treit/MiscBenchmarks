@@ -13,9 +13,9 @@
         [Params(10, 1000, 100_000)]
         public int Count { get; set; }
 
-        private Dictionary<int, string> _dict;
-        private ConcurrentDictionary<int, string> _concurrentdict;
-        private FrozenDictionary<int, string> _frozendict;
+        private Dictionary<string, string> _dict;
+        private ConcurrentDictionary<string, string> _concurrentdict;
+        private FrozenDictionary<string, string> _frozendict;
         private ReaderWriterLock _rwlock = new ReaderWriterLock();
         private ReaderWriterLockSlim _rwlockslim = new ReaderWriterLockSlim();
         private int _mdop = Environment.ProcessorCount * 2;
@@ -24,16 +24,16 @@
         [GlobalSetup]
         public void GlobalSetup()
         {
-            _dict = new Dictionary<int, string>(Count);
-            _concurrentdict = new ConcurrentDictionary<int, string>(8, Count);
+            _dict = new Dictionary<string, string>(Count);
+            _concurrentdict = new ConcurrentDictionary<string, string>(8, Count);
 
             var r = new Random(Count);
 
             for (int i = 0; i < Count; i++)
             {
                 var val = r.Next().ToString();
-                _dict[i] = val;
-                _concurrentdict[i] = val;
+                _dict[i.ToString()] = val;
+                _concurrentdict[i.ToString()] = val;
             }
 
             _frozendict = _dict.ToFrozenDictionary();
@@ -55,7 +55,7 @@
 
                     for (int j = 0; j < Count; j++)
                     {
-                        var str = KeyLookupUsingDictionaryReaderWriterLockSlim(j);
+                        var str = KeyLookupUsingDictionaryReaderWriterLockSlim(j.ToString());
                         Interlocked.Add(ref total, str.Length);
                     }
                 });
@@ -85,7 +85,7 @@
 
                     for (int j = 0; j < Count; j++)
                     {
-                        var str = KeyLookupUsingLock(j);
+                        var str = KeyLookupUsingLock(j.ToString());
                         Interlocked.Add(ref total, str.Length);
                     }
                 });
@@ -115,7 +115,7 @@
 
                     for (int j = 0; j < Count; j++)
                     {
-                        var str = KeyLookupUsingDictionaryReaderWriterLock(j);
+                        var str = KeyLookupUsingDictionaryReaderWriterLock(j.ToString());
                         Interlocked.Add(ref total, str.Length);
                     }
                 });
@@ -145,7 +145,7 @@
 
                     for (int j = 0; j < Count; j++)
                     {
-                        var str = KeyLookupUsingConcurrentDictionary(j);
+                        var str = KeyLookupUsingConcurrentDictionary(j.ToString());
                         Interlocked.Add(ref total, str.Length);
                     }
                 });
@@ -175,7 +175,7 @@
 
                     for (int j = 0; j < Count; j++)
                     {
-                        var str = KeyLookupUsingFrozenDictionary(j);
+                        var str = KeyLookupUsingFrozenDictionary(j.ToString());
                         Interlocked.Add(ref total, str.Length);
                     }
                 });
@@ -205,7 +205,7 @@
 
                     for (int j = 0; j < Count; j++)
                     {
-                        var str = KeyLookupNoLockingNotThreadSafe(j);
+                        var str = KeyLookupNoLockingNotThreadSafe(j.ToString());
                         Interlocked.Add(ref total, str.Length);
                     }
                 });
@@ -219,7 +219,7 @@
             return total;
         }
 
-        private string KeyLookupUsingDictionaryReaderWriterLockSlim(int key)
+        private string KeyLookupUsingDictionaryReaderWriterLockSlim(string key)
         {
                 _rwlockslim.EnterReadLock();
 
@@ -233,7 +233,7 @@
                 }
         }
 
-        private string KeyLookupUsingDictionaryReaderWriterLock(int key)
+        private string KeyLookupUsingDictionaryReaderWriterLock(string key)
         {
             _rwlock.AcquireReaderLock(int.MaxValue);
 
@@ -247,22 +247,22 @@
             }
         }
 
-        private string KeyLookupUsingConcurrentDictionary(int key)
+        private string KeyLookupUsingConcurrentDictionary(string key)
         {
             return _concurrentdict[key];
         }
 
-        private string KeyLookupUsingFrozenDictionary(int key)
+        private string KeyLookupUsingFrozenDictionary(string key)
         {
             return _frozendict[key];
         }
 
-        private string KeyLookupNoLockingNotThreadSafe(int key)
+        private string KeyLookupNoLockingNotThreadSafe(string key)
         {
             return _dict[key];
         }
 
-        private string KeyLookupUsingLock(int key)
+        private string KeyLookupUsingLock(string key)
         {
             lock (_syncobj)
             {
