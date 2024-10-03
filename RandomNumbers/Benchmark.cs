@@ -3,6 +3,7 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
     using System;
+    using System.Threading;
 
     [MemoryDiagnoser]
     public class Benchmark
