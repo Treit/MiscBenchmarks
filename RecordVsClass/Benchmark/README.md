@@ -1,4 +1,4 @@
-# Calling methods on sealed vs non-sealed classes.
+# Calling methods on classes vs records.
 
 
 
