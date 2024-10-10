@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.13.12, Windows 11 (10.0.27723.1000)
@@ -12,28 +13,28 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-| Method                          | Value         | Mean        | Error     | StdDev    | Median      | Ratio  | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|-------------------------------- |-------------- |------------:|----------:|----------:|------------:|-------:|--------:|-------:|----------:|------------:|
-| **CheckWithHashSet**                | **FirstValue**    |  **13.5973 ns** | **0.2823 ns** | **0.2640 ns** |  **13.5334 ns** |  **15.20** |    **1.45** |      **-** |         **-** |          **NA** |
-| CheckWithListSearch             | FirstValue    |   9.9847 ns | 0.2216 ns | 0.2073 ns |  10.0731 ns |  11.16 |    1.01 |      - |         - |          NA |
-| CheckWithNewDictionaryEveryTime | FirstValue    | 194.8653 ns | 3.2608 ns | 5.8800 ns | 194.2192 ns | 214.27 |   19.23 | 0.1075 |     464 B |          NA |
-| CheckWithDictionary             | FirstValue    |  13.2278 ns | 0.3332 ns | 0.4884 ns |  13.1100 ns |  14.78 |    1.35 |      - |         - |          NA |
-| CheckWithSimpleIf               | FirstValue    |   0.7021 ns | 0.0815 ns | 0.1221 ns |   0.6954 ns |   0.72 |    0.13 |      - |         - |          NA |
-| CheckWithSwitchStatement        | FirstValue    |   0.8328 ns | 0.0735 ns | 0.0687 ns |   0.8125 ns |   0.93 |    0.11 |      - |         - |          NA |
-| CheckWithSwitchExpression       | FirstValue    |   0.9084 ns | 0.0816 ns | 0.0838 ns |   0.9292 ns |   1.00 |    0.00 |      - |         - |          NA |
-|                                 |               |             |           |           |             |        |         |        |           |             |
-| **CheckWithHashSet**                | **LastValue**     |   **8.4128 ns** | **0.1945 ns** | **0.1518 ns** |   **8.4185 ns** |   **3.11** |    **0.15** |      **-** |         **-** |          **NA** |
-| CheckWithListSearch             | LastValue     |  34.6720 ns | 0.7579 ns | 1.6151 ns |  34.5081 ns |  12.72 |    0.98 |      - |         - |          NA |
-| CheckWithNewDictionaryEveryTime | LastValue     | 195.1963 ns | 3.1601 ns | 2.6388 ns | 195.7243 ns |  72.50 |    3.35 | 0.1075 |     464 B |          NA |
-| CheckWithDictionary             | LastValue     |  12.9878 ns | 0.2877 ns | 0.4306 ns |  13.0327 ns |   4.75 |    0.24 |      - |         - |          NA |
-| CheckWithSimpleIf               | LastValue     |   5.5753 ns | 0.4073 ns | 1.1946 ns |   5.2233 ns |   2.10 |    0.43 |      - |         - |          NA |
-| CheckWithSwitchStatement        | LastValue     |   1.6055 ns | 0.0932 ns | 0.1036 ns |   1.6020 ns |   0.59 |    0.05 |      - |         - |          NA |
-| CheckWithSwitchExpression       | LastValue     |   2.7193 ns | 0.1248 ns | 0.1387 ns |   2.7132 ns |   1.00 |    0.00 |      - |         - |          NA |
-|                                 |               |             |           |           |             |        |         |        |           |             |
-| **CheckWithHashSet**                | **ValueNotInSet** |  **10.9844 ns** | **0.2894 ns** | **0.8350 ns** |  **10.8244 ns** |   **8.34** |    **0.73** |      **-** |         **-** |          **NA** |
-| CheckWithListSearch             | ValueNotInSet |  21.7552 ns | 0.4716 ns | 0.5614 ns |  21.7432 ns |  16.78 |    0.68 |      - |         - |          NA |
-| CheckWithNewDictionaryEveryTime | ValueNotInSet | 199.8781 ns | 3.8887 ns | 7.8553 ns | 199.9361 ns | 154.45 |    8.45 | 0.1075 |     464 B |          NA |
-| CheckWithDictionary             | ValueNotInSet |  11.7386 ns | 0.2157 ns | 0.2017 ns |  11.7211 ns |   9.10 |    0.36 |      - |         - |          NA |
-| CheckWithSimpleIf               | ValueNotInSet |   1.3050 ns | 0.0847 ns | 0.0792 ns |   1.3045 ns |   1.01 |    0.07 |      - |         - |          NA |
-| CheckWithSwitchStatement        | ValueNotInSet |   1.9220 ns | 0.1014 ns | 0.0898 ns |   1.9003 ns |   1.49 |    0.08 |      - |         - |          NA |
-| CheckWithSwitchExpression       | ValueNotInSet |   1.2981 ns | 0.0559 ns | 0.0598 ns |   1.2731 ns |   1.00 |    0.00 |      - |         - |          NA |
+| Method                          | Value         | Mean       | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|-------------------------------- |-------------- |-----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
+| **CheckWithHashSet**                | **FirstValue**    |   **9.618 ns** | **0.1107 ns** | **0.0864 ns** |  **0.94** |    **0.02** |      **-** |         **-** |          **NA** |
+| CheckWithListSearch             | FirstValue    |  20.361 ns | 0.3893 ns | 0.3251 ns |  1.99 |    0.06 |      - |         - |          NA |
+| CheckWithNewDictionaryEveryTime | FirstValue    | 196.521 ns | 3.4624 ns | 7.8152 ns | 19.74 |    1.01 | 0.1075 |     464 B |          NA |
+| CheckWithDictionary             | FirstValue    |  12.455 ns | 0.3156 ns | 0.4724 ns |  1.21 |    0.05 |      - |         - |          NA |
+| CheckWithSimpleIf               | FirstValue    |   1.774 ns | 0.0315 ns | 0.0263 ns |  0.17 |    0.01 |      - |         - |          NA |
+| CheckWithSwitchStatement        | FirstValue    |  10.880 ns | 0.2564 ns | 0.4212 ns |  1.09 |    0.04 |      - |         - |          NA |
+| CheckWithSwitchExpression       | FirstValue    |  10.253 ns | 0.2555 ns | 0.2390 ns |  1.00 |    0.00 |      - |         - |          NA |
+|                                 |               |            |           |           |       |         |        |           |             |
+| **CheckWithHashSet**                | **LastValue**     |   **9.734 ns** | **0.2607 ns** | **0.3202 ns** |  **0.98** |    **0.04** |      **-** |         **-** |          **NA** |
+| CheckWithListSearch             | LastValue     |  20.820 ns | 0.4045 ns | 0.3784 ns |  2.08 |    0.05 |      - |         - |          NA |
+| CheckWithNewDictionaryEveryTime | LastValue     | 189.414 ns | 3.8251 ns | 4.9737 ns | 18.76 |    0.49 | 0.1075 |     464 B |          NA |
+| CheckWithDictionary             | LastValue     |  11.845 ns | 0.1432 ns | 0.1196 ns |  1.18 |    0.01 |      - |         - |          NA |
+| CheckWithSimpleIf               | LastValue     |   1.237 ns | 0.0260 ns | 0.0230 ns |  0.12 |    0.00 |      - |         - |          NA |
+| CheckWithSwitchStatement        | LastValue     |  10.530 ns | 0.0417 ns | 0.0348 ns |  1.05 |    0.01 |      - |         - |          NA |
+| CheckWithSwitchExpression       | LastValue     |  10.005 ns | 0.0886 ns | 0.0785 ns |  1.00 |    0.00 |      - |         - |          NA |
+|                                 |               |            |           |           |       |         |        |           |             |
+| **CheckWithHashSet**                | **ValueNotInSet** |   **9.439 ns** | **0.2426 ns** | **0.2026 ns** |  **0.87** |    **0.03** |      **-** |         **-** |          **NA** |
+| CheckWithListSearch             | ValueNotInSet |  20.833 ns | 0.4086 ns | 0.3822 ns |  1.92 |    0.08 |      - |         - |          NA |
+| CheckWithNewDictionaryEveryTime | ValueNotInSet | 189.829 ns | 2.6983 ns | 2.3919 ns | 17.49 |    0.58 | 0.1075 |     464 B |          NA |
+| CheckWithDictionary             | ValueNotInSet |  12.022 ns | 0.3069 ns | 0.2720 ns |  1.11 |    0.03 |      - |         - |          NA |
+| CheckWithSimpleIf               | ValueNotInSet |   1.871 ns | 0.0959 ns | 0.0897 ns |  0.17 |    0.01 |      - |         - |          NA |
+| CheckWithSwitchStatement        | ValueNotInSet |  10.873 ns | 0.2749 ns | 0.2572 ns |  1.00 |    0.02 |      - |         - |          NA |
+| CheckWithSwitchExpression       | ValueNotInSet |  10.881 ns | 0.2721 ns | 0.2673 ns |  1.00 |    0.00 |      - |         - |          NA |

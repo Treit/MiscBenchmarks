@@ -54,9 +54,9 @@
         {
             valueToCheck = Value switch
             {
-                "FirstValue" => Constants.ValueA,
-                "LastValue" => Constants.ValueE,
-                _ => "Gibberish",
+                "firstvalue" => Constants.ValueA,
+                "lastvalue" => Constants.ValueE,
+                _ => "gibberish",
             };
         }
 
@@ -129,15 +129,15 @@
         [Benchmark]
         public string CheckWithSwitchStatement()
         {
-            switch (valueToCheck)
+            switch (valueToCheck.ToLowerInvariant())
             {
-                case Constants.ValueA:
+                case "valuea":
                     return Constants.ValueA;
-                case Constants.ValueB:
+                case "valueb":
                     return Constants.ValueB;
-                case Constants.ValueD:
+                case "valued":
                     return Constants.ValueD;
-                case Constants.ValueE:
+                case "valuee":
                     return Constants.ValueE;
                 default:
                     return Constants.ValueC;
@@ -147,12 +147,12 @@
         [Benchmark(Baseline = true)]
         public string CheckWithSwitchExpression()
         {
-            return valueToCheck switch
+            return valueToCheck.ToLowerInvariant() switch
             {
-                Constants.ValueA => Constants.ValueA,
-                Constants.ValueB => Constants.ValueB,
-                Constants.ValueD => Constants.ValueD,
-                Constants.ValueE => Constants.ValueE,
+                "valuea" => Constants.ValueA,
+                "valueb" => Constants.ValueB,
+                "valued" => Constants.ValueD,
+                "valuee" => Constants.ValueE,
                 _ => Constants.ValueC,
             };
         }
