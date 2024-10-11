@@ -54,5 +54,11 @@
             result.Add(_valToAdd);
             return result;
         }
+
+        [Benchmark]
+        public IList<int> CopyListWithAppendingNewArrayThenToList()
+        {
+            return _list.Concat(new[] { _valToAdd }).ToList();
+        }
     }
 }
