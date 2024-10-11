@@ -38,5 +38,21 @@
         {
             return _list.Append(_valToAdd).ToList();
         }
+
+        [Benchmark]
+        public IList<int> CopyListWithNewThenAdd()
+        {
+            var result = new List<int>(_list);
+            result.Add(_valToAdd);
+            return result;
+        }
+
+        [Benchmark]
+        public IList<int> CopyListWithToListThenAdd()
+        {
+            var result = _list.ToList();
+            result.Add(_valToAdd);
+            return result;
+        }
     }
 }
