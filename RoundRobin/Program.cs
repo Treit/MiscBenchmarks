@@ -16,8 +16,7 @@
             var first = b.RoundRobinUsingListAndEnumerators();
             var second = b.RoundRobinUsingQueue();
             var third = b.RoundRobinUsingQueueAndEnumerators();
-            var fourth = b.RoundRobinUsingListAndEnumerators2();
-            var fifth = b.RoundRobinUsingSuperLinqInterleave();
+            var fourth = b.RoundRobinUsingSuperLinqInterleave();
 
             foreach (var item in first)
             {
@@ -40,12 +39,6 @@
 
             Console.WriteLine("----------------------------");
             foreach (var item in fourth)
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine("----------------------------");
-            foreach (var item in fifth)
             {
                 Console.WriteLine(item);
             }

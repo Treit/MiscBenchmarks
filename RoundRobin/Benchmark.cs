@@ -40,12 +40,6 @@
         }
 
         [Benchmark]
-        public IList<string> RoundRobinUsingListAndEnumerators2()
-        {
-            return DoRoundRobinMergeUsingEnumerators2(_lists).ToList();
-        }
-
-        [Benchmark]
         public IList<string> RoundRobinUsingQueue()
         {
             return DoRoundRobinMergeUsingQueue(_lists).ToList();
@@ -112,37 +106,6 @@
                 foreach (var e in enumerators)
                 {
                     e.Dispose();
-                }
-            }
-        }
-
-        public static IEnumerable<T> DoRoundRobinMergeUsingEnumerators2<T>(IEnumerable<IEnumerable<T>> source)
-        {
-            if (source == null || !source.Any())
-            {
-                yield break;
-            }
-
-            var enumerators = new List<IEnumerator<T>>(source.Select(x => x.GetEnumerator()));
-
-            while (true)
-            {
-                for (int i = enumerators.Count - 1; i >= 0; i--)
-                {
-                    if (enumerators[i].MoveNext())
-                    {
-                        yield return enumerators[i].Current;
-                    }
-                    else
-                    {
-                        enumerators[i].Dispose();
-                        enumerators.RemoveAt(i);
-                    }
-                }
-
-                if (enumerators.Count == 0)
-                {
-                    yield break;
                 }
             }
         }
