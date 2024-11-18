@@ -109,19 +109,6 @@
             return total;
         }
 
-        [Benchmark]
-        public int CountDigitsUsingIfGreaterThanChecks()
-        {
-            int total = 0;
-
-            for (int i = 0; i < _values.Count; i++)
-            {
-                total += NumDigtsUsingIfGreaterThanChecks(_values[i]);
-            }
-
-            return total;
-        }
-
         static int NumDigitsUsingMath(int number)
         {
             return (int)Math.Log10(Math.Abs(number)) + 1;
@@ -138,11 +125,6 @@
         }
 
         static int NumDigtsUsingLookup(int number)
-        {
-            return number.DigitsLength();
-        }
-
-        static int NumDigtsUsingIfGreaterThanChecks(int number)
         {
             return number.DigitsLength();
         }
