@@ -4,34 +4,35 @@
 
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.27754.1000)
+Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 9.0.100
+  [Host]     : .NET 8.0.11 (8.0.1124.51707), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  DefaultJob : .NET 8.0.11 (8.0.1124.51707), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 
 ```
-|                   Method |                Value |       Mean |     Error |    StdDev |  Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
-|------------------------- |--------------------- |-----------:|----------:|----------:|-------:|--------:|-------:|----------:|------------:|
-|        **CheckWithSimpleIf** |            **gibberish** |  **0.4588 ns** | **0.0124 ns** | **0.0110 ns** |   **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-| CheckWithCharListPattern |            gibberish |  0.2769 ns | 0.0056 ns | 0.0053 ns |   0.60 |    0.02 |      - |         - |          NA |
-|   CheckWithStaticHashSet |            gibberish |  9.8964 ns | 0.0471 ns | 0.0393 ns |  21.67 |    0.41 |      - |         - |          NA |
-|      CheckWithNewHashSet |            gibberish | 61.4774 ns | 0.6727 ns | 0.6292 ns | 134.15 |    3.48 | 0.0105 |     176 B |          NA |
-|                          |                      |            |           |           |        |         |        |           |             |
-|        **CheckWithSimpleIf** |               **needle** |  **0.3960 ns** | **0.0134 ns** | **0.0119 ns** |   **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-| CheckWithCharListPattern |               needle |  1.7391 ns | 0.0184 ns | 0.0172 ns |   4.40 |    0.14 |      - |         - |          NA |
-|   CheckWithStaticHashSet |               needle | 10.6005 ns | 0.0485 ns | 0.0430 ns |  26.79 |    0.77 |      - |         - |          NA |
-|      CheckWithNewHashSet |               needle | 62.3975 ns | 0.5126 ns | 0.4795 ns | 157.73 |    4.92 | 0.0105 |     176 B |          NA |
-|                          |                      |            |           |           |        |         |        |           |             |
-|        **CheckWithSimpleIf** |  **needle_in_a_haystac** |  **0.4815 ns** | **0.0110 ns** | **0.0103 ns** |   **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-| CheckWithCharListPattern |  needle_in_a_haystac |  0.2744 ns | 0.0060 ns | 0.0054 ns |   0.57 |    0.01 |      - |         - |          NA |
-|   CheckWithStaticHashSet |  needle_in_a_haystac | 13.3769 ns | 0.0218 ns | 0.0204 ns |  27.79 |    0.61 |      - |         - |          NA |
-|      CheckWithNewHashSet |  needle_in_a_haystac | 64.9106 ns | 0.3347 ns | 0.2967 ns | 135.21 |    2.87 | 0.0105 |     176 B |          NA |
-|                          |                      |            |           |           |        |         |        |           |             |
-|        **CheckWithSimpleIf** | **needle_in_a_haystack** |  **1.2381 ns** | **0.0166 ns** | **0.0139 ns** |   **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-| CheckWithCharListPattern | needle_in_a_haystack |  5.9314 ns | 0.0074 ns | 0.0061 ns |   4.79 |    0.06 |      - |         - |          NA |
-|   CheckWithStaticHashSet | needle_in_a_haystack | 14.9253 ns | 0.0252 ns | 0.0224 ns |  12.06 |    0.13 |      - |         - |          NA |
-|      CheckWithNewHashSet | needle_in_a_haystack | 64.6829 ns | 0.3124 ns | 0.2439 ns |  52.32 |    0.59 | 0.0105 |     176 B |          NA |
+| Method                      | Value                | Mean       | Error     | StdDev    | Median     | Ratio   | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------------------- |--------------------- |-----------:|----------:|----------:|-----------:|--------:|--------:|-------:|----------:|------------:|
+| **CheckWithNewHashSet**         | **gibberish**            | **82.0623 ns** | **1.6412 ns** | **2.2465 ns** | **81.6307 ns** |   **93.09** |    **8.71** | **0.0408** |     **176 B** |          **NA** |
+| CheckWithStaticHashSet      | gibberish            | 11.0726 ns | 0.2556 ns | 0.4801 ns | 10.9413 ns |   12.79 |    1.37 |      - |         - |          NA |
+| CheckWithSimpleEqualityTest | gibberish            |  0.8750 ns | 0.0519 ns | 0.0777 ns |  0.8584 ns |    1.00 |    0.00 |      - |         - |          NA |
+| CheckWithCharListPattern    | gibberish            |  0.0580 ns | 0.0318 ns | 0.0816 ns |  0.0192 ns |    0.05 |    0.06 |      - |         - |          NA |
+|                             |                      |            |           |           |            |         |         |        |           |             |
+| **CheckWithNewHashSet**         | **needle**               | **85.1042 ns** | **1.6760 ns** | **4.3561 ns** | **84.0271 ns** |  **184.79** |   **38.16** | **0.0408** |     **176 B** |          **NA** |
+| CheckWithStaticHashSet      | needle               | 13.0004 ns | 0.2828 ns | 0.7199 ns | 12.7989 ns |   28.18 |    6.02 |      - |         - |          NA |
+| CheckWithSimpleEqualityTest | needle               |  0.4827 ns | 0.0442 ns | 0.1140 ns |  0.4511 ns |    1.00 |    0.00 |      - |         - |          NA |
+| CheckWithCharListPattern    | needle               |  3.5680 ns | 0.0716 ns | 0.0634 ns |  3.5653 ns |    8.66 |    1.54 |      - |         - |          NA |
+|                             |                      |            |           |           |            |         |         |        |           |             |
+| **CheckWithNewHashSet**         | **needle_in_a_haystac**  | **86.0382 ns** | **1.3698 ns** | **1.1438 ns** | **86.0972 ns** | **113.529** |    **9.97** | **0.0408** |     **176 B** |          **NA** |
+| CheckWithStaticHashSet      | needle_in_a_haystac  | 16.0744 ns | 0.3255 ns | 0.3749 ns | 16.0100 ns |  21.797 |    1.91 |      - |         - |          NA |
+| CheckWithSimpleEqualityTest | needle_in_a_haystac  |  0.7402 ns | 0.0444 ns | 0.0691 ns |  0.7147 ns |   1.000 |    0.00 |      - |         - |          NA |
+| CheckWithCharListPattern    | needle_in_a_haystac  |  0.0000 ns | 0.0000 ns | 0.0000 ns |  0.0000 ns |   0.000 |    0.00 |      - |         - |          NA |
+|                             |                      |            |           |           |            |         |         |        |           |             |
+| **CheckWithNewHashSet**         | **needle_in_a_haystack** | **87.3754 ns** | **1.5759 ns** | **1.6862 ns** | **86.9515 ns** |   **91.20** |    **5.10** | **0.0408** |     **176 B** |          **NA** |
+| CheckWithStaticHashSet      | needle_in_a_haystack | 17.2700 ns | 0.4005 ns | 1.1492 ns | 16.9190 ns |   18.78 |    2.10 |      - |         - |          NA |
+| CheckWithSimpleEqualityTest | needle_in_a_haystack |  0.9609 ns | 0.0569 ns | 0.0584 ns |  0.9494 ns |    1.00 |    0.00 |      - |         - |          NA |
+| CheckWithCharListPattern    | needle_in_a_haystack | 11.2410 ns | 0.2101 ns | 0.1640 ns | 11.2854 ns |   11.68 |    0.74 |      - |         - |          NA |

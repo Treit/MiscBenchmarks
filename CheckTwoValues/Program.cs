@@ -14,7 +14,7 @@
             Benchmark b = new Benchmark();
             b.GlobalSetup();
             b.Value = "needle_in_a_haystack";
-            var answerA = b.CheckWithSimpleIf();
+            var answerA = b.CheckWithSimpleEqualityTest();
             var answerB = b.CheckWithNewHashSet();
             var answerC = b.CheckWithStaticHashSet();
             var answerD = b.CheckWithCharListPattern();
