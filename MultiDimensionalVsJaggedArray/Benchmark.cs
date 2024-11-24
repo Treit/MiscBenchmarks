@@ -1,4 +1,6 @@
-﻿namespace Test
+﻿using CommunityToolkit.HighPerformance;
+
+namespace Test
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
@@ -233,6 +235,37 @@
             long result = 0;
             result = _mdim.Cast<byte>().Sum(x => x);
 
+            return result;
+        }
+
+        [Benchmark]
+        public long SumSpan2DLocalVariableForEach()
+        {
+            var mdspan = _mdim.AsSpan2D();
+            long result = 0;
+
+            foreach (var v in mdspan)
+            {
+                result += v;
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long SumSpan2DLocalVariableIndex()
+        {
+            var mdspan = _mdim.AsSpan2D();
+            var size = Size;
+
+            long result = 0;
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    result += mdspan[i, j];
+                }
+            }
             return result;
         }
     }
