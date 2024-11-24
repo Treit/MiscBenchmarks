@@ -4,6 +4,7 @@
     using BenchmarkDotNet.Jobs;
     using System;
     using System.Diagnostics;
+    using System.Linq;
     using System.Numerics;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
@@ -214,6 +215,24 @@
             {
                 result += Unsafe.Add(ref ptr, i);
             }
+            return result;
+        }
+
+        [Benchmark]
+        public long SumJaggedLinq()
+        {
+            long result = 0;
+            result = _jagged.Sum(x => x.Sum(x => x));
+
+            return result;
+        }
+
+        [Benchmark]
+        public long SumMultiDimensionalLinq()
+        {
+            long result = 0;
+            result = _mdim.Cast<byte>().Sum(x => x);
+
             return result;
         }
     }
