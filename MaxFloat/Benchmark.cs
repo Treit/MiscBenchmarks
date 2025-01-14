@@ -2,12 +2,14 @@
 
 using BenchmarkDotNet.Attributes;
 using System;
+using System.Linq;
 using System.Numerics;
+using System.Numerics.Tensors;
 
 [MemoryDiagnoser]
 public class Benchmark
 {
-    [Params(1_000, 100_000, 100_000_000)]
+    [Params(1_000_000)]
     public int IterationCount { get; set; } = 100_000;
 
     Random ran;
@@ -33,6 +35,18 @@ public class Benchmark
             result = Math.Max(n, result);
         }
         return result;
+    }
+
+    [Benchmark]
+    public float LinqMax()
+    {
+        return numbers.Max();
+    }
+
+    [Benchmark]
+    public float TensorPrimitivesMax()
+    {
+        return TensorPrimitives.Max(numbers);
     }
 
     [Benchmark]

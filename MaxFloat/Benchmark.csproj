@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="$(BenchmarkDotNetVersion)" />
+    <PackageReference Include="System.Numerics.Tensors" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
