@@ -21,7 +21,7 @@
             }
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public int LookupUsingHashSet()
         {
             var result = 0;
@@ -36,7 +36,7 @@
             return result;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int LookupUsingBitArray()
         {
             var result = 0;
