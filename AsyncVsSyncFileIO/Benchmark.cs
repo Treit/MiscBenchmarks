@@ -70,7 +70,7 @@
             }
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int ReadFileSync()
         {
             int count = 0;
