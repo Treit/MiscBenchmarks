@@ -1,46 +1,50 @@
 ## Similarity matching
 
 
-``` ini
-
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-
 
 ```
-|                                    Method |  Count |           Mean |        Error |       StdDev | Ratio |
-|------------------------------------------ |------- |---------------:|-------------:|-------------:|------:|
-|                       **CheckHashesOriginal** |    **100** |     **4,173.2 ns** |     **52.50 ns** |     **43.84 ns** |  **1.00** |
-|                  CheckHashesWithSpanTable |    100 |     4,194.5 ns |     10.18 ns |      8.50 ns |  1.01 |
-|                           CheckHashesKozi |    100 |     4,099.5 ns |      5.14 ns |      4.01 ns |  0.98 |
-|                      CheckHashesTechPizza |    100 |     4,120.1 ns |     23.53 ns |     20.86 ns |  0.99 |
-|                   CheckHashesSauceControl |    100 |     4,108.2 ns |     11.68 ns |      9.75 ns |  0.98 |
-|       CheckHashesSauceControlUnrolledKozi |    100 |     2,668.2 ns |      2.25 ns |      1.88 ns |  0.64 |
-|                CheckHashesHugeLookupTable |    100 |     2,420.9 ns |      4.97 ns |      4.65 ns |  0.58 |
-|           CheckHashesSauceControlUnrolled |    100 |     2,700.4 ns |     12.57 ns |     11.15 ns |  0.65 |
-| CheckHashesSauceControlUnrolledHugeLookup |    100 |     1,656.4 ns |      9.84 ns |      9.20 ns |  0.40 |
-|             CheckHashesSseKozidHugeLookup |    100 |     1,530.5 ns |      3.12 ns |      2.92 ns |  0.37 |
-|                CheckHashesSauceControlSse |    100 |       947.5 ns |      2.37 ns |      1.98 ns |  0.23 |
-|           CheckHashesSauceControlFirstAvx |    100 |       479.3 ns |      1.02 ns |      0.85 ns |  0.11 |
-|          CheckHashesSauceControlSecondAvx |    100 |       472.1 ns |      0.38 ns |      0.34 ns |  0.11 |
-|           CheckHashesSauceControlThirdAvx |    100 |       475.1 ns |      2.25 ns |      1.99 ns |  0.11 |
-|          CheckHashesSauceControlFourthAvx |    100 |       449.4 ns |      1.19 ns |      1.11 ns |  0.11 |
-|                                           |        |                |              |              |       |
-|                       **CheckHashesOriginal** | **100000** | **4,125,805.5 ns** | **26,248.46 ns** | **23,268.58 ns** |  **1.00** |
-|                  CheckHashesWithSpanTable | 100000 | 4,199,184.8 ns |  8,673.66 ns |  7,242.90 ns |  1.02 |
-|                           CheckHashesKozi | 100000 | 4,071,034.3 ns |  8,361.09 ns |  6,981.89 ns |  0.99 |
-|                      CheckHashesTechPizza | 100000 | 4,114,307.3 ns | 16,185.00 ns | 15,139.46 ns |  1.00 |
-|                   CheckHashesSauceControl | 100000 | 4,109,917.3 ns | 13,763.14 ns | 12,200.67 ns |  1.00 |
-|       CheckHashesSauceControlUnrolledKozi | 100000 | 2,680,185.0 ns |  5,878.83 ns |  5,499.06 ns |  0.65 |
-|                CheckHashesHugeLookupTable | 100000 | 2,391,640.6 ns |  4,004.21 ns |  3,549.63 ns |  0.58 |
-|           CheckHashesSauceControlUnrolled | 100000 | 2,698,832.3 ns |  4,013.12 ns |  3,557.53 ns |  0.65 |
-| CheckHashesSauceControlUnrolledHugeLookup | 100000 | 1,640,420.9 ns |  4,332.39 ns |  4,052.52 ns |  0.40 |
-|             CheckHashesSseKozidHugeLookup | 100000 | 1,557,256.4 ns |  3,597.88 ns |  3,189.42 ns |  0.38 |
-|                CheckHashesSauceControlSse | 100000 | 1,098,299.4 ns |  8,227.32 ns |  7,695.84 ns |  0.27 |
-|           CheckHashesSauceControlFirstAvx | 100000 |   503,814.9 ns |  1,048.04 ns |    929.06 ns |  0.12 |
-|          CheckHashesSauceControlSecondAvx | 100000 |   488,960.0 ns |  1,948.32 ns |  1,727.13 ns |  0.12 |
-|           CheckHashesSauceControlThirdAvx | 100000 |   475,186.3 ns |  5,361.80 ns |  5,015.43 ns |  0.12 |
-|          CheckHashesSauceControlFourthAvx | 100000 |   486,510.0 ns |    848.80 ns |    752.44 ns |  0.12 |
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.27783.1000)
+Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 9.0.102
+  [Host]     : .NET 8.0.12 (8.0.1224.60305), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  Job-ZBEUFQ : .NET 8.0.12 (8.0.1224.60305), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+
+OutlierMode=DontRemove  MemoryRandomization=True  
+
+```
+| Method                                    | Count | Mean           | Error        | StdDev        | Median         | Ratio | RatioSD |
+|------------------------------------------ |------ |---------------:|-------------:|--------------:|---------------:|------:|--------:|
+| **CheckHashesNoLookup**                       | **100**   |    **12,659.9 ns** |    **246.29 ns** |     **320.24 ns** |    **12,553.5 ns** | **19.63** |    **2.06** |
+| CheckHashesOriginalWithLookup             | 100   |     9,208.2 ns |    181.47 ns |     366.58 ns |     9,034.6 ns | 14.91 |    1.29 |
+| CheckHashesWithSpanTable                  | 100   |    10,889.5 ns |    217.83 ns |     298.16 ns |    10,764.3 ns | 16.78 |    1.79 |
+| CheckHashesKozi                           | 100   |     5,705.0 ns |    424.32 ns |   1,251.11 ns |     5,170.2 ns |  9.27 |    1.94 |
+| CheckHashesTechPizza                      | 100   |     4,318.5 ns |    312.95 ns |     922.75 ns |     3,898.8 ns |  7.07 |    1.71 |
+| CheckHashesSauceControl                   | 100   |     4,140.6 ns |     92.91 ns |     273.95 ns |     4,061.0 ns |  6.76 |    0.75 |
+| CheckHashesSauceControlUnrolledKozi       | 100   |     2,846.7 ns |     56.57 ns |     160.49 ns |     2,798.4 ns |  4.65 |    0.49 |
+| CheckHashesHugeLookupTable                | 100   |     4,402.3 ns |    350.84 ns |   1,034.45 ns |     4,573.8 ns |  7.20 |    1.82 |
+| CheckHashesSauceControlUnrolled           | 100   |     5,361.3 ns |     65.96 ns |      61.70 ns |     5,343.7 ns |  8.19 |    0.90 |
+| CheckHashesSauceControlUnrolledHugeLookup | 100   |     3,207.6 ns |     41.23 ns |      38.56 ns |     3,203.5 ns |  4.90 |    0.53 |
+| CheckHashesSseKozidHugeLookup             | 100   |     3,033.7 ns |     59.71 ns |      81.73 ns |     3,055.7 ns |  4.67 |    0.46 |
+| CheckHashesSauceControlSse                | 100   |     1,718.7 ns |     24.71 ns |      23.12 ns |     1,725.6 ns |  2.62 |    0.27 |
+| CheckHashesSauceControlFirstAvx           | 100   |       671.1 ns |     29.85 ns |      88.01 ns |       637.9 ns |  1.10 |    0.17 |
+| CheckHashesSauceControlSecondAvx          | 100   |       611.6 ns |     24.91 ns |      73.44 ns |       593.1 ns |  1.00 |    0.13 |
+| CheckHashesSauceControlThirdAvx           | 100   |       625.6 ns |     16.85 ns |      49.69 ns |       605.6 ns |  1.02 |    0.12 |
+| CheckHashesSauceControlFourthAvx          | 100   |       616.8 ns |     18.68 ns |      55.09 ns |       597.0 ns |  1.00 |    0.00 |
+|                                           |       |                |              |               |                |       |         |
+| **CheckHashesNoLookup**                       | **10000** | **1,443,754.7 ns** | **65,550.54 ns** | **193,277.25 ns** | **1,356,822.5 ns** | **22.56** |    **3.53** |
+| CheckHashesOriginalWithLookup             | 10000 |   945,034.3 ns | 18,825.31 ns |  46,531.50 ns |   936,766.0 ns | 14.76 |    1.18 |
+| CheckHashesWithSpanTable                  | 10000 |   775,333.1 ns | 15,068.64 ns |  15,474.38 ns |   775,331.0 ns | 12.21 |    0.49 |
+| CheckHashesKozi                           | 10000 |   440,414.5 ns |  8,769.51 ns |  21,511.76 ns |   435,897.6 ns |  6.87 |    0.56 |
+| CheckHashesTechPizza                      | 10000 |   387,668.2 ns |  7,740.46 ns |  22,701.44 ns |   381,091.7 ns |  6.05 |    0.51 |
+| CheckHashesSauceControl                   | 10000 |   402,913.8 ns | 11,166.12 ns |  32,923.55 ns |   393,039.4 ns |  6.29 |    0.64 |
+| CheckHashesSauceControlUnrolledKozi       | 10000 |   282,326.1 ns |  5,600.32 ns |  16,424.78 ns |   276,176.6 ns |  4.41 |    0.36 |
+| CheckHashesHugeLookupTable                | 10000 |   315,673.7 ns |  6,241.41 ns |  13,700.04 ns |   311,256.2 ns |  5.00 |    0.33 |
+| CheckHashesSauceControlUnrolled           | 10000 |   304,802.1 ns |  8,766.50 ns |  25,848.23 ns |   295,932.1 ns |  4.75 |    0.44 |
+| CheckHashesSauceControlUnrolledHugeLookup | 10000 |   176,454.3 ns |  2,938.78 ns |   2,748.94 ns |   176,238.6 ns |  2.78 |    0.13 |
+| CheckHashesSseKozidHugeLookup             | 10000 |   186,392.5 ns |  4,430.09 ns |  13,062.23 ns |   181,788.8 ns |  2.91 |    0.29 |
+| CheckHashesSauceControlSse                | 10000 |   109,301.1 ns |  2,173.97 ns |   5,038.51 ns |   108,411.6 ns |  1.72 |    0.11 |
+| CheckHashesSauceControlFirstAvx           | 10000 |    64,044.8 ns |  1,969.09 ns |   5,805.91 ns |    62,657.7 ns |  1.00 |    0.11 |
+| CheckHashesSauceControlSecondAvx          | 10000 |    59,542.4 ns |  1,139.47 ns |   1,356.45 ns |    59,152.9 ns |  0.94 |    0.05 |
+| CheckHashesSauceControlThirdAvx           | 10000 |    61,511.2 ns |    892.83 ns |     835.15 ns |    61,519.6 ns |  0.97 |    0.04 |
+| CheckHashesSauceControlFourthAvx          | 10000 |    64,316.5 ns |  1,383.22 ns |   4,078.45 ns |    63,039.9 ns |  1.00 |    0.00 |
