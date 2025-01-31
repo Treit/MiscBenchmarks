@@ -13,33 +13,50 @@
         public int Count { get; set; }
 
         private string[] _array;
-        private HashSet<string> _hashSetA;
-        private HashSet<string> _hashSetB;
+        private string[] _arrayWithNoOverlap;
+        private HashSet<string> _hashSet;
+        private HashSet<string> _hashSetWithNoOverlap;
 
         [GlobalSetup]
+
         public void GlobalSetup()
         {
             var smallCount = 10;
             _array = new string[smallCount];
-            _hashSetA = new HashSet<string>();
-            _hashSetB = new HashSet<string>();
+            _arrayWithNoOverlap = new string[smallCount];
+            _hashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            _hashSetWithNoOverlap = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             for (int i = 0; i < smallCount; i++)
             {
-                _hashSetA.Add(i.ToString());
-                _array[i] = i.ToString();
+                var str = $"string {i}";
+                _array[i] = str;
+                _arrayWithNoOverlap[i] = $"{str}!!!";
+                _hashSetWithNoOverlap.Add($"{str}!!!");
             }
 
             for (int i = 0; i < Count; i++)
             {
-                _hashSetB.Add(i.ToString());
+                var str = $"string {i}";
+                _hashSet.Add(str);
             }
         }
 
         [Benchmark]
         public bool ArrayWalkAndHashSetLookupAndIEnumerableContains()
         {
-            if (!_array.Any(x => _hashSetB.Contains(x, StringComparer.OrdinalIgnoreCase)))
+            if (!_array.Any(x => _hashSet.Contains(x, StringComparer.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [Benchmark]
+        public bool ArrayWalkAndHashSetLookupAndIEnumerableContainsNoOverlap()
+        {
+            if (!_arrayWithNoOverlap.Any(x => _hashSet.Contains(x, StringComparer.OrdinalIgnoreCase)))
             {
                 return false;
             }
@@ -50,7 +67,18 @@
         [Benchmark]
         public bool ArrayWalkAndHashSetLookupAndHashSetContains()
         {
-            if (!_array.Any(x => _hashSetB.Contains(x)))
+            if (!_array.Any(x => _hashSet.Contains(x)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [Benchmark]
+        public bool ArrayWalkAndHashSetLookupAndHashSetContainsNoOverlap()
+        {
+            if (!_arrayWithNoOverlap.Any(x => _hashSet.Contains(x)))
             {
                 return false;
             }
@@ -59,9 +87,20 @@
         }
 
         [Benchmark(Baseline = true)]
-        public bool HashSetOverlap()
+        public bool HashSetOverlapMethod()
         {
-            if (!_hashSetA.Overlaps(_hashSetB))
+            if (!_hashSet.Overlaps(_array))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [Benchmark]
+        public bool HashSetOverlapsMethodWithNoOverlap()
+        {
+            if (!_hashSet.Overlaps(_arrayWithNoOverlap))
             {
                 return false;
             }
