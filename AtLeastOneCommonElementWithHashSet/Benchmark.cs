@@ -43,7 +43,7 @@
         }
 
         [Benchmark]
-        public bool ArrayWalkAndHashSetLookupAndIEnumerableContains()
+        public bool ArrayWalkAndHashSetLookupWithIEnumerableContains()
         {
             if (!_array.Any(x => _hashSet.Contains(x, StringComparer.OrdinalIgnoreCase)))
             {
@@ -54,7 +54,7 @@
         }
 
         [Benchmark]
-        public bool ArrayWalkAndHashSetLookupAndIEnumerableContainsNoOverlap()
+        public bool ArrayWalkAndHashSetLookupWithIEnumerableContainsNoOverlap()
         {
             if (!_arrayWithNoOverlap.Any(x => _hashSet.Contains(x, StringComparer.OrdinalIgnoreCase)))
             {
@@ -65,7 +65,7 @@
         }
 
         [Benchmark]
-        public bool ArrayWalkAndHashSetLookupAndHashSetContains()
+        public bool ArrayWalkAndHashSetLookupWithHashSetContains()
         {
             if (!_array.Any(x => _hashSet.Contains(x)))
             {
@@ -76,7 +76,7 @@
         }
 
         [Benchmark]
-        public bool ArrayWalkAndHashSetLookupAndHashSetContainsNoOverlap()
+        public bool ArrayWalkAndHashSetLookupWithHashSetContainsNoOverlap()
         {
             if (!_arrayWithNoOverlap.Any(x => _hashSet.Contains(x)))
             {
@@ -87,7 +87,7 @@
         }
 
         [Benchmark(Baseline = true)]
-        public bool HashSetOverlapMethod()
+        public bool HashSetOverlapsMethod()
         {
             if (!_hashSet.Overlaps(_array))
             {
