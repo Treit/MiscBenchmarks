@@ -7,7 +7,7 @@
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(100, 1_000_000)]
+        [Params(100)]
         public int Count { get; set; }
 
         private IList<int> _itemsToAppend;
@@ -76,6 +76,13 @@
             var list = new List<int>(Count);
             list.AddRange(_itemsToAppend);
 
+            return list.Count;
+        }
+
+        [Benchmark]
+        public long ToList()
+        {
+            var list = _itemsToAppend.ToList();
             return list.Count;
         }
 
