@@ -29,7 +29,7 @@
                 return $"Unknown:{fileLine}";
             }
 
-            var loc = fileName.IndexOf(_pathSplitString);
+            var loc = fileName.IndexOf(_pathSplitString, StringComparison.Ordinal);
             loc = loc == -1 ? 0 : loc + _pathSplitString.Length;
             var span = fileName.AsSpan(loc);
 
@@ -48,7 +48,7 @@
             }
 
             // Find index and handle cases where it's not found
-            var loc = fileName.IndexOf(_pathSplitString);
+            var loc = fileName.IndexOf(_pathSplitString, StringComparison.Ordinal);
             loc = loc >= 0 ? loc + _pathSplitString.Length : 0;
 
             // Directly format without using span.ToString()
