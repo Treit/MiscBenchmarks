@@ -59,10 +59,18 @@
         }
 
         [Benchmark]
-        public long CopyDictWithToDictionary()
+        public long CopyDictWithToDictionaryLambdas()
         {
             var dict = _itemsToAppend.ToDictionary(x => x.Key, x => x.Value);
             return dict.Count;
         }
+
+        [Benchmark]
+        public long CopyDictWithToDictionary()
+        {
+            var dict = _itemsToAppend.ToDictionary();
+            return dict.Count;
+        }
+
     }
 }
