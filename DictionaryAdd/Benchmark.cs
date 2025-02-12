@@ -2,6 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using System.Collections.Generic;
+    using System.Linq;
 
     [MemoryDiagnoser]
     public class Benchmark
@@ -25,7 +26,7 @@
         }
 
         [Benchmark]
-        public long AddToDictWithForEachLoop()
+        public long CopyDictWithForEachLoop()
         {
             var dict = new Dictionary<string, int>();
 
@@ -38,7 +39,7 @@
         }
 
         [Benchmark]
-        public long AddToDictPresetCapacity()
+        public long CopyDictPresetCapacity()
         {
             var dict = new Dictionary<string, int>(Count);
 
@@ -51,9 +52,16 @@
         }
 
         [Benchmark(Baseline = true)]
-        public long AddToDictWithConstructor()
+        public long CopyDictWithConstructor()
         {
             var dict = new Dictionary<string, int>(_itemsToAppend);
+            return dict.Count;
+        }
+
+        [Benchmark]
+        public long CopyDictWithToDictionary()
+        {
+            var dict = _itemsToAppend.ToDictionary(x => x.Key, x => x.Value);
             return dict.Count;
         }
     }
