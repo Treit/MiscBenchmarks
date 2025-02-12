@@ -1,5 +1,6 @@
 # Adding items to a dictionary
 
+
 ```
 
 BenchmarkDotNet v0.13.12, Windows 11 (10.0.27793.1000)
@@ -10,8 +11,10 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-| Method                   | Count | Mean     | Error     | StdDev    | Median   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|------------------------- |------ |---------:|----------:|----------:|---------:|------:|--------:|-------:|----------:|------------:|
-| AddToDictWithForEachLoop | 100   | 5.612 μs | 0.1780 μs | 0.5051 μs | 5.425 μs |  3.97 |    0.39 | 2.3727 |  10.01 KB |        3.28 |
-| AddToDictPresetCapacity  | 100   | 3.228 μs | 0.0641 μs | 0.1017 μs | 3.212 μs |  2.23 |    0.12 | 0.7362 |   3.11 KB |        1.02 |
-| AddToDictWithConstructor | 100   | 1.447 μs | 0.0290 μs | 0.0705 μs | 1.426 μs |  1.00 |    0.00 | 0.7248 |   3.05 KB |        1.00 |
+| Method                          | Count | Mean     | Error     | StdDev    | Median   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|-------------------------------- |------ |---------:|----------:|----------:|---------:|------:|--------:|-------:|----------:|------------:|
+| CopyDictWithForEachLoop         | 100   | 5.253 μs | 0.0930 μs | 0.1143 μs | 5.218 μs |  3.86 |    0.08 | 2.3727 |  10.01 KB |        3.28 |
+| CopyDictPresetCapacity          | 100   | 3.084 μs | 0.0548 μs | 0.0485 μs | 3.077 μs |  2.25 |    0.04 | 0.7362 |   3.11 KB |        1.02 |
+| CopyDictWithConstructor         | 100   | 1.371 μs | 0.0245 μs | 0.0217 μs | 1.373 μs |  1.00 |    0.00 | 0.7248 |   3.05 KB |        1.00 |
+| CopyDictWithToDictionaryLambdas | 100   | 3.153 μs | 0.0516 μs | 0.0706 μs | 3.125 μs |  2.31 |    0.08 | 0.7362 |   3.11 KB |        1.02 |
+| CopyDictWithToDictionary        | 100   | 1.414 μs | 0.0313 μs | 0.0872 μs | 1.388 μs |  1.03 |    0.07 | 0.7248 |   3.05 KB |        1.00 |
