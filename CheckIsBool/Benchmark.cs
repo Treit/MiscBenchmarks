@@ -2,6 +2,7 @@
 {
     using System;
     using System.Buffers;
+    using System.Collections.Frozen;
     using System.Collections.Generic;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
@@ -47,7 +48,8 @@
 
     public static class VariantsExtensions
     {
-        static readonly SearchValues<string> _truthyValues = SearchValues.Create(["true", "1"], StringComparison.OrdinalIgnoreCase);
+        static readonly SearchValues<string> _truthyValueStrings = SearchValues.Create(["true", "1"], StringComparison.OrdinalIgnoreCase);
+        static readonly FrozenSet<string> _truthyValues = FrozenSet.Create(StringComparer.OrdinalIgnoreCase, ["true", "1"]);
 
         private const string IsTrueStr = "1";
         public static bool GetTrueBool(this IVariants variants, string variantName)
@@ -74,8 +76,12 @@
         }
 
         public static bool GetTrueBool3(this IVariants variants, string variantName) =>
+            variants.TryGetValue(variantName, out var variant) && _truthyValueStrings.Contains(variant);
+
+        public static bool GetTrueBool4(this IVariants variants, string variantName) =>
             variants.TryGetValue(variantName, out var variant) && _truthyValues.Contains(variant);
     }
+
     [MemoryDiagnoser]
     public class Benchmark
     {
@@ -153,7 +159,7 @@
         }
 
         [Benchmark]
-        public long CheckWithStringCompareAaron()
+        public long CheckWithStringCompareAaronSearchValues()
         {
             var sum = 0L;
 
@@ -161,6 +167,24 @@
             {
                 var variantName = $"key{i}";
                 var result = _filters.GetTrueBool3(variantName);
+                if (result)
+                {
+                    sum += i;
+                }
+            }
+
+            return sum;
+        }
+
+        [Benchmark]
+        public long CheckWithStringCompareAaronFrozenSet()
+        {
+            var sum = 0L;
+
+            for (int i = 0; i < Count; i++)
+            {
+                var variantName = $"key{i}";
+                var result = _filters.GetTrueBool4(variantName);
                 if (result)
                 {
                     sum += i;

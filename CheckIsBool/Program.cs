@@ -16,10 +16,12 @@
             b.GlobalSetup();
             var first = b.CheckWithStringCompare();
             var second = b.CheckWithTryParse();
-            var third = b.CheckWithStringCompareAaron();
+            var third = b.CheckWithStringCompareAaronSearchValues();
+            var fourth = b.CheckWithStringCompareAaronFrozenSet();
             Console.WriteLine($"CheckWithStringCompare: {first}");
             Console.WriteLine($"CheckWithTryParse: {second}");
-            Console.WriteLine($"CheckWithStringCompareAaron: {third}");
+            Console.WriteLine($"CheckWithStringCompareAaronSearchValues: {third}");
+            Console.WriteLine($"CheckWithStringCompareAaronFrozenSet: {fourth}");
 #endif
         }
     }
