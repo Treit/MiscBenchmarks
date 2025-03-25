@@ -57,26 +57,37 @@
     [MemoryDiagnoser]
     public class Benchmark
     {
+        static Dictionary<string, string> dict1;
+        static Dictionary<string, string> dict2;
+        static Dictionary<string, string> dict3;
+        static Dictionary<string, string> dict4;
+        static Dictionary<string, string> dict5;
+        static Dictionary<string, string> dict6;
+        static Dictionary<string, string> dict7;
+        static FrozenDictionary<string, string> dict8;
+        static ImmutableDictionary<string, string> dict9;
+        static ConcurrentDictionary<string, string> dict10;
+        static ReadOnlyDictionary<string, string> dict11;
+
         [GlobalSetup]
         public void GlobalSetup()
         {
+            dict1 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            dict2 = new Dictionary<string, string>();
+            dict3 = new Dictionary<string, string>(StringComparer.Ordinal);
+            dict4 = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
+            dict5 = new Dictionary<string, string>(StringComparer.CurrentCulture);
+            dict6 = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            dict7 = new Dictionary<string, string>(StringComparer.InvariantCulture);
+            dict8 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase).ToFrozenDictionary();
+            dict9 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase).ToImmutableDictionary();
+            dict10 = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            dict11 = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
         }
 
         [Benchmark(Baseline = true)]
         public bool Equals()
         {
-            var dict1 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            var dict2 = new Dictionary<string, string>();
-            var dict3 = new Dictionary<string, string>(StringComparer.Ordinal);
-            var dict4 = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
-            var dict5 = new Dictionary<string, string>(StringComparer.CurrentCulture);
-            var dict6 = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-            var dict7 = new Dictionary<string, string>(StringComparer.InvariantCulture);
-            var dict8 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase).ToFrozenDictionary();
-            var dict9 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase).ToImmutableDictionary();
-            var dict10 = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            var dict11 = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
-
             return CollectionUtils.IsCaseInsensitive(dict1) &&
                    CollectionUtils.IsCaseInsensitive(dict2) &&
                    CollectionUtils.IsCaseInsensitive(dict3) &&
@@ -93,18 +104,6 @@
         [Benchmark]
         public bool ReferenceEquals()
         {
-            var dict1 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            var dict2 = new Dictionary<string, string>();
-            var dict3 = new Dictionary<string, string>(StringComparer.Ordinal);
-            var dict4 = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
-            var dict5 = new Dictionary<string, string>(StringComparer.CurrentCulture);
-            var dict6 = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-            var dict7 = new Dictionary<string, string>(StringComparer.InvariantCulture);
-            var dict8 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase).ToFrozenDictionary();
-            var dict9 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase).ToImmutableDictionary();
-            var dict10 = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            var dict11 = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
-
             return CollectionUtils.IsCaseInsensitiveReferenceEquals(dict1) &&
                    CollectionUtils.IsCaseInsensitiveReferenceEquals(dict2) &&
                    CollectionUtils.IsCaseInsensitiveReferenceEquals(dict3) &&

@@ -1,6 +1,7 @@
 # Using Equals instead of ReferenceEquals
 
 
+
 ```
 
 BenchmarkDotNet v0.13.12, Windows 11 (10.0.27823.1000)
@@ -11,7 +12,7 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-| Method          | Mean     | Error   | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------- |---------:|--------:|---------:|------:|--------:|-------:|----------:|------------:|
-| Equals          | 390.3 ns | 7.72 ns | 14.30 ns |  1.00 |    0.00 | 0.3839 |   1.62 KB |        1.00 |
-| ReferenceEquals | 394.7 ns | 7.93 ns | 16.73 ns |  1.02 |    0.06 | 0.3839 |   1.62 KB |        1.00 |
+| Method          | Mean     | Error    | StdDev   | Median   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------- |---------:|---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| Equals          | 33.41 ns | 0.647 ns | 1.739 ns | 32.72 ns |  1.00 |    0.00 | 0.0074 |      32 B |        1.00 |
+| ReferenceEquals | 31.01 ns | 0.652 ns | 1.775 ns | 30.52 ns |  0.93 |    0.07 | 0.0074 |      32 B |        1.00 |
