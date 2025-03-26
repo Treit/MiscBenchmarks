@@ -7,15 +7,15 @@
     using System.Runtime.InteropServices;
 
     [MemoryDiagnoser]
-    [ShortRunJob]
     [MemoryRandomization]
     public class Benchmark
     {
         private string[] _stringArray;
         private List<string> _stringList;
         private HashSet<string> _stringSet;
+        private Dictionary<string, uint> _dict;
 
-        [Params(10, 100_000)]
+        [Params(10, 5000)]
         public int Count { get; set; }
 
         [GlobalSetup]
@@ -24,6 +24,7 @@
             _stringArray = new string[Count];
             _stringList = new List<string>(Count);
             _stringSet = new HashSet<string>(Count);
+            _dict = new Dictionary<string, uint>(Count);
 
             for (int i = 0; i < Count; i++)
             {
@@ -31,6 +32,7 @@
                 _stringArray[i] = str;
                 _stringList.Add(str);
                 _stringSet.Add(str);
+                _dict.Add(str, (uint)i);
             }
         }
 
@@ -80,6 +82,25 @@
         public long IEnumerableForEachLoopNoCastUnderlyingCollectionIsHashSet()
         {
             return DoForEachLoopOnIEnumerable(_stringSet, false);
+        }
+
+        [Benchmark]
+        public long IEnumerableForEachLoopDictionaryKeys()
+        {
+            return DoForEachLoopOnIEnumerable(_dict.Keys, false);
+        }
+
+        [Benchmark]
+        public long IEnumerableForEachLoopDictionaryKeyValuePairs()
+        {
+            var result = 0L;
+
+            foreach (var str in _dict)
+            {
+                result += str.Key.Length;
+            }
+
+            return result;
         }
 
         private long DoLoopOnIEnumerable(IEnumerable<string> items, bool castToArray)
