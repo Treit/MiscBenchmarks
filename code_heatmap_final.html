@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Source Code Projects Treemap</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+        #search {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 250px;
+            margin-right: 10px;
+        }
+        .sort-container {
+            display: flex;
+            align-items: center;
+        }
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+        }
+        .tooltip {
+            position: absolute;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 4px;
+            pointer-events: none;
+            font-size: 14px;
+            z-index: 10;
+        }
+        .cell {
+            stroke: #fff;
+            stroke-width: 1px;
+            transition: opacity 0.3s;
+        }
+        .cell:hover {
+            stroke: #333;
+            stroke-width: 2px;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+        .stats {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .no-results {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 18px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Source Code Projects Treemap</h1>
+        <div class="controls">
+            <div class="search-container">
+                <input type="text" id="search" placeholder="Search projects...">
+                <button id="clear-search">Clear</button>
+            </div>
+            <div class="sort-container">
+                <label for="sort">Sort by: </label>
+                <select id="sort">
+                    <option value="name">Name</option>
+                    <option value="size" selected>Size (Lines of Code)</option>
+                </select>
+            </div>
+        </div>
+        <div id="treemap"></div>
+        <div id="no-results" class="no-results">No projects match your search criteria.</div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #d1e5f0;"></div>
+                <span>Small</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #92c5de;"></div>
+                <span>Medium</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #4393c3;"></div>
+                <span>Large</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #2166ac;"></div>
+                <span>Very Large</span>
+            </div>
+        </div>
+        <div class="stats">
+            <p>Total Projects: <span id="total-projects">0</span> | Total Lines of Code: <span id="total-loc">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // PASTE JSON DATA HERE - Replace this comment with the contents of code_metrics.json
+        const projectData = [
+        {
+            "ProjectName":  "AnyNonNullVsJustEnumerating",
+            "LinesOfCode":  86
+        },
+        {
+            "ProjectName":  "ArrayBoundsChecks",
+            "LinesOfCode":  158
+        },
+        {
+            "ProjectName":  "ArrayForVsForeach",
+            "LinesOfCode":  89
+        },
+        {
+            "ProjectName":  "ArrayInitialization",
+            "LinesOfCode":  106
+        },
+        {
+            "ProjectName":  "ArrayListVsList",
+            "LinesOfCode":  153
+        },
+        {
+            "ProjectName":  "ArrayPoolVsStackAlloc",
+            "LinesOfCode":  136
+        },
+        {
+            "ProjectName":  "ArrayRotate",
+            "LinesOfCode":  162
+        },
+        {
+            "ProjectName":  "ArraySum",
+            "LinesOfCode":  512
+        },
+        {
+            "ProjectName":  "ArrayVsDictionaryLookup",
+            "LinesOfCode":  95
+        },
+        {
+            "ProjectName":  "AsCastVsDirectCast",
+            "LinesOfCode":  71
+        },
+        {
+            "ProjectName":  "AsParallelIteration",
+            "LinesOfCode":  145
+        },
+        {
+            "ProjectName":  "AspNetRouteLookups",
+            "LinesOfCode":  149
+        },
+        {
+            "ProjectName":  "AsyncReadTest",
+            "LinesOfCode":  279
+        },
+        {
+            "ProjectName":  "AsyncSignaledEvents",
+            "LinesOfCode":  153
+        },
+        {
+            "ProjectName":  "AsyncVsNonAsyncMemoryStreamRead",
+            "LinesOfCode":  103
+        },
+        {
+            "ProjectName":  "AsyncVsSyncFileIO",
+            "LinesOfCode":  121
+        },
+        {
+            "ProjectName":  "AtLeastOneCommonElementWithHashSet",
+            "LinesOfCode":  130
+        },
+        {
+            "ProjectName":  "Base64DecodeAfterFirstChar",
+            "LinesOfCode":  130
+        },
+        {
+            "ProjectName":  "BinarySearch",
+            "LinesOfCode":  179
+        },
+        {
+            "ProjectName":  "BitArrayVsHashSet",
+            "LinesOfCode":  78
+        },
+        {
+            "ProjectName":  "Bitset",
+            "LinesOfCode":  235
+        },
+        {
+            "ProjectName":  "BlockCopyVsArrayCopyFloats",
+            "LinesOfCode":  72
+        },
+        {
+            "ProjectName":  "BlockingCollectionVsChannel",
+            "LinesOfCode":  286
+        },
+        {
+            "ProjectName":  "Boxing",
+            "LinesOfCode":  62
+        },
+        {
+            "ProjectName":  "BubbleSort",
+            "LinesOfCode":  110
+        },
+        {
+            "ProjectName":  "BuildLogIdSplitVsSpan",
+            "LinesOfCode":  191
+        },
+        {
+            "ProjectName":  "BytesToLong",
+            "LinesOfCode":  93
+        },
+        {
+            "ProjectName":  "CaseInsensitiveStringComparison",
+            "LinesOfCode":  216
+        },
+        {
+            "ProjectName":  "CheckFiveValues",
+            "LinesOfCode":  190
+        },
+        {
+            "ProjectName":  "CheckIsBool",
+            "LinesOfCode":  363
+        },
+        {
+            "ProjectName":  "CheckSpecialChars",
+            "LinesOfCode":  191
+        },
+        {
+            "ProjectName":  "CheckThreeValues",
+            "LinesOfCode":  95
+        },
+        {
+            "ProjectName":  "CheckTwoValues",
+            "LinesOfCode":  90
+        },
+        {
+            "ProjectName":  "ChooseBucketsWithMod",
+            "LinesOfCode":  140
+        },
+        {
+            "ProjectName":  "CollectionExpressionVsToArray",
+            "LinesOfCode":  51
+        },
+        {
+            "ProjectName":  "ComparingByteArrays",
+            "LinesOfCode":  169
+        },
+        {
+            "ProjectName":  "ConcatVsUnion",
+            "LinesOfCode":  104
+        },
+        {
+            "ProjectName":  "ConcurrentListAdd",
+            "LinesOfCode":  74
+        },
+        {
+            "ProjectName":  "ConfigureAwait",
+            "LinesOfCode":  120
+        },
+        {
+            "ProjectName":  "ContainsKey",
+            "LinesOfCode":  118
+        },
+        {
+            "ProjectName":  "ContainsVsIndexOf",
+            "LinesOfCode":  262
+        },
+        {
+            "ProjectName":  "ConvertAllVsSelectAndToList",
+            "LinesOfCode":  64
+        },
+        {
+            "ProjectName":  "ConvertToStringVsToString",
+            "LinesOfCode":  132
+        },
+        {
+            "ProjectName":  "ConvertVsParse",
+            "LinesOfCode":  92
+        },
+        {
+            "ProjectName":  "CountCharDigits",
+            "LinesOfCode":  97
+        },
+        {
+            "ProjectName":  "CountDigitsBenchmark",
+            "LinesOfCode":  527
+        },
+        {
+            "ProjectName":  "CountingStringsBenchmark",
+            "LinesOfCode":  200
+        },
+        {
+            "ProjectName":  "CountingUsingStringContains",
+            "LinesOfCode":  192
+        },
+        {
+            "ProjectName":  "CountTokens",
+            "LinesOfCode":  288
+        },
+        {
+            "ProjectName":  "DateTimeNowVsDateTimeUtcNow",
+            "LinesOfCode":  89
+        },
+        {
+            "ProjectName":  "DedupeDelimitedString",
+            "LinesOfCode":  118
+        },
+        {
+            "ProjectName":  "DeepCopy",
+            "LinesOfCode":  88
+        },
+        {
+            "ProjectName":  "DegreesToRadians",
+            "LinesOfCode":  83
+        },
+        {
+            "ProjectName":  "DelimitedStringToTokens",
+            "LinesOfCode":  136
+        },
+        {
+            "ProjectName":  "DerSnofArrayAdd",
+            "LinesOfCode":  71
+        },
+        {
+            "ProjectName":  "DetectRepeatedIntegers",
+            "LinesOfCode":  140
+        },
+        {
+            "ProjectName":  "DictionarVsLinqFirstOrDefault",
+            "LinesOfCode":  121
+        },
+        {
+            "ProjectName":  "DictionaryAdd",
+            "LinesOfCode":  174
+        },
+        {
+            "ProjectName":  "DictionaryAnyVsCount",
+            "LinesOfCode":  98
+        },
+        {
+            "ProjectName":  "DictionaryContainsKeyVsListAny",
+            "LinesOfCode":  249
+        },
+        {
+            "ProjectName":  "DictionaryIterateSortedKeys",
+            "LinesOfCode":  189
+        },
+        {
+            "ProjectName":  "DictionaryKeysAndValuesToArrayVsArrays",
+            "LinesOfCode":  165
+        },
+        {
+            "ProjectName":  "DictionaryLookups",
+            "LinesOfCode":  221
+        },
+        {
+            "ProjectName":  "DictionaryLookupsCaseComparison",
+            "LinesOfCode":  134
+        },
+        {
+            "ProjectName":  "DictionaryPopulate",
+            "LinesOfCode":  242
+        },
+        {
+            "ProjectName":  "DictionaryTryGetValueVsContainsKey",
+            "LinesOfCode":  134
+        },
+        {
+            "ProjectName":  "DictionaryTryGetValueVsGetOrAdd",
+            "LinesOfCode":  242
+        },
+        {
+            "ProjectName":  "DictionaryUpdates",
+            "LinesOfCode":  88
+        },
+        {
+            "ProjectName":  "DictionaryVsFrozenDictionary",
+            "LinesOfCode":  67
+        },
+        {
+            "ProjectName":  "DictionaryVsMemoryCache",
+            "LinesOfCode":  82
+        },
+        {
+            "ProjectName":  "DictionaryVsSortedListLookup",
+            "LinesOfCode":  93
+        },
+        {
+            "ProjectName":  "Distance",
+            "LinesOfCode":  333
+        },
+        {
+            "ProjectName":  "DistinctToList",
+            "LinesOfCode":  76
+        },
+        {
+            "ProjectName":  "DistinctVsSkipping",
+            "LinesOfCode":  95
+        },
+        {
+            "ProjectName":  "Division",
+            "LinesOfCode":  92
+        },
+        {
+            "ProjectName":  "DynamicObjects",
+            "LinesOfCode":  74
+        },
+        {
+            "ProjectName":  "EfcChangeTrackingStrategies",
+            "LinesOfCode":  2022
+        },
+        {
+            "ProjectName":  "EnumerableRangeVsArray",
+            "LinesOfCode":  95
+        },
+        {
+            "ProjectName":  "EnumerableVsListIteration",
+            "LinesOfCode":  74
+        },
+        {
+            "ProjectName":  "EnumerateDictionary",
+            "LinesOfCode":  171
+        },
+        {
+            "ProjectName":  "EnumGetValues",
+            "LinesOfCode":  65
+        },
+        {
+            "ProjectName":  "EnumLookup",
+            "LinesOfCode":  726
+        },
+        {
+            "ProjectName":  "EnumSizes",
+            "LinesOfCode":  148
+        },
+        {
+            "ProjectName":  "EnumToString",
+            "LinesOfCode":  205
+        },
+        {
+            "ProjectName":  "EqualsVsReferenceEquals",
+            "LinesOfCode":  158
+        },
+        {
+            "ProjectName":  "FileStreamVsRandomAccess",
+            "LinesOfCode":  594
+        },
+        {
+            "ProjectName":  "FileSystemTraversal",
+            "LinesOfCode":  224
+        },
+        {
+            "ProjectName":  "FilterDictionaryEntries",
+            "LinesOfCode":  109
+        },
+        {
+            "ProjectName":  "FilterDictionaryEntries2",
+            "LinesOfCode":  109
+        },
+        {
+            "ProjectName":  "FlipSign",
+            "LinesOfCode":  93
+        },
+        {
+            "ProjectName":  "ForEachAsyncVsTaskWhenAll",
+            "LinesOfCode":  138
+        },
+        {
+            "ProjectName":  "ForEachVsAny",
+            "LinesOfCode":  73
+        },
+        {
+            "ProjectName":  "ForEachVsEnumerator",
+            "LinesOfCode":  387
+        },
+        {
+            "ProjectName":  "ForEachVsToListForEach",
+            "LinesOfCode":  59
+        },
+        {
+            "ProjectName":  "ForLoops",
+            "LinesOfCode":  149
+        },
+        {
+            "ProjectName":  "ForLoops2",
+            "LinesOfCode":  100
+        },
+        {
+            "ProjectName":  "GetCurrentAssembly",
+            "LinesOfCode":  44
+        },
+        {
+            "ProjectName":  "GettingLastElement",
+            "LinesOfCode":  65
+        },
+        {
+            "ProjectName":  "GetTypeVsNameOf",
+            "LinesOfCode":  52
+        },
+        {
+            "ProjectName":  "GetTypeVsTypeof",
+            "LinesOfCode":  107
+        },
+        {
+            "ProjectName":  "GetTypeVsTypeof2",
+            "LinesOfCode":  78
+        },
+        {
+            "ProjectName":  "HashCodeCombining",
+            "LinesOfCode":  87
+        },
+        {
+            "ProjectName":  "HashFunctions",
+            "LinesOfCode":  605
+        },
+        {
+            "ProjectName":  "HashSetVsC5HashSet",
+            "LinesOfCode":  70
+        },
+        {
+            "ProjectName":  "HashSetVsFrozenSet",
+            "LinesOfCode":  190
+        },
+        {
+            "ProjectName":  "HashSetVsLinqDistinct",
+            "LinesOfCode":  62
+        },
+        {
+            "ProjectName":  "HashSetVsList",
+            "LinesOfCode":  91
+        },
+        {
+            "ProjectName":  "HashSimilarity",
+            "LinesOfCode":  1431
+        },
+        {
+            "ProjectName":  "HashStringArray",
+            "LinesOfCode":  124
+        },
+        {
+            "ProjectName":  "HashTableVsDictionary",
+            "LinesOfCode":  108
+        },
+        {
+            "ProjectName":  "HexStringToBytes",
+            "LinesOfCode":  133
+        },
+        {
+            "ProjectName":  "ICollectionAsArray",
+            "LinesOfCode":  156
+        },
+        {
+            "ProjectName":  "ICollectionIterate",
+            "LinesOfCode":  203
+        },
+        {
+            "ProjectName":  "IEnumerableCountVsToListCount",
+            "LinesOfCode":  65
+        },
+        {
+            "ProjectName":  "IEnumerableIterate",
+            "LinesOfCode":  304
+        },
+        {
+            "ProjectName":  "IfVsElseIf",
+            "LinesOfCode":  131
+        },
+        {
+            "ProjectName":  "IListVsList",
+            "LinesOfCode":  101
+        },
+        {
+            "ProjectName":  "IndexingStrings",
+            "LinesOfCode":  179
+        },
+        {
+            "ProjectName":  "IndexOfItemMatchingPredicate",
+            "LinesOfCode":  82
+        },
+        {
+            "ProjectName":  "IndexOfMax",
+            "LinesOfCode":  100
+        },
+        {
+            "ProjectName":  "InterlockedExchangeVsAssignment",
+            "LinesOfCode":  59
+        },
+        {
+            "ProjectName":  "InterlockedIncrementVsLock",
+            "LinesOfCode":  125
+        },
+        {
+            "ProjectName":  "InterpolationVsToString",
+            "LinesOfCode":  159
+        },
+        {
+            "ProjectName":  "IntersectAny",
+            "LinesOfCode":  301
+        },
+        {
+            "ProjectName":  "IntParseVsIntToString",
+            "LinesOfCode":  78
+        },
+        {
+            "ProjectName":  "IntToHexChar",
+            "LinesOfCode":  112
+        },
+        {
+            "ProjectName":  "IsEven",
+            "LinesOfCode":  426
+        },
+        {
+            "ProjectName":  "IterateDistinctValues",
+            "LinesOfCode":  110
+        },
+        {
+            "ProjectName":  "IterateWithCollectionsMarshal",
+            "LinesOfCode":  83
+        },
+        {
+            "ProjectName":  "IteratingDictionaryEntries",
+            "LinesOfCode":  85
+        },
+        {
+            "ProjectName":  "IteratingListVsDictionary",
+            "LinesOfCode":  121
+        },
+        {
+            "ProjectName":  "JaggedArrayFilledWithValue",
+            "LinesOfCode":  109
+        },
+        {
+            "ProjectName":  "JsonDeserializeAsynEnumerableVsNormal",
+            "LinesOfCode":  91
+        },
+        {
+            "ProjectName":  "JsonSerialization",
+            "LinesOfCode":  159
+        },
+        {
+            "ProjectName":  "JsonSerialization2",
+            "LinesOfCode":  141
+        },
+        {
+            "ProjectName":  "KeyValuePairVsValueTuple",
+            "LinesOfCode":  89
+        },
+        {
+            "ProjectName":  "LastTwoTokens",
+            "LinesOfCode":  151
+        },
+        {
+            "ProjectName":  "Leetcode551_TitanicTony",
+            "LinesOfCode":  167
+        },
+        {
+            "ProjectName":  "LinkedListVsList",
+            "LinesOfCode":  96
+        },
+        {
+            "ProjectName":  "LinqAllVsExcept",
+            "LinesOfCode":  74
+        },
+        {
+            "ProjectName":  "LinqAny",
+            "LinesOfCode":  78
+        },
+        {
+            "ProjectName":  "LinqCountVsToListDotCount",
+            "LinesOfCode":  69
+        },
+        {
+            "ProjectName":  "LinqExceptVsSet",
+            "LinesOfCode":  77
+        },
+        {
+            "ProjectName":  "LinqUnnecessarySelect",
+            "LinesOfCode":  62
+        },
+        {
+            "ProjectName":  "ListAdd",
+            "LinesOfCode":  122
+        },
+        {
+            "ProjectName":  "ListContainsExactlyFiveSpecificValues",
+            "LinesOfCode":  307
+        },
+        {
+            "ProjectName":  "ListCopy",
+            "LinesOfCode":  71
+        },
+        {
+            "ProjectName":  "ListCountGreaterThanZeroVsAny",
+            "LinesOfCode":  106
+        },
+        {
+            "ProjectName":  "ListFirstFive",
+            "LinesOfCode":  93
+        },
+        {
+            "ProjectName":  "ListForVsForeach",
+            "LinesOfCode":  121
+        },
+        {
+            "ProjectName":  "ListGetRangeVsLinqSkipTake",
+            "LinesOfCode":  108
+        },
+        {
+            "ProjectName":  "ListIndexVsElementAt",
+            "LinesOfCode":  92
+        },
+        {
+            "ProjectName":  "ListSearch",
+            "LinesOfCode":  89
+        },
+        {
+            "ProjectName":  "ListSortVsLinqOrderBy",
+            "LinesOfCode":  108
+        },
+        {
+            "ProjectName":  "ListTruncate",
+            "LinesOfCode":  80
+        },
+        {
+            "ProjectName":  "ListTwoColumnSort",
+            "LinesOfCode":  107
+        },
+        {
+            "ProjectName":  "ListVsArray",
+            "LinesOfCode":  108
+        },
+        {
+            "ProjectName":  "ListVsC5List",
+            "LinesOfCode":  152
+        },
+        {
+            "ProjectName":  "Locking",
+            "LinesOfCode":  131
+        },
+        {
+            "ProjectName":  "LockOverhead",
+            "LinesOfCode":  81
+        },
+        {
+            "ProjectName":  "LockVsInterlockedCompareExchange",
+            "LinesOfCode":  75
+        },
+        {
+            "ProjectName":  "LookupBenchmark",
+            "LinesOfCode":  123
+        },
+        {
+            "ProjectName":  "LoopArrayVsList",
+            "LinesOfCode":  98
+        },
+        {
+            "ProjectName":  "LoopIndexOrLocalVariable",
+            "LinesOfCode":  72
+        },
+        {
+            "ProjectName":  "ManyProperties",
+            "LinesOfCode":  2184
+        },
+        {
+            "ProjectName":  "ManySmallFilesVsOneLargeFile",
+            "LinesOfCode":  82
+        },
+        {
+            "ProjectName":  "MaxByVsOrderByDescending",
+            "LinesOfCode":  85
+        },
+        {
+            "ProjectName":  "MaxFloat",
+            "LinesOfCode":  122
+        },
+        {
+            "ProjectName":  "MaxOfIntArray",
+            "LinesOfCode":  68
+        },
+        {
+            "ProjectName":  "MaxOfIntList",
+            "LinesOfCode":  68
+        },
+        {
+            "ProjectName":  "MemoryStreamDispose",
+            "LinesOfCode":  58
+        },
+        {
+            "ProjectName":  "MemoryStreamToGuid",
+            "LinesOfCode":  153
+        },
+        {
+            "ProjectName":  "MemoryStreamVsList",
+            "LinesOfCode":  88
+        },
+        {
+            "ProjectName":  "MemoryVsArraySegment",
+            "LinesOfCode":  93
+        },
+        {
+            "ProjectName":  "MergingDictionaries",
+            "LinesOfCode":  104
+        },
+        {
+            "ProjectName":  "MinMaxNumericValues",
+            "LinesOfCode":  152
+        },
+        {
+            "ProjectName":  "MoveRandomStringToFrontOfList",
+            "LinesOfCode":  121
+        },
+        {
+            "ProjectName":  "MultiDimensionalVsJaggedArray",
+            "LinesOfCode":  262
+        },
+        {
+            "ProjectName":  "NewVsActivatorCreateInstance",
+            "LinesOfCode":  96
+        },
+        {
+            "ProjectName":  "NotroParsingProblem",
+            "LinesOfCode":  182
+        },
+        {
+            "ProjectName":  "OddOrEven",
+            "LinesOfCode":  82
+        },
+        {
+            "ProjectName":  "OrdinalVsOrdinalIgnoreCase",
+            "LinesOfCode":  109
+        },
+        {
+            "ProjectName":  "ParallelForVsExplicitTasks",
+            "LinesOfCode":  99
+        },
+        {
+            "ProjectName":  "ParseUrlForToken",
+            "LinesOfCode":  179
+        },
+        {
+            "ProjectName":  "ParseVsTryParse",
+            "LinesOfCode":  92
+        },
+        {
+            "ProjectName":  "PassByRefVsPassByValue",
+            "LinesOfCode":  298
+        },
+        {
+            "ProjectName":  "PicoGym-Transformation",
+            "LinesOfCode":  107
+        },
+        {
+            "ProjectName":  "PropertyVsField",
+            "LinesOfCode":  120
+        },
+        {
+            "ProjectName":  "PropertyVsLocal",
+            "LinesOfCode":  80
+        },
+        {
+            "ProjectName":  "QueueStructVsClass",
+            "LinesOfCode":  131
+        },
+        {
+            "ProjectName":  "RandomNumbers",
+            "LinesOfCode":  210
+        },
+        {
+            "ProjectName":  "RandomStrings",
+            "LinesOfCode":  245
+        },
+        {
+            "ProjectName":  "ReadingDictionaryEntries",
+            "LinesOfCode":  114
+        },
+        {
+            "ProjectName":  "ReadingDictionaryEntriesConcurrently",
+            "LinesOfCode":  299
+        },
+        {
+            "ProjectName":  "RecordVsClass",
+            "LinesOfCode":  455
+        },
+        {
+            "ProjectName":  "RedunantToString",
+            "LinesOfCode":  140
+        },
+        {
+            "ProjectName":  "RedundantToString",
+            "LinesOfCode":  159
+        },
+        {
+            "ProjectName":  "ReflectionVsDynamic",
+            "LinesOfCode":  276
+        },
+        {
+            "ProjectName":  "Regex",
+            "LinesOfCode":  117
+        },
+        {
+            "ProjectName":  "RegexVsSplit",
+            "LinesOfCode":  220
+        },
+        {
+            "ProjectName":  "RepeatStrings",
+            "LinesOfCode":  107
+        },
+        {
+            "ProjectName":  "ReturnEmptySequence",
+            "LinesOfCode":  59
+        },
+        {
+            "ProjectName":  "ReverseString",
+            "LinesOfCode":  188
+        },
+        {
+            "ProjectName":  "RoundRobin",
+            "LinesOfCode":  215
+        },
+        {
+            "ProjectName":  "Scratch",
+            "LinesOfCode":  41
+        },
+        {
+            "ProjectName":  "SealedVsInherited",
+            "LinesOfCode":  195
+        },
+        {
+            "ProjectName":  "SearchStringListForMultipleValues",
+            "LinesOfCode":  114
+        },
+        {
+            "ProjectName":  "SequentialAwaitVsTaskWhenAll",
+            "LinesOfCode":  75
+        },
+        {
+            "ProjectName":  "SequentialAwaitVsTaskWhenAll2",
+            "LinesOfCode":  103
+        },
+        {
+            "ProjectName":  "SerializeMemoryInfo",
+            "LinesOfCode":  112
+        },
+        {
+            "ProjectName":  "SetIntersectionCount",
+            "LinesOfCode":  78
+        },
+        {
+            "ProjectName":  "SetProperty",
+            "LinesOfCode":  93
+        },
+        {
+            "ProjectName":  "SetTwoValues",
+            "LinesOfCode":  117
+        },
+        {
+            "ProjectName":  "ShallowCloneByteArray",
+            "LinesOfCode":  66
+        },
+        {
+            "ProjectName":  "ShortDayOfWeek",
+            "LinesOfCode":  180
+        },
+        {
+            "ProjectName":  "ShuffleBenchmark",
+            "LinesOfCode":  280
+        },
+        {
+            "ProjectName":  "SingleItemEnumerable",
+            "LinesOfCode":  181
+        },
+        {
+            "ProjectName":  "SliceString",
+            "LinesOfCode":  127
+        },
+        {
+            "ProjectName":  "SlowIOTaskProcessing",
+            "LinesOfCode":  120
+        },
+        {
+            "ProjectName":  "SortByMultipleProperties",
+            "LinesOfCode":  76
+        },
+        {
+            "ProjectName":  "SortedVsUnsortedIteration",
+            "LinesOfCode":  177
+        },
+        {
+            "ProjectName":  "SpreadOperatorVsAppendToList",
+            "LinesOfCode":  89
+        },
+        {
+            "ProjectName":  "SpreadOperatorVsConcat",
+            "LinesOfCode":  77
+        },
+        {
+            "ProjectName":  "SqlDataSetVsDataReader",
+            "LinesOfCode":  247
+        },
+        {
+            "ProjectName":  "SqlSyncVsAsync",
+            "LinesOfCode":  97
+        },
+        {
+            "ProjectName":  "SquaringNumbers",
+            "LinesOfCode":  88
+        },
+        {
+            "ProjectName":  "StaticClass",
+            "LinesOfCode":  90
+        },
+        {
+            "ProjectName":  "StaticFieldVsInstanceField",
+            "LinesOfCode":  102
+        },
+        {
+            "ProjectName":  "StaticHashSets",
+            "LinesOfCode":  100
+        },
+        {
+            "ProjectName":  "StaticVsNormalLambda",
+            "LinesOfCode":  84
+        },
+        {
+            "ProjectName":  "StringCompare",
+            "LinesOfCode":  123
+        },
+        {
+            "ProjectName":  "StringConcatVsInterpolation",
+            "LinesOfCode":  146
+        },
+        {
+            "ProjectName":  "StringConcatVsStringBuilder",
+            "LinesOfCode":  210
+        },
+        {
+            "ProjectName":  "StringEquals",
+            "LinesOfCode":  57
+        },
+        {
+            "ProjectName":  "StringEqualsVsHashSetLookup",
+            "LinesOfCode":  61
+        },
+        {
+            "ProjectName":  "StringEqualsVsStartsWith",
+            "LinesOfCode":  204
+        },
+        {
+            "ProjectName":  "StringReplace",
+            "LinesOfCode":  89
+        },
+        {
+            "ProjectName":  "StringSplitSeparatorInput",
+            "LinesOfCode":  95
+        },
+        {
+            "ProjectName":  "StringStartsWithVsEquals",
+            "LinesOfCode":  141
+        },
+        {
+            "ProjectName":  "StringToBytes",
+            "LinesOfCode":  138
+        },
+        {
+            "ProjectName":  "StringToCharArray",
+            "LinesOfCode":  100
+        },
+        {
+            "ProjectName":  "SumBinaryIntegersFromFile",
+            "LinesOfCode":  174
+        },
+        {
+            "ProjectName":  "SumIntegerArray",
+            "LinesOfCode":  134
+        },
+        {
+            "ProjectName":  "SwapElements",
+            "LinesOfCode":  234
+        },
+        {
+            "ProjectName":  "SwitchVsDictionaryLookup",
+            "LinesOfCode":  524
+        },
+        {
+            "ProjectName":  "TaskDotResultVsAwait",
+            "LinesOfCode":  82
+        },
+        {
+            "ProjectName":  "TaskFromResult",
+            "LinesOfCode":  60
+        },
+        {
+            "ProjectName":  "TaskRunWrapperVsAsyncMethodCall",
+            "LinesOfCode":  54
+        },
+        {
+            "ProjectName":  "TasksDemo",
+            "LinesOfCode":  152
+        },
+        {
+            "ProjectName":  "TaskWhenAnyRemove",
+            "LinesOfCode":  77
+        },
+        {
+            "ProjectName":  "ThreadCreation",
+            "LinesOfCode":  157
+        },
+        {
+            "ProjectName":  "ToArrayVsAny",
+            "LinesOfCode":  81
+        },
+        {
+            "ProjectName":  "ToDictionaryIntMappedToNull",
+            "LinesOfCode":  102
+        },
+        {
+            "ProjectName":  "ToggleBoolean",
+            "LinesOfCode":  99
+        },
+        {
+            "ProjectName":  "ToHashSet",
+            "LinesOfCode":  106
+        },
+        {
+            "ProjectName":  "ToListVsToArray",
+            "LinesOfCode":  58
+        },
+        {
+            "ProjectName":  "tools",
+            "LinesOfCode":  109
+        },
+        {
+            "ProjectName":  "ToStringVsCaching",
+            "LinesOfCode":  125
+        },
+        {
+            "ProjectName":  "TrimMultipleChars",
+            "LinesOfCode":  109
+        },
+        {
+            "ProjectName":  "TrimQuotes",
+            "LinesOfCode":  109
+        },
+        {
+            "ProjectName":  "TupleLoops",
+            "LinesOfCode":  142
+        },
+        {
+            "ProjectName":  "TypeLookup",
+            "LinesOfCode":  74
+        },
+        {
+            "ProjectName":  "UInt32ToCharString",
+            "LinesOfCode":  58
+        },
+        {
+            "ProjectName":  "UnnecessaryToListVsPatternMatching",
+            "LinesOfCode":  74
+        },
+        {
+            "ProjectName":  "VarVsExplicit",
+            "LinesOfCode":  164123
+        },
+        {
+            "ProjectName":  "WaitAllVsWhenAll",
+            "LinesOfCode":  100
+        },
+        {
+            "ProjectName":  "WeightedKnobs",
+            "LinesOfCode":  630
+        },
+        {
+            "ProjectName":  "WhereCountVsCount",
+            "LinesOfCode":  149
+        },
+        {
+            "ProjectName":  "WhereFirstOrDefaultVsFirstOrDefault",
+            "LinesOfCode":  62
+        },
+        {
+            "ProjectName":  "WhiteBlackGooseYield",
+            "LinesOfCode":  75
+        },
+        {
+            "ProjectName":  "WordToMarkdownConverter",
+            "LinesOfCode":  133
+        },
+        {
+            "ProjectName":  "WritingMemoryStreamVsByteArray",
+            "LinesOfCode":  133
+        },
+        {
+            "ProjectName":  "XmlParsing",
+            "LinesOfCode":  139
+        }
+    ];
+
+
+        // Initialize the visualization with the data
+        createTreemap();
+
+        function createTreemap() {
+            // Calculate total lines of code
+            const totalLOC = projectData.reduce((sum, project) => sum + project.LinesOfCode, 0);
+            const totalProjects = projectData.length;
+
+            // Update stats
+            document.getElementById('total-projects').textContent = totalProjects;
+            document.getElementById('total-loc').textContent = totalLOC.toLocaleString();
+
+            // Set up dimensions
+            const margin = { top: 10, right: 10, bottom: 10, left: 10 };
+            const width = 1160 - margin.left - margin.right;
+            const height = 600 - margin.top - margin.bottom;
+
+            // Create SVG
+            const svg = d3.select("#treemap")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // Create tooltip
+            const tooltip = d3.select("body")
+                .append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
+            // Create treemap layout
+            const treemap = d3.treemap()
+                .size([width, height])
+                .padding(1)
+                .round(true);
+
+            // Create color scale
+            const colorScale = d3.scaleQuantile()
+                .domain([0, d3.max(projectData, d => d.LinesOfCode)])
+                .range(["#d1e5f0", "#92c5de", "#4393c3", "#2166ac"]);
+
+            // Function to update the visualization
+            function updateVisualization(data, sortBy) {
+                // Clear previous visualization
+                svg.selectAll("*").remove();
+
+                // Sort data
+                if (sortBy === "name") {
+                    data.sort((a, b) => a.ProjectName.localeCompare(b.ProjectName));
+                } else {
+                    data.sort((a, b) => b.LinesOfCode - a.LinesOfCode);
+                }
+
+                // Check if there are any results
+                if (data.length === 0) {
+                    document.getElementById("no-results").style.display = "block";
+                    return;
+                } else {
+                    document.getElementById("no-results").style.display = "none";
+                }
+
+                // Prepare data for treemap
+                const root = d3.hierarchy({ children: data })
+                    .sum(d => d.LinesOfCode)
+                    .sort((a, b) => b.value - a.value);
+
+                // Apply treemap layout
+                treemap(root);
+
+                // Create cells
+                const cell = svg.selectAll("g")
+                    .data(root.leaves())
+                    .enter()
+                    .append("g")
+                    .attr("transform", d => `translate(${d.x0},${d.y0})`);
+
+                // Add rectangles
+                cell.append("rect")
+                    .attr("class", "cell")
+                    .attr("width", d => d.x1 - d.x0)
+                    .attr("height", d => d.y1 - d.y0)
+                    .attr("fill", d => colorScale(d.data.LinesOfCode))
+                    .on("mouseover", function(event, d) {
+                        d3.select(this)
+                            .attr("stroke", "#333")
+                            .attr("stroke-width", 2);
+
+                        tooltip.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+
+                        tooltip.html(`
+                            <strong>${d.data.ProjectName}</strong><br>
+                            Lines of Code: ${d.data.LinesOfCode.toLocaleString()}<br>
+                            ${(d.data.LinesOfCode / totalLOC * 100).toFixed(2)}% of total
+                        `)
+                            .style("left", (event.pageX + 10) + "px")
+                            .style("top", (event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", function() {
+                        d3.select(this)
+                            .attr("stroke", "#fff")
+                            .attr("stroke-width", 1);
+
+                        tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    });
+
+                // Add text labels (only for cells large enough)
+                cell.append("text")
+                    .attr("x", 4)
+                    .attr("y", 14)
+                    .attr("fill", d => d.data.LinesOfCode > d3.max(data, d => d.LinesOfCode) / 4 ? "white" : "black")
+                    .text(d => {
+                        const width = d.x1 - d.x0;
+                        const name = d.data.ProjectName;
+                        // Only show text if the cell is wide enough
+                        return width > name.length * 6 ? name : "";
+                    })
+                    .style("font-size", "12px")
+                    .style("pointer-events", "none");
+            }
+
+            // Initial visualization
+            updateVisualization(projectData, "size");
+
+            // Handle search
+            document.getElementById("search").addEventListener("input", function() {
+                const searchTerm = this.value.toLowerCase();
+                const filteredData = projectData.filter(project =>
+                    project.ProjectName.toLowerCase().includes(searchTerm)
+                );
+                updateVisualization(filteredData, document.getElementById("sort").value);
+            });
+
+            // Handle clear search
+            document.getElementById("clear-search").addEventListener("click", function() {
+                document.getElementById("search").value = "";
+                updateVisualization(projectData, document.getElementById("sort").value);
+            });
+
+            // Handle sort change
+            document.getElementById("sort").addEventListener("change", function() {
+                const searchTerm = document.getElementById("search").value.toLowerCase();
+                const filteredData = searchTerm ?
+                    projectData.filter(project => project.ProjectName.toLowerCase().includes(searchTerm)) :
+                    projectData;
+                updateVisualization(filteredData, this.value);
+            });
+        }
+    </script>
+</body>
+</html>
