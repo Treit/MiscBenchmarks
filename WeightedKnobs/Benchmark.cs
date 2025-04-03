@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿namespace Test
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿namespace Test
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
@@ -179,16 +179,19 @@
             }
 
             var selectedKnobs = new List<RankerResult>(numDesiredKnobs);
-            var bit = new FenwickTree(n);
-            double totalWeight = 0;
 
-            // Initialize BIT and calculate total weight
+            // Extract initial weights for O(N) BIT construction
+            double[] initialWeights = new double[n];
+            double totalWeight = 0;
             for (int i = 0; i < n; i++)
             {
                 double weight = weightedRankedResults[i].Knob.Weight.Value;
-                bit.Add(i, weight);
+                initialWeights[i] = weight;
                 totalWeight += weight;
             }
+
+            // Use the O(N) constructor
+            var bit = new FenwickTree(initialWeights);
 
             Random random = new Random(Count);
 
@@ -295,17 +298,34 @@
         private class FenwickTree
         {
             private readonly double[] tree;
-            private readonly int size;
+            public readonly int size; // Made public for optimized FindIndex
 
-            public FenwickTree(int size)
+            // O(N) Constructor - Takes initial weights directly
+            public FenwickTree(double[] initialValues)
             {
-                this.size = size;
-                // Use size + 1 because BIT indices are typically 1-based
+                this.size = initialValues.Length;
                 this.tree = new double[size + 1];
+
+                // Place initial values directly (leaves of the conceptual tree)
+                for (int i = 0; i < size; i++)
+                {
+                    tree[i + 1] = initialValues[i];
+                }
+
+                // Build the tree by propagating sums upwards
+                for (int i = 1; i <= size; i++)
+                {
+                    int parent = i + (i & -i); // Find the next node to update
+                    if (parent <= size)
+                    {
+                        tree[parent] += tree[i];
+                    }
+                }
             }
 
-            // Add 'delta' to the element at index 'idx' (0-based index)
-            public void Add(int idx, double delta)
+             // Add 'delta' to the element at index 'idx' (0-based index)
+             // Used for updates after selection
+             public void Add(int idx, double delta)
             {
                 idx++; // Convert to 1-based index
                 while (idx <= size)
@@ -329,27 +349,43 @@
             }
 
             // Find the smallest index 'idx' (0-based) such that Query(idx) >= value
-            // Assumes values added are non-negative
-            // This implementation uses binary search on the indices
+            // Assumes values added are non-negative and value > 0
+            // This implementation uses O(log N) tree traversal.
             public int FindIndexByCumulativeValue(double value)
             {
-                int low = 0, high = size - 1;
-                int resultIndex = -1;
-
-                while (low <= high)
-                {
-                    int mid = low + (high - low) / 2;
-                    if (Query(mid) >= value)
-                    {
-                        resultIndex = mid; // This index *might* be the answer
-                        high = mid - 1;   // Try to find a smaller index
-                    }
-                    else
-                    {
-                        low = mid + 1;    // Need a larger index
-                    }
+                int idx = 0;
+                // Start with highest power of 2 less than or equal to size
+                int bitmask = 1;
+                while ((bitmask << 1) <= size) {
+                    bitmask <<= 1;
                 }
-                return resultIndex; // Returns -1 if value > total sum
+                // Alternative way to find highest power of 2:
+                // int bitmask = size == 0 ? 0 : 1 << (int)Math.Floor(Math.Log2(size));
+
+
+                while (bitmask > 0)
+                {
+                    int tIdx = idx + bitmask; // Potential next index
+                    if (tIdx <= size) // Check bounds
+                    {
+                        // If the cumulative sum up to tIdx is less than the target value,
+                        // it means our target index is further to the right.
+                        // We take the sum from this block and move right.
+                        // Use a tolerance for floating point comparison
+                        if (value - tree[tIdx] > 1e-9) // if value > tree[tIdx]
+                        {
+                            value -= tree[tIdx];
+                            idx = tIdx;
+                        }
+                        // Otherwise, the target index is within the current block or before it,
+                        // so we don't add this block's index and continue searching left/within.
+                    }
+                    bitmask >>= 1; // Move to the next smaller power of 2
+                }
+
+                // 'idx' is now the 0-based index of the element whose cumulative sum range contains 'value'.
+                // Ensure index is within bounds [0, size-1]
+                return Math.Min(idx, size - 1);
             }
         }
 
