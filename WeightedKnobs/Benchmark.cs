@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿namespace Test
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿namespace Test
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
@@ -191,7 +191,7 @@
             }
 
             // Use the O(N) constructor
-            var bit = new FenwickTree(initialWeights);
+            using var bit = new FenwickTree(initialWeights);
 
             Random random = new Random(Count);
 
@@ -295,16 +295,18 @@
         }
 
         // --- Fenwick Tree (Binary Indexed Tree) Implementation ---
-        private class FenwickTree
+        private class FenwickTree : IDisposable
         {
             private readonly double[] tree;
+            private bool disposed;
             public readonly int size; // Made public for optimized FindIndex
 
             // O(N) Constructor - Takes initial weights directly
             public FenwickTree(double[] initialValues)
             {
                 this.size = initialValues.Length;
-                this.tree = new double[size + 1];
+                this.tree = ArrayPool<double>.Shared.Rent(size + 1);
+                Array.Clear(tree, 0, size + 1);
 
                 // Place initial values directly (leaves of the conceptual tree)
                 for (int i = 0; i < size; i++)
@@ -323,9 +325,9 @@
                 }
             }
 
-             // Add 'delta' to the element at index 'idx' (0-based index)
-             // Used for updates after selection
-             public void Add(int idx, double delta)
+            // Add 'delta' to the element at index 'idx' (0-based index)
+            // Used for updates after selection
+            public void Add(int idx, double delta)
             {
                 idx++; // Convert to 1-based index
                 while (idx <= size)
@@ -356,12 +358,12 @@
                 int idx = 0;
                 // Start with highest power of 2 less than or equal to size
                 int bitmask = 1;
-                while ((bitmask << 1) <= size) {
+                while ((bitmask << 1) <= size)
+                {
                     bitmask <<= 1;
                 }
                 // Alternative way to find highest power of 2:
                 // int bitmask = size == 0 ? 0 : 1 << (int)Math.Floor(Math.Log2(size));
-
 
                 while (bitmask > 0)
                 {
@@ -387,7 +389,15 @@
                 // Ensure index is within bounds [0, size-1]
                 return Math.Min(idx, size - 1);
             }
-        }
 
+            public void Dispose()
+            {
+                if (!disposed)
+                {
+                    ArrayPool<double>.Shared.Return(tree);
+                    disposed = true;
+                }
+            }
+        }
     }
 }
