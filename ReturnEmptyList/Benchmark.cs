@@ -6,6 +6,7 @@
     using System.Linq;
 
     [MemoryDiagnoser]
+    [MemoryRandomization]
     public class Benchmark
     {
         private const int Iterations = 100_000;
