@@ -54,7 +54,6 @@ namespace Test
         {
             int index = (int)statusCode;
 
-            // Check for valid index range
             if ((uint)index < (uint)_httpStatusCodeStrings.Length)
             {
                 string? result = _httpStatusCodeStrings[index];
@@ -64,8 +63,38 @@ namespace Test
                 }
             }
 
-            // Fallback for values not in the array
             return statusCode.ToString();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ToArrayStringDominic(this HttpStatusCode statusCode)
+        {
+            int index = (int)statusCode;
+
+            if (index < 0 || index >= _httpStatusCodeStrings.Length || _httpStatusCodeStrings[index] == null)
+            {
+                return index.ToString();
+            }
+
+            return _httpStatusCodeStrings[index];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ToArrayStringMtreit(this HttpStatusCode statusCode)
+        {
+            int index = (int)statusCode;
+
+            if (index >= 0 && index < _httpStatusCodeStrings.Length)
+            {
+                string? result = _httpStatusCodeStrings[index];
+
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return index.ToString();
         }
 
         public static string ToFastString(this HttpStatusCode statusCode) => statusCode switch

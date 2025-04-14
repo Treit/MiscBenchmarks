@@ -58,18 +58,6 @@
         }
 
         [Benchmark]
-        public string SwapWithTuple()
-        {
-            for (int i = 0; i < _array.Length - 1; i++)
-            {
-                (_array[i], _array[i + 1]) = (_array[i + 1], _array[i]);
-            }
-
-            var str = new string(_array);
-            return str;
-        }
-
-        [Benchmark]
         public string SwapWithTempVariableLocalCopy()
         {
             var array = _array;
@@ -104,6 +92,18 @@
                 array[i] = array[j];
                 array[j] = temp;
             }
+        }
+
+        [Benchmark]
+        public string SwapWithTuple()
+        {
+            for (int i = 0; i < _array.Length - 1; i++)
+            {
+                (_array[i], _array[i + 1]) = (_array[i + 1], _array[i]);
+            }
+
+            var str = new string(_array);
+            return str;
         }
 
         [Benchmark]

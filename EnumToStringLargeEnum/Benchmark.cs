@@ -68,5 +68,31 @@
 
             return result;
         }
+
+        [Benchmark]
+        public string HttpStatusCodeToStringSparseArrayDoubleLookup()
+        {
+            string result = string.Empty;
+
+            for (int j = 0; j < _httpStatusCodes.Length; j++)
+            {
+                result = _httpStatusCodes[j].ToArrayStringDominic();
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public string HttpStatusCodeToStringSparseArraySingleLookup()
+        {
+            string result = string.Empty;
+
+            for (int j = 0; j < _httpStatusCodes.Length; j++)
+            {
+                result = _httpStatusCodes[j].ToArrayStringDominic();
+            }
+
+            return result;
+        }
     }
 }
