@@ -4,30 +4,25 @@
 
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.27837.1000)
+Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 9.0.201
+  [Host]     : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  DefaultJob : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 
 ```
-|                          Method | Iterations |            Mean |      Error |     StdDev | Ratio | RatioSD |      Gen0 |   Allocated | Alloc Ratio |
-|-------------------------------- |----------- |----------------:|-----------:|-----------:|------:|--------:|----------:|------------:|------------:|
-|           **LookupUsingDictionary** |         **10** |        **19.54 μs** |   **0.040 μs** |   **0.034 μs** |  **1.00** |    **0.00** |         **-** |           **-** |          **NA** |
-|           LookupUsingSortedList |         10 |        21.18 μs |   0.134 μs |   0.119 μs |  1.08 |    0.01 |         - |           - |          NA |
-|     LookupUsingSortedDictionary |         10 |        27.74 μs |   0.082 μs |   0.072 μs |  1.42 |    0.00 |         - |           - |          NA |
-| LookupUsingConcurrentDictionary |         10 |       131.57 μs |   0.810 μs |   0.718 μs |  6.73 |    0.04 |         - |           - |          NA |
-|    LookupUsingOrderedDictionary |         10 |        18.77 μs |   0.044 μs |   0.041 μs |  0.96 |    0.00 |         - |           - |          NA |
-|            LookupUsingHashtable |         10 |        20.94 μs |   0.059 μs |   0.052 μs |  1.07 |    0.00 |    0.7019 |     12000 B |          NA |
-|     LookupUsingFrozenDictionary |         10 |        18.94 μs |   0.036 μs |   0.030 μs |  0.97 |    0.00 |         - |           - |          NA |
-|                                 |            |                 |            |            |       |         |           |             |             |
-|           **LookupUsingDictionary** |     **100000** |   **195,208.77 μs** | **310.770 μs** | **259.507 μs** |  **1.00** |    **0.00** |         **-** |           **-** |          **NA** |
-|           LookupUsingSortedList |     100000 |   210,128.63 μs | 284.415 μs | 266.042 μs |  1.08 |    0.00 |         - |           - |          NA |
-|     LookupUsingSortedDictionary |     100000 |   274,705.82 μs | 148.241 μs | 123.788 μs |  1.41 |    0.00 |         - |           - |          NA |
-| LookupUsingConcurrentDictionary |     100000 | 1,314,361.63 μs | 702.067 μs | 548.127 μs |  6.73 |    0.01 |         - |           - |          NA |
-|    LookupUsingOrderedDictionary |     100000 |   185,826.20 μs |  83.916 μs |  70.074 μs |  0.95 |    0.00 |         - |           - |          NA |
-|            LookupUsingHashtable |     100000 |   208,842.84 μs | 643.035 μs | 536.964 μs |  1.07 |    0.00 | 7000.0000 | 120000245 B |          NA |
-|     LookupUsingFrozenDictionary |     100000 |   189,302.52 μs | 660.850 μs | 515.948 μs |  0.97 |    0.00 |         - |           - |          NA |
+| Method                          | Iterations | Mean       | Error     | StdDev    | Median     | Ratio | RatioSD | Gen0      | Allocated  | Alloc Ratio  |
+|-------------------------------- |----------- |-----------:|----------:|----------:|-----------:|------:|--------:|----------:|-----------:|-------------:|
+| LookupUsingDictionary           | 10000      |   3.179 ms | 0.0628 ms | 0.1655 ms |   3.122 ms |  1.00 |    0.00 |         - |        3 B |         1.00 |
+| LookupUsingSortedList           | 10000      |   7.387 ms | 0.1460 ms | 0.2358 ms |   7.353 ms |  2.25 |    0.14 |         - |        6 B |         2.00 |
+| LookupUsingSortedDictionary     | 10000      |  13.152 ms | 0.2599 ms | 0.6126 ms |  12.957 ms |  4.11 |    0.25 |         - |       12 B |         4.00 |
+| LookupUsingConcurrentDictionary | 10000      | 128.955 ms | 1.4159 ms | 1.2552 ms | 128.485 ms | 38.74 |    2.09 |         - |      184 B |        61.33 |
+| LookupUsingOrderedDictionary    | 10000      |   1.935 ms | 0.0376 ms | 0.0386 ms |   1.933 ms |  0.58 |    0.04 |         - |        1 B |         0.33 |
+| LookupUsingHashtable            | 10000      |   7.084 ms | 0.0924 ms | 0.0772 ms |   7.076 ms |  2.14 |    0.11 | 2781.2500 | 12000006 B | 4,000,002.00 |
+| LookupUsingFrozenDictionary     | 10000      |   2.359 ms | 0.0471 ms | 0.0484 ms |   2.342 ms |  0.71 |    0.04 |         - |        3 B |         1.00 |
+| LookupUsingImmutableDictionary  | 10000      |   5.620 ms | 0.1109 ms | 0.1791 ms |   5.542 ms |  1.71 |    0.11 |         - |        6 B |         2.00 |
+| LookupUsingDictionarySlim       | 10000      |   1.093 ms | 0.0182 ms | 0.0162 ms |   1.089 ms |  0.33 |    0.02 |         - |        1 B |         0.33 |

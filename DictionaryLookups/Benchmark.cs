@@ -2,6 +2,7 @@
 {
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
+    using Microsoft.Collections.Extensions;
     using System;
     using System.Collections;
     using System.Collections.Concurrent;
@@ -10,11 +11,11 @@
     using System.Collections.Immutable;
     using System.Collections.Specialized;
 
-    public class SomeClass
+    public record SomeClass(int Id)
     {
         public int DoSomething()
         {
-            return (int)DateTime.UtcNow.Ticks;
+            return Id;
         }
     }
 
@@ -26,6 +27,7 @@
 
         private SortedList<int, SomeClass> _sortedListLookup;
         private Dictionary<int, SomeClass> _dictionaryLookup;
+        private DictionarySlim<int, SomeClass> _dictionarySlimLookup;
         private SortedDictionary<int, SomeClass> _sortedDictionaryLookup;
         private ConcurrentDictionary<int, SomeClass> _concurrentDictionaryLookup;
         private OrderedDictionary _orderedDictionary;
@@ -40,6 +42,7 @@
 
             _sortedListLookup = new SortedList<int, SomeClass>(len);
             _dictionaryLookup = new Dictionary<int, SomeClass>(len);
+            _dictionarySlimLookup = new DictionarySlim<int, SomeClass>(len);
             _sortedDictionaryLookup = new SortedDictionary<int, SomeClass>();
             _concurrentDictionaryLookup = new ConcurrentDictionary<int, SomeClass>();
             _orderedDictionary = new OrderedDictionary();
@@ -47,12 +50,13 @@
 
             for (int i = 0; i < len; i++)
             {
-                _sortedListLookup.Add(i, new SomeClass());
-                _dictionaryLookup.Add(i, new SomeClass());
-                _sortedDictionaryLookup.Add(i, new SomeClass());
-                _concurrentDictionaryLookup.TryAdd(i, new SomeClass());
-                _orderedDictionary.Add(i, new SomeClass());
-                _hashTable.Add(i, new SomeClass());
+                _sortedListLookup.Add(i, new SomeClass(i));
+                _dictionaryLookup.Add(i, new SomeClass(i));
+                _dictionarySlimLookup.GetOrAddValueRef(i) = new SomeClass(i);
+                _sortedDictionaryLookup.Add(i, new SomeClass(i));
+                _concurrentDictionaryLookup.TryAdd(i, new SomeClass(i));
+                _orderedDictionary.Add(i, new SomeClass(i));
+                _hashTable.Add(i, new SomeClass(i));
             }
 
             _frozenDictionary = FrozenDictionary.ToFrozenDictionary(_dictionaryLookup);
@@ -189,6 +193,24 @@
                 {
                     SomeClass c = _immutableDictionary[j];
                     result += c.DoSomething();
+                }
+            }
+
+            return result;
+        }
+
+        [Benchmark]
+        public long LookupUsingDictionarySlim()
+        {
+            long result = 0;
+            for (int i = 0; i < Iterations; i++)
+            {
+                for (int j = 0; j < _dictionarySlimLookup.Count; j++)
+                {
+                    if (_dictionarySlimLookup.TryGetValue(j, out SomeClass c))
+                    {
+                        result += c.DoSomething();
+                    }
                 }
             }
 
