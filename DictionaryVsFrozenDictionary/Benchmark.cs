@@ -12,37 +12,64 @@
         [Params(1000)]
         public int Count { get; set; }
 
-        private Dictionary<int, string> _dictionary;
-        private FrozenDictionary<int, string> _frozenDictionary;
-        private int _key;
+        private Dictionary<int, string> _dictionaryInt;
+        private FrozenDictionary<int, string> _frozenDictionaryInt;
+        private int _keyInt;
+
+        private Dictionary<string, string> _dictionaryString;
+        private FrozenDictionary<string, string> _frozenDictionaryString;
+        private string _keyString;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             int len = Count;
 
-            _dictionary = new Dictionary<int, string>(len);
+            // Setup for integer keys
+            _dictionaryInt = new Dictionary<int, string>(len);
 
             for (int i = 0; i < len; i++)
             {
-                _dictionary.Add(i, i.ToString());
+                _dictionaryInt.Add(i, i.ToString());
             }
 
-            _key = _dictionary.Keys.Skip(len / 2).Take(1).First();
+            _keyInt = _dictionaryInt.Keys.Skip(len / 2).Take(1).First();
+            _frozenDictionaryInt = FrozenDictionary.ToFrozenDictionary(_dictionaryInt);
 
-            _frozenDictionary = FrozenDictionary.ToFrozenDictionary(_dictionary);
+            // Setup for string keys
+            _dictionaryString = new Dictionary<string, string>(len);
+
+            for (int i = 0; i < len; i++)
+            {
+                _dictionaryString.Add(i.ToString(), i.ToString());
+            }
+
+            _keyString = _dictionaryString.Keys.Skip(len / 2).Take(1).First();
+            _frozenDictionaryString = FrozenDictionary.ToFrozenDictionary(_dictionaryString);
         }
 
         [Benchmark(Baseline = true)]
-        public string LookupUsingDictionary()
+        public string LookupUsingDictionaryInt()
         {
-            return _dictionary[_key];
+            return _dictionaryInt[_keyInt];
         }
 
         [Benchmark]
-        public string LookupUsingFrozenDictionary()
+        public string LookupUsingFrozenDictionaryInt()
         {
-            return _frozenDictionary[_key];
+            return _frozenDictionaryInt[_keyInt];
+        }
+
+        [Benchmark]
+        public string LookupUsingDictionaryString()
+        {
+            return _dictionaryString[_keyString];
+        }
+
+        [Benchmark]
+        public string LookupUsingFrozenDictionaryString()
+        {
+            return _frozenDictionaryString[_keyString];
         }
     }
 }
