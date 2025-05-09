@@ -7,8 +7,12 @@
     using System.Linq;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
+    using BenchmarkDotNet.Jobs;
 
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net70)]
+    [SimpleJob(RuntimeMoniker.Net80)]
+    [SimpleJob(RuntimeMoniker.Net90, baseline: true)]
     public class Benchmark
     {
         private string[] _array;
