@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
 
@@ -18,7 +19,7 @@
         private ArraySegment<string> _arraySegment;
         private LinkedList<string> _linkedList;
 
-        [Params(10, 100_000)]
+        [Params(100)]
         public int Count { get; set; }
 
         [GlobalSetup]
@@ -50,6 +51,12 @@
         public int EnumerateArray()
         {
             return Enumerate(_array);
+        }
+
+        [Benchmark]
+        public int EnumerateArrayAsEnumerable()
+        {
+            return Enumerate(_array.AsEnumerable());
         }
 
         [Benchmark]
