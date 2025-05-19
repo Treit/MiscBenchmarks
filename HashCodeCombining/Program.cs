@@ -1,5 +1,6 @@
 ﻿namespace Test
 {
+    // Test
     using BenchmarkDotNet.Running;
     using System;
 
