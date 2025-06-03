@@ -1,19 +1,20 @@
 # Lookup by type using both dictionary and switch expressions
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.27871.1000)
+Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 9.0.300
+  [Host]     : .NET 8.0.16 (8.0.1625.21506), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  DefaultJob : .NET 8.0.16 (8.0.1625.21506), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 
 ```
-|                            Method |      Mean |     Error |    StdDev |   Gen0 | Allocated |
-|---------------------------------- |----------:|----------:|----------:|-------:|----------:|
-| LookupTypeUsingDictionary100Items |  2.155 μs | 0.0018 μs | 0.0016 μs | 0.0153 |     304 B |
-|   LookupTypeUsingDictionary5Items |  2.136 μs | 0.0042 μs | 0.0035 μs | 0.0153 |     304 B |
-|       LookupTypeUsingSwitch5Items |  1.252 μs | 0.0036 μs | 0.0032 μs | 0.0172 |     304 B |
-|     LookupTypeUsingSwitch100Items | 10.801 μs | 0.0259 μs | 0.0230 μs | 0.0153 |     304 B |
+| Method                            | Mean      | Error     | StdDev    | Median    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------------------------- |----------:|----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
+| LookupTypeUsingDictionary100Items |  2.952 μs | 0.1413 μs | 0.3986 μs |  2.832 μs |  1.26 |    0.19 | 0.0687 |     304 B |        1.00 |
+| LookupTypeUsingDictionary5Items   |  2.546 μs | 0.0397 μs | 0.0371 μs |  2.545 μs |  1.00 |    0.00 | 0.0687 |     304 B |        1.00 |
+| LookupTypeUsingSwitch5Items       |  1.428 μs | 0.0256 μs | 0.0227 μs |  1.425 μs |  0.56 |    0.01 | 0.0687 |     304 B |        1.00 |
+| LookupTypeUsingSwitch100Items     | 12.263 μs | 0.2363 μs | 0.3313 μs | 12.315 μs |  4.80 |    0.15 | 0.0610 |     304 B |        1.00 |

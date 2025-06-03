@@ -241,7 +241,7 @@
             return result;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public long LookupTypeUsingDictionary5Items()
         {
             var r = new Random(1234);
