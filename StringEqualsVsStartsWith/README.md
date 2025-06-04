@@ -1,8 +1,4 @@
-## String.Concat vs. StringBuilder vs. String interpolation (for small strings.)
-
-.NET 6 was used for the results below.
-
-
+# Comparing strings that are identical with Equals vs. StartsWith
 
 
 
