@@ -3,109 +3,76 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnosers;
     using System;
+    using System.Collections.Frozen;
     using System.Collections.Generic;
     using System.Linq;
 
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(100)]
+        [Params(10, 1000)]
         public int Count { get; set; }
 
-        private string[] _array;
-        private string[] _arrayWithNoOverlap;
-        private HashSet<string> _hashSet;
-        private HashSet<string> _hashSetWithNoOverlap;
+        private List<int> _listToCheck;
+        private List<int> _listWithOneOverlappingElement;
+
+        private HashSet<int> _hashSetWithOneOverlappingElement;
+
+        private FrozenSet<int> _frozenSetWithOneOverlappingElement;
 
         [GlobalSetup]
-
         public void GlobalSetup()
         {
-            var smallCount = 10;
-            _array = new string[smallCount];
-            _arrayWithNoOverlap = new string[smallCount];
-            _hashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            _hashSetWithNoOverlap = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            for (int i = 0; i < smallCount; i++)
-            {
-                var str = $"string {i}";
-                _array[i] = str;
-                _arrayWithNoOverlap[i] = $"{str}!!!";
-                _hashSetWithNoOverlap.Add($"{str}!!!");
-            }
+            _listToCheck = new List<int>(Count);
+            _listWithOneOverlappingElement = new List<int>(Count);
 
             for (int i = 0; i < Count; i++)
             {
-                var str = $"string {i}";
-                _hashSet.Add(str);
+                _listToCheck.Add(i);
+                _listWithOneOverlappingElement.Add(i + 1 * 1000);
             }
+
+            _listWithOneOverlappingElement[Count - 1] = _listToCheck[Count / 2];
+
+            _hashSetWithOneOverlappingElement = new HashSet<int>(_listWithOneOverlappingElement);
+            _frozenSetWithOneOverlappingElement = new HashSet<int>(_listWithOneOverlappingElement).ToFrozenSet();
         }
 
         [Benchmark]
-        public bool ArrayWalkAndHashSetLookupWithIEnumerableContains()
+        public bool ListAnyListContains()
         {
-            if (!_array.Any(x => _hashSet.Contains(x, StringComparer.OrdinalIgnoreCase)))
-            {
-                return false;
-            }
-
-            return true;
+            return _listToCheck.Any(x => _listWithOneOverlappingElement.Contains(x));
         }
 
         [Benchmark]
-        public bool ArrayWalkAndHashSetLookupWithIEnumerableContainsNoOverlap()
+        public bool ListAnyHashSetContains()
         {
-            if (!_arrayWithNoOverlap.Any(x => _hashSet.Contains(x, StringComparer.OrdinalIgnoreCase)))
-            {
-                return false;
-            }
-
-            return true;
+            return _listToCheck.Any(x => _hashSetWithOneOverlappingElement.Contains(x));
         }
 
         [Benchmark]
-        public bool ArrayWalkAndHashSetLookupWithHashSetContains()
+        public bool ListAnyFrozenSetContains()
         {
-            if (!_array.Any(x => _hashSet.Contains(x)))
-            {
-                return false;
-            }
-
-            return true;
+            return _listToCheck.Any(x => _frozenSetWithOneOverlappingElement.Contains(x));
         }
 
         [Benchmark]
-        public bool ArrayWalkAndHashSetLookupWithHashSetContainsNoOverlap()
+        public bool LinqIntersectListThenAny()
         {
-            if (!_arrayWithNoOverlap.Any(x => _hashSet.Contains(x)))
-            {
-                return false;
-            }
+            return _listToCheck.Intersect(_listWithOneOverlappingElement).Any();
+        }
 
-            return true;
+        [Benchmark]
+        public bool HashSetOverlapsListMethod()
+        {
+            return _hashSetWithOneOverlappingElement.Overlaps(_listToCheck);
         }
 
         [Benchmark(Baseline = true)]
-        public bool HashSetOverlapsMethod()
+        public bool FrozenSetOverlapsListMethod()
         {
-            if (!_hashSet.Overlaps(_array))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        [Benchmark]
-        public bool HashSetOverlapsMethodWithNoOverlap()
-        {
-            if (!_hashSet.Overlaps(_arrayWithNoOverlap))
-            {
-                return false;
-            }
-
-            return true;
+            return _frozenSetWithOneOverlappingElement.Overlaps(_listToCheck);
         }
     }
 }
+
