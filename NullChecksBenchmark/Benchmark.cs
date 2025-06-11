@@ -88,6 +88,30 @@ public class Benchmark
         }
         return result;
     }
+
+    [Benchmark]
+    public bool PatternMatchingSwitch()
+    {
+        bool result = false;
+        for (int i = 0; i < Iterations; i++)
+        {
+            result = (part1, part2, part3, part4, part5, part6, part7, part8, part9, part10) switch
+            {
+                (null, _, _, _, _, _, _, _, _, _) => true,
+                (_, null, _, _, _, _, _, _, _, _) => true,
+                (_, _, null, _, _, _, _, _, _, _) => true,
+                (_, _, _, null, _, _, _, _, _, _) => true,
+                (_, _, _, _, null, _, _, _, _, _) => true,
+                (_, _, _, _, _, null, _, _, _, _) => true,
+                (_, _, _, _, _, _, null, _, _, _) => true,
+                (_, _, _, _, _, _, _, null, _, _) => true,
+                (_, _, _, _, _, _, _, _, null, _) => true,
+                (_, _, _, _, _, _, _, _, _, null) => true,
+                _ => false
+            };
+        }
+        return result;
+    }
 }
 
 // Edited by AI 🤖
