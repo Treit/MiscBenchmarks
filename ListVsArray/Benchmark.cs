@@ -18,7 +18,7 @@
         {
             _list = new List<int>(Count);
             _array = new int[Count];
-            _populatedList = new List<int>();
+            _populatedList = new List<int>(Count);
             _populatedArray = new int[Count];
 
             for (int i = 0; i < Count; i++)
@@ -69,7 +69,7 @@
             return sum;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public long SumArray()
         {
             var array = _populatedArray;
