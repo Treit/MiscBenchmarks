@@ -18,11 +18,9 @@
             b.IterationSetup();
             var first = b.ListSort();
             b.IterationSetup();
-            var second = b.LinqSort();
-            b.IterationSetup();
-            var third = b.ListSortDescending();
-            b.IterationSetup();
-            var fourth = b.LinqSortDescending();
+            var second = b.LinqOrderBy();
+            Console.WriteLine($"First: {first.Name}, {first.Score}");
+            Console.WriteLine($"Second: {second.Name}, {second.Score}");
 #endif
         }
     }
