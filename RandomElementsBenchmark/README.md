@@ -1,5 +1,5 @@
 # RandomElementsBenchmark
-Picking n elements at random from a list.
+Picking n elements at random from a list without duplicates.
 
 ```
 
