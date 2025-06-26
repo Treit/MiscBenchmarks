@@ -15,14 +15,11 @@ namespace RandomElementsBenchmark
         public int SelectCount { get; set; }
 
         private IReadOnlyList<int> _source;
-        private Random _random;
-        private Random _threadStaticRandom;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             _source = Enumerable.Range(0, SourceCount).ToArray();
-            _threadStaticRandom = Random.Shared;
         }
 
         [Benchmark]
