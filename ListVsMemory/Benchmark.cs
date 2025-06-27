@@ -43,7 +43,7 @@ namespace ListVsReadOnlyMemory
         }
 
         // Reading benchmarks
-        //[Benchmark]
+        [Benchmark]
         public long ReadList()
         {
             long sum = 0;
@@ -54,7 +54,7 @@ namespace ListVsReadOnlyMemory
             return sum;
         }
 
-        //[Benchmark]
+        [Benchmark]
         public long ReadReadOnlyMemory()
         {
             long sum = 0;
@@ -66,7 +66,7 @@ namespace ListVsReadOnlyMemory
             return sum;
         }
 
-        //[Benchmark]
+        [Benchmark]
         public long ReadMemory()
         {
             long sum = 0;
@@ -79,7 +79,7 @@ namespace ListVsReadOnlyMemory
         }
 
         // Sequential reading using foreach
-        //[Benchmark]
+        [Benchmark]
         public long ReadListForeach()
         {
             long sum = 0;
@@ -90,7 +90,7 @@ namespace ListVsReadOnlyMemory
             return sum;
         }
 
-        //[Benchmark]
+        [Benchmark]
         public long ReadReadOnlyMemoryForeach()
         {
             long sum = 0;
@@ -144,7 +144,7 @@ namespace ListVsReadOnlyMemory
         // Note: ReadOnlyMemory<T> cannot be written to, so no write benchmark for it
 
         // Random access reading
-        //[Benchmark]
+        [Benchmark]
         public long RandomAccessList()
         {
             long sum = 0;
@@ -156,7 +156,7 @@ namespace ListVsReadOnlyMemory
             return sum;
         }
 
-        //[Benchmark]
+        [Benchmark]
         public long RandomAccessReadOnlyMemory()
         {
             long sum = 0;
@@ -170,7 +170,7 @@ namespace ListVsReadOnlyMemory
         }
 
         // Creation/allocation benchmarks
-        //[Benchmark]
+        [Benchmark]
         public List<int> CreateList()
         {
             var actualCount = Count > 0 ? Count : 100;
@@ -182,7 +182,7 @@ namespace ListVsReadOnlyMemory
             return list;
         }
 
-        //[Benchmark]
+        [Benchmark]
         public ReadOnlyMemory<int> CreateReadOnlyMemory()
         {
             var actualCount = Count > 0 ? Count : 100;
