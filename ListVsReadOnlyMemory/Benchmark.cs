@@ -3,11 +3,12 @@ namespace ListVsReadOnlyMemory
     using BenchmarkDotNet.Attributes;
     using System;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
 
     [MemoryDiagnoser]
     public class Benchmark
     {
-        [Params(100, 10000)]
+        [Params(10000)]
         public int Count { get; set; }
 
         private List<int> _list;
@@ -42,7 +43,7 @@ namespace ListVsReadOnlyMemory
         }
 
         // Reading benchmarks
-        [Benchmark(Baseline = true)]
+        //[Benchmark]
         public long ReadList()
         {
             long sum = 0;
@@ -53,7 +54,7 @@ namespace ListVsReadOnlyMemory
             return sum;
         }
 
-        [Benchmark]
+        //[Benchmark]
         public long ReadReadOnlyMemory()
         {
             long sum = 0;
@@ -65,7 +66,7 @@ namespace ListVsReadOnlyMemory
             return sum;
         }
 
-        [Benchmark]
+        //[Benchmark]
         public long ReadMemory()
         {
             long sum = 0;
@@ -78,7 +79,7 @@ namespace ListVsReadOnlyMemory
         }
 
         // Sequential reading using foreach
-        [Benchmark]
+        //[Benchmark]
         public long ReadListForeach()
         {
             long sum = 0;
@@ -89,7 +90,7 @@ namespace ListVsReadOnlyMemory
             return sum;
         }
 
-        [Benchmark]
+        //[Benchmark]
         public long ReadReadOnlyMemoryForeach()
         {
             long sum = 0;
@@ -111,6 +112,26 @@ namespace ListVsReadOnlyMemory
         }
 
         [Benchmark]
+        public void WriteListLocalVariable()
+        {
+            var list = _list; // Local variable to avoid repeated field access
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i] = i * 2;
+            }
+        }
+
+        [Benchmark]
+        public void WriteListCollectionsMarshalAsSpan()
+        {
+            var list = CollectionsMarshal.AsSpan(_list);
+            for (int i = 0; i < list.Length; i++)
+            {
+                list[i] = i * 2;
+            }
+        }
+
+        [Benchmark]
         public void WriteMemory()
         {
             var span = _memory.Span;
@@ -123,7 +144,7 @@ namespace ListVsReadOnlyMemory
         // Note: ReadOnlyMemory<T> cannot be written to, so no write benchmark for it
 
         // Random access reading
-        [Benchmark]
+        //[Benchmark]
         public long RandomAccessList()
         {
             long sum = 0;
@@ -135,7 +156,7 @@ namespace ListVsReadOnlyMemory
             return sum;
         }
 
-        [Benchmark]
+        //[Benchmark]
         public long RandomAccessReadOnlyMemory()
         {
             long sum = 0;
@@ -149,7 +170,7 @@ namespace ListVsReadOnlyMemory
         }
 
         // Creation/allocation benchmarks
-        [Benchmark]
+        //[Benchmark]
         public List<int> CreateList()
         {
             var actualCount = Count > 0 ? Count : 100;
@@ -161,7 +182,7 @@ namespace ListVsReadOnlyMemory
             return list;
         }
 
-        [Benchmark]
+        //[Benchmark]
         public ReadOnlyMemory<int> CreateReadOnlyMemory()
         {
             var actualCount = Count > 0 ? Count : 100;
