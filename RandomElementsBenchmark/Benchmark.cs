@@ -25,12 +25,6 @@ namespace RandomElementsBenchmark
         }
 
         [Benchmark]
-        public IReadOnlyList<int> KeyCollectionToArrayCryptographicRngWithHashSet()
-        {
-            return _dictionary.Keys.ToArray().GetRandomElementsCrypto(SelectCount);
-        }
-
-        [Benchmark]
         public IReadOnlyList<int> CryptographicRngWithHashSet()
         {
             return _source.GetRandomElementsCrypto(SelectCount);
