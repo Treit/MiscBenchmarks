@@ -14,7 +14,7 @@ namespace RandomElementsBenchmark
         [Params(3)]
         public int SelectCount { get; set; }
 
-        private IReadOnlyList<int> _source;
+        private int[] _source;
         private Dictionary<int, string> _dictionary;
 
         [GlobalSetup]
@@ -60,22 +60,16 @@ namespace RandomElementsBenchmark
             return _source.GetRandomElementsBitArray(SelectCount);
         }
 
-        //[Benchmark]
-        public IReadOnlyList<int> KeyCollectionWithBitArray()
+        [Benchmark]
+        public IReadOnlyList<int> FisherYatesShuffleSuggestedByCopilot()
         {
-            return _dictionary.Keys.GetRandomElementsFromKeyCollection(SelectCount);
+            return _source.GetRandomElementsFisherYates(SelectCount);
         }
 
-        //[Benchmark]
-        public IReadOnlyList<int> KeyCollectionWithArrayContains()
+        [Benchmark]
+        public IReadOnlyList<int> ReservoirSampling()
         {
-            return _dictionary.Keys.GetRandomElementsFromKeyCollectionWithArray(SelectCount);
-        }
-
-        //[Benchmark]
-        public IReadOnlyList<int> AaronVariation()
-        {
-            return _dictionary.GetRandomDictKeys(SelectCount);
+            return _source.GetRandomElementsReservoirSampling(SelectCount);
         }
     }
 
@@ -277,147 +271,56 @@ namespace RandomElementsBenchmark
             return result;
         }
 
-        public static IReadOnlyList<TKey> GetRandomElementsFromKeyCollection<TKey, TValue>(this Dictionary<TKey, TValue>.KeyCollection keys, int targetAmount)
+        public static IReadOnlyList<T> GetRandomElementsFisherYates<T>(this T[] source, int count)
         {
-            if (targetAmount > keys.Count)
-                throw new ArgumentOutOfRangeException(nameof(targetAmount), "Target amount must be less than or equal to the key collection count.");
+            if (count > source.Length)
+                throw new ArgumentOutOfRangeException(nameof(count), "Count must be less than the source count.");
 
-            if (targetAmount == keys.Count)
-                return keys.ToArray();
+            if (count == source.Length)
+                return source;
 
-            var indexes = GetRandomIndexesUpToCount(keys.Count, targetAmount);
-            int current = 0;
-            var enu = keys.GetEnumerator();
-            var result = new List<TKey>(targetAmount);
-
-            try
+            var random = new Random();
+            for (int i = source.Length - 1; i > 0; i--)
             {
-                while (current < keys.Count && result.Count < targetAmount)
-                {
-                    enu.MoveNext();
-                    if (indexes[current])
-                    {
-                        result.Add(enu.Current);
-                    }
-                    current++;
-                }
-            }
-            finally
-            {
-                enu.Dispose();
+                int j = random.Next(i + 1);
+                (source[i], source[j]) = (source[j], source[i]);
             }
 
-            return result;
+            return source.Take(count).ToArray();
         }
 
-        public static IReadOnlyList<TKey> GetRandomElementsFromKeyCollectionWithArray<TKey, TValue>(this Dictionary<TKey, TValue>.KeyCollection keys, int targetAmount)
+        public static IReadOnlyList<T> GetRandomElementsReservoirSampling<T>(this IReadOnlyList<T> source, int count)
         {
-            if (targetAmount > keys.Count)
-                throw new ArgumentOutOfRangeException(nameof(targetAmount), "Target amount must be less than or equal to the key collection count.");
+            if (count > source.Count)
+                throw new ArgumentOutOfRangeException(nameof(count), "Count must be less than the source count.");
 
-            if (targetAmount == keys.Count)
-                return keys.ToArray();
+            if (count == source.Count)
+                return source;
 
-            var indexes = GetRandomIndexesArray(keys.Count, targetAmount);
-            int current = 0;
-            var enu = keys.GetEnumerator();
-            var result = new List<TKey>(targetAmount);
+            // Reservoir sampling algorithm
+            T[] reservoir = new T[count];
+            var random = Random.Shared;
 
-            try
+            // Fill reservoir with first k elements
+            for (int i = 0; i < count; i++)
             {
-                while (current < keys.Count && result.Count < targetAmount)
-                {
-                    enu.MoveNext();
-                    if (indexes.Contains(current))
-                    {
-                        result.Add(enu.Current);
-                    }
-                    current++;
-                }
-            }
-            finally
-            {
-                enu.Dispose();
+                reservoir[i] = source[i];
             }
 
-            return result;
-        }
-
-        public static IReadOnlyList<TKey> GetRandomDictKeys<TKey, TValue>(this Dictionary<TKey, TValue> dict, int targetCount) where TKey : notnull
-        {
-            return dict.Keys.Where(GetContainsChecker(dict.Count, targetCount)).ToArray();
-
-            static Func<TKey, int, bool> GetContainsChecker(int dictCount, int targetCount)
+            // Process remaining elements
+            for (int i = count; i < source.Count; i++)
             {
-                var rng = Random.Shared;
-                if (targetCount < 8) // random number idk
+                // Generate random number between 0 and i (inclusive)
+                int j = random.Next(i + 1);
+
+                // If j is less than k, replace element at j with current element
+                if (j < count)
                 {
-                    int[] indexes = new int[targetCount];
-                    for (int i = 0; i < targetCount; i++)
-                    {
-                        while (true)
-                        {
-                            var next = rng.Next(dictCount);
-                            if (Array.IndexOf(indexes, next, 0, i) == -1)
-                            {
-                                indexes[i] = next;
-                                break;
-                            }
-                        }
-                    }
-
-                    return (_, index) => Array.IndexOf(indexes, index) != -1;
-                }
-                else
-                {
-                    var indexes = new BitArray(dictCount);
-                    for (int i = 0; i < targetCount; i++)
-                    {
-                        while (true)
-                        {
-                            var next = rng.Next(dictCount);
-                            if (!indexes[next])
-                            {
-                                indexes[next] = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    return (_, index) => indexes[index];
-                }
-            }
-        }
-
-        private static BitArray GetRandomIndexesUpToCount(int totalCount, int targetAmount)
-        {
-            var selected = new BitArray(totalCount);
-            var selectedCount = 0;
-
-            while (selectedCount < targetAmount)
-            {
-                var randomIndex = Random.Shared.Next(totalCount);
-                if (!selected[randomIndex])
-                {
-                    selected[randomIndex] = true;
-                    selectedCount++;
+                    reservoir[j] = source[i];
                 }
             }
 
-            return selected;
-        }
-
-        private static int[] GetRandomIndexesArray(int totalCount, int targetAmount)
-        {
-            var selectedSet = new HashSet<int>();
-
-            while (selectedSet.Count < targetAmount)
-            {
-                var randomIndex = Random.Shared.Next(totalCount);
-                selectedSet.Add(randomIndex);
-            }
-
-            return selectedSet.ToArray();
+            return reservoir;
         }
     }
 }
