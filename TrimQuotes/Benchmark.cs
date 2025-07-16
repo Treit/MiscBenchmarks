@@ -1,81 +1,79 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    private List<string> _strings;
 
-    public class Benchmark
+    [Params(100, 100_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private List<string> _strings;
-
-        [Params(100, 100_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        _strings = new List<string>(Count);
+        for (int i = 0; i < Count; i++)
         {
-            _strings = new List<string>(Count);
-            for (int i = 0; i < Count; i++)
-            {
-                _strings.Add($"\"{i}\"");
-            }
+            _strings.Add($"\"{i}\"");
+        }
+    }
+
+    [Benchmark(Baseline = true)]
+    public string DeQuoteWithTrim()
+    {
+        var result = "";
+
+        for (int i = 0; i < _strings.Count; i++)
+        {
+            var newStr = _strings[i].Trim('"');
+            result = newStr;
         }
 
-        [Benchmark(Baseline = true)]
-        public string DeQuoteWithTrim()
+        return result;
+    }
+
+    [Benchmark]
+    public string DeQuoteWithSubstring()
+    {
+        var result = "";
+
+        for (int i = 0; i < _strings.Count; i++)
         {
-            var result = "";
-
-            for (int i = 0; i < _strings.Count; i++)
-            {
-                var newStr = _strings[i].Trim('"');
-                result = newStr;
-            }
-
-            return result;
+            var newStr = _strings[i].Substring(1, _strings[i].Length - 2);
+            result = newStr;
         }
 
-        [Benchmark]
-        public string DeQuoteWithSubstring()
+        return result;
+    }
+
+    [Benchmark]
+    public string DeQuoteWithRangePattern()
+    {
+        var result = "";
+
+        for (int i = 0; i < _strings.Count; i++)
         {
-            var result = "";
-
-            for (int i = 0; i < _strings.Count; i++)
-            {
-                var newStr = _strings[i].Substring(1, _strings[i].Length - 2);
-                result = newStr;
-            }
-
-            return result;
+            var newStr = _strings[i][1..^1];
+            result = newStr;
         }
 
-        [Benchmark]
-        public string DeQuoteWithRangePattern()
+        return result;
+    }
+
+    [Benchmark]
+    public string DeQuoteWithSpan()
+    {
+        var result = "";
+
+        for (int i = 0; i < _strings.Count; i++)
         {
-            var result = "";
-
-            for (int i = 0; i < _strings.Count; i++)
-            {
-                var newStr = _strings[i][1..^1];
-                result = newStr;
-            }
-
-            return result;
+            var span = _strings[i].AsSpan().Slice(1, _strings[i].Length - 2);
+            result = new string(span);
         }
 
-        [Benchmark]
-        public string DeQuoteWithSpan()
-        {
-            var result = "";
-
-            for (int i = 0; i < _strings.Count; i++)
-            {
-                var span = _strings[i].AsSpan().Slice(1, _strings[i].Length - 2);
-                result = new string(span);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

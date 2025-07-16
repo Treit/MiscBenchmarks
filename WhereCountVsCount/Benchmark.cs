@@ -1,47 +1,45 @@
-﻿namespace Test
+namespace Test;
+using System.Collections.Generic;
+using System.Linq;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
+    private IEnumerable<string> _strings;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(10, 10_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private IEnumerable<string> _strings;
+        var strings = new string[Count];
+        _strings = strings;
 
-        [Params(10, 10_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            var strings = new string[Count];
-            _strings = strings;
-
-            for (int i = 0; i < Count; i++)
+            if (i % 10 == 0)
             {
-                if (i % 10 == 0)
-                {
-                    strings[i] = ("");
-                }
-                else
-                {
-                    strings[i] = i.ToString();
-                }
+                strings[i] = ("");
+            }
+            else
+            {
+                strings[i] = i.ToString();
             }
         }
+    }
 
-        [Benchmark]
-        public int WhereDotCount()
-        {
-            return _strings.Where(x => x.Length > 0).Count();
-        }
+    [Benchmark]
+    public int WhereDotCount()
+    {
+        return _strings.Where(x => x.Length > 0).Count();
+    }
 
-        [Benchmark(Baseline = true)]
-        public int CountWithPredicate()
-        {
-            return _strings.Count(x => x.Length > 0);
-        }
+    [Benchmark(Baseline = true)]
+    public int CountWithPredicate()
+    {
+        return _strings.Count(x => x.Length > 0);
     }
 }

@@ -1,57 +1,53 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Linq;
+
+public record Something(string Name, int X, int Y, double Z, Guid Id);
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Linq;
+    [Params(10000)]
+    public int Count { get; set; }
 
-    public record Something(string Name, int X, int Y, double Z, Guid Id);
+    private Something[] _values;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10000)]
-        public int Count { get; set; }
+        _values = new Something[Count];
 
-        private Something[] _values;
+        // Use Count as the seed.
+        var r = new Random(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _values = new Something[Count];
-
-            // Use Count as the seed.
-            var r = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
-            {
-                _values[i] = new Something($"Something {i}", r.Next(), r.Next(), r.NextDouble(), Guid.NewGuid());
-            }
-        }
-
-        [Benchmark(Baseline = true)]
-        public Something[] SortUsingLinqOrderByThenBy()
-        {
-            return _values.OrderBy(x => x.Id).ThenBy(x => x.Z).ThenBy(x => x.Name).ToArray();
-        }
-
-        [Benchmark]
-        public Something[] SortUsingLinqOrderByValueTupleKey()
-        {
-            return _values.OrderBy(x => (x.Id, x.Z, x.Name)).ToArray();
-        }
-
-        [Benchmark]
-        public Something[] SortUsingParallelLinqOrderByThenBy()
-        {
-            return _values.AsParallel().OrderBy(x => x.Id).ThenBy(x => x.Z).ThenBy(x => x.Name).ToArray();
-        }
-
-        [Benchmark]
-        public Something[] SortUsingParallelLinqOrderByValueTupleKey()
-        {
-            return _values.AsParallel().OrderBy(x => (x.Id, x.Z, x.Name)).ToArray();
+            _values[i] = new Something($"Something {i}", r.Next(), r.Next(), r.NextDouble(), Guid.NewGuid());
         }
     }
+
+    [Benchmark(Baseline = true)]
+    public Something[] SortUsingLinqOrderByThenBy()
+    {
+        return _values.OrderBy(x => x.Id).ThenBy(x => x.Z).ThenBy(x => x.Name).ToArray();
+    }
+
+    [Benchmark]
+    public Something[] SortUsingLinqOrderByValueTupleKey()
+    {
+        return _values.OrderBy(x => (x.Id, x.Z, x.Name)).ToArray();
+    }
+
+    [Benchmark]
+    public Something[] SortUsingParallelLinqOrderByThenBy()
+    {
+        return _values.AsParallel().OrderBy(x => x.Id).ThenBy(x => x.Z).ThenBy(x => x.Name).ToArray();
+    }
+
+    [Benchmark]
+    public Something[] SortUsingParallelLinqOrderByValueTupleKey()
+    {
+        return _values.AsParallel().OrderBy(x => (x.Id, x.Z, x.Name)).ToArray();
+    }
 }
-
-

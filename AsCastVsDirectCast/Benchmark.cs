@@ -1,51 +1,47 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
+    [Params(10, 1000, 1_000_000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private object[] _objects;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 1000, 1_000_000)]
-        public int Count { get; set; }
+        _objects = new object[Count];
 
-        private object[] _objects;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _objects = new object[Count];
-
-            for (int i = 0; i < Count; i++)
-            {
-                _objects[i] = i;
-            }
-        }
-
-        [Benchmark(Baseline = true)]
-        public long AsCast()
-        {
-            long result = 0;
-
-            foreach (var obj in _objects)
-            {
-                result += (obj as int?).Value;
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public long DirectCast()
-        {
-            long result = 0;
-
-            foreach (var obj in _objects)
-            {
-                result += ((int?)obj).Value;
-            }
-
-            return result;
+            _objects[i] = i;
         }
     }
+
+    [Benchmark(Baseline = true)]
+    public long AsCast()
+    {
+        long result = 0;
+
+        foreach (var obj in _objects)
+        {
+            result += (obj as int?).Value;
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public long DirectCast()
+    {
+        long result = 0;
+
+        foreach (var obj in _objects)
+        {
+            result += ((int?)obj).Value;
+        }
+
+        return result;
+    }
 }
-
-

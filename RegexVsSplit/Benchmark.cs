@@ -1,191 +1,189 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using CommunityToolkit.HighPerformance;
+using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using CommunityToolkit.HighPerformance;
-    using System;
-    using System.Collections.Generic;
-    using System.Text.RegularExpressions;
+    [Params(10, 100, 1000, 100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private List<string> _values;
+
+    private Regex _re;
+    private Regex _rec;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 100, 1000, 100_000)]
-        public int Count { get; set; }
+        _values = new List<string>(Count);
+        _re = new Regex("^.+,.+,.+,.+,.+,(.+?),");
+        _rec = new Regex("^.+,.+,.+,.+,.+,(.+?),", RegexOptions.Compiled);
 
-        private List<string> _values;
-
-        private Regex _re;
-        private Regex _rec;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < this.Count; i++)
         {
-            _values = new List<string>(Count);
-            _re = new Regex("^.+,.+,.+,.+,.+,(.+?),");
-            _rec = new Regex("^.+,.+,.+,.+,.+,(.+?),", RegexOptions.Compiled);
+            _values.Add($"{i},{i + 1},{i + 2},{i + 3},{i + 4},{i + 5},{i + 6},{i + 7},{i + 8},{i + 9},{i + 10}");
+        }
+    }
 
-            for (int i = 0; i < this.Count; i++)
+    [Benchmark(Baseline = true)]
+    public int FindTokenUsingSplit()
+    {
+        string needle = "104";
+        int result = -1;
+
+        for (int i = 0; i < _values.Count; i++)
+        {
+            string[] tokens = _values[i].Split(",");
+            if (tokens[5] == needle)
             {
-                _values.Add($"{i},{i + 1},{i + 2},{i + 3},{i + 4},{i + 5},{i + 6},{i + 7},{i + 8},{i + 9},{i + 10}");
+                result = i;
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public int FindTokenUsingSplit()
-        {
-            string needle = "104";
-            int result = -1;
+        return result;
+    }
 
-            for (int i = 0; i < _values.Count; i++)
+    [Benchmark]
+    public int FindTokenUsingRegex()
+    {
+        string needle = "104";
+        int result = -1;
+
+        for (int i = 0; i < _values.Count; i++)
+        {
+            Match m = _re.Match(_values[i]);
+            if (m.Success && m.Result("$1") == needle)
             {
-                string[] tokens = _values[i].Split(",");
-                if (tokens[5] == needle)
+                result = i;
+            }
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public int FindTokenUsingCompiledRegex()
+    {
+        string needle = "104";
+        int result = -1;
+
+        for (int i = 0; i < _values.Count; i++)
+        {
+            Match m = _rec.Match(_values[i]);
+            if (m.Success && m.Result("$1") == needle)
+            {
+                result = i;
+            }
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public int FindTokenUsingSpan()
+    {
+        string needle = "104";
+        int result = -1;
+
+        for (int i = 0; i < _values.Count; i++)
+        {
+            string value = _values[i];
+            int cc = 0;
+            int start = 0;
+            int end = 0;
+
+            for (int j = 0; j < value.Length; j++)
+            {
+                if (value[j] == ',')
                 {
-                    result = i;
+                    cc++;
                 }
-            }
 
-            return result;
-        }
-
-        [Benchmark]
-        public int FindTokenUsingRegex()
-        {
-            string needle = "104";
-            int result = -1;
-
-            for (int i = 0; i < _values.Count; i++)
-            {
-                Match m = _re.Match(_values[i]);
-                if (m.Success && m.Result("$1") == needle)
+                if (cc == 5)
                 {
-                    result = i;
-                }
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public int FindTokenUsingCompiledRegex()
-        {
-            string needle = "104";
-            int result = -1;
-
-            for (int i = 0; i < _values.Count; i++)
-            {
-                Match m = _rec.Match(_values[i]);
-                if (m.Success && m.Result("$1") == needle)
-                {
-                    result = i;
-                }
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public int FindTokenUsingSpan()
-        {
-            string needle = "104";
-            int result = -1;
-
-            for (int i = 0; i < _values.Count; i++)
-            {
-                string value = _values[i];
-                int cc = 0;
-                int start = 0;
-                int end = 0;
-
-                for (int j = 0; j < value.Length; j++)
-                {
-                    if (value[j] == ',')
+                    if (start == 0)
                     {
-                        cc++;
-                    }
-
-                    if (cc == 5)
-                    {
-                        if (start == 0)
-                        {
-                            start = j;
-                        }
-                    }
-
-                    if (cc == 6)
-                    {
-                        end = j;
-                        break;
+                        start = j;
                     }
                 }
 
-                ReadOnlySpan<char> span = value.AsSpan(start + 1, end - start - 1);
-
-                if (span.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
+                if (cc == 6)
                 {
-                    result = i;
-                }
-
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public int FindTokenUsingTokenize()
-        {
-            string needle = "104";
-            int result = -1;
-
-            for (int i = 0; i < _values.Count; i++)
-            {
-                var tokens = _values[i].Tokenize(',');
-
-                int tokenNumber = 1;
-
-                do
-                {
-                    tokens.MoveNext();
-                }
-                while (tokenNumber++ != 6);
-
-                if (tokens.Current.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
-                {
-                    result = i;
+                    end = j;
+                    break;
                 }
             }
 
-            return result;
+            ReadOnlySpan<char> span = value.AsSpan(start + 1, end - start - 1);
+
+            if (span.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
+            {
+                result = i;
+            }
+
         }
 
-        [Benchmark]
-        public int FindTokenUsingTokenizeWithForEach()
+        return result;
+    }
+
+    [Benchmark]
+    public int FindTokenUsingTokenize()
+    {
+        string needle = "104";
+        int result = -1;
+
+        for (int i = 0; i < _values.Count; i++)
         {
-            string needle = "104";
-            int result = -1;
+            var tokens = _values[i].Tokenize(',');
 
-            for (int i = 0; i < _values.Count; i++)
+            int tokenNumber = 1;
+
+            do
             {
-                var tokens = _values[i].Tokenize(',');
+                tokens.MoveNext();
+            }
+            while (tokenNumber++ != 6);
 
-                int tokenIndex = 0;
+            if (tokens.Current.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
+            {
+                result = i;
+            }
+        }
 
-                foreach (var token in tokens)
+        return result;
+    }
+
+    [Benchmark]
+    public int FindTokenUsingTokenizeWithForEach()
+    {
+        string needle = "104";
+        int result = -1;
+
+        for (int i = 0; i < _values.Count; i++)
+        {
+            var tokens = _values[i].Tokenize(',');
+
+            int tokenIndex = 0;
+
+            foreach (var token in tokens)
+            {
+                if (tokenIndex++ == 5)
                 {
-                    if (tokenIndex++ == 5)
+                    if (token.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
                     {
-                        if (token.CompareTo(needle.AsSpan(), StringComparison.Ordinal) == 0)
-                        {
-                            result = i;
-                        }
-
-                        break;
+                        result = i;
                     }
+
+                    break;
                 }
             }
-
-            return result;
         }
+
+        return result;
     }
 }

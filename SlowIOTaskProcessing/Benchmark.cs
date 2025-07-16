@@ -1,101 +1,97 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
+    [Params(10, 250, 1000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 250, 1000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-        }
-
-        [Benchmark(Baseline = true)]
-        public void TaskRun()
-        {
-            var tasks = new Task[Count];
-
-            for (int i = 0; i < Count; i++)
-            {
-                var worker = new Worker();
-                var task = Task.Run(worker.Dowork);
-                tasks[i] = task;
-            }
-
-            Task.WaitAll(tasks);
-        }
-
-        [Benchmark]
-        public async Task AsyncTask()
-        {
-            var tasks = new Task[Count];
-
-            for (int i = 0; i < Count; i++)
-            {
-                var worker = new Worker();
-                var task = worker.DoWorkAsync();
-                tasks[i] = task;
-            }
-
-            await Task.WhenAll(tasks);
-        }
-
-        [Benchmark]
-        public void TaskRunSetMinThreads100()
-        {
-            ThreadPool.SetMinThreads(100, 100);
-            var tasks = new Task[Count];
-
-            for (int i = 0; i < Count; i++)
-            {
-                var worker = new Worker();
-                var task = Task.Run(worker.Dowork);
-                tasks[i] = task;
-            }
-
-            Task.WaitAll(tasks);
-        }
-
-        [Benchmark]
-        public void TaskRunSetMinThreads1000()
-        {
-            ThreadPool.SetMinThreads(1000, 1000);
-            var tasks = new Task[Count];
-
-            for (int i = 0; i < Count; i++)
-            {
-                var worker = new Worker();
-                var task = Task.Run(worker.Dowork);
-                tasks[i] = task;
-            }
-
-            Task.WaitAll(tasks);
-        }
-
-
     }
 
-    class Worker
+    [Benchmark(Baseline = true)]
+    public void TaskRun()
     {
-        public long Result { get; set; }
+        var tasks = new Task[Count];
 
-        public void Dowork()
+        for (int i = 0; i < Count; i++)
         {
-            // Simulate doing something expensive like I/O
-            Thread.Sleep(500);
+            var worker = new Worker();
+            var task = Task.Run(worker.Dowork);
+            tasks[i] = task;
         }
 
-        public async Task DoWorkAsync()
-        {
-            await Task.Delay(500);
-        }
+        Task.WaitAll(tasks);
     }
+
+    [Benchmark]
+    public async Task AsyncTask()
+    {
+        var tasks = new Task[Count];
+
+        for (int i = 0; i < Count; i++)
+        {
+            var worker = new Worker();
+            var task = worker.DoWorkAsync();
+            tasks[i] = task;
+        }
+
+        await Task.WhenAll(tasks);
+    }
+
+    [Benchmark]
+    public void TaskRunSetMinThreads100()
+    {
+        ThreadPool.SetMinThreads(100, 100);
+        var tasks = new Task[Count];
+
+        for (int i = 0; i < Count; i++)
+        {
+            var worker = new Worker();
+            var task = Task.Run(worker.Dowork);
+            tasks[i] = task;
+        }
+
+        Task.WaitAll(tasks);
+    }
+
+    [Benchmark]
+    public void TaskRunSetMinThreads1000()
+    {
+        ThreadPool.SetMinThreads(1000, 1000);
+        var tasks = new Task[Count];
+
+        for (int i = 0; i < Count; i++)
+        {
+            var worker = new Worker();
+            var task = Task.Run(worker.Dowork);
+            tasks[i] = task;
+        }
+
+        Task.WaitAll(tasks);
+    }
+
+
 }
 
+class Worker
+{
+    public long Result { get; set; }
 
+    public void Dowork()
+    {
+        // Simulate doing something expensive like I/O
+        Thread.Sleep(500);
+    }
+
+    public async Task DoWorkAsync()
+    {
+        await Task.Delay(500);
+    }
+}

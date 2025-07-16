@@ -1,96 +1,94 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(100)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private IList<int> _itemsToAppend;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100)]
-        public int Count { get; set; }
+        var temp = new List<int>();
 
-        private IList<int> _itemsToAppend;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            var temp = new List<int>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                temp.Add(i);
-            }
-
-            _itemsToAppend = temp;
+            temp.Add(i);
         }
 
-        [Benchmark]
-        public long AddToListWithForEachLoop()
+        _itemsToAppend = temp;
+    }
+
+    [Benchmark]
+    public long AddToListWithForEachLoop()
+    {
+        var list = new List<int>();
+
+        foreach (var i in _itemsToAppend)
         {
-            var list = new List<int>();
-
-            foreach (var i in _itemsToAppend)
-            {
-                list.Add(i);
-            }
-
-            return list.Count;
+            list.Add(i);
         }
 
-        [Benchmark]
-        public long AddToListPresetCapacity()
+        return list.Count;
+    }
+
+    [Benchmark]
+    public long AddToListPresetCapacity()
+    {
+        var list = new List<int>(Count);
+
+        foreach (var i in _itemsToAppend)
         {
-            var list = new List<int>(Count);
-
-            foreach (var i in _itemsToAppend)
-            {
-                list.Add(i);
-            }
-
-            return list.Count;
+            list.Add(i);
         }
 
-        [Benchmark]
-        public long AddToListWithToListDotForEach()
-        {
-            var list = new List<int>();
+        return list.Count;
+    }
 
-            _itemsToAppend.ToList().ForEach(i => list.Add(i));
+    [Benchmark]
+    public long AddToListWithToListDotForEach()
+    {
+        var list = new List<int>();
 
-            return list.Count;
-        }
+        _itemsToAppend.ToList().ForEach(i => list.Add(i));
 
-        [Benchmark]
-        public long AddToListWithAddRange()
-        {
-            var list = new List<int>();
-            list.AddRange(_itemsToAppend);
+        return list.Count;
+    }
 
-            return list.Count;
-        }
+    [Benchmark]
+    public long AddToListWithAddRange()
+    {
+        var list = new List<int>();
+        list.AddRange(_itemsToAppend);
 
-        [Benchmark]
-        public long AddToListPresetCapacityAddRange()
-        {
-            var list = new List<int>(Count);
-            list.AddRange(_itemsToAppend);
+        return list.Count;
+    }
 
-            return list.Count;
-        }
+    [Benchmark]
+    public long AddToListPresetCapacityAddRange()
+    {
+        var list = new List<int>(Count);
+        list.AddRange(_itemsToAppend);
 
-        [Benchmark]
-        public long ToList()
-        {
-            var list = _itemsToAppend.ToList();
-            return list.Count;
-        }
+        return list.Count;
+    }
 
-        [Benchmark(Baseline = true)]
-        public long AddToListWithConstructor()
-        {
-            var list = new List<int>(_itemsToAppend);
-            return list.Count;
-        }
+    [Benchmark]
+    public long ToList()
+    {
+        var list = _itemsToAppend.ToList();
+        return list.Count;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long AddToListWithConstructor()
+    {
+        var list = new List<int>(_itemsToAppend);
+        return list.Count;
     }
 }

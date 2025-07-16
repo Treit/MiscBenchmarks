@@ -1,75 +1,73 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System.Linq;
+    [Params(10, 100, 1000, 100_000, 1_000_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 100, 1000, 100_000, 1_000_000)]
-        public int Count { get; set; }
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark(Baseline = true)]
+    public int PopulateWithExplicitArray()
+    {
+        int[] range = new int[Count];
+
+        for (int i = 0; i < range.Length; i++)
         {
+            range[i] = i + 1;
         }
 
-        [Benchmark(Baseline = true)]
-        public int PopulateWithExplicitArray()
+        return range.Length;
+    }
+
+    [Benchmark]
+    public int PopulateWithEnumerableRange()
+    {
+        return Enumerable.Range(1, Count).ToArray().Length;
+    }
+
+    [Benchmark]
+    public double PopulateAndTakeAverageWithExplicitArray()
+    {
+        int[] range = new int[Count];
+
+        for (int i = 0; i < range.Length; i++)
         {
-            int[] range = new int[Count];
-
-            for (int i = 0; i < range.Length; i++)
-            {
-                range[i] = i + 1;
-            }
-
-            return range.Length;
+            range[i] = i + 1;
         }
 
-        [Benchmark]
-        public int PopulateWithEnumerableRange()
+        return range.Average();
+    }
+
+    [Benchmark]
+    public double PopulateAndTakeAverageWithEnumerableRange()
+    {
+        return Enumerable.Range(1, Count).Average();
+    }
+
+    [Benchmark]
+    public long PopulateAndTakeSumWithExplicitArray()
+    {
+        long[] range = new long[Count];
+
+        for (int i = 0; i < range.Length; i++)
         {
-            return Enumerable.Range(1, Count).ToArray().Length;
+            range[i] = i + 1;
         }
 
-        [Benchmark]
-        public double PopulateAndTakeAverageWithExplicitArray()
-        {
-            int[] range = new int[Count];
+        return range.Sum();
+    }
 
-            for (int i = 0; i < range.Length; i++)
-            {
-                range[i] = i + 1;
-            }
-
-            return range.Average();
-        }
-
-        [Benchmark]
-        public double PopulateAndTakeAverageWithEnumerableRange()
-        {
-            return Enumerable.Range(1, Count).Average();
-        }
-
-        [Benchmark]
-        public long PopulateAndTakeSumWithExplicitArray()
-        {
-            long[] range = new long[Count];
-
-            for (int i = 0; i < range.Length; i++)
-            {
-                range[i] = i + 1;
-            }
-
-            return range.Sum();
-        }
-
-        [Benchmark]
-        public long PopulateAndTakeSumWithEnumerableRange()
-        {
-            return Enumerable.Range(1, Count).Select(x => (long)x).Sum();
-        }
+    [Benchmark]
+    public long PopulateAndTakeSumWithEnumerableRange()
+    {
+        return Enumerable.Range(1, Count).Select(x => (long)x).Sum();
     }
 }

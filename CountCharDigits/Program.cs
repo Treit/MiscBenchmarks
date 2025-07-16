@@ -1,12 +1,10 @@
-﻿namespace Test
-{
-    using BenchmarkDotNet.Running;
+namespace Test;
+using BenchmarkDotNet.Running;
 
-    internal class Program
+internal class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            BenchmarkRunner.Run<Benchmark>();
-        }
+        BenchmarkRunner.Run<Benchmark>();
     }
 }

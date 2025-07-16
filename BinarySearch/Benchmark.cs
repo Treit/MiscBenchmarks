@@ -1,152 +1,150 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Numerics;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
+    private static int[] s_data = [];
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(1_000_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private static int[] s_data = [];
+        Random r = new Random();
+        s_data = new int[Count];
 
-        [Params(1_000_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            Random r = new Random();
-            s_data = new int[Count];
+            s_data[i] = r.Next();
+        }
 
-            for (int i = 0; i < Count; i++)
+        Array.Sort(s_data);
+    }
+
+    [Benchmark]
+    public int BinarySearchWithDivide()
+    {
+        var target = 1_000_000;
+        return BinarySearch(s_data, target);
+    }
+
+    [Benchmark(Baseline = true)]
+    public int BinarySearchWithShift()
+    {
+        var target = 1_000_000;
+        return BinarySearch2(s_data, target);
+    }
+
+    [Benchmark]
+    public int BinarySearchBCLImplementation()
+    {
+        var target = 1_000_000;
+        return Array.BinarySearch(s_data, target);
+    }
+
+    [Benchmark]
+    public int BinarySearchGenericBCLImpl()
+    {
+        var target = 1_000_000;
+        return BinarySearch<int>(s_data, 0, s_data.Length, target);
+    }
+
+    private static int BinarySearch(int[] array, int numberToFind)
+    {
+        int low = 0;
+        int high = array.Length - 1;
+
+        while (low <= high)
+        {
+            int mid = low + (high - low) / 2;
+
+            if (array[mid] == numberToFind)
             {
-                s_data[i] = r.Next();
+                return mid;
             }
 
-            Array.Sort(s_data);
-        }
-
-        [Benchmark]
-        public int BinarySearchWithDivide()
-        {
-            var target = 1_000_000;
-            return BinarySearch(s_data, target);
-        }
-
-        [Benchmark(Baseline = true)]
-        public int BinarySearchWithShift()
-        {
-            var target = 1_000_000;
-            return BinarySearch2(s_data, target);
-        }
-
-        [Benchmark]
-        public int BinarySearchBCLImplementation()
-        {
-            var target = 1_000_000;
-            return Array.BinarySearch(s_data, target);
-        }
-
-        [Benchmark]
-        public int BinarySearchGenericBCLImpl()
-        {
-            var target = 1_000_000;
-            return BinarySearch<int>(s_data, 0, s_data.Length, target);
-        }
-
-        private static int BinarySearch(int[] array, int numberToFind)
-        {
-            int low = 0;
-            int high = array.Length - 1;
-
-            while (low <= high)
+            if (numberToFind < array[mid])
             {
-                int mid = low + (high - low) / 2;
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
+        }
 
-                if (array[mid] == numberToFind)
-                {
-                    return mid;
-                }
+        return -1;
+    }
 
-                if (numberToFind < array[mid])
-                {
-                    high = mid - 1;
-                }
-                else
-                {
-                    low = mid + 1;
-                }
+    private static int BinarySearch2(int[] array, int numberToFind)
+    {
+        int low = 0;
+        int high = array.Length - 1;
+
+        while (low <= high)
+        {
+            int mid = low + ((high - low) >> 1);
+
+            if (array[mid] == numberToFind)
+            {
+                return mid;
             }
 
-            return -1;
+            if (numberToFind < array[mid])
+            {
+                high = mid - 1;
+            }
+            else
+            {
+                low = mid + 1;
+            }
         }
 
-        private static int BinarySearch2(int[] array, int numberToFind)
+        return -1;
+    }
+
+    private static int BinarySearch<T>(T[] array, int index, int length, T value)
+        where T : IComparable<T>
+    {
+        int lo = index;
+        int hi = index + length - 1;
+        while (lo <= hi)
         {
-            int low = 0;
-            int high = array.Length - 1;
-
-            while (low <= high)
+            int i = lo + ((hi - lo) >> 1);
+            int order;
+            if (array[i] == null)
             {
-                int mid = low + ((high - low) >> 1);
-
-                if (array[mid] == numberToFind)
-                {
-                    return mid;
-                }
-
-                if (numberToFind < array[mid])
-                {
-                    high = mid - 1;
-                }
-                else
-                {
-                    low = mid + 1;
-                }
+                order = (value == null) ? 0 : -1;
+            }
+            else
+            {
+                order = array[i].CompareTo(value);
             }
 
-            return -1;
-        }
-
-        private static int BinarySearch<T>(T[] array, int index, int length, T value)
-            where T : IComparable<T>
-        {
-            int lo = index;
-            int hi = index + length - 1;
-            while (lo <= hi)
+            if (order == 0)
             {
-                int i = lo + ((hi - lo) >> 1);
-                int order;
-                if (array[i] == null)
-                {
-                    order = (value == null) ? 0 : -1;
-                }
-                else
-                {
-                    order = array[i].CompareTo(value);
-                }
-
-                if (order == 0)
-                {
-                    return i;
-                }
-
-                if (order < 0)
-                {
-                    lo = i + 1;
-                }
-                else
-                {
-                    hi = i - 1;
-                }
+                return i;
             }
 
-            return ~lo;
+            if (order < 0)
+            {
+                lo = i + 1;
+            }
+            else
+            {
+                hi = i - 1;
+            }
         }
+
+        return ~lo;
     }
 }

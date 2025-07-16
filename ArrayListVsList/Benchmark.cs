@@ -1,132 +1,130 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Collections;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Collections;
-    using System.Collections.Generic;
+    [Params(100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private ArrayList _arrayList;
+    private ArrayList _arrayListObject;
+
+    private List<int> _list;
+    private List<object> _listObject;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100_000)]
-        public int Count { get; set; }
+        _arrayList = CreateArrayListOfInt();
+        _list = CreateListOfInt();
+        _arrayListObject = CreateArrayListOfObject();
+        _listObject = CreateListOfObject();
+    }
 
-        private ArrayList _arrayList;
-        private ArrayList _arrayListObject;
+    [Benchmark]
+    public ArrayList CreateArrayListOfInt()
+    {
+        var list = new ArrayList();
 
-        private List<int> _list;
-        private List<object> _listObject;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _arrayList = CreateArrayListOfInt();
-            _list = CreateListOfInt();
-            _arrayListObject = CreateArrayListOfObject();
-            _listObject = CreateListOfObject();
+            list.Add(i);
         }
 
-        [Benchmark]
-        public ArrayList CreateArrayListOfInt()
+        return list;
+    }
+
+    [Benchmark]
+    public List<int> CreateListOfInt()
+    {
+        var list = new List<int>();
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = new ArrayList();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(i);
-            }
-
-            return list;
+            list.Add(i);
         }
 
-        [Benchmark]
-        public List<int> CreateListOfInt()
+        return list;
+    }
+
+    [Benchmark]
+    public ArrayList CreateArrayListOfObject()
+    {
+        var list = new ArrayList();
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = new List<int>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(i);
-            }
-
-            return list;
+            list.Add((object)i.ToString());
         }
 
-        [Benchmark]
-        public ArrayList CreateArrayListOfObject()
+        return list;
+    }
+
+    [Benchmark]
+    public List<object> CreateListOfObject()
+    {
+        var list = new List<object>();
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = new ArrayList();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add((object)i.ToString());
-            }
-
-            return list;
+            list.Add((object)i.ToString());
         }
 
-        [Benchmark]
-        public List<object> CreateListOfObject()
+        return list;
+    }
+
+    [Benchmark]
+    public long IterateArrayListOfInt()
+    {
+        int sum = 0;
+
+        foreach (var val in _arrayList)
         {
-            var list = new List<object>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add((object)i.ToString());
-            }
-
-            return list;
+            sum += (int)val;
         }
 
-        [Benchmark]
-        public long IterateArrayListOfInt()
+        return sum;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long IterateListOfInt()
+    {
+        int sum = 0;
+
+        foreach (var val in _list)
         {
-            int sum = 0;
-
-            foreach (var val in _arrayList)
-            {
-                sum += (int)val;
-            }
-
-            return sum;
+            sum += val;
         }
 
-        [Benchmark(Baseline = true)]
-        public long IterateListOfInt()
+        return sum;
+    }
+
+    [Benchmark]
+    public long IterateArrayListOfObject()
+    {
+        int sum = 0;
+
+        foreach (var val in _arrayListObject)
         {
-            int sum = 0;
-
-            foreach (var val in _list)
-            {
-                sum += val;
-            }
-
-            return sum;
+            sum += ((string)val).Length;
         }
 
-        [Benchmark]
-        public long IterateArrayListOfObject()
+        return sum;
+    }
+
+    [Benchmark]
+    public long IterateListOfObject()
+    {
+        int sum = 0;
+
+        foreach (var val in _listObject)
         {
-            int sum = 0;
-
-            foreach (var val in _arrayListObject)
-            {
-                sum += ((string)val).Length;
-            }
-
-            return sum;
+            sum += ((string)val).Length;
         }
 
-        [Benchmark]
-        public long IterateListOfObject()
-        {
-            int sum = 0;
-
-            foreach (var val in _listObject)
-            {
-                sum += ((string)val).Length;
-            }
-
-            return sum;
-        }
+        return sum;
     }
 }

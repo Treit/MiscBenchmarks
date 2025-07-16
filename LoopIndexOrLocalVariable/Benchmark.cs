@@ -1,52 +1,50 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Collections.Generic;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Collections.Generic;
+    [Params(10, 100, 1000, 100_000, 1_000_000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private List<int> _data;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 100, 1000, 100_000, 1_000_000)]
-        public int Count { get; set; }
+        _data = new List<int>(Count);
 
-        private List<int> _data;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _data = new List<int>(Count);
+            _data.Add(i);
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
-            {
-                _data.Add(i);
-            }
+    [Benchmark]
+    public long LoopUsingIndex()
+    {
+        long total = 0;
+
+        for (int i = 0; i < _data.Count; i++)
+        {
+            total += _data[i] + _data[i] + _data[i] + _data[i];
         }
 
-        [Benchmark]
-        public long LoopUsingIndex()
+        return total;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long LoopUsingVariable()
+    {
+        long total = 0;
+        int value;
+
+        for (int i = 0; i < _data.Count; i++)
         {
-            long total = 0;
-
-            for (int i = 0; i < _data.Count; i++)
-            {
-                total += _data[i] + _data[i] + _data[i] + _data[i];
-            }
-
-            return total;
+            value = _data[i];
+            total += value + value + value + value;
         }
 
-        [Benchmark(Baseline = true)]
-        public long LoopUsingVariable()
-        {
-            long total = 0;
-            int value;
-
-            for (int i = 0; i < _data.Count; i++)
-            {
-                value = _data[i];
-                total += value + value + value + value;
-            }
-
-            return total;
-        }
+        return total;
     }
 }

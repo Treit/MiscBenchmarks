@@ -1,111 +1,109 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
+
+struct DataStruct
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Text.RegularExpressions;
+    public int Code;
+    public byte[] Message;
+    public IPAddress IPADDR;
+    public IPEndPoint EndPoint;
+}
 
-    struct DataStruct
+class DataClass
+{
+    public int Code;
+    public byte[] Message;
+    public IPAddress IPADDR;
+    public IPEndPoint EndPoint;
+}
+
+[MemoryDiagnoser]
+public class Benchmark
+{
+    [Params(10, 100, 1000, 10_000, 100_000, 1_000_000)]
+    public int Count { get; set; }
+
+    private Queue<DataStruct> _structQueue;
+    private Queue<DataClass> _classQueue;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        public int Code;
-        public byte[] Message;
-        public IPAddress IPADDR;
-        public IPEndPoint EndPoint;
+        _structQueue = new Queue<DataStruct>(Count);
+        _classQueue = new Queue<DataClass>(Count);
     }
 
-    class DataClass
+    [Benchmark]
+    public long QueueUsingStruct()
     {
-        public int Code;
-        public byte[] Message;
-        public IPAddress IPADDR;
-        public IPEndPoint EndPoint;
+        _structQueue.Clear();
+
+        PopulateQueueUsingStruct();
+
+        long result = 0;
+
+        while (_structQueue.Count > 0)
+        {
+            var item = _structQueue.Dequeue();
+            result += item.Message.Length;
+        }
+
+        return result;
     }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Benchmark(Baseline = true)]
+    public long QueueUsingClass()
     {
-        [Params(10, 100, 1000, 10_000, 100_000, 1_000_000)]
-        public int Count { get; set; }
+        _classQueue.Clear();
 
-        private Queue<DataStruct> _structQueue;
-        private Queue<DataClass> _classQueue;
+        PopulateQueueUsingClass();
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        long result = 0;
+
+        while (_classQueue.Count > 0)
         {
-            _structQueue = new Queue<DataStruct>(Count);
-            _classQueue = new Queue<DataClass>(Count);
+            var item = _classQueue.Dequeue();
+            result += item.Message.Length;
         }
 
-        [Benchmark]
-        public long QueueUsingStruct()
+        return result;
+    }
+
+    private void PopulateQueueUsingStruct()
+    {
+        for (int i = 0; i < Count; i++)
         {
-            _structQueue.Clear();
-
-            PopulateQueueUsingStruct();
-
-            long result = 0;
-
-            while (_structQueue.Count > 0)
+            DataStruct item = new DataStruct
             {
-                var item = _structQueue.Dequeue();
-                result += item.Message.Length;
-            }
+                IPADDR = new IPAddress(0x2414111),
+                Code = i,
+                EndPoint = new IPEndPoint(0x2414111, 10052),
+                Message = new byte[4096]
+            };
 
-            return result;
+            _structQueue.Enqueue(item);
         }
+    }
 
-        [Benchmark(Baseline = true)]
-        public long QueueUsingClass()
+    private void PopulateQueueUsingClass()
+    {
+        for (int i = 0; i < Count; i++)
         {
-            _classQueue.Clear();
-
-            PopulateQueueUsingClass();
-
-            long result = 0;
-
-            while (_classQueue.Count > 0)
+            DataClass item = new DataClass
             {
-                var item = _classQueue.Dequeue();
-                result += item.Message.Length;
-            }
+                IPADDR = new IPAddress(0x2414111),
+                Code = i,
+                EndPoint = new IPEndPoint(0x2414111, 10052),
+                Message = new byte[4096]
+            };
 
-            return result;
-        }
-
-        private void PopulateQueueUsingStruct()
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                DataStruct item = new DataStruct
-                {
-                    IPADDR = new IPAddress(0x2414111),
-                    Code = i,
-                    EndPoint = new IPEndPoint(0x2414111, 10052),
-                    Message = new byte[4096]
-                };
-
-                _structQueue.Enqueue(item);
-            }
-        }
-
-        private void PopulateQueueUsingClass()
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                DataClass item = new DataClass
-                {
-                    IPADDR = new IPAddress(0x2414111),
-                    Code = i,
-                    EndPoint = new IPEndPoint(0x2414111, 10052),
-                    Message = new byte[4096]
-                };
-
-                _classQueue.Enqueue(item);
-            }
+            _classQueue.Enqueue(item);
         }
     }
 }

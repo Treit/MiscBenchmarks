@@ -1,183 +1,181 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+[MemoryDiagnoser]
+[MemoryRandomization]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.InteropServices;
+    private string[] _stringArray;
+    private List<string> _stringList;
+    private HashSet<string> _stringSet;
 
-    [MemoryDiagnoser]
-    [MemoryRandomization]
-    public class Benchmark
+    [Params(10, 100_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private string[] _stringArray;
-        private List<string> _stringList;
-        private HashSet<string> _stringSet;
+        _stringArray = new string[Count];
+        _stringList = new List<string>(Count);
+        _stringSet = new HashSet<string>(Count);
 
-        [Params(10, 100_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _stringArray = new string[Count];
-            _stringList = new List<string>(Count);
-            _stringSet = new HashSet<string>(Count);
+            var str = i.ToString();
+            _stringArray[i] = str;
+            _stringList.Add(str);
+            _stringSet.Add(str);
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
+    [Benchmark(Baseline = true)]
+    public long ICollectionForLoopWithCastToArray()
+    {
+        return DoLoopOnICollection(_stringArray, true);
+    }
+
+    [Benchmark]
+    public long ICollectionForEachLoopWithArrayAsICollection()
+    {
+        return DoLoopOnICollection(_stringArray, false);
+    }
+
+    [Benchmark]
+    public long ICollectionForEachLoopWithListAsICollection()
+    {
+        return DoLoopOnICollection(_stringList, false);
+    }
+
+    [Benchmark]
+    public long ICollectionForEachLoopWithCastToArray()
+    {
+        return DoForEachLoopOnICollection(_stringArray, false);
+    }
+
+    [Benchmark]
+    public long ICollectionForEachLoopWithCastToList()
+    {
+        return DoForEachLoopOnICollection(_stringList, false);
+    }
+
+    [Benchmark]
+    public long ICollectionForEachLoopWithCastToListAndSpan()
+    {
+        return DoForEachLoopOnICollection(_stringList, true);
+    }
+
+    [Benchmark]
+    public long ICollectionForEachLoopWithCastToArrayAndSpan()
+    {
+        return DoForEachLoopOnICollection(_stringArray, true);
+    }
+
+    [Benchmark]
+    public long ICollectionForEachLoopNoCastUnderlyingCollectionIsHashSet()
+    {
+        return DoForEachLoopOnICollection(_stringSet, false);
+    }
+
+    private long DoLoopOnICollection(ICollection<string> items, bool castToArray)
+    {
+        var result = 0L;
+
+        if (castToArray && items is string[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
             {
-                var str = i.ToString();
-                _stringArray[i] = str;
-                _stringList.Add(str);
-                _stringSet.Add(str);
+                result += arr[i].Length;
+            }
+        }
+        else
+        {
+            foreach (var item in items)
+            {
+                result += item.Length;
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public long ICollectionForLoopWithCastToArray()
-        {
-            return DoLoopOnICollection(_stringArray, true);
-        }
+        return result;
+    }
 
-        [Benchmark]
-        public long ICollectionForEachLoopWithArrayAsICollection()
+    private long DoForEachLoopOnICollection(ICollection<string> items, bool span)
+    {
+        if (items is string[] arr)
         {
-            return DoLoopOnICollection(_stringArray, false);
-        }
-
-        [Benchmark]
-        public long ICollectionForEachLoopWithListAsICollection()
-        {
-            return DoLoopOnICollection(_stringList, false);
-        }
-
-        [Benchmark]
-        public long ICollectionForEachLoopWithCastToArray()
-        {
-            return DoForEachLoopOnICollection(_stringArray, false);
-        }
-
-        [Benchmark]
-        public long ICollectionForEachLoopWithCastToList()
-        {
-            return DoForEachLoopOnICollection(_stringList, false);
-        }
-
-        [Benchmark]
-        public long ICollectionForEachLoopWithCastToListAndSpan()
-        {
-            return DoForEachLoopOnICollection(_stringList, true);
-        }
-
-        [Benchmark]
-        public long ICollectionForEachLoopWithCastToArrayAndSpan()
-        {
-            return DoForEachLoopOnICollection(_stringArray, true);
-        }
-
-        [Benchmark]
-        public long ICollectionForEachLoopNoCastUnderlyingCollectionIsHashSet()
-        {
-            return DoForEachLoopOnICollection(_stringSet, false);
-        }
-
-        private long DoLoopOnICollection(ICollection<string> items, bool castToArray)
-        {
-            var result = 0L;
-
-            if (castToArray && items is string[] arr)
+            if (span)
             {
-                for (int i = 0; i < arr.Length; i++)
-                {
-                    result += arr[i].Length;
-                }
+                return CalcSpan(arr);
             }
             else
             {
-                foreach (var item in items)
-                {
-                    result += item.Length;
-                }
+                return CalcArray(arr);
+            }
+        }
+
+        if (items is List<string> list)
+        {
+            if (span)
+            {
+                return CalcSpan(CollectionsMarshal.AsSpan(list));
+            }
+            else
+            {
+                return CalcList(list);
+            }
+        }
+
+        return CalcNormal(items);
+
+        static long CalcSpan(Span<string> items)
+        {
+            var result = 0L;
+
+            foreach (var str in items)
+            {
+                result += str.Length;
             }
 
             return result;
         }
 
-        private long DoForEachLoopOnICollection(ICollection<string> items, bool span)
+        static long CalcArray(string[] items)
         {
-            if (items is string[] arr)
+            var result = 0L;
+
+            foreach (var str in items)
             {
-                if (span)
-                {
-                    return CalcSpan(arr);
-                }
-                else
-                {
-                    return CalcArray(arr);
-                }
+                result += str.Length;
             }
 
-            if (items is List<string> list)
+            return result;
+        }
+
+        static long CalcList(List<string> items)
+        {
+            var result = 0L;
+
+            foreach (var str in items)
             {
-                if (span)
-                {
-                    return CalcSpan(CollectionsMarshal.AsSpan(list));
-                }
-                else
-                {
-                    return CalcList(list);
-                }
+                result += str.Length;
             }
 
-            return CalcNormal(items);
+            return result;
+        }
 
-            static long CalcSpan(Span<string> items)
+        static long CalcNormal(ICollection<string> items)
+        {
+            var result = 0L;
+
+            foreach (var str in items)
             {
-                var result = 0L;
-
-                foreach (var str in items)
-                {
-                    result += str.Length;
-                }
-
-                return result;
+                result += str.Length;
             }
 
-            static long CalcArray(string[] items)
-            {
-                var result = 0L;
-
-                foreach (var str in items)
-                {
-                    result += str.Length;
-                }
-
-                return result;
-            }
-
-            static long CalcList(List<string> items)
-            {
-                var result = 0L;
-
-                foreach (var str in items)
-                {
-                    result += str.Length;
-                }
-
-                return result;
-            }
-
-            static long CalcNormal(ICollection<string> items)
-            {
-                var result = 0L;
-
-                foreach (var str in items)
-                {
-                    result += str.Length;
-                }
-
-                return result;
-            }
+            return result;
         }
     }
 }

@@ -1,107 +1,105 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Text.RegularExpressions;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Text.RegularExpressions;
+    private static string[] _delimitedStrings;
+    private static Regex _regex;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(1, 1000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private static string[] _delimitedStrings;
-        private static Regex _regex;
-
-        [Params(1, 1000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        _delimitedStrings = new string[Count];
+        for (int i = 0; i < Count; i++)
         {
-            _delimitedStrings = new string[Count];
-            for (int i = 0; i < Count; i++)
-            {
-                _delimitedStrings[i] = $"SomeValue{i},SomeOtherValue{i}";
-            }
-
-            _regex = new Regex("^(.+?),(.+)$", RegexOptions.Compiled);
+            _delimitedStrings[i] = $"SomeValue{i},SomeOtherValue{i}";
         }
 
-        [Benchmark]
-        public (string, string) TokenizeWithStringSplit()
+        _regex = new Regex("^(.+?),(.+)$", RegexOptions.Compiled);
+    }
+
+    [Benchmark]
+    public (string, string) TokenizeWithStringSplit()
+    {
+        var result = ("", "");
+
+        for (var i = 0; i < Count; i++)
         {
-            var result = ("", "");
-
-            for (var i = 0; i < Count; i++)
-            {
-                var tokens = _delimitedStrings[i].Split(',');
-                result = (tokens[0], tokens[1]);
-            }
-
-            return result;
+            var tokens = _delimitedStrings[i].Split(',');
+            result = (tokens[0], tokens[1]);
         }
 
-        [Benchmark(Baseline = true)]
-        public (string, string) TokenizeWithSubstring()
+        return result;
+    }
+
+    [Benchmark(Baseline = true)]
+    public (string, string) TokenizeWithSubstring()
+    {
+        var result = ("", "");
+
+        for (var i = 0; i < Count; i++)
         {
-            var result = ("", "");
-
-            for (var i = 0; i < Count; i++)
-            {
-                var index = _delimitedStrings[i].IndexOf(',');
-                var strA = _delimitedStrings[i].Substring(0, index);
-                var strB = _delimitedStrings[i].Substring(index + 1);
-                result = (strA, strB);
-            }
-
-            return result;
+            var index = _delimitedStrings[i].IndexOf(',');
+            var strA = _delimitedStrings[i].Substring(0, index);
+            var strB = _delimitedStrings[i].Substring(index + 1);
+            result = (strA, strB);
         }
 
-        [Benchmark]
-        public (string, string) TokenizeWithRangeOperator()
+        return result;
+    }
+
+    [Benchmark]
+    public (string, string) TokenizeWithRangeOperator()
+    {
+        var result = ("", "");
+
+        for (var i = 0; i < Count; i++)
         {
-            var result = ("", "");
-
-            for (var i = 0; i < Count; i++)
-            {
-                var index = _delimitedStrings[i].IndexOf(',');
-                var strA = _delimitedStrings[i][..index];
-                var strB = _delimitedStrings[i][(index + 1)..];
-                result = (strA, strB);
-            }
-
-            return result;
+            var index = _delimitedStrings[i].IndexOf(',');
+            var strA = _delimitedStrings[i][..index];
+            var strB = _delimitedStrings[i][(index + 1)..];
+            result = (strA, strB);
         }
 
-        [Benchmark]
-        public (string, string) TokenizeWithRegexMatchDotResult()
+        return result;
+    }
+
+    [Benchmark]
+    public (string, string) TokenizeWithRegexMatchDotResult()
+    {
+        var result = ("", "");
+
+        for (var i = 0; i < Count; i++)
         {
-            var result = ("", "");
-
-            for (var i = 0; i < Count; i++)
-            {
-                var m = _regex.Match(_delimitedStrings[i]);
-                var strA = m.Result("$1");
-                var strB = m.Result("$2");
-                result = (strA, strB);
-            }
-
-            return result;
+            var m = _regex.Match(_delimitedStrings[i]);
+            var strA = m.Result("$1");
+            var strB = m.Result("$2");
+            result = (strA, strB);
         }
 
-        [Benchmark]
-        public (string, string) TokenizeWithRegexGroupsDotValue()
+        return result;
+    }
+
+    [Benchmark]
+    public (string, string) TokenizeWithRegexGroupsDotValue()
+    {
+        var result = ("", "");
+
+        for (var i = 0; i < Count; i++)
         {
-            var result = ("", "");
-
-            for (var i = 0; i < Count; i++)
-            {
-                var m = _regex.Match(_delimitedStrings[i]);
-                var strA = m.Groups[1].Value;
-                var strB = m.Groups[2].Value;
-                result = (strA, strB);
-            }
-
-            return result;
+            var m = _regex.Match(_delimitedStrings[i]);
+            var strA = m.Groups[1].Value;
+            var strB = m.Groups[2].Value;
+            result = (strA, strB);
         }
+
+        return result;
     }
 }

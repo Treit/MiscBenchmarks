@@ -1,54 +1,52 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
+    [Params(10, 100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private List<string> _data;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 100_000)]
-        public int Count { get; set; }
+        Random r = new Random();
+        _data = new List<string>(Count);
 
-        private List<string> _data;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < this.Count; i++)
         {
-            Random r = new Random();
-            _data = new List<string>(Count);
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                _data.Add(i.ToString());
-            }
+            _data.Add(i.ToString());
         }
+    }
 
-        [Benchmark(Baseline = true)]
-        public bool SingleAnyWithMatch()
-        {
-            return _data.Any(x => x.Length == 100 || x.Length > 1);
-        }
+    [Benchmark(Baseline = true)]
+    public bool SingleAnyWithMatch()
+    {
+        return _data.Any(x => x.Length == 100 || x.Length > 1);
+    }
 
-        [Benchmark]
-        public bool SingleAnyWithNoMatch()
-        {
-            return _data.Any(x => x.Length == 100 || x.Length > 50);
-        }
+    [Benchmark]
+    public bool SingleAnyWithNoMatch()
+    {
+        return _data.Any(x => x.Length == 100 || x.Length > 50);
+    }
 
-        [Benchmark]
-        public bool MultipleCallsToAnyWithMatch()
-        {
-            return _data.Any(x => x.Length == 100) || _data.Any(x => x.Length > 1);
-        }
+    [Benchmark]
+    public bool MultipleCallsToAnyWithMatch()
+    {
+        return _data.Any(x => x.Length == 100) || _data.Any(x => x.Length > 1);
+    }
 
-        [Benchmark]
-        public bool MultipleCallsToAnyWithNoMatch()
-        {
-            return _data.Any(x => x.Length == 100) || _data.Any(x => x.Length > 50);
-        }
+    [Benchmark]
+    public bool MultipleCallsToAnyWithNoMatch()
+    {
+        return _data.Any(x => x.Length == 100) || _data.Any(x => x.Length > 50);
     }
 }

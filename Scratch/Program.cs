@@ -1,41 +1,39 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
-namespace Test
+namespace Test;
+public class PerfTest
 {
-    public class PerfTest
+    [Params(4, 8)]
+    public int PredicateCount { get; set; }
+
+    [Benchmark]
+    public void Test()
     {
-        [Params(4, 8)]
-        public int PredicateCount { get; set; }
+        IEnumerable<int> rows = new int[] { 1234 };
+        var predicates = new Func<int, bool>[PredicateCount];
 
-        [Benchmark]
-        public void Test()
+        for (int i = 0; i < PredicateCount; i++)
         {
-            IEnumerable<int> rows = new int[] { 1234 };
-            var predicates = new Func<int, bool>[PredicateCount];
-
-            for (int i = 0; i < PredicateCount; i++)
-            {
-                predicates[i] = x => true;
-            }
-
-            foreach (var predicate in predicates)
-            {
-                rows = rows.AsParallel().Where(predicate);
-            }
-
-            var x = rows.ToList();
+            predicates[i] = x => true;
         }
+
+        foreach (var predicate in predicates)
+        {
+            rows = rows.AsParallel().Where(predicate);
+        }
+
+        var x = rows.ToList();
     }
+}
 
-    class Program
+class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            BenchmarkRunner.Run(typeof(Program).Assembly);
-        }
+        BenchmarkRunner.Run(typeof(Program).Assembly);
     }
 }

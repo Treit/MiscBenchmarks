@@ -1,322 +1,320 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+[MemoryRandomization]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.InteropServices;
+    [Params(100, 10_000)]
+    public int Count { get; set; }
 
-    [MemoryRandomization]
-    public class Benchmark
+    private List<byte[]> _buffers;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100, 10_000)]
-        public int Count { get; set; }
+        _buffers = new List<byte[]>(Count);
+        var r = new Random();
 
-        private List<byte[]> _buffers;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _buffers = new List<byte[]>(Count);
-            var r = new Random();
+            var buffer = new byte[64];
+            r.NextBytes(buffer);
+            _buffers.Add(buffer);
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
+    [Benchmark]
+    public int CheckHashesNoLookup()
+    {
+        Span<byte> target = _buffers[0].AsSpan();
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
+        {
+            var confidence = LSHash.ConfidenceNoLookup(target, buffer.AsSpan());
+
+            if (confidence > maxConfidence)
             {
-                var buffer = new byte[64];
-                r.NextBytes(buffer);
-                _buffers.Add(buffer);
+                maxConfidence = confidence;
             }
         }
 
-        [Benchmark]
-        public int CheckHashesNoLookup()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesOriginalWithLookup()
+    {
+        Span<byte> target = _buffers[0].AsSpan();
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            Span<byte> target = _buffers[0].AsSpan();
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.Confidence(target, buffer.AsSpan());
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceNoLookup(target, buffer.AsSpan());
-
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesOriginalWithLookup()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesWithSpanTable()
+    {
+        Span<byte> target = _buffers[0].AsSpan();
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            Span<byte> target = _buffers[0].AsSpan();
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceWithSpanTable(target, buffer.AsSpan());
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.Confidence(target, buffer.AsSpan());
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesWithSpanTable()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesKozi()
+    {
+        Span<byte> target = _buffers[0].AsSpan();
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            Span<byte> target = _buffers[0].AsSpan();
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceWithSpanTableKozi(target, buffer.AsSpan());
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceWithSpanTable(target, buffer.AsSpan());
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesKozi()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public uint CheckHashesTechPizza()
+    {
+        Span<byte> target = _buffers[0].AsSpan();
+        uint maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            Span<byte> target = _buffers[0].AsSpan();
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceWithSpanTableTechPizza(target, buffer.AsSpan());
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceWithSpanTableKozi(target, buffer.AsSpan());
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public uint CheckHashesTechPizza()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public uint CheckHashesSauceControl()
+    {
+        Span<byte> target = _buffers[0].AsSpan();
+        uint maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            Span<byte> target = _buffers[0].AsSpan();
-            uint maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceSauceControl(target, buffer.AsSpan());
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceWithSpanTableTechPizza(target, buffer.AsSpan());
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public uint CheckHashesSauceControl()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public uint CheckHashesSauceControlUnrolledKozi()
+    {
+        Span<byte> target = _buffers[0].AsSpan();
+        uint maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            Span<byte> target = _buffers[0].AsSpan();
-            uint maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceSauceControlUnrolledKozi(target, buffer.AsSpan());
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceSauceControl(target, buffer.AsSpan());
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public uint CheckHashesSauceControlUnrolledKozi()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesHugeLookupTable()
+    {
+        var target = MemoryMarshal.Cast<byte, ushort>(_buffers[0].AsSpan());
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            Span<byte> target = _buffers[0].AsSpan();
-            uint maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceWithUShortTable(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceSauceControlUnrolledKozi(target, buffer.AsSpan());
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesHugeLookupTable()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesSauceControlUnrolled()
+    {
+        Span<byte> target = _buffers[0].AsSpan();
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            var target = MemoryMarshal.Cast<byte, ushort>(_buffers[0].AsSpan());
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceSauceControlUnrolled(target, buffer.AsSpan());
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceWithUShortTable(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesSauceControlUnrolled()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesSauceControlUnrolledHugeLookup()
+    {
+        var target = MemoryMarshal.Cast<byte, ushort>(_buffers[0].AsSpan());
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            Span<byte> target = _buffers[0].AsSpan();
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceSauceControlUnrolledHugeLookup(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceSauceControlUnrolled(target, buffer.AsSpan());
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesSauceControlUnrolledHugeLookup()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesSseKozidHugeLookup()
+    {
+        var target = MemoryMarshal.Cast<byte, ushort>(_buffers[0].AsSpan());
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            var target = MemoryMarshal.Cast<byte, ushort>(_buffers[0].AsSpan());
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceSseKozi(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceSauceControlUnrolledHugeLookup(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesSseKozidHugeLookup()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesSauceControlSse()
+    {
+        var target = _buffers[0];
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            var target = MemoryMarshal.Cast<byte, ushort>(_buffers[0].AsSpan());
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceSauceControlSse2(target, buffer);
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceSseKozi(target, MemoryMarshal.Cast<byte, ushort>(buffer.AsSpan()));
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesSauceControlSse()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesSauceControlFirstAvx()
+    {
+        var target = _buffers[0];
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            var target = _buffers[0];
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
+            var confidence = LSHash.ConfidenceSauceControlFirstAvx2(target, buffer);
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceSauceControlSse2(target, buffer);
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesSauceControlFirstAvx()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesSauceControlSecondAvx()
+    {
+        var target = _buffers[0];
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            var target = _buffers[0];
-            int maxConfidence = 0;
+            var confidence = LSHash.ConfidenceSauceControlSecondAvx2(target, buffer);
 
-            foreach (var buffer in _buffers)
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceSauceControlFirstAvx2(target, buffer);
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesSauceControlSecondAvx()
+        return maxConfidence;
+    }
+
+    [Benchmark]
+    public int CheckHashesSauceControlThirdAvx()
+    {
+        var target = _buffers[0];
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            var target = _buffers[0];
-            int maxConfidence = 0;
+            var confidence = LSHash.ConfidenceSauceControlThirdAvx2(target, buffer);
 
-            foreach (var buffer in _buffers)
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceSauceControlSecondAvx2(target, buffer);
-
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark]
-        public int CheckHashesSauceControlThirdAvx()
+        return maxConfidence;
+    }
+
+    [Benchmark(Baseline = true)]
+    public int CheckHashesSauceControlFourthAvx()
+    {
+        var target = _buffers[0];
+        int maxConfidence = 0;
+
+        foreach (var buffer in _buffers)
         {
-            var target = _buffers[0];
-            int maxConfidence = 0;
+            var confidence = LSHash.ConfidenceSauceControlFourthAvx2(target, buffer);
 
-            foreach (var buffer in _buffers)
+            if (confidence > maxConfidence)
             {
-                var confidence = LSHash.ConfidenceSauceControlThirdAvx2(target, buffer);
-
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
+                maxConfidence = confidence;
             }
-
-            return maxConfidence;
         }
 
-        [Benchmark(Baseline = true)]
-        public int CheckHashesSauceControlFourthAvx()
-        {
-            var target = _buffers[0];
-            int maxConfidence = 0;
-
-            foreach (var buffer in _buffers)
-            {
-                var confidence = LSHash.ConfidenceSauceControlFourthAvx2(target, buffer);
-
-                if (confidence > maxConfidence)
-                {
-                    maxConfidence = confidence;
-                }
-            }
-
-            return maxConfidence;
-        }
+        return maxConfidence;
     }
 }

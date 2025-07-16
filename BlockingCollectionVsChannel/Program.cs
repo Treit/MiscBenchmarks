@@ -1,19 +1,17 @@
-﻿namespace Test
-{
-    using BenchmarkDotNet.Running;
+namespace Test;
+using BenchmarkDotNet.Running;
 
-    internal class Program
+internal class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
 #if RELEASE
-            BenchmarkRunner.Run<Benchmark>();
+        BenchmarkRunner.Run<Benchmark>();
 #else
-            Benchmark b = new Benchmark();
-            b.Count = 100_000;
-            b.GlobalSetup();
-            b.GetTotalUsingBlockingCollectionSingleTask();
+        Benchmark b = new Benchmark();
+        b.Count = 100_000;
+        b.GlobalSetup();
+        b.GetTotalUsingBlockingCollectionSingleTask();
 #endif
-        }
     }
 }

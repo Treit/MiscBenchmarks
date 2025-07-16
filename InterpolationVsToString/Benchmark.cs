@@ -1,61 +1,59 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+[MemoryDiagnoser]
+[MemoryRandomization]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.InteropServices;
+    private Dictionary<string, uint> _dict;
 
-    [MemoryDiagnoser]
-    [MemoryRandomization]
-    public class Benchmark
+    [Params(5000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private Dictionary<string, uint> _dict;
+        _dict = new Dictionary<string, uint>(Count);
 
-        [Params(5000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _dict = new Dictionary<string, uint>(Count);
+            _dict.Add(i.ToString(), (uint)i);
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
+    [Benchmark(Baseline = true)]
+    public long LookupUsingToString()
+    {
+        var result = 0L;
+
+        for (var i = 0; i < Count; i++)
+        {
+            if (_dict.TryGetValue(i.ToString(), out var value))
             {
-                _dict.Add(i.ToString(), (uint)i);
+                result += value;
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public long LookupUsingToString()
+        return result;
+    }
+
+    [Benchmark]
+    public long LookupUsingInterpolation()
+    {
+        var result = 0L;
+
+        for (var i = 0; i < Count; i++)
         {
-            var result = 0L;
-
-            for (var i = 0; i < Count; i++)
+            if (_dict.TryGetValue($"{i}", out var value))
             {
-                if (_dict.TryGetValue(i.ToString(), out var value))
-                {
-                    result += value;
-                }
+                result += value;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public long LookupUsingInterpolation()
-        {
-            var result = 0L;
-
-            for (var i = 0; i < Count; i++)
-            {
-                if (_dict.TryGetValue($"{i}", out var value))
-                {
-                    result += value;
-                }
-            }
-
-            return result;
-        }
+        return result;
     }
 }

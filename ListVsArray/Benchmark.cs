@@ -1,86 +1,84 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Collections.Generic;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Collections.Generic;
+    [Params(10_000, 1_000_000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private List<int> _list;
+    private int[] _array;
+    private List<int> _populatedList;
+    private int[] _populatedArray;
+
+    [IterationSetup]
+    public void IterationSetup()
     {
-        [Params(10_000, 1_000_000)]
-        public int Count { get; set; }
+        _list = new List<int>(Count);
+        _array = new int[Count];
+        _populatedList = new List<int>(Count);
+        _populatedArray = new int[Count];
 
-        private List<int> _list;
-        private int[] _array;
-        private List<int> _populatedList;
-        private int[] _populatedArray;
-
-        [IterationSetup]
-        public void IterationSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _list = new List<int>(Count);
-            _array = new int[Count];
-            _populatedList = new List<int>(Count);
-            _populatedArray = new int[Count];
-
-            for (int i = 0; i < Count; i++)
-            {
-                _populatedList.Add(i);
-                _populatedArray[i] = i;
-            }
-
+            _populatedList.Add(i);
+            _populatedArray[i] = i;
         }
 
-        [Benchmark]
-        public List<int> PopulateList()
+    }
+
+    [Benchmark]
+    public List<int> PopulateList()
+    {
+        var list = _list;
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = _list;
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(i);
-            }
-
-            return list;
+            list.Add(i);
         }
 
-        [Benchmark]
-        public int[] PopulateArray()
+        return list;
+    }
+
+    [Benchmark]
+    public int[] PopulateArray()
+    {
+        var array = _array;
+
+        for (int i = 0; i < Count; i++)
         {
-            var array = _array;
-
-            for (int i = 0; i < Count; i++)
-            {
-                _array[i] = i;
-            }
-
-            return _array;
+            _array[i] = i;
         }
 
-        [Benchmark]
-        public long SumList()
+        return _array;
+    }
+
+    [Benchmark]
+    public long SumList()
+    {
+        var list = _populatedList;
+        long sum = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = _populatedList;
-            long sum = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                sum += list[i];
-            }
-
-            return sum;
+            sum += list[i];
         }
 
-        [Benchmark(Baseline = true)]
-        public long SumArray()
+        return sum;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long SumArray()
+    {
+        var array = _populatedArray;
+        long sum = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            var array = _populatedArray;
-            long sum = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                sum += array[i];
-            }
-
-            return sum;
+            sum += array[i];
         }
+
+        return sum;
     }
 }

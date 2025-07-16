@@ -1,162 +1,160 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Threading;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Threading;
+    public static Random s_random;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    public static Random s_randomNoSeed;
+
+    [ThreadStatic]
+    public static Random s_randomThreadStatic;
+
+    public static Xorshift s_xorshift;
+
+    public static object s_lockobj = new object();
+
+    [Params(1_000_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        public static Random s_random;
+        s_random = new Random(Count);
+        s_randomNoSeed = new Random();
+        s_xorshift = new Xorshift((uint)Count);
+    }
 
-        public static Random s_randomNoSeed;
+    [Benchmark(Baseline = true)]
+    public long SystemRandomStaticInstanceWithSeed()
+    {
+        long result = 0;
 
-        [ThreadStatic]
-        public static Random s_randomThreadStatic;
-
-        public static Xorshift s_xorshift;
-
-        public static object s_lockobj = new object();
-
-        [Params(1_000_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            s_random = new Random(Count);
-            s_randomNoSeed = new Random();
-            s_xorshift = new Xorshift((uint)Count);
+            result += s_random.Next();
         }
 
-        [Benchmark(Baseline = true)]
-        public long SystemRandomStaticInstanceWithSeed()
-        {
-            long result = 0;
+        return result;
+    }
 
-            for (int i = 0; i < Count; i++)
+    [Benchmark]
+    public long SystemRandomLocalInstanceWithSeed()
+    {
+        long result = 0;
+        var random = new Random(Count);
+
+        for (int i = 0; i < Count; i++)
+        {
+            result += random.Next();
+        }
+
+        return result;
+    }
+
+
+    [Benchmark]
+    public long SystemRandomDotShared()
+    {
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
+        {
+            result += Random.Shared.Next();
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public long SystemRandomStaticInstanceNoSeed()
+    {
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
+        {
+            result += s_randomNoSeed.Next();
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public long SystemRandomLocalInstanceNoSeed()
+    {
+        long result = 0;
+        var random = new Random();
+
+        for (int i = 0; i < Count; i++)
+        {
+            result += random.Next();
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public long SystemRandomWithLock()
+    {
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
+        {
+            lock (s_lockobj)
             {
                 result += s_random.Next();
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public long SystemRandomLocalInstanceWithSeed()
+        return result;
+    }
+
+    [Benchmark]
+    public long SystemRandomNewInstanceEveryTime()
+    {
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            long result = 0;
-            var random = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += random.Next();
-            }
-
-            return result;
+            var random = new Random(i);
+            result += random.Next();
         }
 
+        return result;
+    }
 
-        [Benchmark]
-        public long SystemRandomDotShared()
+    [Benchmark]
+    public long SystemRandomThreadStatic()
+    {
+        long result = 0;
+
+        if (s_randomThreadStatic == null)
         {
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += Random.Shared.Next();
-            }
-
-            return result;
+            s_randomThreadStatic = new Random(Count);
         }
 
-        [Benchmark]
-        public long SystemRandomStaticInstanceNoSeed()
+        for (int i = 0; i < Count; i++)
         {
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += s_randomNoSeed.Next();
-            }
-
-            return result;
+            result += s_randomThreadStatic.Next();
         }
 
-        [Benchmark]
-        public long SystemRandomLocalInstanceNoSeed()
+        return result;
+    }
+
+    [Benchmark]
+    public long XorShiftRandom()
+    {
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            long result = 0;
-            var random = new Random();
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += random.Next();
-            }
-
-            return result;
+            result += s_xorshift.Next();
         }
 
-        [Benchmark]
-        public long SystemRandomWithLock()
-        {
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                lock (s_lockobj)
-                {
-                    result += s_random.Next();
-                }
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public long SystemRandomNewInstanceEveryTime()
-        {
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                var random = new Random(i);
-                result += random.Next();
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public long SystemRandomThreadStatic()
-        {
-            long result = 0;
-
-            if (s_randomThreadStatic == null)
-            {
-                s_randomThreadStatic = new Random(Count);
-            }
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += s_randomThreadStatic.Next();
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public long XorShiftRandom()
-        {
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += s_xorshift.Next();
-            }
-
-            return result;
-        }
+        return result;
     }
 }

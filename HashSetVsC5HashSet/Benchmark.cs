@@ -1,44 +1,42 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(100, 1_000_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private int[] _array;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100, 1_000_000)]
-        public int Count { get; set; }
+        Random r = new Random();
 
-        private int[] _array;
+        _array = new int[Count];
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            Random r = new Random();
-
-            _array = new int[Count];
-
-            for (int i = 0; i < Count; i++)
-            {
-                _array[i] = r.Next(0, 100);
-            }
+            _array[i] = r.Next(0, 100);
         }
+    }
 
-        [Benchmark(Baseline = true)]
-        public int[] DedupeUsingHashSet()
-        {
-            return new HashSet<int>(_array).ToArray();
-        }
+    [Benchmark(Baseline = true)]
+    public int[] DedupeUsingHashSet()
+    {
+        return new HashSet<int>(_array).ToArray();
+    }
 
-        [Benchmark]
-        public int[] DedupeUsingC5HashSet()
-        {
-            var c5hashSet = new C5.HashSet<int>(Count, 0.6, EqualityComparer<int>.Default);
-            c5hashSet.AddAll(_array);
-            return c5hashSet.ToArray();
-        }
+    [Benchmark]
+    public int[] DedupeUsingC5HashSet()
+    {
+        var c5hashSet = new C5.HashSet<int>(Count, 0.6, EqualityComparer<int>.Default);
+        c5hashSet.AddAll(_array);
+        return c5hashSet.ToArray();
     }
 }

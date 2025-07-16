@@ -1,74 +1,72 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(1000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    public int ItemsPerDictionary { get; set; } = 100;
+
+    private IList<Dictionary<string, string>> _dictionaries;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(1000)]
-        public int Count { get; set; }
+        _dictionaries = new List<Dictionary<string, string>>(Count);
 
-        public int ItemsPerDictionary { get; set; } = 100;
-
-        private IList<Dictionary<string, string>> _dictionaries;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _dictionaries = new List<Dictionary<string, string>>(Count);
+            var dict = new Dictionary<string, string>();
+            var n = Random.Shared.Next(100);
 
-            for (int i = 0; i < Count; i++)
+            if (n < 90)
             {
-                var dict = new Dictionary<string, string>();
-                var n = Random.Shared.Next(100);
 
-                if (n < 90)
+                for (int j = 0; j < ItemsPerDictionary; j++)
                 {
-
-                    for (int j = 0; j < ItemsPerDictionary; j++)
-                    {
-                        dict.Add(j.ToString(), $"{i}_{j}");
-                    }
-                }
-
-                _dictionaries.Add(dict);
-            }
-        }
-
-        [Benchmark(Baseline = true)]
-        public int CheckDictionaryEmptyUsingCount()
-        {
-            int nonemptyCount = 0;
-
-            for (int i = 0; i < _dictionaries.Count; i++)
-            {
-                if (_dictionaries[i].Count > 0)
-                {
-                    nonemptyCount++;
+                    dict.Add(j.ToString(), $"{i}_{j}");
                 }
             }
 
-            return nonemptyCount;
+            _dictionaries.Add(dict);
         }
+    }
 
-        [Benchmark]
-        public int CheckDictionaryEmptyUsingAny()
+    [Benchmark(Baseline = true)]
+    public int CheckDictionaryEmptyUsingCount()
+    {
+        int nonemptyCount = 0;
+
+        for (int i = 0; i < _dictionaries.Count; i++)
         {
-            int nonemptyCount = 0;
-
-            for (int i = 0; i < _dictionaries.Count; i++)
+            if (_dictionaries[i].Count > 0)
             {
-                if (_dictionaries[i].Any())
-                {
-                    nonemptyCount++;
-                }
+                nonemptyCount++;
             }
-
-            return nonemptyCount;
         }
+
+        return nonemptyCount;
+    }
+
+    [Benchmark]
+    public int CheckDictionaryEmptyUsingAny()
+    {
+        int nonemptyCount = 0;
+
+        for (int i = 0; i < _dictionaries.Count; i++)
+        {
+            if (_dictionaries[i].Any())
+            {
+                nonemptyCount++;
+            }
+        }
+
+        return nonemptyCount;
     }
 }

@@ -1,64 +1,62 @@
-﻿namespace Test
+namespace Test;
+using System;
+using System.Linq;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using System;
-    using System.Linq;
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
+    private int[] _array;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(100, 100_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private int[] _array;
+        _array = new int[Count];
+        var r = new Random(Count);
 
-        [Params(100, 100_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < _array.Length; i++)
         {
-            _array = new int[Count];
-            var r = new Random(Count);
+            _array[i] = r.Next(32, 127);
+        }
+    }
 
-            for (int i = 0; i < _array.Length; i++)
-            {
-                _array[i] = r.Next(32, 127);
-            }
+    [Benchmark]
+    public long StaticLambda()
+    {
+        var x = static (int a) =>
+        {
+            return a + 1;
+        };
+
+        long result = 0;
+
+        foreach (var item in _array)
+        {
+            result += x(item);
         }
 
-        [Benchmark]
-        public long StaticLambda()
+        return result;
+    }
+
+    [Benchmark]
+    public long NormalLambda()
+    {
+        var x = (int a) =>
         {
-            var x = static (int a) =>
-            {
-                return a + 1;
-            };
+            return a + 1;
+        };
 
-            long result = 0;
+        long result = 0;
 
-            foreach (var item in _array)
-            {
-                result += x(item);
-            }
-
-            return result;
+        foreach (var item in _array)
+        {
+            result += x(item);
         }
 
-        [Benchmark]
-        public long NormalLambda()
-        {
-            var x = (int a) =>
-            {
-                return a + 1;
-            };
-
-            long result = 0;
-
-            foreach (var item in _array)
-            {
-                result += x(item);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

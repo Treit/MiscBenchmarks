@@ -1,25 +1,23 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Reflection;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Reflection;
-
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-        }
+    }
 
-        [Benchmark(Baseline = true)]
-        public Assembly GetExecutingAssembly()
-        {
-            return Assembly.GetExecutingAssembly();
-        }
+    [Benchmark(Baseline = true)]
+    public Assembly GetExecutingAssembly()
+    {
+        return Assembly.GetExecutingAssembly();
+    }
 
-        [Benchmark]
-        public Assembly TypeofDotAssembly()
-        {
-            return typeof(Benchmark).Assembly;
-        }
+    [Benchmark]
+    public Assembly TypeofDotAssembly()
+    {
+        return typeof(Benchmark).Assembly;
     }
 }

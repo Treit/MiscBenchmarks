@@ -1,59 +1,57 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
+    static Type s_type = typeof(Benchmark);
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(1_000_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        static Type s_type = typeof(Benchmark);
+    }
 
-        [Params(1_000_000)]
-        public int Count { get; set; }
+    [Benchmark(Baseline = true)]
+    public Type UsingTypeof()
+    {
+        Type t = null;
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
+            t = typeof(Benchmark);
         }
 
-        [Benchmark(Baseline = true)]
-        public Type UsingTypeof()
+        return t;
+    }
+
+    [Benchmark]
+    public Type UsingThisDotGetType()
+    {
+        Type t = null;
+
+        for (int i = 0; i < Count; i++)
         {
-            Type t = null;
-
-            for (int i = 0; i < Count; i++)
-            {
-                t = typeof(Benchmark);
-            }
-
-            return t;
+            t = this.GetType();
         }
 
-        [Benchmark]
-        public Type UsingThisDotGetType()
+        return t;
+    }
+
+    [Benchmark]
+    public Type UsingCachedType()
+    {
+        Type t = null;
+
+        for (int i = 0; i < Count; i++)
         {
-            Type t = null;
-
-            for (int i = 0; i < Count; i++)
-            {
-                t = this.GetType();
-            }
-
-            return t;
+            t = s_type;
         }
 
-        [Benchmark]
-        public Type UsingCachedType()
-        {
-            Type t = null;
-
-            for (int i = 0; i < Count; i++)
-            {
-                t = s_type;
-            }
-
-            return t;
-        }
+        return t;
     }
 }

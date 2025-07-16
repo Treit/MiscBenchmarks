@@ -1,22 +1,20 @@
-﻿namespace Test
-{
-    using BenchmarkDotNet.Running;
-    using System;
+namespace Test;
+using BenchmarkDotNet.Running;
+using System;
 
-    internal class Program
+internal class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
 #if RELEASE
-            BenchmarkRunner.Run<Benchmark>();
+        BenchmarkRunner.Run<Benchmark>();
 #else
-            Benchmark b = new Benchmark();
-            b.Count = 1000;
-            b.GlobalSetup();
-            var h = b.HashWithMemoryMarshalCastAndStream();
-            Console.WriteLine(h);
+        Benchmark b = new Benchmark();
+        b.Count = 1000;
+        b.GlobalSetup();
+        var h = b.HashWithMemoryMarshalCastAndStream();
+        Console.WriteLine(h);
 #endif
 
-        }
     }
 }

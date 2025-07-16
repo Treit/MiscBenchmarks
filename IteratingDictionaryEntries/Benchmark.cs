@@ -1,66 +1,64 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
+    [Params(10, 1000, 100_000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private Dictionary<int, int> _dict;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 1000, 100_000)]
-        public int Count { get; set; }
+        _dict = new Dictionary<int, int>(Count);
 
-        private Dictionary<int, int> _dict;
+        var r = new Random(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _dict = new Dictionary<int, int>(Count);
+            _dict[i] = r.Next();
+        }
+    }
 
-            var r = new Random(Count);
+    [Benchmark]
+    public long IterateAndLookupUsingKeys()
+    {
+        long result = 0;
 
-            for (int i = 0; i < Count; i++)
-            {
-                _dict[i] = r.Next();
-            }
+        foreach (var key in _dict.Keys)
+        {
+            result += _dict[key];
         }
 
-        [Benchmark]
-        public long IterateAndLookupUsingKeys()
+        return result;
+    }
+
+    [Benchmark]
+    public long IterateUsingKeyValuePairs()
+    {
+        long result = 0;
+
+        foreach (var kvp in _dict)
         {
-            long result = 0;
-
-            foreach (var key in _dict.Keys)
-            {
-                result += _dict[key];
-            }
-
-            return result;
+            result += kvp.Value;
         }
 
-        [Benchmark]
-        public long IterateUsingKeyValuePairs()
+        return result;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long IterateUsingValues()
+    {
+        long result = 0;
+
+        foreach (var v in _dict.Values)
         {
-            long result = 0;
-
-            foreach (var kvp in _dict)
-            {
-                result += kvp.Value;
-            }
-
-            return result;
+            result += v;
         }
 
-        [Benchmark(Baseline = true)]
-        public long IterateUsingValues()
-        {
-            long result = 0;
-
-            foreach (var v in _dict.Values)
-            {
-                result += v;
-            }
-
-            return result;
-        }
+        return result;
     }
 }

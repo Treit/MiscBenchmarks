@@ -1,24 +1,22 @@
-﻿using System;
+using System;
 
-namespace Test
+namespace Test;
+using BenchmarkDotNet.Running;
+
+internal class Program
 {
-    using BenchmarkDotNet.Running;
-
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
 #if RELEASE
-            BenchmarkRunner.Run<Benchmark>();
+        BenchmarkRunner.Run<Benchmark>();
 #else
-            Benchmark b = new Benchmark();
-            b.Count = 1000;
-            b.GlobalSetup();
-            Console.WriteLine(b.ToListThenDistinct());
-            Console.WriteLine(b.DistinctThenToList());
-            Console.WriteLine(b.DistinctOnly());
+        Benchmark b = new Benchmark();
+        b.Count = 1000;
+        b.GlobalSetup();
+        Console.WriteLine(b.ToListThenDistinct());
+        Console.WriteLine(b.DistinctThenToList());
+        Console.WriteLine(b.DistinctOnly());
 #endif
 
-        }
     }
 }

@@ -1,72 +1,70 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(10, 1_000_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private List<int> _data;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 1_000_000)]
-        public int Count { get; set; }
+        _data = new List<int>(Count);
 
-        private List<int> _data;
+        var r = new Random(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _data = new List<int>(Count);
+            _data.Add(i);
 
-            var r = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
+            // Insert up to 20 duplicates randomly.
+            for (int j = 0; j < 20; j++)
             {
-                _data.Add(i);
-
-                // Insert up to 20 duplicates randomly.
-                for (int j = 0; j < 20; j++)
+                if (r.Next() % 2 == 0)
                 {
-                    if (r.Next() % 2 == 0)
-                    {
-                        _data.Add(i);
-                    }
+                    _data.Add(i);
                 }
             }
         }
+    }
 
-        [Benchmark(Baseline = true)]
-        public long IterateListAfterCallingDistinct()
+    [Benchmark(Baseline = true)]
+    public long IterateListAfterCallingDistinct()
+    {
+        long result = 0;
+
+        foreach (var val in _data.Distinct())
         {
-            long result = 0;
-
-            foreach (var val in _data.Distinct())
-            {
-                result += val;
-            }
-
-            return result;
+            result += val;
         }
 
-        [Benchmark]
-        public long IterateListSkippingDuplicates()
+        return result;
+    }
+
+    [Benchmark]
+    public long IterateListSkippingDuplicates()
+    {
+        long result = 0;
+
+        int previous = int.MinValue;
+
+        foreach (var val in _data)
         {
-            long result = 0;
-
-            int previous = int.MinValue;
-
-            foreach (var val in _data)
+            if (val == previous)
             {
-                if (val == previous)
-                {
-                    continue;
-                }
-
-                previous = val;
-                result += val;
+                continue;
             }
 
-            return result;
+            previous = val;
+            result += val;
         }
+
+        return result;
     }
 }

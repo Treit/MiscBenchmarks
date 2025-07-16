@@ -1,22 +1,20 @@
-﻿namespace Test
-{
-    using BenchmarkDotNet.Running;
-    using System;
+namespace Test;
+using BenchmarkDotNet.Running;
+using System;
 
-    internal class Program
+internal class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
 #if RELEASE
-            BenchmarkRunner.Run<Benchmark>();
+        BenchmarkRunner.Run<Benchmark>();
 #else
-            Benchmark b = new Benchmark();
-            b.Count = 3;
-            b.GlobalSetup();
-            var first = b.ReadDataUsingEntityFramework();
-            var second = b.ReadDataUsingDataSet();
-            var third = b.ReadDataUsingDataReader();
+        Benchmark b = new Benchmark();
+        b.Count = 3;
+        b.GlobalSetup();
+        var first = b.ReadDataUsingEntityFramework();
+        var second = b.ReadDataUsingDataSet();
+        var third = b.ReadDataUsingDataReader();
 #endif
-        }
     }
 }

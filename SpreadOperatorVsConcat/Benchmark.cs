@@ -1,57 +1,55 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(100, 10_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private List<int> _list;
+    private List<int> _listToAdd;
+
+    [IterationSetup]
+    public void IterationSetup()
     {
-        [Params(100, 10_000)]
-        public int Count { get; set; }
+        _list = new List<int>(Count);
+        _listToAdd = new List<int>(Count);
 
-        private List<int> _list;
-        private List<int> _listToAdd;
-
-        [IterationSetup]
-        public void IterationSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _list = new List<int>(Count);
-            _listToAdd = new List<int>(Count);
+            _list.Add(i);
+            _listToAdd.Add(i * 2);
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
-            {
-                _list.Add(i);
-                _listToAdd.Add(i * 2);
-            }
+    [Benchmark]
+    public long AddThenEnumerateWithSpread()
+    {
+        List<int> newlist = [.. _list, .. _listToAdd];
+        var result = 0L;
+
+        foreach (var num in newlist)
+        {
+            result += num;
         }
 
-        [Benchmark]
-        public long AddThenEnumerateWithSpread()
+        return result;
+    }
+
+    [Benchmark]
+    public long AddThenEnumerateWithConcat()
+    {
+        var newlist = _list.Concat(_listToAdd);
+        var result = 0L;
+
+        foreach (var num in newlist)
         {
-            List<int> newlist = [.. _list, .. _listToAdd];
-            var result = 0L;
-
-            foreach (var num in newlist)
-            {
-                result += num;
-            }
-
-            return result;
+            result += num;
         }
 
-        [Benchmark]
-        public long AddThenEnumerateWithConcat()
-        {
-            var newlist = _list.Concat(_listToAdd);
-            var result = 0L;
-
-            foreach (var num in newlist)
-            {
-                result += num;
-            }
-
-            return result;
-        }
+        return result;
     }
 }

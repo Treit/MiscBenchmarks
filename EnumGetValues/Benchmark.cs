@@ -1,43 +1,41 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+
+public enum MyEnum
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
+    First,
+    Second,
+    Third,
+    Fourth,
+    Fifth,
+    Sixth,
+    Seventh,
+    Eighth,
+    Ninth,
+    Tenth,
 
-    public enum MyEnum
+}
+
+[MemoryDiagnoser]
+public class Benchmark
+{
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        First,
-        Second,
-        Third,
-        Fourth,
-        Fifth,
-        Sixth,
-        Seventh,
-        Eighth,
-        Ninth,
-        Tenth,
-
     }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Benchmark]
+    public int EnumGetValuesTypeof()
     {
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-        }
+        return Enum.GetValues(typeof(MyEnum)).Length;
+    }
 
-        [Benchmark]
-        public int EnumGetValuesTypeof()
-        {
-            return Enum.GetValues(typeof(MyEnum)).Length;
-        }
-
-        [Benchmark(Baseline = true)]
-        public long EnumGetValuesGeneric()
-        {
-            return Enum.GetValues<MyEnum>().Length;
-        }
+    [Benchmark(Baseline = true)]
+    public long EnumGetValuesGeneric()
+    {
+        return Enum.GetValues<MyEnum>().Length;
     }
 }

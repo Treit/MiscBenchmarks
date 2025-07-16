@@ -1,80 +1,78 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(100_000)]
+    public int TotalItems { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(10, 100, 100_000)]
+    public int RandomNumberCeiling { get; set; }
+
+    private const int DefaultInternalSetCapacity = 7;
+
+    private int[] _data;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100_000)]
-        public int TotalItems { get; set; }
+        _data = new int[TotalItems];
 
-        [Params(10, 100, 100_000)]
-        public int RandomNumberCeiling { get; set; }
+        var r = new Random(TotalItems);
 
-        private const int DefaultInternalSetCapacity = 7;
-
-        private int[] _data;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < TotalItems; i++)
         {
-            _data = new int[TotalItems];
+            _data[i] = r.Next(RandomNumberCeiling);
+        }
+    }
 
-            var r = new Random(TotalItems);
+    [Benchmark(Baseline = true)]
+    public long ForEachUsingHashSet()
+    {
+        var count = 0L;
 
-            for (int i = 0; i < TotalItems; i++)
-            {
-                _data[i] = r.Next(RandomNumberCeiling);
-            }
+        foreach (int val in new HashSet<int>(_data))
+        {
+            count++;
         }
 
-        [Benchmark(Baseline = true)]
-        public long ForEachUsingHashSet()
+        return count;
+    }
+
+    [Benchmark]
+    public long ForEachUsingHashSetWithInitialCapacity()
+    {
+        var set = new HashSet<int>(DefaultInternalSetCapacity, null);
+        var count = 0L;
+
+        foreach (int val in _data)
         {
-            var count = 0L;
-
-            foreach (int val in new HashSet<int>(_data))
-            {
-                count++;
-            }
-
-            return count;
+            set.Add(val);
         }
 
-        [Benchmark]
-        public long ForEachUsingHashSetWithInitialCapacity()
+        foreach (int val in set)
         {
-            var set = new HashSet<int>(DefaultInternalSetCapacity, null);
-            var count = 0L;
-
-            foreach (int val in _data)
-            {
-                set.Add(val);
-            }
-
-            foreach (int val in set)
-            {
-                count++;
-            }
-
-            return count;
+            count++;
         }
 
-        [Benchmark]
-        public long ForEachUsingDistinct()
+        return count;
+    }
+
+    [Benchmark]
+    public long ForEachUsingDistinct()
+    {
+        var count = 0L;
+
+        foreach (int val in _data.Distinct())
         {
-            var count = 0L;
-
-            foreach (int val in _data.Distinct())
-            {
-                count++;
-            }
-
-            return count;
+            count++;
         }
+
+        return count;
     }
 }

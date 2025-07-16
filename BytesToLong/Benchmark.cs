@@ -1,73 +1,71 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Buffers.Binary;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Buffers.Binary;
-    using System.Collections.Generic;
-    using System.Runtime.InteropServices;
+    private List<byte[]> _data;
 
-    public class Benchmark
+    [Params(100)]
+    public int Size { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private List<byte[]> _data;
+        _data = new List<byte[]>();
 
-        [Params(100)]
-        public int Size { get; set; }
+        var r = new Random(Size);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Size; i++)
         {
-            _data = new List<byte[]>();
+            var buff = new byte[8];
+            r.NextBytes(buff);
+            _data.Add(buff);
+        }
+    }
 
-            var r = new Random(Size);
+    [Benchmark]
+    public long ToLongBitConverter()
+    {
+        var result = 0L;
 
-            for (int i = 0; i < Size; i++)
-            {
-                var buff = new byte[8];
-                r.NextBytes(buff);
-                _data.Add(buff);
-            }
+        foreach (var buff in _data)
+        {
+            var val = BitConverter.ToInt64(buff);
+            result = Math.Max(result, val);
         }
 
-        [Benchmark]
-        public long ToLongBitConverter()
+        return result;
+    }
+
+    [Benchmark]
+    public long ToLongBinaryPrimitivesLittleEndian()
+    {
+        var result = 0L;
+
+        foreach (var buff in _data)
         {
-            var result = 0L;
-
-            foreach (var buff in _data)
-            {
-                var val = BitConverter.ToInt64(buff);
-                result = Math.Max(result, val);
-            }
-
-            return result;
+            var val = BinaryPrimitives.ReadInt64LittleEndian(buff);
+            result = Math.Max(result, val);
         }
 
-        [Benchmark]
-        public long ToLongBinaryPrimitivesLittleEndian()
+        return result;
+    }
+
+    [Benchmark]
+    public long ToLongMemoryMarshalCast()
+    {
+        var result = 0L;
+
+        foreach (var buff in _data)
         {
-            var result = 0L;
-
-            foreach (var buff in _data)
-            {
-                var val = BinaryPrimitives.ReadInt64LittleEndian(buff);
-                result = Math.Max(result, val);
-            }
-
-            return result;
+            var val = MemoryMarshal.Read<long>(buff);
+            result = Math.Max(result, val);
         }
 
-        [Benchmark]
-        public long ToLongMemoryMarshalCast()
-        {
-            var result = 0L;
-
-            foreach (var buff in _data)
-            {
-                var val = MemoryMarshal.Read<long>(buff);
-                result = Math.Max(result, val);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

@@ -1,82 +1,80 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Text.RegularExpressions;
+    string _sampleInput = null;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        string _sampleInput = null;
+        var sb = new StringBuilder();
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        // Big string
+        for (int i = 0; i < 100_000; i++)
         {
-            var sb = new StringBuilder();
-
-            // Big string
-            for (int i = 0; i < 100_000; i++)
-            {
-                sb.Append(i);
-            }
-
-            sb.Append(" ");
-
-            for (int i = 0; i < 100_000; i++)
-            {
-                sb.Append(i);
-            }
-
-            sb.Append(" ");
-
-            for (int i = 0; i < 100_000; i++)
-            {
-                sb.Append(i);
-            }
-
-            _sampleInput = sb.ToString();
+            sb.Append(i);
         }
 
-        [Benchmark(Baseline = true)]
-        public string ToCharArray()
+        sb.Append(" ");
+
+        for (int i = 0; i < 100_000; i++)
         {
-            var m = Regex.Match(_sampleInput, @"(\d+) (\d+) (\d+)");
-
-            if (!m.Success)
-            {
-                throw new InvalidOperationException(@"Failed to match unexpectedly");
-            }
-
-            var chars = m.Groups[3].Value.ToCharArray();
-            for (int i = 0; i < chars.Length; i++)
-            {
-                chars[i] = (char)(chars[i] + 1);
-            }
-
-            return new string(chars);
+            sb.Append(i);
         }
 
-        [Benchmark]
-        public string ValueSpanToArray()
+        sb.Append(" ");
+
+        for (int i = 0; i < 100_000; i++)
         {
-            var m = Regex.Match(_sampleInput, @"(\d+) (\d+) (\d+)");
-
-            if (!m.Success)
-            {
-                throw new InvalidOperationException(@"Failed to match unexpectedly");
-            }
-
-            var chars = m.Groups[3].ValueSpan.ToArray();
-            for (int i = 0; i < chars.Length; i++)
-            {
-                chars[i] = (char)(chars[i] + 1);
-            }
-
-            return new string(chars);
+            sb.Append(i);
         }
+
+        _sampleInput = sb.ToString();
+    }
+
+    [Benchmark(Baseline = true)]
+    public string ToCharArray()
+    {
+        var m = Regex.Match(_sampleInput, @"(\d+) (\d+) (\d+)");
+
+        if (!m.Success)
+        {
+            throw new InvalidOperationException(@"Failed to match unexpectedly");
+        }
+
+        var chars = m.Groups[3].Value.ToCharArray();
+        for (int i = 0; i < chars.Length; i++)
+        {
+            chars[i] = (char)(chars[i] + 1);
+        }
+
+        return new string(chars);
+    }
+
+    [Benchmark]
+    public string ValueSpanToArray()
+    {
+        var m = Regex.Match(_sampleInput, @"(\d+) (\d+) (\d+)");
+
+        if (!m.Success)
+        {
+            throw new InvalidOperationException(@"Failed to match unexpectedly");
+        }
+
+        var chars = m.Groups[3].ValueSpan.ToArray();
+        for (int i = 0; i < chars.Length; i++)
+        {
+            chars[i] = (char)(chars[i] + 1);
+        }
+
+        return new string(chars);
     }
 }

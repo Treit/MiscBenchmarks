@@ -1,62 +1,60 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
+    [Params(10, 1000, 100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    List<int> _values = new();
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 1000, 100_000)]
-        public int Count { get; set; }
+        var r = new Random(Count);
 
-        List<int> _values = new();
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            var r = new Random(Count);
+            _values.Add(r.Next(0, 100_000_000));
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
+    [Benchmark(Baseline = true)]
+    public int CountOddUsingMod()
+    {
+        int result = 0;
+
+        foreach (var k in _values)
+        {
+            int ck = k % 2 == 0 ? 1 : -1;
+
+            if (ck == -1)
             {
-                _values.Add(r.Next(0, 100_000_000));
+                result++;
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public int CountOddUsingMod()
+        return result;
+    }
+
+    [Benchmark]
+    public int CountOddUsingBranchless()
+    {
+        int result = 0;
+
+        foreach (var k in _values)
         {
-            int result = 0;
-
-            foreach (var k in _values)
+            int ck = (k << 31 >> 30) + 1;
+            if (ck == -1)
             {
-                int ck = k % 2 == 0 ? 1 : -1;
-
-                if (ck == -1)
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public int CountOddUsingBranchless()
-        {
-            int result = 0;
-
-            foreach (var k in _values)
-            {
-                int ck = (k << 31 >> 30) + 1;
-                if (ck == -1)
-                {
-                    result++;
-                }
-            }
-
-            return result;
-        }
+        return result;
     }
 }

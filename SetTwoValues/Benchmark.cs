@@ -1,98 +1,96 @@
-﻿namespace Test
-{
-    using System;
-    using System.Collections.Generic;
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
+namespace Test;
+using System;
+using System.Collections.Generic;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
 
-    public class Constants
+public class Constants
+{
+    public const string ValueA = "ValueA";
+    public const string ValueB = "ValueB";
+}
+
+[MemoryDiagnoser]
+public class Benchmark
+{
+    private Random _random;
+
+    [Params(1, 1000)]
+    public int Iterations { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        public const string ValueA = "ValueA";
-        public const string ValueB = "ValueB";
+        _random = new Random(Iterations);
     }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Benchmark(Baseline = true)]
+    public int CheckTwoBooleansUsingTuple()
     {
-        private Random _random;
+        var result = 0;
 
-        [Params(1, 1000)]
-        public int Iterations { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Iterations; i++)
         {
-            _random = new Random(Iterations);
+            var toggleStatus = GetValuesViaTuple();
+            if (toggleStatus.ValueA && toggleStatus.ValueB)
+            {
+                result++;
+            }
         }
 
-        [Benchmark(Baseline = true)]
-        public int CheckTwoBooleansUsingTuple()
+        return result;
+    }
+
+    [Benchmark]
+    public int CheckTwoBooleansUsingDictionary()
+    {
+        var result = 0;
+
+        for (int i = 0; i < Iterations; i++)
         {
-            var result = 0;
-
-            for (int i = 0; i < Iterations; i++)
+            var toggleStatus = GetValuesViaDictionary();
+            if (toggleStatus[Constants.ValueA] && toggleStatus[Constants.ValueB])
             {
-                var toggleStatus = GetValuesViaTuple();
-                if (toggleStatus.ValueA && toggleStatus.ValueB)
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public int CheckTwoBooleansUsingDictionary()
+        return result;
+    }
+
+    private (bool ValueA, bool ValueB) GetValuesViaTuple()
+    {
+        var toggleStatus = (ValueA: true, ValueB: true);
+
+        if (_random.Next() % 2 == 0)
         {
-            var result = 0;
-
-            for (int i = 0; i < Iterations; i++)
-            {
-                var toggleStatus = GetValuesViaDictionary();
-                if (toggleStatus[Constants.ValueA] && toggleStatus[Constants.ValueB])
-                {
-                    result++;
-                }
-            }
-
-            return result;
+            toggleStatus.ValueA = false;
+        }
+        else if (_random.Next() % 2 == 0)
+        {
+            toggleStatus.ValueB = false;
         }
 
-        private (bool ValueA, bool ValueB) GetValuesViaTuple()
+        return toggleStatus;
+    }
+
+    private Dictionary<string, bool> GetValuesViaDictionary()
+    {
+        var toggleStatus = new Dictionary<string, bool>()
         {
-            var toggleStatus = (ValueA: true, ValueB: true);
+            { Constants.ValueA, true },
+            { Constants.ValueB, true },
+        };
 
-            if (_random.Next() % 2 == 0)
-            {
-                toggleStatus.ValueA = false;
-            }
-            else if (_random.Next() % 2 == 0)
-            {
-                toggleStatus.ValueB = false;
-            }
-
-            return toggleStatus;
+        if (_random.Next() % 10 == 0)
+        {
+            toggleStatus[Constants.ValueA] = false;
+        }
+        else if (_random.Next() % 2 == 0)
+        {
+            toggleStatus[Constants.ValueB] = false;
         }
 
-        private Dictionary<string, bool> GetValuesViaDictionary()
-        {
-            var toggleStatus = new Dictionary<string, bool>()
-            {
-                { Constants.ValueA, true },
-                { Constants.ValueB, true },
-            };
-
-            if (_random.Next() % 10 == 0)
-            {
-                toggleStatus[Constants.ValueA] = false;
-            }
-            else if (_random.Next() % 2 == 0)
-            {
-                toggleStatus[Constants.ValueB] = false;
-            }
-
-            return toggleStatus;
-        }
+        return toggleStatus;
     }
 }

@@ -1,78 +1,74 @@
-﻿using System.Text;
+using System.Text;
 
-namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
+    [Params(3, 50, 1000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private static string HexChars = "0123456789ABCDEF";
+
+    private static int[] RandomInts;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(3, 50, 1000)]
-        public int Count { get; set; }
+        RandomInts = new int[Count];
 
-        private static string HexChars = "0123456789ABCDEF";
+        // Use Count as the seed.
+        var r = new Random(Count);
 
-        private static int[] RandomInts;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            RandomInts = new int[Count];
+            RandomInts[i] = r.Next(16);
+        }
+    }
 
-            // Use Count as the seed.
-            var r = new Random(Count);
+    [Benchmark(Baseline = true)]
+    public char[] GetHexCharWithIndexLookup()
+    {
+        var result = new char[Count];
 
-            for (int i = 0; i < Count; i++)
-            {
-                RandomInts[i] = r.Next(16);
-            }
+        for (int i = 0; i < Count; i++)
+        {
+            int val = RandomInts[i];
+            result[i] = DoGetHexChar(val);
         }
 
-        [Benchmark(Baseline = true)]
-        public char[] GetHexCharWithIndexLookup()
+        return result;
+
+        char DoGetHexChar(int i)
         {
-            var result = new char[Count];
+            return HexChars[i];
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
-            {
-                int val = RandomInts[i];
-                result[i] = DoGetHexChar(val);
-            }
+    [Benchmark]
+    public char[] GetHexCharWithMath()
+    {
+        var result = new char[Count];
 
-            return result;
-
-            char DoGetHexChar(int i)
-            {
-                return HexChars[i];
-            }
+        for (int i = 0; i < Count; i++)
+        {
+            int val = RandomInts[i];
+            result[i] = DoGetHexChar(val);
         }
 
-        [Benchmark]
-        public char[] GetHexCharWithMath()
+        return result;
+
+        char DoGetHexChar(int i)
         {
-            var result = new char[Count];
-
-            for (int i = 0; i < Count; i++)
+            if (i < 10)
             {
-                int val = RandomInts[i];
-                result[i] = DoGetHexChar(val);
+                return (char)(i + 48);
             }
 
-            return result;
-
-            char DoGetHexChar(int i)
-            {
-                if (i < 10)
-                {
-                    return (char)(i + 48);
-                }
-
-                return (char)(i - 10 + 65);
-            }
+            return (char)(i - 10 + 65);
         }
     }
 }
-
-

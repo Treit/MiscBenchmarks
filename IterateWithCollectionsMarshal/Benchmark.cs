@@ -1,63 +1,61 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.InteropServices;
+    [Params(100_000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private const int DefaultInternalSetCapacity = 7;
+
+    private List<int> _data;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100_000)]
-        public int Count { get; set; }
+        _data = new List<int>(Count);
 
-        private const int DefaultInternalSetCapacity = 7;
+        var r = new Random(Count);
 
-        private List<int> _data;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _data = new List<int>(Count);
+           _data.Add(r.Next(10_001));
+        }
+    }
 
-            var r = new Random(Count);
+    [Benchmark]
+    public long IterateUsingForEach()
+    {
+        var result = 0L;
+        var data = _data;
 
-            for (int i = 0; i < Count; i++)
-            {
-               _data.Add(r.Next(10_001));
-            }
+        // The sum here is just to do some work inside the loop.
+        // It is not the focus of the benchmark.
+        foreach (int val in data)
+        {
+            result += val;
         }
 
-        [Benchmark]
-        public long IterateUsingForEach()
+        return result;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long IterateUsingForEachCollectionsMarshalAsSpan()
+    {
+        var result = 0L;
+        var data = CollectionsMarshal.AsSpan(_data);
+
+        // The sum here is just to do some work inside the loop.
+        // It is not the focus of the benchmark.
+        foreach (int val in data)
         {
-            var result = 0L;
-            var data = _data;
-
-            // The sum here is just to do some work inside the loop.
-            // It is not the focus of the benchmark.
-            foreach (int val in data)
-            {
-                result += val;
-            }
-
-            return result;
+            result += val;
         }
 
-        [Benchmark(Baseline = true)]
-        public long IterateUsingForEachCollectionsMarshalAsSpan()
-        {
-            var result = 0L;
-            var data = CollectionsMarshal.AsSpan(_data);
-
-            // The sum here is just to do some work inside the loop.
-            // It is not the focus of the benchmark.
-            foreach (int val in data)
-            {
-                result += val;
-            }
-
-            return result;
-        }
+        return result;
     }
 }

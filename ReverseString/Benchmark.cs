@@ -1,168 +1,166 @@
-﻿namespace Test
-{
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+[MemoryDiagnoser]
+public class Benchmark
+{
+    [Params(10, 100, 10_000)]
+    public int Count { get; set; }
+
+    private List<string> _values;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 100, 10_000)]
-        public int Count { get; set; }
+        _values = new List<string>(Count);
 
-        private List<string> _values;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < this.Count; i++)
         {
-            _values = new List<string>(Count);
+            var str = Guid.NewGuid().ToString();
+            _values.Add(str);
+        }
+    }
 
-            for (int i = 0; i < this.Count; i++)
-            {
-                var str = Guid.NewGuid().ToString();
-                _values.Add(str);
-            }
+    [Benchmark(Baseline = true)]
+    public long ReverseStringUsingLinqAndNew()
+    {
+        long total = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            var str = new string(_values[i].Reverse().ToArray());
+            total += str.Length;
         }
 
-        [Benchmark(Baseline = true)]
-        public long ReverseStringUsingLinqAndNew()
+        return total;
+    }
+
+    [Benchmark]
+    public long ReverseStringUsingLinqAndJoin()
+    {
+        long total = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            long total = 0;
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                var str = new string(_values[i].Reverse().ToArray());
-                total += str.Length;
-            }
-
-            return total;
+            var str = string.Join("", _values[i].Reverse());
+            total += str.Length;
         }
 
-        [Benchmark]
-        public long ReverseStringUsingLinqAndJoin()
-        {
-            long total = 0;
+        return total;
+    }
 
-            for (int i = 0; i < this.Count; i++)
+    [Benchmark]
+    public long ReverseStringUsingExplicitCopy()
+    {
+        long total = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            char[] buff = new char[_values[i].Length];
+
+            for (int j = 0, k = buff.Length - 1; j < buff.Length; j++, k--)
             {
-                var str = string.Join("", _values[i].Reverse());
-                total += str.Length;
+                buff[k] = _values[i][j];
             }
 
-            return total;
+            total += new string(buff).Length;
         }
 
-        [Benchmark]
-        public long ReverseStringUsingExplicitCopy()
+        return total;
+    }
+
+    [Benchmark]
+    public long ReverseStringUsingStringCreate()
+    {
+        long total = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            long total = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            int len = string.Create(_values[i].Length, _values[i], (buff, str) =>
             {
-                char[] buff = new char[_values[i].Length];
-
                 for (int j = 0, k = buff.Length - 1; j < buff.Length; j++, k--)
                 {
-                    buff[k] = _values[i][j];
+                    buff[k] = str[j];
                 }
 
-                total += new string(buff).Length;
-            }
+            }).Length;
 
-            return total;
+            total += len;
         }
 
-        [Benchmark]
-        public long ReverseStringUsingStringCreate()
-        {
-            long total = 0;
+        return total;
+    }
 
-            for (int i = 0; i < this.Count; i++)
+    [Benchmark]
+    public long ReverseStringUsingArrayReverse()
+    {
+        long total = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            var buff = _values[i].ToCharArray();
+            Array.Reverse(buff);
+            total += new string(buff).Length;
+        }
+
+        return total;
+    }
+
+    [Benchmark]
+    public long ReverseStringUsingStringCreateKozi()
+    {
+        long total = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            string input = _values[i];
+
+            
+            int len = string.Create(input.Length, input, (buff, str) =>
             {
-                int len = string.Create(_values[i].Length, _values[i], (buff, str) =>
+                var len = str.Length;
+                ref char input = ref Unsafe.AsRef(in str.GetPinnableReference());
+                ref char end = ref Unsafe.Add(ref input, len);
+                ref char output = ref Unsafe.Add(ref MemoryMarshal.GetReference(buff), len - 1);
+
+                do
                 {
-                    for (int j = 0, k = buff.Length - 1; j < buff.Length; j++, k--)
-                    {
-                        buff[k] = str[j];
-                    }
+                    output = input;
+                    input = ref Unsafe.Add(ref input, 1);
+                    output = ref Unsafe.Subtract(ref output, 1);
+                } 
+                while (Unsafe.IsAddressLessThan(ref input, ref end));
 
-                }).Length;
+            }).Length;
 
-                total += len;
-            }
-
-            return total;
+            total += len;
         }
 
-        [Benchmark]
-        public long ReverseStringUsingArrayReverse()
+        return total;
+    }
+
+    [Benchmark]
+    public long RevereStringEnumerableKesa()
+    {
+        long total = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            long total = 0;
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                var buff = _values[i].ToCharArray();
-                Array.Reverse(buff);
-                total += new string(buff).Length;
-            }
-
-            return total;
+            total += new string(Reverse(_values[i]).ToArray()).Length;
         }
 
-        [Benchmark]
-        public long ReverseStringUsingStringCreateKozi()
+        return total;
+
+        IEnumerable<char> Reverse(string str)
         {
-            long total = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            for (int i = str.Length - 1; i >= 0; i--)
             {
-                string input = _values[i];
-
-                
-                int len = string.Create(input.Length, input, (buff, str) =>
-                {
-                    var len = str.Length;
-                    ref char input = ref Unsafe.AsRef(in str.GetPinnableReference());
-                    ref char end = ref Unsafe.Add(ref input, len);
-                    ref char output = ref Unsafe.Add(ref MemoryMarshal.GetReference(buff), len - 1);
-
-                    do
-                    {
-                        output = input;
-                        input = ref Unsafe.Add(ref input, 1);
-                        output = ref Unsafe.Subtract(ref output, 1);
-                    } 
-                    while (Unsafe.IsAddressLessThan(ref input, ref end));
-
-                }).Length;
-
-                total += len;
-            }
-
-            return total;
-        }
-
-        [Benchmark]
-        public long RevereStringEnumerableKesa()
-        {
-            long total = 0;
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                total += new string(Reverse(_values[i]).ToArray()).Length;
-            }
-
-            return total;
-
-            IEnumerable<char> Reverse(string str)
-            {
-                for (int i = str.Length - 1; i >= 0; i--)
-                {
-                    yield return str[i];
-                }
+                yield return str[i];
             }
         }
     }

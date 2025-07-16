@@ -1,68 +1,66 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(10_000, 1_000_000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private List<int> _list;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10_000, 1_000_000)]
-        public int Count { get; set; }
+        _list = new List<int>(Count);
+        var r = new Random(Count);
 
-        private List<int> _list;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _list = new List<int>(Count);
-            var r = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
+            if (r.Next() % 2 == 0)
             {
-                if (r.Next() % 2 == 0)
-                {
-                    _list.Add(i);
-                }
-                else
-                {
-                    _list.Add(-1);
-                }
+                _list.Add(i);
+            }
+            else
+            {
+                _list.Add(-1);
+            }
+        }
+    }
+
+    [Benchmark]
+    public int LookupElementsWithIndexing()
+    {
+        var list = _list;
+        int count = 0;
+
+        for (int i = 0; i < Count; i++)
+        {
+            if (list[i] == i)
+            {
+                count++;
             }
         }
 
-        [Benchmark]
-        public int LookupElementsWithIndexing()
+        return count;
+    }
+
+    [Benchmark]
+    public int LookupElementsWithElementAt()
+    {
+        var list = _list;
+        int count = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = _list;
-            int count = 0;
-
-            for (int i = 0; i < Count; i++)
+            if (list.ElementAt(i) == i)
             {
-                if (list[i] == i)
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int LookupElementsWithElementAt()
-        {
-            var list = _list;
-            int count = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                if (list.ElementAt(i) == i)
-                {
-                    count++;
-                }
-            }
-
-            return count;
-        }
+        return count;
     }
 }

@@ -1,182 +1,180 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
+    private (string, string)[] _stringPairs;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(1000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private (string, string)[] _stringPairs;
+        _stringPairs = new (string, string)[Count];
+        var random = new Random(Count);
 
-        [Params(1000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _stringPairs = new (string, string)[Count];
-            var random = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
+            var strA = RandomStringCreate(random, 50);
+            var strB = (random.Next() % 2) switch
             {
-                var strA = RandomStringCreate(random, 50);
-                var strB = (random.Next() % 2) switch
-                {
-                    0 => strA.ToUpperInvariant(),
-                    _ => RandomStringCreate(random, 50)
-                };
+                0 => strA.ToUpperInvariant(),
+                _ => RandomStringCreate(random, 50)
+            };
 
-                _stringPairs[i] = (strA, strB);
+            _stringPairs[i] = (strA, strB);
+        }
+    }
+
+    [Benchmark(Baseline = true)]
+    public int StringComparisonOrdinalIgnoreCase()
+    {
+        var pairs = _stringPairs;
+        var result = 0;
+
+        foreach (var (first, second) in pairs)
+        {
+            if (string.Compare(first, second, StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                result++;
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public int StringComparisonOrdinalIgnoreCase()
-        {
-            var pairs = _stringPairs;
-            var result = 0;
+        return result;
+    }
 
-            foreach (var (first, second) in pairs)
+    [Benchmark]
+    public int ToLower()
+    {
+        var pairs = _stringPairs;
+        var result = 0;
+
+        foreach (var (first, second) in pairs)
+        {
+            if (first.ToLower() == second.ToLower())
             {
-                if (string.Compare(first, second, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public int ToLower()
-        {
-            var pairs = _stringPairs;
-            var result = 0;
+        return result;
+    }
 
-            foreach (var (first, second) in pairs)
+    [Benchmark]
+    public int ToUpper()
+    {
+        var pairs = _stringPairs;
+        var result = 0;
+
+        foreach (var (first, second) in pairs)
+        {
+            if (first.ToUpper() == second.ToUpper())
             {
-                if (first.ToLower() == second.ToLower())
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public int ToUpper()
-        {
-            var pairs = _stringPairs;
-            var result = 0;
+        return result;
+    }
 
-            foreach (var (first, second) in pairs)
+    [Benchmark]
+    public int ToLowerInvariant()
+    {
+        var pairs = _stringPairs;
+        var result = 0;
+
+        foreach (var (first, second) in pairs)
+        {
+            if (first.ToLowerInvariant() == second.ToLowerInvariant())
             {
-                if (first.ToUpper() == second.ToUpper())
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public int ToLowerInvariant()
-        {
-            var pairs = _stringPairs;
-            var result = 0;
+        return result;
+    }
 
-            foreach (var (first, second) in pairs)
+    [Benchmark]
+    public int ToUpperInvariant()
+    {
+        var pairs = _stringPairs;
+        var result = 0;
+
+        foreach (var (first, second) in pairs)
+        {
+            if (first.ToUpperInvariant() == second.ToUpperInvariant())
             {
-                if (first.ToLowerInvariant() == second.ToLowerInvariant())
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public int ToUpperInvariant()
-        {
-            var pairs = _stringPairs;
-            var result = 0;
+        return result;
+    }
 
-            foreach (var (first, second) in pairs)
+    [Benchmark]
+    public int StringComparisonIgnoreCaseFlag()
+    {
+        var pairs = _stringPairs;
+        var result = 0;
+
+        foreach (var (first, second) in pairs)
+        {
+            if (string.Compare(first, second, true) == 0)
             {
-                if (first.ToUpperInvariant() == second.ToUpperInvariant())
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public int StringComparisonIgnoreCaseFlag()
-        {
-            var pairs = _stringPairs;
-            var result = 0;
+        return result;
+    }
 
-            foreach (var (first, second) in pairs)
+    [Benchmark]
+    public int StringComparisonInvariantCultureIgnoreCase()
+    {
+        var pairs = _stringPairs;
+        var result = 0;
+
+        foreach (var (first, second) in pairs)
+        {
+            if (string.Compare(first, second, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
-                if (string.Compare(first, second, true) == 0)
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public int StringComparisonInvariantCultureIgnoreCase()
-        {
-            var pairs = _stringPairs;
-            var result = 0;
+        return result;
+    }
 
-            foreach (var (first, second) in pairs)
+    [Benchmark]
+    public int StringComparisonCurrentCultureIgnoreCase()
+    {
+        var pairs = _stringPairs;
+        var result = 0;
+
+        foreach (var (first, second) in pairs)
+        {
+            if (string.Compare(first, second, StringComparison.CurrentCultureIgnoreCase) == 0)
             {
-                if (string.Compare(first, second, StringComparison.InvariantCultureIgnoreCase) == 0)
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public int StringComparisonCurrentCultureIgnoreCase()
-        {
-            var pairs = _stringPairs;
-            var result = 0;
+        return result;
+    }
 
-            foreach (var (first, second) in pairs)
+    static string RandomStringCreate(Random random, int maxLength)
+    {
+        const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_@!#$%^&*()+{}[]";
+        var len = random.Next(maxLength);
+        return string.Create(len, random, (buff, str) =>
+        {
+            for (int i = 0; i < buff.Length; i++)
             {
-                if (string.Compare(first, second, StringComparison.CurrentCultureIgnoreCase) == 0)
-                {
-                    result++;
-                }
+                buff[i] = alphabet[random.Next(alphabet.Length)];
             }
-
-            return result;
-        }
-
-        static string RandomStringCreate(Random random, int maxLength)
-        {
-            const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_@!#$%^&*()+{}[]";
-            var len = random.Next(maxLength);
-            return string.Create(len, random, (buff, str) =>
-            {
-                for (int i = 0; i < buff.Length; i++)
-                {
-                    buff[i] = alphabet[random.Next(alphabet.Length)];
-                }
-            });
-        }
+        });
     }
 }

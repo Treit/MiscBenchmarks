@@ -1,86 +1,84 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System.Collections.Generic;
+    private string[] _stringArray;
+    private List<string> _stringList;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(10, 100_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private string[] _stringArray;
-        private List<string> _stringList;
+        _stringArray = new string[Count];
+        _stringList = new List<string>(Count);
 
-        [Params(10, 100_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _stringArray = new string[Count];
-            _stringList = new List<string>(Count);
+            var str = i.ToString();
+            _stringArray[i] = str;
+            _stringList.Add(str);
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
-            {
-                var str = i.ToString();
-                _stringArray[i] = str;
-                _stringList.Add(str);
-            }
+    [Benchmark(Baseline = true)]
+    public long ForLoopArray()
+    {
+        long result = 0;
+        var items = _stringArray;
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            result += items[i].Length;
         }
 
-        [Benchmark(Baseline = true)]
-        public long ForLoopArray()
+        return result;
+    }
+
+    [Benchmark]
+    public long ForEachLoopArray()
+    {
+        long result = 0;
+        var items = _stringArray;
+
+        foreach (var item in items)
         {
-            long result = 0;
-            var items = _stringArray;
-
-            for (int i = 0; i < items.Length; i++)
-            {
-                result += items[i].Length;
-            }
-
-            return result;
+            result += item.Length;
         }
 
-        [Benchmark]
-        public long ForEachLoopArray()
+        return result;
+    }
+
+    [Benchmark]
+    public long ForLoopList()
+    {
+        long result = 0;
+        var items = _stringList;
+
+        for (int i = 0; i < items.Count; i++)
         {
-            long result = 0;
-            var items = _stringArray;
-
-            foreach (var item in items)
-            {
-                result += item.Length;
-            }
-
-            return result;
+            result += items[i].Length;
         }
 
-        [Benchmark]
-        public long ForLoopList()
+        return result;
+    }
+
+    [Benchmark]
+    public long ForEachLoopList()
+    {
+        long result = 0;
+        var items = _stringList;
+
+        foreach (var item in items)
         {
-            long result = 0;
-            var items = _stringList;
-
-            for (int i = 0; i < items.Count; i++)
-            {
-                result += items[i].Length;
-            }
-
-            return result;
+            result += item.Length;
         }
 
-        [Benchmark]
-        public long ForEachLoopList()
-        {
-            long result = 0;
-            var items = _stringList;
-
-            foreach (var item in items)
-            {
-                result += item.Length;
-            }
-
-            return result;
-        }
+        return result;
     }
 }

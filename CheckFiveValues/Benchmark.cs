@@ -1,29 +1,80 @@
-﻿namespace Test
-{
-    using System;
-    using System.Collections.Generic;
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using Microsoft.VisualBasic;
+namespace Test;
+using System;
+using System.Collections.Generic;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using Microsoft.VisualBasic;
 
-    public static class Constants
+public static class Constants
+{
+    public const string ValueA = "ValueA";
+    public const string ValueB = "ValueB";
+    public const string ValueC = "ValueC";
+    public const string ValueD = "ValueD";
+    public const string ValueE = "ValueE";
+}
+
+[MemoryDiagnoser]
+public class Benchmark
+{
+    [Params("FirstValue", "LastValue", "ValueNotInSet")]
+    public string Value { get; set; }
+
+    private string valueToCheck;
+
+    private static readonly Dictionary<string, string> Map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
     {
-        public const string ValueA = "ValueA";
-        public const string ValueB = "ValueB";
-        public const string ValueC = "ValueC";
-        public const string ValueD = "ValueD";
-        public const string ValueE = "ValueE";
+        {Constants.ValueA, Constants.ValueA},
+        {Constants.ValueB , Constants.ValueB},
+        {Constants.ValueC , Constants.ValueC},
+        {Constants.ValueD , Constants.ValueD},
+        {Constants.ValueE , Constants.ValueE}
+    };
+
+    private static readonly HashSet<string> Set = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        Constants.ValueA,
+        Constants.ValueB,
+        Constants.ValueC,
+        Constants.ValueD
+    };
+
+    private static readonly List<string> List = new List<string>
+    {
+        Constants.ValueA,
+        Constants.ValueB,
+        Constants.ValueC,
+        Constants.ValueD,
+        Constants.ValueE
+    };
+
+    [GlobalSetup]
+    public void GlobalSetup()
+    {
+        valueToCheck = Value switch
+        {
+            "firstvalue" => Constants.ValueA,
+            "lastvalue" => Constants.ValueE,
+            _ => "gibberish",
+        };
     }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Benchmark]
+    public string CheckWithHashSet()
     {
-        [Params("FirstValue", "LastValue", "ValueNotInSet")]
-        public string Value { get; set; }
+        return Set.Contains(valueToCheck) ? valueToCheck : Constants.ValueC;
+    }
 
-        private string valueToCheck;
+    [Benchmark]
+    public string CheckWithListSearch()
+    {
+        return List.Contains(valueToCheck) ? valueToCheck : Constants.ValueC;
+    }
 
-        private static readonly Dictionary<string, string> Map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    [Benchmark]
+    public string CheckWithNewDictionaryEveryTime()
+    {
+        var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             {Constants.ValueA, Constants.ValueA},
             {Constants.ValueB , Constants.ValueB},
@@ -32,129 +83,76 @@
             {Constants.ValueE , Constants.ValueE}
         };
 
-        private static readonly HashSet<string> Set = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        if (map.TryGetValue(valueToCheck, out var result))
         {
-            Constants.ValueA,
-            Constants.ValueB,
-            Constants.ValueC,
-            Constants.ValueD
-        };
-
-        private static readonly List<string> List = new List<string>
-        {
-            Constants.ValueA,
-            Constants.ValueB,
-            Constants.ValueC,
-            Constants.ValueD,
-            Constants.ValueE
-        };
-
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-            valueToCheck = Value switch
-            {
-                "firstvalue" => Constants.ValueA,
-                "lastvalue" => Constants.ValueE,
-                _ => "gibberish",
-            };
+            return result;
         }
 
-        [Benchmark]
-        public string CheckWithHashSet()
+        return Constants.ValueC;
+    }
+
+    [Benchmark]
+    public string CheckWithDictionary()
+    {
+        if (Map.TryGetValue(valueToCheck, out var result))
         {
-            return Set.Contains(valueToCheck) ? valueToCheck : Constants.ValueC;
+            return result;
         }
 
-        [Benchmark]
-        public string CheckWithListSearch()
+        return Constants.ValueC;
+    }
+
+    [Benchmark]
+    public string CheckWithSimpleIf()
+    {
+        if (valueToCheck.Equals(Constants.ValueA, StringComparison.OrdinalIgnoreCase))
         {
-            return List.Contains(valueToCheck) ? valueToCheck : Constants.ValueC;
+            return Constants.ValueA;
+        }
+        else if (valueToCheck.Equals(Constants.ValueB, StringComparison.OrdinalIgnoreCase))
+        {
+            return Constants.ValueB;
+        }
+        else if (valueToCheck.Equals(Constants.ValueD, StringComparison.OrdinalIgnoreCase))
+        {
+            return Constants.ValueD;
+        }
+        else if (valueToCheck.Equals(Constants.ValueE, StringComparison.OrdinalIgnoreCase))
+        {
+            return Constants.ValueE;
         }
 
-        [Benchmark]
-        public string CheckWithNewDictionaryEveryTime()
+        return Constants.ValueC;
+    }
+
+    [Benchmark]
+    public string CheckWithSwitchStatement()
+    {
+        switch (valueToCheck.ToLowerInvariant())
         {
-            var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                {Constants.ValueA, Constants.ValueA},
-                {Constants.ValueB , Constants.ValueB},
-                {Constants.ValueC , Constants.ValueC},
-                {Constants.ValueD , Constants.ValueD},
-                {Constants.ValueE , Constants.ValueE}
-            };
-
-            if (map.TryGetValue(valueToCheck, out var result))
-            {
-                return result;
-            }
-
-            return Constants.ValueC;
-        }
-
-        [Benchmark]
-        public string CheckWithDictionary()
-        {
-            if (Map.TryGetValue(valueToCheck, out var result))
-            {
-                return result;
-            }
-
-            return Constants.ValueC;
-        }
-
-        [Benchmark]
-        public string CheckWithSimpleIf()
-        {
-            if (valueToCheck.Equals(Constants.ValueA, StringComparison.OrdinalIgnoreCase))
-            {
+            case "valuea":
                 return Constants.ValueA;
-            }
-            else if (valueToCheck.Equals(Constants.ValueB, StringComparison.OrdinalIgnoreCase))
-            {
+            case "valueb":
                 return Constants.ValueB;
-            }
-            else if (valueToCheck.Equals(Constants.ValueD, StringComparison.OrdinalIgnoreCase))
-            {
+            case "valued":
                 return Constants.ValueD;
-            }
-            else if (valueToCheck.Equals(Constants.ValueE, StringComparison.OrdinalIgnoreCase))
-            {
+            case "valuee":
                 return Constants.ValueE;
-            }
-
-            return Constants.ValueC;
+            default:
+                return Constants.ValueC;
         }
+    }
 
-        [Benchmark]
-        public string CheckWithSwitchStatement()
+    [Benchmark(Baseline = true)]
+    public string CheckWithSwitchExpression()
+    {
+        return valueToCheck.ToLowerInvariant() switch
         {
-            switch (valueToCheck.ToLowerInvariant())
-            {
-                case "valuea":
-                    return Constants.ValueA;
-                case "valueb":
-                    return Constants.ValueB;
-                case "valued":
-                    return Constants.ValueD;
-                case "valuee":
-                    return Constants.ValueE;
-                default:
-                    return Constants.ValueC;
-            }
-        }
-
-        [Benchmark(Baseline = true)]
-        public string CheckWithSwitchExpression()
-        {
-            return valueToCheck.ToLowerInvariant() switch
-            {
-                "valuea" => Constants.ValueA,
-                "valueb" => Constants.ValueB,
-                "valued" => Constants.ValueD,
-                "valuee" => Constants.ValueE,
-                _ => Constants.ValueC,
-            };
-        }
+            "valuea" => Constants.ValueA,
+            "valueb" => Constants.ValueB,
+            "valued" => Constants.ValueD,
+            "valuee" => Constants.ValueE,
+            _ => Constants.ValueC,
+        };
     }
 }

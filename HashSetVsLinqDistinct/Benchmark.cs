@@ -1,43 +1,41 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(1000, 100_000, 1_000_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private int[] _array;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(1000, 100_000, 1_000_000)]
-        public int Count { get; set; }
+        Random r = new Random();
 
-        private int[] _array;
+        _array = new int[Count];
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            Random r = new Random();
-
-            _array = new int[Count];
-
-            for (int i = 0; i < Count; i++)
-            {
-                _array[i] = r.Next(0, 100);
-            }
+            _array[i] = r.Next(0, 100);
         }
+    }
 
-        [Benchmark(Baseline = true)]
-        public int[] DedupeUsingLinqDistinct()
-        {
-            return _array.Distinct().ToArray();
-        }
+    [Benchmark(Baseline = true)]
+    public int[] DedupeUsingLinqDistinct()
+    {
+        return _array.Distinct().ToArray();
+    }
 
-        [Benchmark]
-        public int[] DedupeUsingHashSet()
-        {
-            return new HashSet<int>(_array).ToArray();
-        }
+    [Benchmark]
+    public int[] DedupeUsingHashSet()
+    {
+        return new HashSet<int>(_array).ToArray();
     }
 }

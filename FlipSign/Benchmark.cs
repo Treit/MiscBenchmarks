@@ -1,74 +1,72 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    List<int> _values;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100_000)]
-        public int Count { get; set; }
+        _values = new(Count);
+        var r = new Random(Count);
 
-        List<int> _values;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _values = new(Count);
-            var r = new Random(Count);
+            _values.Add(r.Next());
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
-            {
-                _values.Add(r.Next());
-            }
+    [Benchmark(Baseline = true)]
+    public long FlipSignUsingMultiplyByMinusOne()
+    {
+        long total = 0;
+
+        foreach (int v in _values)
+        {
+            total += FlipSign(v);
         }
 
-        [Benchmark(Baseline = true)]
-        public long FlipSignUsingMultiplyByMinusOne()
+        return total;
+
+        static int FlipSign(int a) => a * -1;
+    }
+
+    [Benchmark]
+    public long FlipSignUsingPrefixDecrementAndBinaryNot()
+    {
+        long total = 0;
+
+        foreach (int v in _values)
         {
-            long total = 0;
-
-            foreach (int v in _values)
-            {
-                total += FlipSign(v);
-            }
-
-            return total;
-
-            static int FlipSign(int a) => a * -1;
+            total += FlipSign(v);
         }
 
-        [Benchmark]
-        public long FlipSignUsingPrefixDecrementAndBinaryNot()
+        return total;
+
+        static int FlipSign(int a) => ~--a;
+    }
+
+    [Benchmark]
+    public long FlipSignUsingMinusOneAndBinaryNot()
+    {
+        long total = 0;
+
+        foreach (int v in _values)
         {
-            long total = 0;
-
-            foreach (int v in _values)
-            {
-                total += FlipSign(v);
-            }
-
-            return total;
-
-            static int FlipSign(int a) => ~--a;
+            total += FlipSign(v);
         }
 
-        [Benchmark]
-        public long FlipSignUsingMinusOneAndBinaryNot()
-        {
-            long total = 0;
+        return total;
 
-            foreach (int v in _values)
-            {
-                total += FlipSign(v);
-            }
-
-            return total;
-
-            static int FlipSign(int a) => ~(a - 1);
-        }
+        static int FlipSign(int a) => ~(a - 1);
     }
 }

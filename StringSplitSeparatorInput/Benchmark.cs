@@ -1,75 +1,71 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Linq;
+    private static readonly char[] _separator = new char[] { ',' };
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(100)]
+    public int Count { get; set; }
+
+    private string _delimitedString;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private static readonly char[] _separator = new char[] { ',' };
+        var random = new Random(Count);
+        _delimitedString = string.Join(',', Enumerable.Range(1, random.Next(Count)).Select(x => x.ToString()));
+    }
 
-        [Params(100)]
-        public int Count { get; set; }
-
-        private string _delimitedString;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark(Baseline = true)]
+    public long SplitWithSingleChar()
+    {
+        var sum = 0L;
+        foreach (var s in _delimitedString.Split(','))
         {
-            var random = new Random(Count);
-            _delimitedString = string.Join(',', Enumerable.Range(1, random.Next(Count)).Select(x => x.ToString()));
+            sum += long.Parse(s);
         }
 
-        [Benchmark(Baseline = true)]
-        public long SplitWithSingleChar()
-        {
-            var sum = 0L;
-            foreach (var s in _delimitedString.Split(','))
-            {
-                sum += long.Parse(s);
-            }
+        return sum;
+    }
 
-            return sum;
+    [Benchmark]
+    public long SplitWithSingleString()
+    {
+        var sum = 0L;
+        foreach (var s in _delimitedString.Split(","))
+        {
+            sum += long.Parse(s);
         }
 
-        [Benchmark]
-        public long SplitWithSingleString()
-        {
-            var sum = 0L;
-            foreach (var s in _delimitedString.Split(","))
-            {
-                sum += long.Parse(s);
-            }
+        return sum;
+    }
 
-            return sum;
+    [Benchmark]
+    public long SplitWithNewCharArray()
+    {
+        var sum = 0L;
+
+        foreach (var s in _delimitedString.Split(new char[] { ',' }))
+        {
+            sum += long.Parse(s);
         }
 
-        [Benchmark]
-        public long SplitWithNewCharArray()
+        return sum;
+    }
+
+    [Benchmark]
+    public long SplitWithStaticCharArray()
+    {
+        var sum = 0L;
+        foreach (var s in _delimitedString.Split(_separator))
         {
-            var sum = 0L;
-
-            foreach (var s in _delimitedString.Split(new char[] { ',' }))
-            {
-                sum += long.Parse(s);
-            }
-
-            return sum;
+            sum += long.Parse(s);
         }
 
-        [Benchmark]
-        public long SplitWithStaticCharArray()
-        {
-            var sum = 0L;
-            foreach (var s in _delimitedString.Split(_separator))
-            {
-                sum += long.Parse(s);
-            }
-
-            return sum;
-        }
+        return sum;
     }
 }
-
-

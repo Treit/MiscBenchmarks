@@ -1,57 +1,54 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public record SomeData(string Name, int Score);
+
+[MemoryDiagnoser]
+[MemoryRandomization]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(8, 100, 100_000, 1_000_000)]
+    public int Count { get; set; }
 
-    public record SomeData(string Name, int Score);
+    private List<SomeData> _values;
+    private List<SomeData> _listToSortA;
+    private List<SomeData> _listToSortB;
 
-    [MemoryDiagnoser]
-    [MemoryRandomization]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(8, 100, 100_000, 1_000_000)]
-        public int Count { get; set; }
+        _values = new List<SomeData>(Count);
 
-        private List<SomeData> _values;
-        private List<SomeData> _listToSortA;
-        private List<SomeData> _listToSortB;
+        var r = new Random(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _values = new List<SomeData>(Count);
-
-            var r = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
-            {
-                _values.Add(new SomeData($"Name {i}", r.Next(1000)));
-            }
-        }
-
-        [IterationSetup]
-        public void IterationSetup()
-        {
-            _listToSortA = new List<SomeData>(_values);
-            _listToSortB = new List<SomeData>(_values);
-        }
-
-        [Benchmark(Baseline = true)]
-        public SomeData ListSort()
-        {
-            var tosort = _listToSortA;
-            tosort.Sort((x, y) => x.Score.CompareTo(y.Score));
-            return tosort[0];
-        }
-
-        [Benchmark]
-        public SomeData LinqOrderBy()
-        {
-            var tosort = _listToSortB;
-            return tosort.OrderBy(x => x.Score).First();
+            _values.Add(new SomeData($"Name {i}", r.Next(1000)));
         }
     }
-}
 
+    [IterationSetup]
+    public void IterationSetup()
+    {
+        _listToSortA = new List<SomeData>(_values);
+        _listToSortB = new List<SomeData>(_values);
+    }
+
+    [Benchmark(Baseline = true)]
+    public SomeData ListSort()
+    {
+        var tosort = _listToSortA;
+        tosort.Sort((x, y) => x.Score.CompareTo(y.Score));
+        return tosort[0];
+    }
+
+    [Benchmark]
+    public SomeData LinqOrderBy()
+    {
+        var tosort = _listToSortB;
+        return tosort.OrderBy(x => x.Score).First();
+    }
+}
