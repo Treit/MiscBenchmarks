@@ -10,9 +10,9 @@ using System.Text;
 /// </summary>
 public static class HashUtils
 {
-    /// <summary>
-    /// The lookup table used for CRC32 computations.
-    /// </summary>
+    /// <summary>
+    /// The lookup table used for CRC32 computations.
+    /// </summary>
     private static readonly uint[] crc32Table = new uint[256]
      {
         0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
