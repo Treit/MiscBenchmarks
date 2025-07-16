@@ -1,69 +1,65 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Numerics;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Numerics;
+    [Params(100_000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private static int[] RandomInts;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100_000)]
-        public int Count { get; set; }
+        RandomInts = new int[Count];
 
-        private static int[] RandomInts;
+        // Use Count as the seed.
+        var r = new Random(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            RandomInts = new int[Count];
-
-            // Use Count as the seed.
-            var r = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
-            {
-                RandomInts[i] = r.Next(16);
-            }
-        }
-
-        [Benchmark(Baseline = true)]
-        public long SquareUsingMultiply()
-        {
-            long result = 0;
-
-            foreach (var val in RandomInts)
-            {
-                result += val * val;
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public long SquareUsingMathPow()
-        {
-            long result = 0;
-
-            foreach (var val in RandomInts)
-            {
-                result += (int)Math.Pow(val, 2);
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public long SquareUsingBigIntegerPow()
-        {
-            long result = 0;
-
-            foreach (var val in RandomInts)
-            {
-                result += (int)BigInteger.Pow(val, 2);
-            }
-
-            return result;
+            RandomInts[i] = r.Next(16);
         }
     }
+
+    [Benchmark(Baseline = true)]
+    public long SquareUsingMultiply()
+    {
+        long result = 0;
+
+        foreach (var val in RandomInts)
+        {
+            result += val * val;
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public long SquareUsingMathPow()
+    {
+        long result = 0;
+
+        foreach (var val in RandomInts)
+        {
+            result += (int)Math.Pow(val, 2);
+        }
+
+        return result;
+    }
+
+    [Benchmark]
+    public long SquareUsingBigIntegerPow()
+    {
+        long result = 0;
+
+        foreach (var val in RandomInts)
+        {
+            result += (int)BigInteger.Pow(val, 2);
+        }
+
+        return result;
+    }
 }
-
-

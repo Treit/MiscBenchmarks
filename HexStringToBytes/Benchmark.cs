@@ -1,109 +1,106 @@
-﻿using System.Text;
+using System.Text;
 
-namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Reflection;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Reflection;
+    [Params(6, 50, 1000)]
+    public int HexStringLength { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private string _hexString;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(6, 50, 1000)]
-        public int HexStringLength { get; set; }
+        var r = new Random(HexStringLength);
+        _hexString = RandomStringCreate(r, "0123456789ABCDEF", HexStringLength);
+    }
 
-        private string _hexString;
+    [Benchmark(Baseline = true)]
+    public byte[] HexStringToBytesUsingConvert()
+    {
+        var str = _hexString;
+        return Convert.FromHexString(str);
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark]
+    public byte[] HexStringToBytesUsingCustomImplementation()
+    {
+        var str = _hexString;
+        return HexBytesToInMemBytes(str, false);
+    }
+
+    static byte[] HexBytesToInMemBytes(string hexBytes, bool checkPrefix)
+    {
+        if (string.IsNullOrEmpty(hexBytes))
         {
-            var r = new Random(HexStringLength);
-            _hexString = RandomStringCreate(r, "0123456789ABCDEF", HexStringLength);
+            return new byte[0];
+        }
+        if (hexBytes.Length % 2 != 0)
+        {
+            // just return an empty one
+            return new byte[0];
         }
 
-        [Benchmark(Baseline = true)]
-        public byte[] HexStringToBytesUsingConvert()
+        int len = hexBytes.Length;
+        int index = 0;
+        if (checkPrefix && hexBytes[0] == '0' && (hexBytes[1] == 'x' || hexBytes[1] == 'X'))
         {
-            var str = _hexString;
-            return Convert.FromHexString(str);
+            index = 2;
+
         }
-
-        [Benchmark]
-        public byte[] HexStringToBytesUsingCustomImplementation()
+        byte[] result = new byte[(len - index) / 2];
+        int count = 0;
+        for (int i = index; i < len;)
         {
-            var str = _hexString;
-            return HexBytesToInMemBytes(str, false);
+            //byte value = byte.Parse(hexBytes.Substring(i, 2), System.Globalization.NumberStyles.HexNumber);
+            byte value = (byte)(ParseHexChar(hexBytes[i]) << 4 | ParseHexChar(hexBytes[i + 1]));
+            result[count++] = value;
+            i += 2;
         }
+        return result;
+    }
 
-        static byte[] HexBytesToInMemBytes(string hexBytes, bool checkPrefix)
+    /// <summary>
+	/// parse hex char into int. Note should be byte
+	/// </summary>
+	/// <param name="c"></param>
+	/// <returns></returns>
+	private static int ParseHexChar(char hexChar)
+    {
+        if (hexChar >= '0' && hexChar <= '9')
         {
-            if (string.IsNullOrEmpty(hexBytes))
-            {
-                return new byte[0];
-            }
-            if (hexBytes.Length % 2 != 0)
-            {
-                // just return an empty one
-                return new byte[0];
-            }
-
-            int len = hexBytes.Length;
-            int index = 0;
-            if (checkPrefix && hexBytes[0] == '0' && (hexBytes[1] == 'x' || hexBytes[1] == 'X'))
-            {
-                index = 2;
-
-            }
-            byte[] result = new byte[(len - index) / 2];
-            int count = 0;
-            for (int i = index; i < len;)
-            {
-                //byte value = byte.Parse(hexBytes.Substring(i, 2), System.Globalization.NumberStyles.HexNumber);
-                byte value = (byte)(ParseHexChar(hexBytes[i]) << 4 | ParseHexChar(hexBytes[i + 1]));
-                result[count++] = value;
-                i += 2;
-            }
-            return result;
+            return hexChar - '0';
         }
-
-        /// <summary>
-		/// parse hex char into int. Note should be byte
-		/// </summary>
-		/// <param name="c"></param>
-		/// <returns></returns>
-		private static int ParseHexChar(char hexChar)
+        else if (hexChar >= 'A' && hexChar <= 'F')
         {
-            if (hexChar >= '0' && hexChar <= '9')
-            {
-                return hexChar - '0';
-            }
-            else if (hexChar >= 'A' && hexChar <= 'F')
-            {
-                return hexChar - 'A' + 10;
-            }
-            else if (hexChar >= 'a' && hexChar <= 'f')
-            {
-                return hexChar - 'a' + 10;
-            }
-            else
-            {
-                // don't throw, just return
-                return -1;
-            }
+            return hexChar - 'A' + 10;
         }
-
-        static string RandomStringCreate(Random random, string alphabet, int fixedLength)
+        else if (hexChar >= 'a' && hexChar <= 'f')
         {
-            var len = fixedLength;
-            return string.Create(len, random, (buff, str) =>
-            {
-                for (int i = 0; i < buff.Length; i++)
-                {
-                    buff[i] = alphabet[random.Next(alphabet.Length)];
-                }
-            });
+            return hexChar - 'a' + 10;
+        }
+        else
+        {
+            // don't throw, just return
+            return -1;
         }
     }
-}
 
+    static string RandomStringCreate(Random random, string alphabet, int fixedLength)
+    {
+        var len = fixedLength;
+        return string.Create(len, random, (buff, str) =>
+        {
+            for (int i = 0; i < buff.Length; i++)
+            {
+                buff[i] = alphabet[random.Next(alphabet.Length)];
+            }
+        });
+    }
+}

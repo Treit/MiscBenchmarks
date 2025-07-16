@@ -1,54 +1,52 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Collections.Generic;
+    [Params(1000, 100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private List<int> _intList;
+    private List<object> _boxedIntList;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(1000, 100_000)]
-        public int Count { get; set; }
+        _intList = new List<int>(Count);
+        _boxedIntList = new List<object>(Count);
 
-        private List<int> _intList;
-        private List<object> _boxedIntList;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _intList = new List<int>(Count);
-            _boxedIntList = new List<object>(Count);
+            _intList.Add(i);
+            _boxedIntList.Add(i);
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
-            {
-                _intList.Add(i);
-                _boxedIntList.Add(i);
-            }
+    [Benchmark(Baseline = true)]
+    public int SumIntListWithoutUnboxing()
+    {
+        int sum = 0;
+
+        for (int i = 0; i < _intList.Count; i++)
+        {
+            sum += _intList[i];
         }
 
-        [Benchmark(Baseline = true)]
-        public int SumIntListWithoutUnboxing()
+        return sum;
+    }
+
+    [Benchmark]
+    public int SumObjectListWithUnboxing()
+    {
+        int sum = 0;
+
+        for (int i = 0; i < _boxedIntList.Count; i++)
         {
-            int sum = 0;
-
-            for (int i = 0; i < _intList.Count; i++)
-            {
-                sum += _intList[i];
-            }
-
-            return sum;
+            sum += (int)_boxedIntList[i];
         }
 
-        [Benchmark]
-        public int SumObjectListWithUnboxing()
-        {
-            int sum = 0;
-
-            for (int i = 0; i < _boxedIntList.Count; i++)
-            {
-                sum += (int)_boxedIntList[i];
-            }
-
-            return sum;
-        }
+        return sum;
     }
 }

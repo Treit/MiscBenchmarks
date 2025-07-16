@@ -1,70 +1,68 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+
+public interface IContainer
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
+    object Data { get; set; }
+}
+public interface IContainer<T> : IContainer
+{
+    object IContainer.Data { get => Data; set => Data = (T)value; }
+    new T Data { get; set; }
+}
 
-    public interface IContainer
+public class Container<T> : IContainer<T>
+{
+    public T Data { get; set; }
+}
+
+public class Payload
+{
+    public string Message { get; set; }
+}
+
+[MemoryDiagnoser]
+public class Benchmark
+{
+    Container<Payload> _container;
+    dynamic _containerDynamic;
+    Type _containerType;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        object Data { get; set; }
+        _container = new Container<Payload>();
+        _containerDynamic = new Container<Payload>();
+        _containerType = _container.GetType();
     }
-    public interface IContainer<T> : IContainer
+
+    [Benchmark(Baseline = true)]
+    public Container<Payload> SetPropertyNormally()
     {
-        object IContainer.Data { get => Data; set => Data = (T)value; }
-        new T Data { get; set; }
+        _container.Data = new Payload { Message = "TEST" };
+        return _container;
     }
 
-    public class Container<T> : IContainer<T>
+    [Benchmark]
+    public Container<Payload> SetPropertyUsingDynamic()
     {
-        public T Data { get; set; }
+        _containerDynamic.Data = new Payload { Message = "TEST" };
+        return _containerDynamic;
     }
 
-    public class Payload
+    [Benchmark]
+    public Container<Payload> SetPropertyUsingReflection()
     {
-        public string Message { get; set; }
+        _containerType.GetProperty("Data").SetValue(_container, new Payload { Message = "TEST" });
+        return _container;
     }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Benchmark]
+    public Container<Payload> SetPropertyUsingNonGenericInterface()
     {
-        Container<Payload> _container;
-        dynamic _containerDynamic;
-        Type _containerType;
-
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-            _container = new Container<Payload>();
-            _containerDynamic = new Container<Payload>();
-            _containerType = _container.GetType();
-        }
-
-        [Benchmark(Baseline = true)]
-        public Container<Payload> SetPropertyNormally()
-        {
-            _container.Data = new Payload { Message = "TEST" };
-            return _container;
-        }
-
-        [Benchmark]
-        public Container<Payload> SetPropertyUsingDynamic()
-        {
-            _containerDynamic.Data = new Payload { Message = "TEST" };
-            return _containerDynamic;
-        }
-
-        [Benchmark]
-        public Container<Payload> SetPropertyUsingReflection()
-        {
-            _containerType.GetProperty("Data").SetValue(_container, new Payload { Message = "TEST" });
-            return _container;
-        }
-
-        [Benchmark]
-        public Container<Payload> SetPropertyUsingNonGenericInterface()
-        {
-            IContainer inst = _container;
-            inst.Data = new Payload { Message = "TEST" };
-            return inst as Container<Payload>;
-        }
+        IContainer inst = _container;
+        inst.Data = new Payload { Message = "TEST" };
+        return inst as Container<Payload>;
     }
 }

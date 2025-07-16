@@ -1,52 +1,50 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(10, 1_000_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private List<int> _data;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 1_000_000)]
-        public int Count { get; set; }
+        _data = new List<int>(Count);
 
-        private List<int> _data;
+        var r = new Random(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _data = new List<int>(Count);
+            _data.Add(i);
 
-            var r = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
+            if (r.Next() % 2 == 0)
             {
                 _data.Add(i);
-
-                if (r.Next() % 2 == 0)
-                {
-                    _data.Add(i);
-                }
             }
         }
+    }
 
-        [Benchmark(Baseline = true)]
-        public long ToListThenDistinct()
-        {
-            return _data.ToList().Distinct().Count();
-        }
+    [Benchmark(Baseline = true)]
+    public long ToListThenDistinct()
+    {
+        return _data.ToList().Distinct().Count();
+    }
 
-        [Benchmark]
-        public long DistinctThenToList()
-        {
-            return _data.Distinct().ToList().Count();
-        }
+    [Benchmark]
+    public long DistinctThenToList()
+    {
+        return _data.Distinct().ToList().Count();
+    }
 
-        [Benchmark]
-        public long DistinctOnly()
-        {
-            return _data.Distinct().Count();
-        }
+    [Benchmark]
+    public long DistinctOnly()
+    {
+        return _data.Distinct().Count();
     }
 }

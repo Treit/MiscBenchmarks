@@ -1,64 +1,62 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
+    [Params(10, 10_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private Dictionary<string, int> _dict;
+    private ConcurrentDictionary<string, int> _concurrentDict;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 10_000)]
-        public int Count { get; set; }
+        _dict = new Dictionary<string, int>();
+        _concurrentDict = new ConcurrentDictionary<string, int>();
 
-        private Dictionary<string, int> _dict;
-        private ConcurrentDictionary<string, int> _concurrentDict;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _dict = new Dictionary<string, int>();
-            _concurrentDict = new ConcurrentDictionary<string, int>();
-
-            for (int i = 0; i < Count; i++)
+            if (i % 2 == 0)
             {
-                if (i % 2 == 0)
-                {
-                    _dict.Add(i.ToString(), i);
-                    _ = _concurrentDict.TryAdd(i.ToString(), i);
-                }
+                _dict.Add(i.ToString(), i);
+                _ = _concurrentDict.TryAdd(i.ToString(), i);
             }
-
         }
 
-        [Benchmark(Baseline = true)]
-        public int IncrementUsingDictionary()
+    }
+
+    [Benchmark(Baseline = true)]
+    public int IncrementUsingDictionary()
+    {
+        for (int i = 0; i < this.Count; i++)
         {
-            for (int i = 0; i < this.Count; i++)
+            var key = i.ToString();
+
+            if (!_dict.ContainsKey(key))
             {
-                var key = i.ToString();
-
-                if (!_dict.ContainsKey(key))
-                {
-                    _dict.Add(key, 0);
-                }
-
-                _dict[key] += 1;
+                _dict.Add(key, 0);
             }
 
-            return _dict.Count;
+            _dict[key] += 1;
         }
 
-        [Benchmark]
-        public int IncrementUsingConcurrentDictionary()
+        return _dict.Count;
+    }
+
+    [Benchmark]
+    public int IncrementUsingConcurrentDictionary()
+    {
+        for (int i = 0; i < this.Count; i++)
         {
-            for (int i = 0; i < this.Count; i++)
-            {
-                var key = i.ToString();
-                var x = _concurrentDict.AddOrUpdate(key, 1, (k, v) => v += 1);
-            }
-
-            return _concurrentDict.Count;
+            var key = i.ToString();
+            var x = _concurrentDict.AddOrUpdate(key, 1, (k, v) => v += 1);
         }
+
+        return _concurrentDict.Count;
     }
 }

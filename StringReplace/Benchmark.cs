@@ -1,77 +1,75 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    private List<string> _strings;
 
-    public class Benchmark
+    [Params(10000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private List<string> _strings;
-
-        [Params(10000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        _strings = new List<string>(Count);
+        for (int i = 0; i < Count; i++)
         {
-            _strings = new List<string>(Count);
-            for (int i = 0; i < Count; i++)
-            {
-                _strings.Add(Guid.NewGuid().ToString());
-            }
+            _strings.Add(Guid.NewGuid().ToString());
+        }
+    }
+
+    [Benchmark(Baseline = true)]
+    public int ReplaceNoStringComparison()
+    {
+        int total = 0;
+
+        for (int i = 0; i < _strings.Count; i++)
+        {
+            total += _strings[i].Replace("-", string.Empty).Length; ;
         }
 
-        [Benchmark(Baseline = true)]
-        public int ReplaceNoStringComparison()
+        return total;
+    }
+
+    [Benchmark]
+    public int? ReplaceNoStringComparisonUnnecessaryNullCheck()
+    {
+        int? total = 0;
+
+        for (int i = 0; i < _strings.Count; i++)
         {
-            int total = 0;
-
-            for (int i = 0; i < _strings.Count; i++)
-            {
-                total += _strings[i].Replace("-", string.Empty).Length; ;
-            }
-
-            return total;
+            total += _strings[i].Replace("-", string.Empty)?.Length; ;
         }
 
-        [Benchmark]
-        public int? ReplaceNoStringComparisonUnnecessaryNullCheck()
+        return total;
+    }        
+
+    [Benchmark]
+    public int ReplaceStringComparisonOrdinal()
+    {
+        int total = 0;
+
+        for (int i = 0; i < _strings.Count; i++)
         {
-            int? total = 0;
-
-            for (int i = 0; i < _strings.Count; i++)
-            {
-                total += _strings[i].Replace("-", string.Empty)?.Length; ;
-            }
-
-            return total;
-        }        
-
-        [Benchmark]
-        public int ReplaceStringComparisonOrdinal()
-        {
-            int total = 0;
-
-            for (int i = 0; i < _strings.Count; i++)
-            {
-                total += _strings[i].Replace("-", string.Empty, StringComparison.Ordinal).Length; ;
-            }
-
-            return total;
+            total += _strings[i].Replace("-", string.Empty, StringComparison.Ordinal).Length; ;
         }
 
-        [Benchmark]
-        public int ReplaceStringComparisonOrdinalIgnoreCase()
+        return total;
+    }
+
+    [Benchmark]
+    public int ReplaceStringComparisonOrdinalIgnoreCase()
+    {
+        int total = 0;
+
+        for (int i = 0; i < _strings.Count; i++)
         {
-            int total = 0;
-
-            for (int i = 0; i < _strings.Count; i++)
-            {
-                total += _strings[i].Replace("-", string.Empty, StringComparison.OrdinalIgnoreCase).Length; ;
-            }
-
-            return total;
+            total += _strings[i].Replace("-", string.Empty, StringComparison.OrdinalIgnoreCase).Length; ;
         }
+
+        return total;
     }
 }

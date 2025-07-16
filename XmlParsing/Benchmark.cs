@@ -1,102 +1,100 @@
-﻿namespace Test
-{
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Xml;
-    using System.Xml.Linq;
-    using System.Xml.Serialization;
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
-    [Serializable]
-    public class TestClass
+[Serializable]
+public class TestClass
+{
+    public List<string> StringValues { get; set; }
+    public int Id { get; set; }
+    public bool SomeFlag { get; set; }
+}
+
+public class Benchmark
+{
+    [Params(10, 1000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        public List<string> StringValues { get; set; }
-        public int Id { get; set; }
-        public bool SomeFlag { get; set; }
+        var list = new List<TestClass>();
+
+        for (int i = 0; i < Count; i++)
+        {
+            var item = new TestClass
+            {
+                StringValues = new List<string>(),
+                Id = i,
+                SomeFlag = i % 2 == 0
+            };
+
+            for (int j = 0; j < Count; j++)
+            {
+                item.StringValues.Add(Guid.NewGuid().ToString());
+            }
+
+            list.Add(item);
+        }
+
+        var serializer = new XmlSerializer(typeof(List<TestClass>));
+        using var fs = new FileStream("TestInput.xml", FileMode.Create);
+        serializer.Serialize(fs, list);
     }
 
-    public class Benchmark
+    [Benchmark]
+    public long CountElementsWithXDocument()
     {
-        [Params(10, 1000)]
-        public int Count { get; set; }
+        var result = 0L;
+        using var fs = new FileStream("TestInput.xml", FileMode.Open);
+        var doc = XDocument.Load(fs);
+        var elements = doc.Descendants(XName.Get("string"));
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        foreach (var x in elements)
         {
-            var list = new List<TestClass>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                var item = new TestClass
-                {
-                    StringValues = new List<string>(),
-                    Id = i,
-                    SomeFlag = i % 2 == 0
-                };
-
-                for (int j = 0; j < Count; j++)
-                {
-                    item.StringValues.Add(Guid.NewGuid().ToString());
-                }
-
-                list.Add(item);
-            }
-
-            var serializer = new XmlSerializer(typeof(List<TestClass>));
-            using var fs = new FileStream("TestInput.xml", FileMode.Create);
-            serializer.Serialize(fs, list);
+            result++;
         }
 
-        [Benchmark]
-        public long CountElementsWithXDocument()
+        return result;
+    }
+
+    [Benchmark]
+    public long CountElementsWithXmlDocument()
+    {
+        var result = 0L;
+        using var fs = new FileStream("TestInput.xml", FileMode.Open);
+        var doc = new XmlDocument();
+        doc.Load(fs);
+        var elements = doc.SelectNodes("//string");
+
+        foreach (var x in elements)
         {
-            var result = 0L;
-            using var fs = new FileStream("TestInput.xml", FileMode.Open);
-            var doc = XDocument.Load(fs);
-            var elements = doc.Descendants(XName.Get("string"));
-
-            foreach (var x in elements)
-            {
-                result++;
-            }
-
-            return result;
+            result++;
         }
 
-        [Benchmark]
-        public long CountElementsWithXmlDocument()
-        {
-            var result = 0L;
-            using var fs = new FileStream("TestInput.xml", FileMode.Open);
-            var doc = new XmlDocument();
-            doc.Load(fs);
-            var elements = doc.SelectNodes("//string");
+        return result;
+    }
 
-            foreach (var x in elements)
+    [Benchmark(Baseline = true)]
+    public long CountElementsWithXmlReader()
+    {
+        var result = 0L;
+        using var fs = new FileStream("TestInput.xml", FileMode.Open);
+        using var reader = XmlReader.Create(fs);
+
+        while (reader.Read())
+        {
+            if (reader.Name == "string" && reader.IsStartElement())
             {
                 result++;
             }
-
-            return result;
         }
 
-        [Benchmark(Baseline = true)]
-        public long CountElementsWithXmlReader()
-        {
-            var result = 0L;
-            using var fs = new FileStream("TestInput.xml", FileMode.Open);
-            using var reader = XmlReader.Create(fs);
-
-            while (reader.Read())
-            {
-                if (reader.Name == "string" && reader.IsStartElement())
-                {
-                    result++;
-                }
-            }
-
-            return result;
-        }
+        return result;
     }
 }

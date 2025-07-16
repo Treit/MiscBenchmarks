@@ -1,75 +1,73 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Collections.Generic;
+    [Params(4, 10, 100, 1024, 100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private LinkedList<int> _linkedList;
+
+    private List<int> _list;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(4, 10, 100, 1024, 100_000)]
-        public int Count { get; set; }
+        _linkedList = CreateLinkedList();
+        _list = CreateList();
+    }
 
-        private LinkedList<int> _linkedList;
+    [Benchmark]
+    public LinkedList<int> CreateLinkedList()
+    {
+        var list = new LinkedList<int>();
 
-        private List<int> _list;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _linkedList = CreateLinkedList();
-            _list = CreateList();
+            list.AddLast(i);
         }
 
-        [Benchmark]
-        public LinkedList<int> CreateLinkedList()
+        return list;
+    }
+
+    [Benchmark]
+    public List<int> CreateList()
+    {
+        var list = new List<int>();
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = new LinkedList<int>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.AddLast(i);
-            }
-
-            return list;
+            list.Add(i);
         }
 
-        [Benchmark]
-        public List<int> CreateList()
+        return list;
+    }
+
+    [Benchmark]
+    public long IterateLinkedList()
+    {
+        int sum = 0;
+
+        foreach (var val in _linkedList)
         {
-            var list = new List<int>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(i);
-            }
-
-            return list;
+            sum += val;
         }
 
-        [Benchmark]
-        public long IterateLinkedList()
+        return sum;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long IterateList()
+    {
+        int sum = 0;
+
+        foreach (var val in _list)
         {
-            int sum = 0;
-
-            foreach (var val in _linkedList)
-            {
-                sum += val;
-            }
-
-            return sum;
+            sum += val;
         }
 
-        [Benchmark(Baseline = true)]
-        public long IterateList()
-        {
-            int sum = 0;
-
-            foreach (var val in _list)
-            {
-                sum += val;
-            }
-
-            return sum;
-        }
+        return sum;
     }
 }

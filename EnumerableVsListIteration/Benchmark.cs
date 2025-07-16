@@ -1,55 +1,53 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(1000, 100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(1000, 100_000)]
-        public int Count { get; set; }
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark(Baseline = true)]
+    public long EnumerateUsingEnumerableAndForEach()
+    {
+        long result = 0;
+
+        foreach (var number in GetNumbers())
         {
+            result += number;
         }
 
-        [Benchmark(Baseline = true)]
-        public long EnumerateUsingEnumerableAndForEach()
+        return result;
+    }
+
+    [Benchmark]
+    public long EnumerateUsingToListAndForEach()
+    {
+        long result = 0;
+
+        foreach (var number in GetNumbers().ToList())
         {
-            long result = 0;
-
-            foreach (var number in GetNumbers())
-            {
-                result += number;
-            }
-
-            return result;
+            result += number;
         }
 
-        [Benchmark]
-        public long EnumerateUsingToListAndForEach()
+        return result;
+    }
+
+    IEnumerable<int> GetNumbers()
+    {
+        for (int i = 0; i < Count; i++)
         {
-            long result = 0;
-
-            foreach (var number in GetNumbers().ToList())
-            {
-                result += number;
-            }
-
-            return result;
-        }
-
-        IEnumerable<int> GetNumbers()
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                yield return i;
-            }
+            yield return i;
         }
     }
 }

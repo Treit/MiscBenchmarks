@@ -1,56 +1,54 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System.Runtime.CompilerServices;
-    using System.Threading;
-    using System.Threading.Tasks;
+    [Params(10_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10_000)]
-        public int Count { get; set; }
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    static void BlackBox<T>(T _) {}
+
+    [Benchmark(Baseline = true)]
+    public Task NoYield()
+    {
+        for (int i = 0; i < Count; i++)
         {
+            BlackBox(i);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        static void BlackBox<T>(T _) {}
+        return Task.CompletedTask;
+    }
 
-        [Benchmark(Baseline = true)]
-        public Task NoYield()
+    [Benchmark]
+    public async Task TaskYield()
+    {
+        for (int i = 0; i < Count; i++)
         {
-            for (int i = 0; i < Count; i++)
-            {
-                BlackBox(i);
-            }
+            BlackBox(i);
+            await Task.Yield();
+        }
+    }
 
-            return Task.CompletedTask;
+    [Benchmark]
+    public Task ThreadYield()
+    {
+        for (int i = 0; i < Count; i++)
+        {
+            BlackBox(i);
+            Thread.Yield();
         }
 
-        [Benchmark]
-        public async Task TaskYield()
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                BlackBox(i);
-                await Task.Yield();
-            }
-        }
-
-        [Benchmark]
-        public Task ThreadYield()
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                BlackBox(i);
-                Thread.Yield();
-            }
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

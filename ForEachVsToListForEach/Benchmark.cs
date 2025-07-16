@@ -1,45 +1,43 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 
-namespace Test
+namespace Test;
+[MemoryDiagnoser]
+public class Benchmark
 {
-    [MemoryDiagnoser]
-    public class Benchmark
+    private IEnumerable<int> _values;
+
+    [Params(1000, 1_000_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private IEnumerable<int> _values;
-
-        [Params(1000, 1_000_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        var tempList = new List<int>(Count);
+        for (int i = 0; i < Count;i++ )
         {
-            var tempList = new List<int>(Count);
-            for (int i = 0; i < Count;i++ )
-            {
-                tempList.Add(Random.Shared.Next(0, 500_001));
-            }
-
-            _values = tempList.Where(x => x > 50_000);
+            tempList.Add(Random.Shared.Next(0, 500_001));
         }
 
-        [Benchmark(Baseline = true)]
-        public long ForEach()
-        {
-            var result = 0L;
-            foreach (var val in _values)
-            {
-                result += val;
-            }
+        _values = tempList.Where(x => x > 50_000);
+    }
 
-            return result;
+    [Benchmark(Baseline = true)]
+    public long ForEach()
+    {
+        var result = 0L;
+        foreach (var val in _values)
+        {
+            result += val;
         }
 
-        [Benchmark]
-        public long ToListDotForEach()
-        {
-            var result = 0L;
-            _values.ToList().ForEach(x => result += x);
-            return result;
-        }
+        return result;
+    }
+
+    [Benchmark]
+    public long ToListDotForEach()
+    {
+        var result = 0L;
+        _values.ToList().ForEach(x => result += x);
+        return result;
     }
 }

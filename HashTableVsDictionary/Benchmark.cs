@@ -1,90 +1,88 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(100, 100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private Hashtable _hashTable;
+    private Dictionary<string, int> _dictionary;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100, 100_000)]
-        public int Count { get; set; }
+        PopulateHashTable();
+        PopulateDictionary();
+    }
 
-        private Hashtable _hashTable;
-        private Dictionary<string, int> _dictionary;
+    [Benchmark(Baseline = true)]
+    public void PopulateHashTable()
+    {
+        Random r = new Random(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        _hashTable = new Hashtable(Count);
+
+        for (int i = 0; i < Count; i++)
         {
-            PopulateHashTable();
-            PopulateDictionary();
+            _hashTable[r.Next(0, 100000).ToString()] = i;
         }
+    }
 
-        [Benchmark(Baseline = true)]
-        public void PopulateHashTable()
+    [Benchmark]
+    public void PopulateDictionary()
+    {
+        Random r = new Random(Count);
+
+        _dictionary = new(Count);
+
+        for (int i = 0; i < Count; i++)
         {
-            Random r = new Random(Count);
+            _dictionary[r.Next(0, 100000).ToString()] =  i;
+        }
+    }
 
-            _hashTable = new Hashtable(Count);
+    [Benchmark]
+    public long LookupHashTable()
+    {
+        Random r = new Random(Count);
+        long result = 0;
 
-            for (int i = 0; i < Count; i++)
+        for (int i = 0; i < Count; i++)
+        {
+            var random = r.Next().ToString();
+
+            if (_hashTable.ContainsKey(random))
             {
-                _hashTable[r.Next(0, 100000).ToString()] = i;
+                result += (int)_hashTable[random];
             }
         }
 
-        [Benchmark]
-        public void PopulateDictionary()
+        return result;
+    }
+
+    [Benchmark]
+    public long LookupDictionary()
+    {
+        Random r = new Random(Count);
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            Random r = new Random(Count);
+            var random = r.Next().ToString();
 
-            _dictionary = new(Count);
-
-            for (int i = 0; i < Count; i++)
+            if (_dictionary.ContainsKey(random))
             {
-                _dictionary[r.Next(0, 100000).ToString()] =  i;
+                result += _dictionary[random];
             }
         }
 
-        [Benchmark]
-        public long LookupHashTable()
-        {
-            Random r = new Random(Count);
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                var random = r.Next().ToString();
-
-                if (_hashTable.ContainsKey(random))
-                {
-                    result += (int)_hashTable[random];
-                }
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public long LookupDictionary()
-        {
-            Random r = new Random(Count);
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                var random = r.Next().ToString();
-
-                if (_dictionary.ContainsKey(random))
-                {
-                    result += _dictionary[random];
-                }
-            }
-
-            return result;
-        }
+        return result;
     }
 }

@@ -1,71 +1,69 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
+    [Params(100, 100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100, 100_000)]
-        public int Count { get; set; }
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark(Baseline = true)]
+    public float DivideUsingFloat()
+    {
+        float result = int.MaxValue;
+
+        for (int i = 0; i < Count; i++)
         {
+            result /= 2f;
         }
 
-        [Benchmark(Baseline = true)]
-        public float DivideUsingFloat()
+        return result;
+    }
+
+    [Benchmark]
+    public double DivideUsingDouble()
+    {
+        double result = int.MaxValue;
+
+        for (int i = 0; i < Count; i++)
         {
-            float result = int.MaxValue;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result /= 2f;
-            }
-
-            return result;
+            result /= 2d;
         }
 
-        [Benchmark]
-        public double DivideUsingDouble()
+        return result;
+    }
+
+    [Benchmark]
+    public decimal DivideUsingDecimal()
+    {
+        decimal result = int.MaxValue;
+
+        for (int i = 0; i < Count; i++)
         {
-            double result = int.MaxValue;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result /= 2d;
-            }
-
-            return result;
+            result /= 2m;
         }
 
-        [Benchmark]
-        public decimal DivideUsingDecimal()
+        return result;
+    }
+
+    [Benchmark]
+    public int DivideUsingInt()
+    {
+        int result = int.MaxValue;
+
+        for (int i = 0; i < Count; i++)
         {
-            decimal result = int.MaxValue;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result /= 2m;
-            }
-
-            return result;
+            result /= 2;
         }
 
-        [Benchmark]
-        public int DivideUsingInt()
-        {
-            int result = int.MaxValue;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result /= 2;
-            }
-
-            return result;
-        }
+        return result;
     }
 }

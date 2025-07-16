@@ -1,73 +1,71 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Reflection;
+    [Params(10, 100, 10_000, 100_000)]
+    public int Count { get; set; }
+    private List<string> _values;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 100, 10_000, 100_000)]
-        public int Count { get; set; }
-        private List<string> _values;
+        _values = new List<string>(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < this.Count; i++)
         {
-            _values = new List<string>(Count);
+            var str = i.ToString();
+            _values.Add(str);
+        }
+    }
 
-            for (int i = 0; i < this.Count; i++)
-            {
-                var str = i.ToString();
-                _values.Add(str);
-            }
+    [Benchmark(Baseline = true)]
+    public int StringToIntUsingConvert()
+    {
+        int last = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            int v = Convert.ToInt32(_values[i]);
+            last = v;
         }
 
-        [Benchmark(Baseline = true)]
-        public int StringToIntUsingConvert()
-        {
-            int last = 0;
+        return last;
+    }
 
-            for (int i = 0; i < this.Count; i++)
+    [Benchmark]
+    public int StringToIntUsingParse()
+    {
+        int last = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            int v = int.Parse(_values[i]);
+            last = v;
+        }
+
+        return last;
+    }
+
+    [Benchmark]
+    public int StringToIntUsingTryParse()
+    {
+        int last = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            if (int.TryParse(_values[i], out int v))
             {
-                int v = Convert.ToInt32(_values[i]);
                 last = v;
             }
-
-            return last;
         }
 
-        [Benchmark]
-        public int StringToIntUsingParse()
-        {
-            int last = 0;
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                int v = int.Parse(_values[i]);
-                last = v;
-            }
-
-            return last;
-        }
-
-        [Benchmark]
-        public int StringToIntUsingTryParse()
-        {
-            int last = 0;
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                if (int.TryParse(_values[i], out int v))
-                {
-                    last = v;
-                }
-            }
-
-            return last;
-        }
+        return last;
     }
 }

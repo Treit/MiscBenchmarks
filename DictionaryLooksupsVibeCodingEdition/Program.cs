@@ -1,21 +1,19 @@
-﻿namespace Test
-{
-    using System;
-    using BenchmarkDotNet.Running;
-    using Microsoft.Collections.Extensions;
+namespace Test;
+using System;
+using BenchmarkDotNet.Running;
+using Microsoft.Collections.Extensions;
 
-    internal class Program
+internal class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
 #if DEBUG
-            Benchmark b = new Benchmark();
-            b.Count = 100;
-            b.GlobalSetup();
+        Benchmark b = new Benchmark();
+        b.Count = 100;
+        b.GlobalSetup();
 
 #else
-            BenchmarkRunner.Run<Benchmark>();
+        BenchmarkRunner.Run<Benchmark>();
 #endif
-        }
     }
 }

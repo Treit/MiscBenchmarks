@@ -1,28 +1,26 @@
-﻿namespace Test
+namespace Test;
+using System;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using Microsoft.CodeAnalysis.Operations;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using System;
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using Microsoft.CodeAnalysis.Operations;
-
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-        }
+    }
 
-        [Benchmark(Baseline = true)]
-        public string NameViaNameOf()
-        {
-            return nameof(Benchmark);
-        }
+    [Benchmark(Baseline = true)]
+    public string NameViaNameOf()
+    {
+        return nameof(Benchmark);
+    }
 
-        [Benchmark]
-        public string NameViaGetType()
-        {
-            return GetType().Name;
-        }
+    [Benchmark]
+    public string NameViaGetType()
+    {
+        return GetType().Name;
     }
 }

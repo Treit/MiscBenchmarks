@@ -1,178 +1,176 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
+    [Params(10, 10_000)]
+    public int Count { get; set; }
+    private List<string> _values;
+    private List<string> _values2;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 10_000)]
-        public int Count { get; set; }
-        private List<string> _values;
-        private List<string> _values2;
+        _values = new List<string>(Count);
+        _values2 = new List<string>(Count);
+        var random = new Random(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < this.Count; i++)
         {
-            _values = new List<string>(Count);
-            _values2 = new List<string>(Count);
-            var random = new Random(Count);
+            var str = new string('a', random.Next(100));
+            _values.Add(str);
 
-            for (int i = 0; i < this.Count; i++)
+            // Ensure they are not reference equal
+            var str2 = new string(str.ToCharArray());
+            _values2.Add(str2);
+        }
+    }
+
+    [Benchmark(Baseline = true)]
+    public int EqualStringsCompareWithEqualsOperator()
+    {
+        var count = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            if (_values[i] == _values2[i])
             {
-                var str = new string('a', random.Next(100));
-                _values.Add(str);
-
-                // Ensure they are not reference equal
-                var str2 = new string(str.ToCharArray());
-                _values2.Add(str2);
+                count++;
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public int EqualStringsCompareWithEqualsOperator()
+        return count;
+    }
+
+    [Benchmark]
+    public int EqualStringsCompareWithEqualsMethod()
+    {
+        var count = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            var count = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Equals(_values2[i]))
             {
-                if (_values[i] == _values2[i])
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int EqualStringsCompareWithEqualsMethod()
+        return count;
+    }
+
+    [Benchmark]
+    public int EqualStringsCompareWithEqualsMethodIgnoreCase()
+    {
+        var count = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            var count = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Equals(_values2[i], StringComparison.InvariantCultureIgnoreCase))
             {
-                if (_values[i].Equals(_values2[i]))
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int EqualStringsCompareWithEqualsMethodIgnoreCase()
+        return count;
+    }
+
+    [Benchmark]
+    public int EqualStringsCompareWithEqualsMethodOrdinal()
+    {
+        var count = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            var count = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Equals(_values2[i], StringComparison.Ordinal))
             {
-                if (_values[i].Equals(_values2[i], StringComparison.InvariantCultureIgnoreCase))
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int EqualStringsCompareWithEqualsMethodOrdinal()
+        return count;
+    }
+
+    [Benchmark]
+    public int EqualStringsCompareWithEqualsMethodOrdinalIgnoreCase()
+    {
+        var count = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            var count = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Equals(_values2[i], StringComparison.OrdinalIgnoreCase))
             {
-                if (_values[i].Equals(_values2[i], StringComparison.Ordinal))
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int EqualStringsCompareWithEqualsMethodOrdinalIgnoreCase()
+        return count;
+    }
+
+    [Benchmark]
+    public int EqualStringsCompareWithStartsWithMethod()
+    {
+        var count = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            var count = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].StartsWith(_values2[i]))
             {
-                if (_values[i].Equals(_values2[i], StringComparison.OrdinalIgnoreCase))
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int EqualStringsCompareWithStartsWithMethod()
+        return count;
+    }
+
+    [Benchmark]
+    public int EqualStringsCompareWithStartsWithMethodIgnoreCase()
+    {
+        var count = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            var count = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].StartsWith(_values2[i], StringComparison.InvariantCultureIgnoreCase))
             {
-                if (_values[i].StartsWith(_values2[i]))
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int EqualStringsCompareWithStartsWithMethodIgnoreCase()
+        return count;
+    }
+
+    [Benchmark]
+    public int EqualStringsCompareWithStartsWithMethodOrdinal()
+    {
+        var count = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            var count = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].StartsWith(_values2[i], StringComparison.Ordinal))
             {
-                if (_values[i].StartsWith(_values2[i], StringComparison.InvariantCultureIgnoreCase))
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int EqualStringsCompareWithStartsWithMethodOrdinal()
+        return count;
+    }
+
+    [Benchmark]
+    public int EqualStringsCompareWithStartsWithMethodOrdinalIgnoreCase()
+    {
+        var count = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            var count = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].StartsWith(_values2[i], StringComparison.OrdinalIgnoreCase))
             {
-                if (_values[i].StartsWith(_values2[i], StringComparison.Ordinal))
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int EqualStringsCompareWithStartsWithMethodOrdinalIgnoreCase()
-        {
-            var count = 0;
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                if (_values[i].StartsWith(_values2[i], StringComparison.OrdinalIgnoreCase))
-                {
-                    count++;
-                }
-            }
-
-            return count;
-        }
+        return count;
     }
 }

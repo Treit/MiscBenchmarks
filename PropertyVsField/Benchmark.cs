@@ -1,101 +1,98 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Runtime.CompilerServices;
+
+[DisassemblyDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Runtime.CompilerServices;
+    public int Count;
 
-    [DisassemblyDiagnoser]
-    public class Benchmark
+    TestClass _instance;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        public int Count;
+        Count = 1000;
 
-        TestClass _instance;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        _instance = new TestClass
         {
-            Count = 1000;
-
-            _instance = new TestClass
-            {
-                _string = Guid.NewGuid().ToString(),
-                _time = DateTime.UtcNow
-            };
-        }
-
-        [Benchmark]
-        public (DateTime, string) GetProperty()
-        {
-            (DateTime, string) result = default;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result = DoGetProperty();
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public (DateTime, string) GetPropertyAggressiveInlining()
-        {
-            (DateTime, string) result = default;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result = DoGetPropertyAggressiveInlining();
-            }
-
-            return result;
-        }
-
-        [Benchmark]
-        public (DateTime, string) GetField()
-        {
-            (DateTime, string) result = default;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result = DoGetField();
-            }
-
-            return result;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public (DateTime, string) DoGetPropertyAggressiveInlining()
-        {
-            return (_instance.Time, _instance.String);
-        }
-
-        public (DateTime, string) DoGetProperty()
-        {
-            return (_instance.Time, _instance.String);
-        }
-
-        public (DateTime, string) DoGetField()
-        {
-            return (_instance._time, _instance._string);
-        }
+            _string = Guid.NewGuid().ToString(),
+            _time = DateTime.UtcNow
+        };
     }
 
-    class TestClass
+    [Benchmark]
+    public (DateTime, string) GetProperty()
     {
-        public DateTime _time;
+        (DateTime, string) result = default;
 
-        public string _string;
-
-        public DateTime Time
+        for (int i = 0; i < Count; i++)
         {
-            get { return _time; }
-            set { _time = value; }
+            result = DoGetProperty();
         }
 
-        public string String
+        return result;
+    }
+
+    [Benchmark]
+    public (DateTime, string) GetPropertyAggressiveInlining()
+    {
+        (DateTime, string) result = default;
+
+        for (int i = 0; i < Count; i++)
         {
-            get { return _string; }
-            set { _string = value; }
+            result = DoGetPropertyAggressiveInlining();
         }
+
+        return result;
+    }
+
+    [Benchmark]
+    public (DateTime, string) GetField()
+    {
+        (DateTime, string) result = default;
+
+        for (int i = 0; i < Count; i++)
+        {
+            result = DoGetField();
+        }
+
+        return result;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (DateTime, string) DoGetPropertyAggressiveInlining()
+    {
+        return (_instance.Time, _instance.String);
+    }
+
+    public (DateTime, string) DoGetProperty()
+    {
+        return (_instance.Time, _instance.String);
+    }
+
+    public (DateTime, string) DoGetField()
+    {
+        return (_instance._time, _instance._string);
     }
 }
 
+class TestClass
+{
+    public DateTime _time;
+
+    public string _string;
+
+    public DateTime Time
+    {
+        get { return _time; }
+        set { _time = value; }
+    }
+
+    public string String
+    {
+        get { return _string; }
+        set { _string = value; }
+    }
+}

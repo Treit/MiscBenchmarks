@@ -1,58 +1,56 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Collections.Generic;
+    [Params(10, 100_000)]
+    public int Count { get; set; }
+    private List<string> _values;
+    private int _valueToCheck = 1234;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 100_000)]
-        public int Count { get; set; }
-        private List<string> _values;
-        private int _valueToCheck = 1234;
+        _values = new List<string>(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < this.Count; i++)
         {
-            _values = new List<string>(Count);
+            var str = i.ToString();
+            _values.Add(str);
+        }
+    }
 
-            for (int i = 0; i < this.Count; i++)
+    [Benchmark(Baseline = true)]
+    public int CompareUsingTryParse()
+    {
+        int matches = 0;
+
+        foreach (var str in _values)
+        {
+            if (int.Parse(str) == _valueToCheck)
             {
-                var str = i.ToString();
-                _values.Add(str);
+                matches++;
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public int CompareUsingTryParse()
+        return matches;
+    }
+
+    [Benchmark]
+    public int CompareUsingToString()
+    {
+        int matches = 0;
+
+        foreach (var str in _values)
         {
-            int matches = 0;
-
-            foreach (var str in _values)
+            if (str == _valueToCheck.ToString())
             {
-                if (int.Parse(str) == _valueToCheck)
-                {
-                    matches++;
-                }
+                matches++;
             }
-
-            return matches;
         }
 
-        [Benchmark]
-        public int CompareUsingToString()
-        {
-            int matches = 0;
-
-            foreach (var str in _values)
-            {
-                if (str == _valueToCheck.ToString())
-                {
-                    matches++;
-                }
-            }
-
-            return matches;
-        }
+        return matches;
     }
 }

@@ -1,50 +1,46 @@
-﻿using System.Text;
+using System.Text;
 
-namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+    using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-        using System.Linq;
+    private int[] _ints;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(10, 10_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private int[] _ints;
+        _ints = new int[Count];
 
-        [Params(10, 10_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _ints = new int[Count];
-
-            for (int i = 0; i < Count; i++)
-            {
-                _ints[i] = i;
-            }
-        }
-
-        [Benchmark]
-        public long SumUsingForLoop()
-        {
-            long result = 0;
-            var ints = _ints;
-
-            for (int i = 0; i < ints.Length; i++)
-            {
-                result += ints[i];
-            }
-
-            return result;
-        }
-
-        [Benchmark(Baseline = true)]
-        public long SumUsingLinqSum()
-        {
-            return _ints.Sum();
+            _ints[i] = i;
         }
     }
+
+    [Benchmark]
+    public long SumUsingForLoop()
+    {
+        long result = 0;
+        var ints = _ints;
+
+        for (int i = 0; i < ints.Length; i++)
+        {
+            result += ints[i];
+        }
+
+        return result;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long SumUsingLinqSum()
+    {
+        return _ints.Sum();
+    }
 }
-
-

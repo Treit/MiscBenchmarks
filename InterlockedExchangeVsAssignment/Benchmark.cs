@@ -1,32 +1,30 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Threading;
+
+[DisassemblyDiagnoser(exportDiff: true, exportHtml: true)]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Threading;
+    object _lock = new();
+    long _target;
 
-    [DisassemblyDiagnoser(exportDiff: true, exportHtml: true)]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        object _lock = new();
-        long _target;
+        _target = 1234;
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-            _target = 1234;
-        }
+    [Benchmark(Baseline = true)]
+    public long SetToZeroSimpleAssignment()
+    {
+        _target = 0;
+        return _target;
+    }
 
-        [Benchmark(Baseline = true)]
-        public long SetToZeroSimpleAssignment()
-        {
-            _target = 0;
-            return _target;
-        }
-
-        [Benchmark]
-        public long SetToZeroWithInterlockedExchange()
-        {
-            Interlocked.Exchange(ref _target, 0);
-            return _target;
-        }
+    [Benchmark]
+    public long SetToZeroWithInterlockedExchange()
+    {
+        Interlocked.Exchange(ref _target, 0);
+        return _target;
     }
 }

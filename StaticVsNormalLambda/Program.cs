@@ -1,20 +1,18 @@
-﻿namespace Test
-{
-    using BenchmarkDotNet.Running;
-    using System;
-    using System.Linq;
+namespace Test;
+using BenchmarkDotNet.Running;
+using System;
+using System.Linq;
 
-    internal class Program
+internal class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
 #if RELEASE
-            BenchmarkRunner.Run<Benchmark>();
+        BenchmarkRunner.Run<Benchmark>();
 #else
-            Benchmark b = new Benchmark();
-            b.Count = 26;
-            b.GlobalSetup();
+        Benchmark b = new Benchmark();
+        b.Count = 26;
+        b.GlobalSetup();
 #endif
-        }
     }
 }

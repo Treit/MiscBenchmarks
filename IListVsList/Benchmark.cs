@@ -1,77 +1,75 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
+    [Params(100, 100_000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private List<int> _list;
+
+    public IList<int> GetIList()
     {
-        [Params(100, 100_000)]
-        public int Count { get; set; }
+        return _list;
+    }
 
-        private List<int> _list;
+    public List<int> GetList()
+    {
+        return _list;
+    }
 
-        public IList<int> GetIList()
+    [GlobalSetup]
+    public void GlobalSetup()
+    {
+        _list = new List<int>(Count);
+        var r = new Random(Count);
+
+        for (int i = 0; i < Count; i++)
         {
-            return _list;
-        }
-
-        public List<int> GetList()
-        {
-            return _list;
-        }
-
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-            _list = new List<int>(Count);
-            var r = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
+            if (r.Next() % 2 == 0)
             {
-                if (r.Next() % 2 == 0)
-                {
-                    _list.Add(i);
-                }
-                else
-                {
-                    _list.Add(-1);
-                }
+                _list.Add(i);
+            }
+            else
+            {
+                _list.Add(-1);
+            }
+        }
+    }
+
+    [Benchmark]
+    public int LookupElementWithList()
+    {
+        int count = 0;
+        var list = GetList();
+
+        for (int i = 0; i < Count; i++)
+        {
+            if (list[i] == i)
+            {
+                count++;
             }
         }
 
-        [Benchmark]
-        public int LookupElementWithList()
+        return count;
+    }
+
+    [Benchmark]
+    public int LookupElementWithIList()
+    {
+        int count = 0;
+        var list = GetIList();
+
+        for (int i = 0; i < Count; i++)
         {
-            int count = 0;
-            var list = GetList();
-
-            for (int i = 0; i < Count; i++)
+            if (list[i] == i)
             {
-                if (list[i] == i)
-                {
-                    count++;
-                }
+                count++;
             }
-
-            return count;
         }
 
-        [Benchmark]
-        public int LookupElementWithIList()
-        {
-            int count = 0;
-            var list = GetIList();
-
-            for (int i = 0; i < Count; i++)
-            {
-                if (list[i] == i)
-                {
-                    count++;
-                }
-            }
-
-            return count;
-        }
+        return count;
     }
 }

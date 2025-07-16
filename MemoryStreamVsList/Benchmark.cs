@@ -1,70 +1,68 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System.Collections.Generic;
+using System.IO;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System.Collections.Generic;
-    using System.IO;
+    [Params(1, 1000, 100_000)]
+    public int Count {  get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(1, 1000, 100_000)]
-        public int Count {  get; set; }
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark(Baseline = true)]
+    public byte[] WriteMemoryStream()
+    {
+        var ms = new MemoryStream();
+
+        for (int i = 0; i < Count; i++)
         {
+            ms.WriteByte(123);
         }
 
-        [Benchmark(Baseline = true)]
-        public byte[] WriteMemoryStream()
+        return ms.ToArray();
+    }
+
+    [Benchmark]
+    public byte[] WriteListOfByte()
+    {
+        var list = new List<byte>();
+
+        for (int i = 0; i < Count; i++)
         {
-            var ms = new MemoryStream();
-
-            for (int i = 0; i < Count; i++)
-            {
-                ms.WriteByte(123);
-            }
-
-            return ms.ToArray();
+            list.Add(123);
         }
 
-        [Benchmark]
-        public byte[] WriteListOfByte()
+        return list.ToArray();
+    }
+
+    [Benchmark]
+    public byte[] WriteMemoryStreamWithInitialCapacity()
+    {
+        var ms = new MemoryStream(Count);
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = new List<byte>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(123);
-            }
-
-            return list.ToArray();
+            ms.WriteByte(123);
         }
 
-        [Benchmark]
-        public byte[] WriteMemoryStreamWithInitialCapacity()
+        return ms.ToArray();
+    }
+
+    [Benchmark]
+    public byte[] WriteListOfByteWithInitialCapacity()
+    {
+        var list = new List<byte>(Count);
+
+        for (int i = 0; i < Count; i++)
         {
-            var ms = new MemoryStream(Count);
-
-            for (int i = 0; i < Count; i++)
-            {
-                ms.WriteByte(123);
-            }
-
-            return ms.ToArray();
+            list.Add(123);
         }
 
-        [Benchmark]
-        public byte[] WriteListOfByteWithInitialCapacity()
-        {
-            var list = new List<byte>(Count);
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(123);
-            }
-
-            return list.ToArray();
-        }
+        return list.ToArray();
     }
 }

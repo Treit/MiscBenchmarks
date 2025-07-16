@@ -1,97 +1,95 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(10, 10000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private Dictionary<string, int> _dict = new();
+    private ConcurrentDictionary<string, int> _condict = new();
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 10000)]
-        public int Count { get; set; }
+        var l = new List<int>(Count);
 
-        private Dictionary<string, int> _dict = new();
-        private ConcurrentDictionary<string, int> _condict = new();
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            var l = new List<int>(Count);
+            _dict.Add(i.ToString(), i);
+            _condict.TryAdd(i.ToString(), i);
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
+    [Benchmark]
+    public int DictionaryContainsKey()
+    {
+        var r = new Random(Count);
+        int found = 0;
+
+        for (int i = 0; i < Count; i++)
+        {
+            if (_dict.ContainsKey(r.Next().ToString()))
             {
-                _dict.Add(i.ToString(), i);
-                _condict.TryAdd(i.ToString(), i);
+                found++;
             }
         }
 
-        [Benchmark]
-        public int DictionaryContainsKey()
+        return found;
+    }
+
+    [Benchmark]
+    public int ConcurrentDictionaryContainsKey()
+    {
+        var r = new Random(Count);
+        int found = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            var r = new Random(Count);
-            int found = 0;
-
-            for (int i = 0; i < Count; i++)
+            if (_condict.ContainsKey(r.Next().ToString()))
             {
-                if (_dict.ContainsKey(r.Next().ToString()))
-                {
-                    found++;
-                }
+                found++;
             }
-
-            return found;
         }
 
-        [Benchmark]
-        public int ConcurrentDictionaryContainsKey()
+        return found;
+    }
+
+    [Benchmark]
+    public int DictionaryKeysDotContains()
+    {
+        var r = new Random(Count);
+        int found = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            var r = new Random(Count);
-            int found = 0;
-
-            for (int i = 0; i < Count; i++)
+            if (_dict.Keys.Contains(r.Next().ToString()))
             {
-                if (_condict.ContainsKey(r.Next().ToString()))
-                {
-                    found++;
-                }
+                found++;
             }
-
-            return found;
         }
 
-        [Benchmark]
-        public int DictionaryKeysDotContains()
+        return found;
+    }
+
+    [Benchmark]
+    public int ConcurrentDictionaryKeysDotContains()
+    {
+        var r = new Random(Count);
+        int found = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            var r = new Random(Count);
-            int found = 0;
-
-            for (int i = 0; i < Count; i++)
+            if (_condict.Keys.Contains(r.Next().ToString()))
             {
-                if (_dict.Keys.Contains(r.Next().ToString()))
-                {
-                    found++;
-                }
+                found++;
             }
-
-            return found;
         }
 
-        [Benchmark]
-        public int ConcurrentDictionaryKeysDotContains()
-        {
-            var r = new Random(Count);
-            int found = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                if (_condict.Keys.Contains(r.Next().ToString()))
-                {
-                    found++;
-                }
-            }
-
-            return found;
-        }
+        return found;
     }
 }

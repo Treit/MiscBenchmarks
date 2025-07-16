@@ -1,98 +1,96 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Net;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Net;
+    private HttpStatusCode[] _httpStatusCodes;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private HttpStatusCode[] _httpStatusCodes;
+        _httpStatusCodes = (HttpStatusCode[])Enum.GetValues(
+            typeof(HttpStatusCode));
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark]
+    public string HttpStatusCodeToStringRegularToString()
+    {
+        string result = string.Empty;
+
+        for (int j = 0; j < _httpStatusCodes.Length; j++)
         {
-            _httpStatusCodes = (HttpStatusCode[])Enum.GetValues(
-                typeof(HttpStatusCode));
+            result = _httpStatusCodes[j].ToString();
         }
 
-        [Benchmark]
-        public string HttpStatusCodeToStringRegularToString()
+        return result;
+    }
+
+    [Benchmark]
+    public string HttpStatusCodeToStringSwitchExpression()
+    {
+        string result = string.Empty;
+
+        for (int j = 0; j < _httpStatusCodes.Length; j++)
         {
-            string result = string.Empty;
-
-            for (int j = 0; j < _httpStatusCodes.Length; j++)
-            {
-                result = _httpStatusCodes[j].ToString();
-            }
-
-            return result;
+            result = _httpStatusCodes[j].ToFastString();
         }
 
-        [Benchmark]
-        public string HttpStatusCodeToStringSwitchExpression()
+        return result;
+    }
+
+    [Benchmark]
+    public string HttpStatusCodeToStringFrozenDictionaryLookup()
+    {
+        string result = string.Empty;
+
+        for (int j = 0; j < _httpStatusCodes.Length; j++)
         {
-            string result = string.Empty;
-
-            for (int j = 0; j < _httpStatusCodes.Length; j++)
-            {
-                result = _httpStatusCodes[j].ToFastString();
-            }
-
-            return result;
+            result = _httpStatusCodes[j].ToStringCached();
         }
 
-        [Benchmark]
-        public string HttpStatusCodeToStringFrozenDictionaryLookup()
+        return result;
+    }
+
+    [Benchmark(Baseline = true)]
+    public string HttpStatusCodeToStringSparseArrayLookup()
+    {
+        string result = string.Empty;
+
+        for (int j = 0; j < _httpStatusCodes.Length; j++)
         {
-            string result = string.Empty;
-
-            for (int j = 0; j < _httpStatusCodes.Length; j++)
-            {
-                result = _httpStatusCodes[j].ToStringCached();
-            }
-
-            return result;
+            result = _httpStatusCodes[j].ToArrayString();
         }
 
-        [Benchmark(Baseline = true)]
-        public string HttpStatusCodeToStringSparseArrayLookup()
+        return result;
+    }
+
+    [Benchmark]
+    public string HttpStatusCodeToStringSparseArrayDoubleLookup()
+    {
+        string result = string.Empty;
+
+        for (int j = 0; j < _httpStatusCodes.Length; j++)
         {
-            string result = string.Empty;
-
-            for (int j = 0; j < _httpStatusCodes.Length; j++)
-            {
-                result = _httpStatusCodes[j].ToArrayString();
-            }
-
-            return result;
+            result = _httpStatusCodes[j].ToArrayStringDominic();
         }
 
-        [Benchmark]
-        public string HttpStatusCodeToStringSparseArrayDoubleLookup()
+        return result;
+    }
+
+    [Benchmark]
+    public string HttpStatusCodeToStringSparseArraySingleLookup()
+    {
+        string result = string.Empty;
+
+        for (int j = 0; j < _httpStatusCodes.Length; j++)
         {
-            string result = string.Empty;
-
-            for (int j = 0; j < _httpStatusCodes.Length; j++)
-            {
-                result = _httpStatusCodes[j].ToArrayStringDominic();
-            }
-
-            return result;
+            result = _httpStatusCodes[j].ToArrayStringDominic();
         }
 
-        [Benchmark]
-        public string HttpStatusCodeToStringSparseArraySingleLookup()
-        {
-            string result = string.Empty;
-
-            for (int j = 0; j < _httpStatusCodes.Length; j++)
-            {
-                result = _httpStatusCodes[j].ToArrayStringDominic();
-            }
-
-            return result;
-        }
+        return result;
     }
 }

@@ -1,45 +1,42 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Numerics;
+using System.Linq;
+using System.Collections.Generic;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Numerics;
-    using System.Linq;
-    using System.Collections.Generic;
+    [Params(10, 10_000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    private static List<int> RandomInts;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 10_000)]
-        public int Count { get; set; }
+        RandomInts = new List<int>(Count);
 
-        private static List<int> RandomInts;
+        // Use Count as the seed.
+        var r = new Random(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            RandomInts = new List<int>(Count);
-
-            // Use Count as the seed.
-            var r = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
-            {
-                RandomInts.Add(r.Next(16));
-            }
-        }
-
-        [Benchmark(Baseline = true)]
-        public List<double> ConvertAll()
-        {
-            var doubles = RandomInts.ConvertAll(x => (double)x);
-            return doubles;
-        }
-
-        [Benchmark]
-        public List<double> SelectAndToList()
-        {
-            var doubles = RandomInts.Select(x => (double)x).ToList();
-            return doubles;
+            RandomInts.Add(r.Next(16));
         }
     }
-}
 
+    [Benchmark(Baseline = true)]
+    public List<double> ConvertAll()
+    {
+        var doubles = RandomInts.ConvertAll(x => (double)x);
+        return doubles;
+    }
+
+    [Benchmark]
+    public List<double> SelectAndToList()
+    {
+        var doubles = RandomInts.Select(x => (double)x).ToList();
+        return doubles;
+    }
+}

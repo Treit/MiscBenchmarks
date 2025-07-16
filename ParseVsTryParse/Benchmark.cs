@@ -1,72 +1,70 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
+    [Params(100, 1000, 10_000, 100_000)]
+    public int Count { get; set; }
+    private List<string> _values;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100, 1000, 10_000, 100_000)]
-        public int Count { get; set; }
-        private List<string> _values;
+        _values = new List<string>(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        Random r = new();
+
+        for (int i = 0; i < this.Count; i++)
         {
-            _values = new List<string>(Count);
+            var str = i.ToString();
 
-            Random r = new();
-
-            for (int i = 0; i < this.Count; i++)
+            if (r.Next(10) > 2)
             {
-                var str = i.ToString();
+                str = str + "garbage";
+            }
 
-                if (r.Next(10) > 2)
-                {
-                    str = str + "garbage";
-                }
+            _values.Add(str);
+        }
+    }
 
-                _values.Add(str);
+    [Benchmark]
+    public int FindValidIntsWithParse()
+    {
+        int validCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            try
+            {
+                int.Parse(_values[i]);
+                validCount++;
+            }
+            catch
+            {
+                // Not valid.
             }
         }
 
-        [Benchmark]
-        public int FindValidIntsWithParse()
+        return validCount;
+    }
+
+    [Benchmark(Baseline = true)]
+    public int FindValidIntsWithTryParse()
+    {
+        int validCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int validCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (int.TryParse(_values[i], out _))
             {
-                try
-                {
-                    int.Parse(_values[i]);
-                    validCount++;
-                }
-                catch
-                {
-                    // Not valid.
-                }
+                validCount++;
             }
-
-            return validCount;
         }
 
-        [Benchmark(Baseline = true)]
-        public int FindValidIntsWithTryParse()
-        {
-            int validCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                if (int.TryParse(_values[i], out _))
-                {
-                    validCount++;
-                }
-            }
-
-            return validCount;
-        }
+        return validCount;
     }
 }

@@ -1,88 +1,86 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Linq;
+
+public record TestData(int Value);
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Linq;
+    string _pathSplitString = @"\s\";
+    string _samplePath = @"C:\Users\user\source\repos\s\Benchmark\Benchmark.cs";
 
-    public record TestData(int Value);
-
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        string _pathSplitString = @"\s\";
-        string _samplePath = @"C:\Users\user\source\repos\s\Benchmark\Benchmark.cs";
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark(Baseline = true)]
+    public string GetLogIdWithIndexOfAndSpan()
+    {
+        var fileName = _samplePath;
+        var fileLine = 99;
+
+        if (fileName is null)
         {
+            return $"Unknown:{fileLine}";
         }
 
-        [Benchmark(Baseline = true)]
-        public string GetLogIdWithIndexOfAndSpan()
+        var loc = fileName.IndexOf(_pathSplitString, StringComparison.Ordinal);
+        loc = loc == -1 ? 0 : loc + _pathSplitString.Length;
+        var span = fileName.AsSpan(loc);
+
+        return $"{span}:{fileLine}";
+    }
+
+    [Benchmark]
+    public string GetLogIdWithIndexOfAndSubstringChatGPT()
+    {
+        var fileName = _samplePath;
+        var fileLine = 99;
+
+        if (fileName is null)
         {
-            var fileName = _samplePath;
-            var fileLine = 99;
-
-            if (fileName is null)
-            {
-                return $"Unknown:{fileLine}";
-            }
-
-            var loc = fileName.IndexOf(_pathSplitString, StringComparison.Ordinal);
-            loc = loc == -1 ? 0 : loc + _pathSplitString.Length;
-            var span = fileName.AsSpan(loc);
-
-            return $"{span}:{fileLine}";
+            return $"Unknown:{fileLine}";
         }
 
-        [Benchmark]
-        public string GetLogIdWithIndexOfAndSubstringChatGPT()
+        // Find index and handle cases where it's not found
+        var loc = fileName.IndexOf(_pathSplitString, StringComparison.Ordinal);
+        loc = loc >= 0 ? loc + _pathSplitString.Length : 0;
+
+        // Directly format without using span.ToString()
+        return $"{fileName.Substring(loc)}:{fileLine}";
+    }
+
+    [Benchmark]
+    public string GetLogIdWithSplit()
+    {
+        var fileName = _samplePath;
+        var fileLine = 99;
+
+        if (fileName is null)
         {
-            var fileName = _samplePath;
-            var fileLine = 99;
-
-            if (fileName is null)
-            {
-                return $"Unknown:{fileLine}";
-            }
-
-            // Find index and handle cases where it's not found
-            var loc = fileName.IndexOf(_pathSplitString, StringComparison.Ordinal);
-            loc = loc >= 0 ? loc + _pathSplitString.Length : 0;
-
-            // Directly format without using span.ToString()
-            return $"{fileName.Substring(loc)}:{fileLine}";
+            return $"Unknown:{fileLine}";
         }
 
-        [Benchmark]
-        public string GetLogIdWithSplit()
+        fileName = fileName.Split(_pathSplitString, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+        return $"{fileName}:{fileLine}";
+    }
+
+    [Benchmark]
+    public string GetLogIdWithCustomSpanSplit()
+    {
+        var fileName = _samplePath;
+        var fileLine = 99;
+
+        if (fileName is null)
         {
-            var fileName = _samplePath;
-            var fileLine = 99;
-
-            if (fileName is null)
-            {
-                return $"Unknown:{fileLine}";
-            }
-
-            fileName = fileName.Split(_pathSplitString, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
-            return $"{fileName}:{fileLine}";
+            return $"Unknown:{fileLine}";
         }
 
-        [Benchmark]
-        public string GetLogIdWithCustomSpanSplit()
-        {
-            var fileName = _samplePath;
-            var fileLine = 99;
-
-            if (fileName is null)
-            {
-                return $"Unknown:{fileLine}";
-            }
-
-            var (_, span) = fileName.AsSpan().SplitFirst(_pathSplitString);
-            return $"{span}:{fileLine}";
-        }
+        var (_, span) = fileName.AsSpan().SplitFirst(_pathSplitString);
+        return $"{span}:{fileLine}";
     }
 }

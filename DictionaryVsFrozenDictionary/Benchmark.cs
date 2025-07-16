@@ -1,75 +1,73 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System.Collections.Frozen;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(1000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private Dictionary<int, string> _dictionaryInt;
+    private FrozenDictionary<int, string> _frozenDictionaryInt;
+    private int _keyInt;
+
+    private Dictionary<string, string> _dictionaryString;
+    private FrozenDictionary<string, string> _frozenDictionaryString;
+    private string _keyString;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(1000)]
-        public int Count { get; set; }
+        int len = Count;
 
-        private Dictionary<int, string> _dictionaryInt;
-        private FrozenDictionary<int, string> _frozenDictionaryInt;
-        private int _keyInt;
+        // Setup for integer keys
+        _dictionaryInt = new Dictionary<int, string>(len);
 
-        private Dictionary<string, string> _dictionaryString;
-        private FrozenDictionary<string, string> _frozenDictionaryString;
-        private string _keyString;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < len; i++)
         {
-            int len = Count;
-
-            // Setup for integer keys
-            _dictionaryInt = new Dictionary<int, string>(len);
-
-            for (int i = 0; i < len; i++)
-            {
-                _dictionaryInt.Add(i, i.ToString());
-            }
-
-            _keyInt = _dictionaryInt.Keys.Skip(len / 2).Take(1).First();
-            _frozenDictionaryInt = FrozenDictionary.ToFrozenDictionary(_dictionaryInt);
-
-            // Setup for string keys
-            _dictionaryString = new Dictionary<string, string>(len);
-
-            for (int i = 0; i < len; i++)
-            {
-                _dictionaryString.Add(i.ToString(), i.ToString());
-            }
-
-            _keyString = _dictionaryString.Keys.Skip(len / 2).Take(1).First();
-            _frozenDictionaryString = FrozenDictionary.ToFrozenDictionary(_dictionaryString);
+            _dictionaryInt.Add(i, i.ToString());
         }
 
-        [Benchmark(Baseline = true)]
-        public string LookupUsingDictionaryInt()
+        _keyInt = _dictionaryInt.Keys.Skip(len / 2).Take(1).First();
+        _frozenDictionaryInt = FrozenDictionary.ToFrozenDictionary(_dictionaryInt);
+
+        // Setup for string keys
+        _dictionaryString = new Dictionary<string, string>(len);
+
+        for (int i = 0; i < len; i++)
         {
-            return _dictionaryInt[_keyInt];
+            _dictionaryString.Add(i.ToString(), i.ToString());
         }
 
-        [Benchmark]
-        public string LookupUsingFrozenDictionaryInt()
-        {
-            return _frozenDictionaryInt[_keyInt];
-        }
+        _keyString = _dictionaryString.Keys.Skip(len / 2).Take(1).First();
+        _frozenDictionaryString = FrozenDictionary.ToFrozenDictionary(_dictionaryString);
+    }
 
-        [Benchmark]
-        public string LookupUsingDictionaryString()
-        {
-            return _dictionaryString[_keyString];
-        }
+    [Benchmark(Baseline = true)]
+    public string LookupUsingDictionaryInt()
+    {
+        return _dictionaryInt[_keyInt];
+    }
 
-        [Benchmark]
-        public string LookupUsingFrozenDictionaryString()
-        {
-            return _frozenDictionaryString[_keyString];
-        }
+    [Benchmark]
+    public string LookupUsingFrozenDictionaryInt()
+    {
+        return _frozenDictionaryInt[_keyInt];
+    }
+
+    [Benchmark]
+    public string LookupUsingDictionaryString()
+    {
+        return _dictionaryString[_keyString];
+    }
+
+    [Benchmark]
+    public string LookupUsingFrozenDictionaryString()
+    {
+        return _frozenDictionaryString[_keyString];
     }
 }

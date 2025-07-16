@@ -1,63 +1,61 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(100, 1_000_000)]
+    public int ListSize { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private List<KeyValuePair<string, int>> _keyValuePairs;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100, 1_000_000)]
-        public int ListSize { get; set; }
+        _keyValuePairs = new (ListSize);
 
-        private List<KeyValuePair<string, int>> _keyValuePairs;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < ListSize; i++)
         {
-            _keyValuePairs = new (ListSize);
+            _keyValuePairs.Add(new KeyValuePair<string, int>(i.ToString(), i));
+        }
+    }
 
-            for (int i = 0; i < ListSize; i++)
-            {
-                _keyValuePairs.Add(new KeyValuePair<string, int>(i.ToString(), i));
-            }
+    [Benchmark]
+    public List<string> SelectDotToListDotGetRange()
+    {
+        return _keyValuePairs.Select(item => item.Key).ToList().GetRange(0, 5);
+    }
+
+    [Benchmark]
+    public List<string> GetRangeDotSelectDotToList()
+    {
+        return _keyValuePairs.GetRange(0, 5).Select(item => item.Key).ToList();
+    }
+
+    [Benchmark]
+    public List<string> SelectDotTakeDotToList()
+    {
+        return _keyValuePairs.Select(item => item.Key).Take(5).ToList();
+    }
+
+    [Benchmark]
+    public List<string> TakeDotSelectDotToList()
+    {
+        return _keyValuePairs.Take(5).Select(item => item.Key).ToList();
+    }
+
+    [Benchmark(Baseline = true)]
+    public List<string> NewListAndForLoop()
+    {
+        var result = new List<string>(5);
+        for (int i = 0; i < 5; i++)
+        {
+            result.Add(_keyValuePairs[i].Key);
         }
 
-        [Benchmark]
-        public List<string> SelectDotToListDotGetRange()
-        {
-            return _keyValuePairs.Select(item => item.Key).ToList().GetRange(0, 5);
-        }
-
-        [Benchmark]
-        public List<string> GetRangeDotSelectDotToList()
-        {
-            return _keyValuePairs.GetRange(0, 5).Select(item => item.Key).ToList();
-        }
-
-        [Benchmark]
-        public List<string> SelectDotTakeDotToList()
-        {
-            return _keyValuePairs.Select(item => item.Key).Take(5).ToList();
-        }
-
-        [Benchmark]
-        public List<string> TakeDotSelectDotToList()
-        {
-            return _keyValuePairs.Take(5).Select(item => item.Key).ToList();
-        }
-
-        [Benchmark(Baseline = true)]
-        public List<string> NewListAndForLoop()
-        {
-            var result = new List<string>(5);
-            for (int i = 0; i < 5; i++)
-            {
-                result.Add(_keyValuePairs[i].Key);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

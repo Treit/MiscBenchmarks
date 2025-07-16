@@ -1,55 +1,53 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
+    Dictionary<string, string> _stringKeyDict;
+    Dictionary<Type, string> _typeKeyDict;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        Dictionary<string, string> _stringKeyDict;
-        Dictionary<Type, string> _typeKeyDict;
+        _stringKeyDict = new Dictionary<string, string>();
+        _typeKeyDict = new Dictionary<Type, string>();
+        _stringKeyDict.Add(typeof(string).Name, "Some Value");
+        _typeKeyDict.Add(typeof(string), "Some Value");
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark(Baseline = true)]
+    public long LookupByType()
+    {
+        var result = 0L;
+
+        for (int i = 0; i < 1000; i++)
         {
-            _stringKeyDict = new Dictionary<string, string>();
-            _typeKeyDict = new Dictionary<Type, string>();
-            _stringKeyDict.Add(typeof(string).Name, "Some Value");
-            _typeKeyDict.Add(typeof(string), "Some Value");
-        }
-
-        [Benchmark(Baseline = true)]
-        public long LookupByType()
-        {
-            var result = 0L;
-
-            for (int i = 0; i < 1000; i++)
+            if (_stringKeyDict.TryGetValue(typeof(string).Name, out var val))
             {
-                if (_stringKeyDict.TryGetValue(typeof(string).Name, out var val))
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
 
-        [Benchmark]
-        public long LookupByName()
+        return result;
+    }
+
+    [Benchmark]
+    public long LookupByName()
+    {
+        var result = 0L;
+
+        for (int i = 0; i < 1000; i++)
         {
-            var result = 0L;
-
-            for (int i = 0; i < 1000; i++)
+            if (_typeKeyDict.TryGetValue(typeof(string), out var val))
             {
-                if (_typeKeyDict.TryGetValue(typeof(string), out var val))
-                {
-                    result++;
-                }
+                result++;
             }
-
-            return result;
         }
+
+        return result;
     }
 }

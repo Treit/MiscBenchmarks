@@ -1,71 +1,69 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
+    [Params(10, 1000)]
+    public int Count { get; set; }
 
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 1000)]
-        public int Count { get; set; }
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark]
+    public long Sealed()
+    {
+        var c = new TestClassSealed();
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
         {
+            result += c.DoWork(Count);
         }
 
-        [Benchmark]
-        public long Sealed()
+        return result;
+    }
+
+    [Benchmark]
+    public long NonSealed()
+    {
+        var c = new TestClassNonSealed();
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            var c = new TestClassSealed();
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += c.DoWork(Count);
-            }
-
-            return result;
+            result += c.DoWork(Count);
         }
 
-        [Benchmark]
-        public long NonSealed()
+        return result;
+    }
+
+    [Benchmark]
+    public long NonSealedVirtualMethod()
+    {
+        var c = new TestClassNonSealedVirtualMethod();
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            var c = new TestClassNonSealed();
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += c.DoWork(Count);
-            }
-
-            return result;
+            result += c.DoWork(Count);
         }
 
-        [Benchmark]
-        public long NonSealedVirtualMethod()
+        return result;
+    }
+
+    [Benchmark]
+    public long OneChild()
+    {
+        TestClassOneChild c = new Child1();
+        long result = 0;
+
+        for (int i = 0; i < Count; i++)
         {
-            var c = new TestClassNonSealedVirtualMethod();
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += c.DoWork(Count);
-            }
-
-            return result;
+            result += c.DoWork(Count);
         }
 
-        [Benchmark]
-        public long OneChild()
-        {
-            TestClassOneChild c = new Child1();
-            long result = 0;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += c.DoWork(Count);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

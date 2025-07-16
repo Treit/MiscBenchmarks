@@ -1,123 +1,121 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Linq;
-    using System.Text.RegularExpressions;
+    private static string _delimitedString = $"A1,B1,C1,D1,E1,F1,G1,H1,I1,J1,K1,L1,M1,N1,O1,P1,Q1,R1,S1,T1,U1,V1,W1,X1,Y1,Z1";
+    private static Regex _regex;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private static string _delimitedString = $"A1,B1,C1,D1,E1,F1,G1,H1,I1,J1,K1,L1,M1,N1,O1,P1,Q1,R1,S1,T1,U1,V1,W1,X1,Y1,Z1";
-        private static Regex _regex;
+        _regex = new Regex("^.+,(.+),(.+)$", RegexOptions.Compiled);
+    }
 
+    [Benchmark]
+    public (string, string) LastTwoTokensWithSplit()
+    {
+        var tokens = _delimitedString.Split(',');
+        var result = (tokens[tokens.Length - 2], tokens[tokens.Length - 1]);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        return result;
+    }
+
+    [Benchmark]
+    public (string, string) LastTwoTokensWithRegex()
+    {
+        var match = _regex.Match(_delimitedString);
+        var result = (match.Groups[1].Value, match.Groups[2].Value);
+
+        return result;
+    }
+
+    [Benchmark]
+    public (string, string) LastTwoTokensWithReverseAndSubstring()
+    {
+        var reversed = _delimitedString.Reverse().ToArray();
+        var firstDelim = 0;
+        var secondDelim = 0;
+        var i = 0;
+        foreach (var c in reversed)
         {
-            _regex = new Regex("^.+,(.+),(.+)$", RegexOptions.Compiled);
-        }
-
-        [Benchmark]
-        public (string, string) LastTwoTokensWithSplit()
-        {
-            var tokens = _delimitedString.Split(',');
-            var result = (tokens[tokens.Length - 2], tokens[tokens.Length - 1]);
-
-            return result;
-        }
-
-        [Benchmark]
-        public (string, string) LastTwoTokensWithRegex()
-        {
-            var match = _regex.Match(_delimitedString);
-            var result = (match.Groups[1].Value, match.Groups[2].Value);
-
-            return result;
-        }
-
-        [Benchmark]
-        public (string, string) LastTwoTokensWithReverseAndSubstring()
-        {
-            var reversed = _delimitedString.Reverse().ToArray();
-            var firstDelim = 0;
-            var secondDelim = 0;
-            var i = 0;
-            foreach (var c in reversed)
+            if (c == ',')
             {
-                if (c == ',')
+                if (firstDelim == 0)
                 {
-                    if (firstDelim == 0)
-                    {
-                        firstDelim = i;
-                    }
-                    else
-                    {
-                        secondDelim = i;
-                        break;
-                    }
+                    firstDelim = i;
                 }
-                i++;
-            }
-
-            var firstSpan = reversed.AsSpan(firstDelim + 1, secondDelim - firstDelim - 1);
-            firstSpan.Reverse();
-            var first = firstSpan.ToString();
-
-            var secondSpan = reversed.AsSpan(0, firstDelim);
-            secondSpan.Reverse();
-            var second = secondSpan.ToString();
-
-            return (first, second);
-        }
-
-        [Benchmark(Baseline = true)]
-        public (string, string) LastTwoTokensWalkingBackwards()
-        {
-            var firstDelim = 0;
-            var secondDelim = 0;
-
-            for (int i = _delimitedString.Length - 1; i >= 0; i--)
-            {
-                if (_delimitedString[i] == ',')
+                else
                 {
-                    if (firstDelim == 0)
-                    {
-                        firstDelim = i;
-                    }
-                    else
-                    {
-                        secondDelim = i;
-                        break;
-                    }
+                    secondDelim = i;
+                    break;
                 }
             }
-
-            var first = _delimitedString.Substring(secondDelim + 1, firstDelim - secondDelim - 1);
-            var second = _delimitedString.Substring(firstDelim + 1);
-            return (first, second);
-
+            i++;
         }
 
-        [Benchmark]
-        public (string, string) LastTwoTokensWithSpanAndLastIndexOf()
+        var firstSpan = reversed.AsSpan(firstDelim + 1, secondDelim - firstDelim - 1);
+        firstSpan.Reverse();
+        var first = firstSpan.ToString();
+
+        var secondSpan = reversed.AsSpan(0, firstDelim);
+        secondSpan.Reverse();
+        var second = secondSpan.ToString();
+
+        return (first, second);
+    }
+
+    [Benchmark(Baseline = true)]
+    public (string, string) LastTwoTokensWalkingBackwards()
+    {
+        var firstDelim = 0;
+        var secondDelim = 0;
+
+        for (int i = _delimitedString.Length - 1; i >= 0; i--)
         {
-            var span = _delimitedString.AsSpan();
-            var first = span;
-            var second = span;
-
-            var end = span.LastIndexOf(',');
-
-            if (end != -1)
+            if (_delimitedString[i] == ',')
             {
-                end = span.Slice(0, end).LastIndexOf(',');
-                span = span.Slice(end + 1);
-                first = span.Slice(0, span.IndexOf(','));
-                second = span.Slice(span.IndexOf(',') + 1);
+                if (firstDelim == 0)
+                {
+                    firstDelim = i;
+                }
+                else
+                {
+                    secondDelim = i;
+                    break;
+                }
             }
-
-            return (first.ToString(), second.ToString());
         }
+
+        var first = _delimitedString.Substring(secondDelim + 1, firstDelim - secondDelim - 1);
+        var second = _delimitedString.Substring(firstDelim + 1);
+        return (first, second);
+
+    }
+
+    [Benchmark]
+    public (string, string) LastTwoTokensWithSpanAndLastIndexOf()
+    {
+        var span = _delimitedString.AsSpan();
+        var first = span;
+        var second = span;
+
+        var end = span.LastIndexOf(',');
+
+        if (end != -1)
+        {
+            end = span.Slice(0, end).LastIndexOf(',');
+            span = span.Slice(end + 1);
+            first = span.Slice(0, span.IndexOf(','));
+            second = span.Slice(span.IndexOf(',') + 1);
+        }
+
+        return (first.ToString(), second.ToString());
     }
 }

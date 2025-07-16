@@ -1,55 +1,53 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private List<int> _data;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100_000)]
-        public int Count { get; set; }
+        Random r = new Random();
 
-        private List<int> _data;
+        _data = new List<int>(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            Random r = new Random();
+            _data.Add(r.Next());
+        }
+    }
 
-            _data = new List<int>(Count);
+    [Benchmark]
+    public bool SearchUsingAny()
+    {
+        var toSearch = _data;
 
-            for (int i = 0; i < Count; i++)
+        return toSearch.Any(x => x == int.MaxValue);
+    }
+
+    [Benchmark(Baseline = true)]
+    public bool SearchUsingForEach()
+    {
+        var toSearch = _data;
+
+        foreach (int x in toSearch)
+        {
+            if (x == int.MaxValue)
             {
-                _data.Add(r.Next());
+                return true;
             }
         }
 
-        [Benchmark]
-        public bool SearchUsingAny()
-        {
-            var toSearch = _data;
-
-            return toSearch.Any(x => x == int.MaxValue);
-        }
-
-        [Benchmark(Baseline = true)]
-        public bool SearchUsingForEach()
-        {
-            var toSearch = _data;
-
-            foreach (int x in toSearch)
-            {
-                if (x == int.MaxValue)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        return false;
     }
 }

@@ -1,72 +1,70 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System.Collections.Generic;
+using System.Linq;
+
+[MemoryDiagnoser]
+[MemoryRandomization]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System.Collections.Generic;
-    using System.Linq;
+    private Dictionary<string, uint> _dict;
+    private string[] _arr;
 
-    [MemoryDiagnoser]
-    [MemoryRandomization]
-    public class Benchmark
+    [Params(1000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private Dictionary<string, uint> _dict;
-        private string[] _arr;
+        _dict = new Dictionary<string, uint>(Count);
 
-        [Params(1000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _dict = new Dictionary<string, uint>(Count);
-
-            for (int i = 0; i < Count; i++)
-            {
-                var str = i.ToString();
-                _dict.Add(str, (uint)i);
-            }
-
-            _arr = _dict.Keys.ToArray();
+            var str = i.ToString();
+            _dict.Add(str, (uint)i);
         }
 
-        [Benchmark]
-        public long EnumerateDictionaryKeys()
+        _arr = _dict.Keys.ToArray();
+    }
+
+    [Benchmark]
+    public long EnumerateDictionaryKeys()
+    {
+        var result = 0L;
+
+        foreach (var str in _dict.Keys)
         {
-            var result = 0L;
-
-            foreach (var str in _dict.Keys)
-            {
-                result += str.Length;
-            }
-
-            return result;
-
+            result += str.Length;
         }
 
-        [Benchmark]
-        public long EnumerateDictionaryKeyValuePairs()
+        return result;
+
+    }
+
+    [Benchmark]
+    public long EnumerateDictionaryKeyValuePairs()
+    {
+        var result = 0L;
+
+        foreach (var kvp in _dict)
         {
-            var result = 0L;
-
-            foreach (var kvp in _dict)
-            {
-                result += kvp.Key.Length;
-            }
-
-            return result;
+            result += kvp.Key.Length;
         }
 
-        [Benchmark(Baseline = true)]
-        public long EnumerateDictionaryKeysCachedInArray()
+        return result;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long EnumerateDictionaryKeysCachedInArray()
+    {
+        var result = 0L;
+
+        foreach (var str in _arr)
         {
-            var result = 0L;
-
-            foreach (var str in _arr)
-            {
-                result += str.Length;
-            }
-
-            return result;
+            result += str.Length;
         }
+
+        return result;
     }
 }

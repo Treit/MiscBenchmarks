@@ -1,69 +1,67 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System.Collections.Generic;
+    [Params(10, 10000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private KeyValuePair<string, int>[] _kvps { get; set; }
+
+    private (string Column, int Index)[] _vtuples { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 10000)]
-        public int Count { get; set; }
+        _kvps = new KeyValuePair<string, int>[Count];
+        _vtuples = new (string, int)[Count];
 
-        private KeyValuePair<string, int>[] _kvps { get; set; }
-
-        private (string Column, int Index)[] _vtuples { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _kvps = new KeyValuePair<string, int>[Count];
-            _vtuples = new (string, int)[Count];
+            _kvps[i] = new KeyValuePair<string, int>(i.ToString(), i);
+            _vtuples[i] = new(i.ToString(), i);
+        }
+    }
 
-            for (int i = 0; i < Count; i++)
-            {
-                _kvps[i] = new KeyValuePair<string, int>(i.ToString(), i);
-                _vtuples[i] = new(i.ToString(), i);
-            }
+    [Benchmark]
+    public long EnumerateValueTuplesUsingDestructuring()
+    {
+        long result = 0;
+
+        foreach (var (_, index) in _vtuples)
+        {
+            result += index;
         }
 
-        [Benchmark]
-        public long EnumerateValueTuplesUsingDestructuring()
+        return result;
+    }
+
+    [Benchmark]
+    public long EnumerateKvps()
+    {
+        long result = 0;
+
+        foreach (var kvp in _kvps)
         {
-            long result = 0;
-
-            foreach (var (_, index) in _vtuples)
-            {
-                result += index;
-            }
-
-            return result;
+            result += kvp.Value;
         }
 
-        [Benchmark]
-        public long EnumerateKvps()
+        return result;
+    }
+
+    [Benchmark]
+    public long EnumerateValueTuples()
+    {
+        long result = 0;
+
+        foreach (var tup in _vtuples)
         {
-            long result = 0;
-
-            foreach (var kvp in _kvps)
-            {
-                result += kvp.Value;
-            }
-
-            return result;
+            result += tup.Index;
         }
 
-        [Benchmark]
-        public long EnumerateValueTuples()
-        {
-            long result = 0;
-
-            foreach (var tup in _vtuples)
-            {
-                result += tup.Index;
-            }
-
-            return result;
-        }
+        return result;
     }
 }

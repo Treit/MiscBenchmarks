@@ -1,82 +1,80 @@
-﻿namespace Test
-{
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
 
-    internal class SomeClass
+internal class SomeClass
+{
+    public static string StaticField;
+    public string InstanceField;
+}
+
+[MemoryDiagnoser]
+public class Benchmark
+{
+    private SomeClass _someClass;
+
+    [Params(1, 100)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        public static string StaticField;
-        public string InstanceField;
+        _someClass = new SomeClass();
+        _someClass.InstanceField = "Some test string";
+        SomeClass.StaticField = "Some test string";
     }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Benchmark]
+    public long ReadInstanceField()
     {
-        private SomeClass _someClass;
+        var result = 0L;
 
-        [Params(1, 100)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _someClass = new SomeClass();
-            _someClass.InstanceField = "Some test string";
-            SomeClass.StaticField = "Some test string";
+            result += _someClass.InstanceField.Length;
         }
 
-        [Benchmark]
-        public long ReadInstanceField()
+        return result;
+    }
+
+    [Benchmark]
+    public long ReadStaticField()
+    {
+        var result = 0L;
+
+        for (int i = 0; i < Count; i++)
         {
-            var result = 0L;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += _someClass.InstanceField.Length;
-            }
-
-            return result;
+            result += SomeClass.StaticField.Length;
         }
 
-        [Benchmark]
-        public long ReadStaticField()
+        return result;
+    }
+
+    [Benchmark]
+    public long WriteInstanceField()
+    {
+        var result = 0L;
+
+        for (int i = 0; i < Count; i++)
         {
-            var result = 0L;
-
-            for (int i = 0; i < Count; i++)
-            {
-                result += SomeClass.StaticField.Length;
-            }
-
-            return result;
+            _someClass.InstanceField = i.ToString();
+            result += SomeClass.StaticField.Length;
         }
 
-        [Benchmark]
-        public long WriteInstanceField()
+        return result;
+    }
+
+    [Benchmark]
+    public long WriteStaticField()
+    {
+        var result = 0L;
+
+        for (int i = 0; i < Count; i++)
         {
-            var result = 0L;
-
-            for (int i = 0; i < Count; i++)
-            {
-                _someClass.InstanceField = i.ToString();
-                result += SomeClass.StaticField.Length;
-            }
-
-            return result;
+            SomeClass.StaticField = i.ToString();
+            result += SomeClass.StaticField.Length;
         }
 
-        [Benchmark]
-        public long WriteStaticField()
-        {
-            var result = 0L;
-
-            for (int i = 0; i < Count; i++)
-            {
-                SomeClass.StaticField = i.ToString();
-                result += SomeClass.StaticField.Length;
-            }
-
-            return result;
-        }
+        return result;
     }
 }

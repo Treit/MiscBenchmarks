@@ -1,82 +1,80 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.IO;
-    using System.Threading;
-    using System.Threading.Tasks;
+    MemoryStream _ms;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [Params(1000, 100_000, 1_000_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        MemoryStream _ms;
+        var r = new Random();
+        _ms = new MemoryStream();
+        var buffer = new byte[Count];
+        r.NextBytes(buffer);
 
-        [Params(1000, 100_000, 1_000_000)]
-        public int Count { get; set; }
+        _ms.Write(buffer, 0, Count);
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
+    [Benchmark(Baseline = true)]
+    public byte[] ReadMemoryStream()
+    {
+        var buffer = new byte[256];
+
+        while (true)
         {
-            var r = new Random();
-            _ms = new MemoryStream();
-            var buffer = new byte[Count];
-            r.NextBytes(buffer);
+            var read = _ms.Read(buffer, 0, buffer.Length);
 
-            _ms.Write(buffer, 0, Count);
-        }
-
-        [Benchmark(Baseline = true)]
-        public byte[] ReadMemoryStream()
-        {
-            var buffer = new byte[256];
-
-            while (true)
+            if (read == 0)
             {
-                var read = _ms.Read(buffer, 0, buffer.Length);
-
-                if (read == 0)
-                {
-                    break;
-                }
+                break;
             }
-
-            return buffer;
         }
 
-        [Benchmark]
-        public async Task<byte[]> ReadMemoryStreamAsync()
+        return buffer;
+    }
+
+    [Benchmark]
+    public async Task<byte[]> ReadMemoryStreamAsync()
+    {
+        var buffer = new byte[256];
+
+        while (true)
         {
-            var buffer = new byte[256];
+            var read = await _ms.ReadAsync(buffer, 0, buffer.Length);
 
-            while (true)
+            if (read == 0)
             {
-                var read = await _ms.ReadAsync(buffer, 0, buffer.Length);
-
-                if (read == 0)
-                {
-                    break;
-                }
+                break;
             }
-
-            return buffer;
         }
 
-        [Benchmark]
-        public async Task<byte[]> ReadMemoryStreamAsyncCancelTokenOverload()
+        return buffer;
+    }
+
+    [Benchmark]
+    public async Task<byte[]> ReadMemoryStreamAsyncCancelTokenOverload()
+    {
+        var buffer = new byte[256];
+
+        while (true)
         {
-            var buffer = new byte[256];
+            var read = await _ms.ReadAsync(buffer, CancellationToken.None);
 
-            while (true)
+            if (read == 0)
             {
-                var read = await _ms.ReadAsync(buffer, CancellationToken.None);
-
-                if (read == 0)
-                {
-                    break;
-                }
+                break;
             }
-
-            return buffer;
         }
+
+        return buffer;
     }
 }

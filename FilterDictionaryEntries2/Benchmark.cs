@@ -1,76 +1,74 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public record Instrument(int InstrumentId, string InstrumentName);
+public record Profile(
+    string Value,
+    bool IsLowConfidence,
+    bool IsOfInterest,
+    bool IsLowLevel,
+    bool IsFlagged);
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    private List<Instrument> _candidates;
+    private Dictionary<int, Profile> _profiles;
 
-    public record Instrument(int InstrumentId, string InstrumentName);
-    public record Profile(
-        string Value,
-        bool IsLowConfidence,
-        bool IsOfInterest,
-        bool IsLowLevel,
-        bool IsFlagged);
+    [Params(100, 10_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private List<Instrument> _candidates;
-        private Dictionary<int, Profile> _profiles;
+        _candidates = new List<Instrument>(Count);
+        var random = new Random(Count);
 
-        [Params(100, 10_000)]
-        public int Count { get; set; }
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _candidates = new List<Instrument>(Count);
-            var random = new Random(Count);
-
-            for (int i = 0; i < Count; i++)
-            {
-                _candidates.Add(new Instrument(i, $"Instrument {i}"));
-            }
-
-            _profiles = new Dictionary<int, Profile>(Count);
-            for (int i = 0; i < Count; i++)
-            {
-                _profiles.Add(i, new Profile(
-                    $"Profile {i}",
-                    true,
-                    random.Next(0, 10) == 0,
-                    random.Next(0, 10) == 0,
-                    random.Next(0, 10) == 0));
-            }
+            _candidates.Add(new Instrument(i, $"Instrument {i}"));
         }
 
-        [Benchmark(Baseline = true)]
-        public Instrument[] FilterUsingContainsKey ()
+        _profiles = new Dictionary<int, Profile>(Count);
+        for (int i = 0; i < Count; i++)
         {
-            var validCandidates = _candidates.Where(
-                    p => _profiles.ContainsKey(p.InstrumentId)).ToArray();
-
-            return validCandidates;
+            _profiles.Add(i, new Profile(
+                $"Profile {i}",
+                true,
+                random.Next(0, 10) == 0,
+                random.Next(0, 10) == 0,
+                random.Next(0, 10) == 0));
         }
+    }
 
-        [Benchmark]
-        public Instrument[] FilterUsingSelectToListContains()
-        {
-            var validCandidates = _candidates.Where(
-                    p => _profiles.Select(x => x.Key).ToList().Contains(p.InstrumentId) ).ToArray();
+    [Benchmark(Baseline = true)]
+    public Instrument[] FilterUsingContainsKey ()
+    {
+        var validCandidates = _candidates.Where(
+                p => _profiles.ContainsKey(p.InstrumentId)).ToArray();
 
-            return validCandidates;
-        }
+        return validCandidates;
+    }
 
-        [Benchmark]
-        public Instrument[] FilterUsingHashSet()
-        {
-            var profileKeys = new HashSet<int>(_profiles.Keys);
-            var validCandidates = _candidates.Where(
-                    p => profileKeys.Contains(p.InstrumentId)).ToArray();
+    [Benchmark]
+    public Instrument[] FilterUsingSelectToListContains()
+    {
+        var validCandidates = _candidates.Where(
+                p => _profiles.Select(x => x.Key).ToList().Contains(p.InstrumentId) ).ToArray();
 
-            return validCandidates;
-        }
+        return validCandidates;
+    }
+
+    [Benchmark]
+    public Instrument[] FilterUsingHashSet()
+    {
+        var profileKeys = new HashSet<int>(_profiles.Keys);
+        var validCandidates = _candidates.Where(
+                p => profileKeys.Contains(p.InstrumentId)).ToArray();
+
+        return validCandidates;
     }
 }

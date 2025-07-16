@@ -1,166 +1,164 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using SuperLinq;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using SuperLinq;
+    [Params(10)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    IEnumerable<IEnumerable<string>> _lists;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10)]
-        public int Count { get; set; }
-
-        IEnumerable<IEnumerable<string>> _lists;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        var tmp = new List<List<string>>();
+        for (int i = 0; i < Count; i++)
         {
-            var tmp = new List<List<string>>();
-            for (int i = 0; i < Count; i++)
+            var list = new List<string>();
+            for (int j = 0; j < 5; j++)
             {
-                var list = new List<string>();
-                for (int j = 0; j < 5; j++)
-                {
-                    list.Add($"{i}-{j}");
-                }
-
-                tmp.Add(list);
+                list.Add($"{i}-{j}");
             }
 
-            _lists = tmp;
+            tmp.Add(list);
         }
 
-        [Benchmark(Baseline = true)]
-        public IList<string> RoundRobinUsingListAndEnumerators()
+        _lists = tmp;
+    }
+
+    [Benchmark(Baseline = true)]
+    public IList<string> RoundRobinUsingListAndEnumerators()
+    {
+        return DoRoundRobinMergeUsingEnumerators(_lists).ToList();
+    }
+
+    [Benchmark]
+    public IList<string> RoundRobinUsingQueue()
+    {
+        return DoRoundRobinMergeUsingQueue(_lists).ToList();
+    }
+
+    [Benchmark]
+    public IList<string> RoundRobinUsingQueueAndEnumerators()
+    {
+        return DoRoundRobinUsingQueueAndEnumerators(_lists).ToList();
+    }
+
+    [Benchmark]
+    public IList<string> RoundRobinUsingSuperLinqInterleave()
+    {
+        return DoRoundRobinUsingSuperLinqInterleave(_lists).ToList();
+    }
+
+    public static IEnumerable<T> DoRoundRobinUsingSuperLinqInterleave<T>(IEnumerable<IEnumerable<T>> source)
+    {
+        return source.Reverse().Interleave();
+    }
+
+    public static IEnumerable<T> DoRoundRobinMergeUsingEnumerators<T>(IEnumerable<IEnumerable<T>> source)
+    {
+        if (source == null || !source.Any())
         {
-            return DoRoundRobinMergeUsingEnumerators(_lists).ToList();
+            yield break;
         }
 
-        [Benchmark]
-        public IList<string> RoundRobinUsingQueue()
+        // ToList is necessary to avoid deferred execution
+        var enumerators = source.Where(seq => seq != null).Select(seq => seq.GetEnumerator()).ToList();
+
+        try
         {
-            return DoRoundRobinMergeUsingQueue(_lists).ToList();
+            while (true)
+            {
+                for (int i = enumerators.Count - 1; i >= 0; i--)
+                {
+                    var e = enumerators[i];
+                    bool b = e.MoveNext();
+                    if (b)
+                    {
+                        yield return e.Current;
+                    }
+                    else
+                    {
+                        e.Dispose();
+                        enumerators.RemoveAt(i);
+                        if (enumerators.Count < 1)
+                        {
+                            yield break;
+                        }
+                    }
+                }
+
+                if (enumerators.Count < 1)
+                {
+                    yield break;
+                }
+            }
+        }
+        finally
+        {
+            foreach (var e in enumerators)
+            {
+                e.Dispose();
+            }
+        }
+    }
+
+    public static IEnumerable<T> DoRoundRobinMergeUsingQueue<T>(IEnumerable<IEnumerable<T>> source)
+    {
+        var queue = new Queue<IEnumerable<T>>();
+
+        foreach (var list in source.Reverse())
+        {
+            queue.Enqueue(list);
         }
 
-        [Benchmark]
-        public IList<string> RoundRobinUsingQueueAndEnumerators()
+        while (true)
         {
-            return DoRoundRobinUsingQueueAndEnumerators(_lists).ToList();
-        }
-
-        [Benchmark]
-        public IList<string> RoundRobinUsingSuperLinqInterleave()
-        {
-            return DoRoundRobinUsingSuperLinqInterleave(_lists).ToList();
-        }
-
-        public static IEnumerable<T> DoRoundRobinUsingSuperLinqInterleave<T>(IEnumerable<IEnumerable<T>> source)
-        {
-            return source.Reverse().Interleave();
-        }
-
-        public static IEnumerable<T> DoRoundRobinMergeUsingEnumerators<T>(IEnumerable<IEnumerable<T>> source)
-        {
-            if (source == null || !source.Any())
+            if (queue.Count == 0)
             {
                 yield break;
             }
 
-            // ToList is necessary to avoid deferred execution
-            var enumerators = source.Where(seq => seq != null).Select(seq => seq.GetEnumerator()).ToList();
-
-            try
+            var list = queue.Dequeue();
+            if (list.Any())
             {
-                while (true)
-                {
-                    for (int i = enumerators.Count - 1; i >= 0; i--)
-                    {
-                        var e = enumerators[i];
-                        bool b = e.MoveNext();
-                        if (b)
-                        {
-                            yield return e.Current;
-                        }
-                        else
-                        {
-                            e.Dispose();
-                            enumerators.RemoveAt(i);
-                            if (enumerators.Count < 1)
-                            {
-                                yield break;
-                            }
-                        }
-                    }
-
-                    if (enumerators.Count < 1)
-                    {
-                        yield break;
-                    }
-                }
-            }
-            finally
-            {
-                foreach (var e in enumerators)
-                {
-                    e.Dispose();
-                }
+                yield return list.First();
+                queue.Enqueue(list.Skip(1));
             }
         }
+    }
 
-        public static IEnumerable<T> DoRoundRobinMergeUsingQueue<T>(IEnumerable<IEnumerable<T>> source)
+    public static IEnumerable<T> DoRoundRobinUsingQueueAndEnumerators<T>(IEnumerable<IEnumerable<T>> source)
+    {
+        var queue = new Queue<IEnumerator<T>>();
+
+        foreach (var list in source.Reverse())
         {
-            var queue = new Queue<IEnumerable<T>>();
-
-            foreach (var list in source.Reverse())
-            {
-                queue.Enqueue(list);
-            }
-
-            while (true)
-            {
-                if (queue.Count == 0)
-                {
-                    yield break;
-                }
-
-                var list = queue.Dequeue();
-                if (list.Any())
-                {
-                    yield return list.First();
-                    queue.Enqueue(list.Skip(1));
-                }
-            }
+            queue.Enqueue(list.GetEnumerator());
         }
 
-        public static IEnumerable<T> DoRoundRobinUsingQueueAndEnumerators<T>(IEnumerable<IEnumerable<T>> source)
+        while (true)
         {
-            var queue = new Queue<IEnumerator<T>>();
-
-            foreach (var list in source.Reverse())
+            if (queue.Count == 0)
             {
-                queue.Enqueue(list.GetEnumerator());
+                yield break;
             }
 
-            while (true)
+            var enumerator = queue.Dequeue();
+            if (enumerator.MoveNext())
             {
-                if (queue.Count == 0)
-                {
-                    yield break;
-                }
-
-                var enumerator = queue.Dequeue();
-                if (enumerator.MoveNext())
-                {
-                    yield return enumerator.Current;
-                    queue.Enqueue(enumerator);
-                }
-                else
-                {
-                    enumerator.Dispose();
-                }
+                yield return enumerator.Current;
+                queue.Enqueue(enumerator);
+            }
+            else
+            {
+                enumerator.Dispose();
             }
         }
     }

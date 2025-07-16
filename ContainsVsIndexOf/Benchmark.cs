@@ -1,242 +1,240 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
+    [Params(100, 1000, 10_000, 100_000)]
+    public int Count { get; set; }
+    private List<string> _values;
 
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100, 1000, 10_000, 100_000)]
-        public int Count { get; set; }
-        private List<string> _values;
+        _values = new List<string>(Count);
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        Random r = new();
+
+        for (int i = 0; i < this.Count; i++)
         {
-            _values = new List<string>(Count);
+            var str = i.ToString();
 
-            Random r = new();
-
-            for (int i = 0; i < this.Count; i++)
+            if (r.Next(10) > 2)
             {
-                var str = i.ToString();
+                str = str + "garbage";
+            }
 
-                if (r.Next(10) > 2)
-                {
-                    str = str + "garbage";
-                }
+            _values.Add(str);
+        }
+    }
 
-                _values.Add(str);
+    [Benchmark(Baseline = true)]
+    public int CountUsingContains()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
+        {
+            if (_values[i].Contains("garbage"))
+            {
+                garbageCount++;
             }
         }
 
-        [Benchmark(Baseline = true)]
-        public int CountUsingContains()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingContainsExplicitOrdinal()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Contains("garbage", StringComparison.Ordinal))
             {
-                if (_values[i].Contains("garbage"))
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingContainsExplicitOrdinal()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingContainsExplicitOrdinalIgnoreCase()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Contains("garbage", StringComparison.OrdinalIgnoreCase))
             {
-                if (_values[i].Contains("garbage", StringComparison.Ordinal))
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingContainsExplicitOrdinalIgnoreCase()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingContainsExplicitCurrentCulture()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Contains("garbage", StringComparison.CurrentCulture))
             {
-                if (_values[i].Contains("garbage", StringComparison.OrdinalIgnoreCase))
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingContainsExplicitCurrentCulture()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingContainsExplicitCurrentCultureIgnoreCase()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Contains("garbage", StringComparison.CurrentCultureIgnoreCase))
             {
-                if (_values[i].Contains("garbage", StringComparison.CurrentCulture))
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingContainsExplicitCurrentCultureIgnoreCase()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingContainsExplicitInvariantCulture()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Contains("garbage", StringComparison.InvariantCulture))
             {
-                if (_values[i].Contains("garbage", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingContainsExplicitInvariantCulture()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingContainsExplicitInvariantCultureIgnoreCase()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].Contains("garbage", StringComparison.InvariantCultureIgnoreCase))
             {
-                if (_values[i].Contains("garbage", StringComparison.InvariantCulture))
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingContainsExplicitInvariantCultureIgnoreCase()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingIndexOf()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].IndexOf("garbage") != -1)
             {
-                if (_values[i].Contains("garbage", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingIndexOf()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingIndexOfInvariantCulture()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].IndexOf("garbage", StringComparison.InvariantCulture) != -1)
             {
-                if (_values[i].IndexOf("garbage") != -1)
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingIndexOfInvariantCulture()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingIndexOfInvariantCultureIgnoreCase()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].IndexOf("garbage", StringComparison.InvariantCultureIgnoreCase) != -1)
             {
-                if (_values[i].IndexOf("garbage", StringComparison.InvariantCulture) != -1)
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingIndexOfInvariantCultureIgnoreCase()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingIndexOfCurrentCultureIgnoreCase()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].IndexOf("garbage", StringComparison.CurrentCultureIgnoreCase) != -1)
             {
-                if (_values[i].IndexOf("garbage", StringComparison.InvariantCultureIgnoreCase) != -1)
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingIndexOfCurrentCultureIgnoreCase()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingIndexOfOrdinal()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].IndexOf("garbage", StringComparison.Ordinal) != -1)
             {
-                if (_values[i].IndexOf("garbage", StringComparison.CurrentCultureIgnoreCase) != -1)
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingIndexOfOrdinal()
+        return garbageCount;
+    }
+
+    [Benchmark]
+    public int CountUsingIndexOfOrdinalIgnoreCase()
+    {
+        int garbageCount = 0;
+
+        for (int i = 0; i < this.Count; i++)
         {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
+            if (_values[i].IndexOf("garbage", StringComparison.OrdinalIgnoreCase) != -1)
             {
-                if (_values[i].IndexOf("garbage", StringComparison.Ordinal) != -1)
-                {
-                    garbageCount++;
-                }
+                garbageCount++;
             }
-
-            return garbageCount;
         }
 
-        [Benchmark]
-        public int CountUsingIndexOfOrdinalIgnoreCase()
-        {
-            int garbageCount = 0;
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                if (_values[i].IndexOf("garbage", StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    garbageCount++;
-                }
-            }
-
-            return garbageCount;
-        }
+        return garbageCount;
     }
 }

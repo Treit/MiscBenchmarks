@@ -1,57 +1,55 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
+    [Params(10, 100, 1000, 100_000, 1_000_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private List<string> _firstList;
+    private List<string> _secondList;
+    private HashSet<string> _firstSet;
+    private HashSet<string> _secondSet;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(10, 100, 1000, 100_000, 1_000_000)]
-        public int Count { get; set; }
+        Random r = new Random();
+        _firstList = new List<string>(Count);
+        _secondList = new List<string>(Count);
 
-        private List<string> _firstList;
-        private List<string> _secondList;
-        private HashSet<string> _firstSet;
-        private HashSet<string> _secondSet;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < this.Count; i++)
         {
-            Random r = new Random();
-            _firstList = new List<string>(Count);
-            _secondList = new List<string>(Count);
-
-            for (int i = 0; i < this.Count; i++)
-            {
-                _firstList.Add(i.ToString());
-                _secondList.Add(i.ToString());
-            }
-
-            _firstList.Add("a");
-            _firstList.Add("b");
-            _firstList.Add("c");
-            _firstList.Add("d");
-
-            _firstSet = new HashSet<string>(_firstList);
-            _secondSet = new HashSet<string>(_secondList);
+            _firstList.Add(i.ToString());
+            _secondList.Add(i.ToString());
         }
 
-        [Benchmark]
-        public int SetDifferenceUsingLinq()
-        {
-            var result = _firstList.Except(_secondList).Count();
-            return result;
-        }
+        _firstList.Add("a");
+        _firstList.Add("b");
+        _firstList.Add("c");
+        _firstList.Add("d");
 
-        [Benchmark(Baseline = true)]
-        public int SetDifferenceUsingHashSet()
-        {
-            _firstSet.ExceptWith(_secondSet);
-            return _firstSet.Count;
-        }
+        _firstSet = new HashSet<string>(_firstList);
+        _secondSet = new HashSet<string>(_secondList);
+    }
+
+    [Benchmark]
+    public int SetDifferenceUsingLinq()
+    {
+        var result = _firstList.Except(_secondList).Count();
+        return result;
+    }
+
+    [Benchmark(Baseline = true)]
+    public int SetDifferenceUsingHashSet()
+    {
+        _firstSet.ExceptWith(_secondSet);
+        return _firstSet.Count;
     }
 }

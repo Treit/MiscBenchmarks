@@ -1,45 +1,43 @@
-﻿namespace Test
+namespace Test;
+using System.Collections.Generic;
+using System.Linq;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
+    [Params(100, 999983, 1_000_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100, 999983, 1_000_000)]
-        public int Count { get; set; }
+    }
 
-        [GlobalSetup]
-        public void GlobalSetup()
-        {
-        }
+    [Benchmark]
+    public int ToList()
+    {
+        return GetData().ToList().Count;
+    }
 
-        [Benchmark]
-        public int ToList()
-        {
-            return GetData().ToList().Count;
-        }
+    [Benchmark(Baseline = true)]
+    public int ToArray()
+    {
+        return GetData().ToArray().Length;
+    }
 
-        [Benchmark(Baseline = true)]
-        public int ToArray()
+    public IEnumerable<string> GetData()
+    {
+        for (int i = 0; i < Count; i++)
         {
-            return GetData().ToArray().Length;
-        }
-
-        public IEnumerable<string> GetData()
-        {
-            for (int i = 0; i < Count; i++)
+            if (i % 10 == 0)
             {
-                if (i % 10 == 0)
-                {
-                    yield return "";
-                }
-                else
-                {
-                    yield return i.ToString();
-                }
+                yield return "";
+            }
+            else
+            {
+                yield return i.ToString();
             }
         }
     }

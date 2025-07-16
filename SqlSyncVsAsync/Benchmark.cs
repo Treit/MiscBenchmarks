@@ -1,77 +1,75 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
+using Microsoft.Data.SqlClient;
+using System;
+using System.Threading.Tasks;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using BenchmarkDotNet.Diagnosers;
-    using Microsoft.Data.SqlClient;
-    using System;
-    using System.Threading.Tasks;
+    private SqlConnection _conn;
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        private SqlConnection _conn;
+        _conn = new SqlConnection("Server=.; Integrated Security=sspi; Initial Catalog=AdventureWorks2019;Encrypt=false");
+        _conn.Open();
+    }
 
-        public int Count { get; set; }
+    [Benchmark]
+    public long SynchronousExecuteAndSynchronousReadAllRows()
+    {
+        var sql = "select * from Sales.SalesOrderDetail";
+        using var cmd = new SqlCommand(sql, _conn);
+        using var reader = cmd.ExecuteReader();
 
-        [GlobalSetup]
-        public void GlobalSetup()
+        var result = 0L;
+        var ordinal = reader.GetOrdinal("OrderQty");
+
+        while (reader.Read())
         {
-            _conn = new SqlConnection("Server=.; Integrated Security=sspi; Initial Catalog=AdventureWorks2019;Encrypt=false");
-            _conn.Open();
+            result += reader.GetInt16(ordinal);
         }
 
-        [Benchmark]
-        public long SynchronousExecuteAndSynchronousReadAllRows()
+        return result;
+    }
+
+    [Benchmark(Baseline = true)]
+    public async Task<long> AsynchronousExecuteAndSynchronousReadAllRows()
+    {
+        var sql = "select * from Sales.SalesOrderDetail";
+        using var cmd = new SqlCommand(sql, _conn);
+        using var reader = await cmd.ExecuteReaderAsync();
+
+        var result = 0L;
+        var ordinal = reader.GetOrdinal("OrderQty");
+
+        while (reader.Read())
         {
-            var sql = "select * from Sales.SalesOrderDetail";
-            using var cmd = new SqlCommand(sql, _conn);
-            using var reader = cmd.ExecuteReader();
-
-            var result = 0L;
-            var ordinal = reader.GetOrdinal("OrderQty");
-
-            while (reader.Read())
-            {
-                result += reader.GetInt16(ordinal);
-            }
-
-            return result;
+            result += reader.GetInt16(ordinal);
         }
 
-        [Benchmark(Baseline = true)]
-        public async Task<long> AsynchronousExecuteAndSynchronousReadAllRows()
+        return result;
+    }
+
+    [Benchmark]
+    public async Task<long> AsynchronousExecuteAndAsynchronousReadAllRows()
+    {
+        var sql = "select * from Sales.SalesOrderDetail";
+        using var cmd = new SqlCommand(sql, _conn);
+        using var reader = await cmd.ExecuteReaderAsync();
+
+        var result = 0L;
+        var ordinal = reader.GetOrdinal("OrderQty");
+
+        while (await reader.ReadAsync())
         {
-            var sql = "select * from Sales.SalesOrderDetail";
-            using var cmd = new SqlCommand(sql, _conn);
-            using var reader = await cmd.ExecuteReaderAsync();
-
-            var result = 0L;
-            var ordinal = reader.GetOrdinal("OrderQty");
-
-            while (reader.Read())
-            {
-                result += reader.GetInt16(ordinal);
-            }
-
-            return result;
+            result += reader.GetInt16(ordinal);
         }
 
-        [Benchmark]
-        public async Task<long> AsynchronousExecuteAndAsynchronousReadAllRows()
-        {
-            var sql = "select * from Sales.SalesOrderDetail";
-            using var cmd = new SqlCommand(sql, _conn);
-            using var reader = await cmd.ExecuteReaderAsync();
-
-            var result = 0L;
-            var ordinal = reader.GetOrdinal("OrderQty");
-
-            while (await reader.ReadAsync())
-            {
-                result += reader.GetInt16(ordinal);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

@@ -1,53 +1,51 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [Params(1000, 1_000_000)]
+    public int ListSize { get; set; }
 
-    public class Benchmark
+    [Params(10, 500)]
+    public int N { get; set; }
+
+    private List<int> _data;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(1000, 1_000_000)]
-        public int ListSize { get; set; }
+        _data = new List<int>(ListSize);
 
-        [Params(10, 500)]
-        public int N { get; set; }
-
-        private List<int> _data;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < ListSize; i++)
         {
-            _data = new List<int>(ListSize);
+            _data.Add(i);
+        }
+    }
 
-            for (int i = 0; i < ListSize; i++)
-            {
-                _data.Add(i);
-            }
+    [Benchmark]
+    public IList<int> LinqTake()
+    {
+        return _data.Take(N).ToList();
+    }
+
+    [Benchmark(Baseline = true)]
+    public IList<int> RangeWithMathDotMin()
+    {
+        return _data[..Math.Min(_data.Count, N)];
+    }
+
+    [Benchmark]
+    public IList<int> HandWrittenLoop()
+    {
+        var result = new List<int>(N);
+        for (int i = 0; i < N; i++)
+        {
+            result.Add(_data[i]);
         }
 
-        [Benchmark]
-        public IList<int> LinqTake()
-        {
-            return _data.Take(N).ToList();
-        }
-
-        [Benchmark(Baseline = true)]
-        public IList<int> RangeWithMathDotMin()
-        {
-            return _data[..Math.Min(_data.Count, N)];
-        }
-
-        [Benchmark]
-        public IList<int> HandWrittenLoop()
-        {
-            var result = new List<int>(N);
-            for (int i = 0; i < N; i++)
-            {
-                result.Add(_data[i]);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

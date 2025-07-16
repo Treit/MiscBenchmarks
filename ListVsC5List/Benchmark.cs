@@ -1,132 +1,130 @@
-﻿namespace Test
+namespace Test;
+using BenchmarkDotNet.Attributes;
+using C5;
+using System.Collections.Generic;
+
+[MemoryDiagnoser]
+public class Benchmark
 {
-    using BenchmarkDotNet.Attributes;
-    using C5;
-    using System.Collections.Generic;
+    [Params(100_000)]
+    public int Count { get; set; }
 
-    [MemoryDiagnoser]
-    public class Benchmark
+    private C5.ArrayList<int> _c5arrayList;
+    private ArrayList<object> _c5arrayListObject;
+
+    private List<int> _list;
+    private List<object> _listObject;
+
+    [GlobalSetup]
+    public void GlobalSetup()
     {
-        [Params(100_000)]
-        public int Count { get; set; }
+        _c5arrayList = CreateC5ArrayListOfInt();
+        _list = CreateListOfInt();
+        _c5arrayListObject = CreateC5ArrayListOfObject();
+        _listObject = CreateListOfObject();
+    }
 
-        private C5.ArrayList<int> _c5arrayList;
-        private ArrayList<object> _c5arrayListObject;
+    [Benchmark]
+    public ArrayList<int> CreateC5ArrayListOfInt()
+    {
+        var list = new ArrayList<int>();
 
-        private List<int> _list;
-        private List<object> _listObject;
-
-        [GlobalSetup]
-        public void GlobalSetup()
+        for (int i = 0; i < Count; i++)
         {
-            _c5arrayList = CreateC5ArrayListOfInt();
-            _list = CreateListOfInt();
-            _c5arrayListObject = CreateC5ArrayListOfObject();
-            _listObject = CreateListOfObject();
+            list.Add(i);
         }
 
-        [Benchmark]
-        public ArrayList<int> CreateC5ArrayListOfInt()
+        return list;
+    }
+
+    [Benchmark]
+    public List<int> CreateListOfInt()
+    {
+        var list = new List<int>();
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = new ArrayList<int>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(i);
-            }
-
-            return list;
+            list.Add(i);
         }
 
-        [Benchmark]
-        public List<int> CreateListOfInt()
+        return list;
+    }
+
+    [Benchmark]
+    public ArrayList<object> CreateC5ArrayListOfObject()
+    {
+        var list = new ArrayList<object>();
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = new List<int>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add(i);
-            }
-
-            return list;
+            list.Add((object)i.ToString());
         }
 
-        [Benchmark]
-        public ArrayList<object> CreateC5ArrayListOfObject()
+        return list;
+    }
+
+    [Benchmark]
+    public List<object> CreateListOfObject()
+    {
+        var list = new List<object>();
+
+        for (int i = 0; i < Count; i++)
         {
-            var list = new ArrayList<object>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add((object)i.ToString());
-            }
-
-            return list;
+            list.Add((object)i.ToString());
         }
 
-        [Benchmark]
-        public List<object> CreateListOfObject()
+        return list;
+    }
+
+    [Benchmark]
+    public long IterateC5ArrayListOfInt()
+    {
+        int sum = 0;
+
+        foreach (var val in _c5arrayList)
         {
-            var list = new List<object>();
-
-            for (int i = 0; i < Count; i++)
-            {
-                list.Add((object)i.ToString());
-            }
-
-            return list;
+            sum += (int)val;
         }
 
-        [Benchmark]
-        public long IterateC5ArrayListOfInt()
+        return sum;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long IterateListOfInt()
+    {
+        int sum = 0;
+
+        foreach (var val in _list)
         {
-            int sum = 0;
-
-            foreach (var val in _c5arrayList)
-            {
-                sum += (int)val;
-            }
-
-            return sum;
+            sum += val;
         }
 
-        [Benchmark(Baseline = true)]
-        public long IterateListOfInt()
+        return sum;
+    }
+
+    [Benchmark]
+    public long IterateC5ArrayListOfObject()
+    {
+        int sum = 0;
+
+        foreach (var val in _c5arrayListObject)
         {
-            int sum = 0;
-
-            foreach (var val in _list)
-            {
-                sum += val;
-            }
-
-            return sum;
+            sum += ((string)val).Length;
         }
 
-        [Benchmark]
-        public long IterateC5ArrayListOfObject()
+        return sum;
+    }
+
+    [Benchmark]
+    public long IterateListOfObject()
+    {
+        int sum = 0;
+
+        foreach (var val in _listObject)
         {
-            int sum = 0;
-
-            foreach (var val in _c5arrayListObject)
-            {
-                sum += ((string)val).Length;
-            }
-
-            return sum;
+            sum += ((string)val).Length;
         }
 
-        [Benchmark]
-        public long IterateListOfObject()
-        {
-            int sum = 0;
-
-            foreach (var val in _listObject)
-            {
-                sum += ((string)val).Length;
-            }
-
-            return sum;
-        }
+        return sum;
     }
 }
