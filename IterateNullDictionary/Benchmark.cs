@@ -9,7 +9,7 @@ public class Benchmark
     private Dictionary<int, string> _dictionary;
     private Dictionary<int, string> _nullDictionary;
 
-    [Params(10, 1000)]
+    [Params(1000)]
     public int Count { get; set; } = 1000;
     [GlobalSetup]
     public void GlobalSetup()
@@ -28,12 +28,9 @@ public class Benchmark
     {
         var count = 0;
 
-        for (var i = 0; i < Count; i++)
+        foreach (var kvp in _nullDictionary ?? new Dictionary<int, string>())
         {
-            foreach (var kvp in _nullDictionary ?? new Dictionary<int, string>())
-            {
-                count++;
-            }
+            count++;
         }
 
         return count;
@@ -44,14 +41,11 @@ public class Benchmark
     {
         var count = 0;
 
-        for (var i = 0; i < Count; i++)
+        if (_nullDictionary != null)
         {
-            if (_nullDictionary != null)
+            foreach (var kvp in _nullDictionary)
             {
-                foreach (var kvp in _nullDictionary)
-                {
-                    count++;
-                }
+                count++;
             }
         }
 
