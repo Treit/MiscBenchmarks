@@ -36,6 +36,19 @@ public class Benchmark
         return count;
     }
 
+    [Benchmark]
+    public int EmptyCollectionLiteral()
+    {
+        var count = 0;
+
+        foreach (var kvp in _nullDictionary ?? [])
+        {
+            count++;
+        }
+
+        return count;
+    }
+
     [Benchmark(Baseline = true)]
     public int NullCheck()
     {
