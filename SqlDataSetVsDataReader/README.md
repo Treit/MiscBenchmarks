@@ -6,18 +6,19 @@ The benchmark task simply reads one column of values from a fairly large table i
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26096.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.2.24157.14
-  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                       | Mean      | Error    | StdDev   | Ratio | RatioSD | Gen0      | Gen1      | Gen2      | Allocated   | Alloc Ratio |
-|----------------------------- |----------:|---------:|---------:|------:|--------:|----------:|----------:|----------:|------------:|------------:|
-| ReadDataUsingDataReader      |  24.59 ms | 0.483 ms | 0.997 ms |  1.00 |    0.00 |   93.7500 |   93.7500 |   93.7500 |   513.66 KB |        1.00 |
-| ReadDataUsingDataSet         | 148.78 ms | 2.927 ms | 5.710 ms |  6.07 |    0.32 | 4500.0000 | 2500.0000 | 1000.0000 |  24966.6 KB |       48.61 |
-| ReadDataUsingEntityFramework |  39.86 ms | 0.713 ms | 0.793 ms |  1.65 |    0.08 | 5384.6154 |  230.7692 |   76.9231 | 23265.61 KB |       45.29 |
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.27909.1000)
+Unknown processor
+.NET SDK 9.0.302
+  [Host]     : .NET 9.0.7 (9.0.725.31616), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  DefaultJob : .NET 9.0.7 (9.0.725.31616), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+
+
+```
+| Method                       | Mean      | Error    | StdDev   | Median    | Ratio | RatioSD | Gen0      | Gen1      | Gen2      | Allocated   | Alloc Ratio |
+|----------------------------- |----------:|---------:|---------:|----------:|------:|--------:|----------:|----------:|----------:|------------:|------------:|
+| ReadDataUsingDataReader      |  24.39 ms | 0.999 ms | 2.850 ms |  23.27 ms |  1.00 |    0.00 |   93.7500 |   93.7500 |   93.7500 |   513.48 KB |        1.00 |
+| ReadDataUsingDataSet         | 135.44 ms | 2.923 ms | 8.479 ms | 130.98 ms |  5.63 |    0.71 | 4500.0000 | 2500.0000 | 1000.0000 |  24965.8 KB |       48.62 |
+| ReadDataUsingEntityFramework |  25.71 ms | 0.773 ms | 2.231 ms |  24.85 ms |  1.07 |    0.15 | 5406.2500 |  218.7500 |  125.0000 | 23265.03 KB |       45.31 |
