@@ -202,3 +202,5 @@ Do not add MethodImplOptions.NoInlining unless really necessary.
 Do not create too many variations of the same benchmark. Focus on clear, distinct approaches that provide meaningful comparisons.
 
 Use `dotnet new` to create new projects and the folder that contains it. Do not create folders explicitly.
+
+Create a README.md file in the project root with the benchmark results formatted as a table. From the benchmark folder, running `..\update_results.ps1` will update the results in the README.md file automatically.
