@@ -1,10 +1,12 @@
-namespace Test;
-using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Diagnosers;
+﻿namespace Test;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
+
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
 
 [MemoryDiagnoser]
 public class Benchmark
@@ -16,6 +18,7 @@ public class Benchmark
     private FrozenSet<string> _frozenSet;
     private IReadOnlySet<string> _readOnlySet;
     private ReadOnlySet<string> _readOnlySetType;
+    private ImmutableHashSet<string> _immutableHashSet;
     private string _key;
 
     [GlobalSetup]
@@ -35,6 +38,7 @@ public class Benchmark
         _frozenSet = _set.ToFrozenSet();
         _readOnlySet = _set;
         _readOnlySetType = new ReadOnlySet<string>(_set);
+        _immutableHashSet = _set.ToImmutableHashSet();
     }
 
     [Benchmark(Baseline = true)]
@@ -59,5 +63,11 @@ public class Benchmark
     public bool LookupUsingReadOnlySetType()
     {
         return _readOnlySetType.Contains(_key);
+    }
+
+    [Benchmark]
+    public bool LookupUsingImmutableHashSet()
+    {
+        return _immutableHashSet.Contains(_key);
     }
 }
