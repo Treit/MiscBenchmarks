@@ -123,6 +123,22 @@ namespace StringSwitchVsDictionary
             return count;
         }
 
+        [Benchmark]
+        public int EnumTryParseIgnoreCase()
+        {
+            int count = 0;
+            for (int i = 0; i < IterationCount; i++)
+            {
+                foreach (var testString in _testStrings)
+                {
+                    var result = ToTestEnumTryParsePattern(testString);
+                    if (result != null)
+                        count++;
+                }
+            }
+            return count;
+        }
+
         // Original switch pattern (with ToLowerInvariant allocation)
         private static TestEnum? ToTestEnumSwitchPattern(string value) => value.ToLowerInvariant() switch
         {
@@ -157,6 +173,12 @@ namespace StringSwitchVsDictionary
         private static TestEnum? ToTestEnumFrozenDictionaryPattern(string value)
         {
             return TestEnumFrozenDictionary.TryGetValue(value, out var result) ? result : null;
+        }
+
+        // Enum.TryParse pattern (case-insensitive, built-in .NET method)
+        private static TestEnum? ToTestEnumTryParsePattern(string value)
+        {
+            return Enum.TryParse<TestEnum>(value, ignoreCase: true, out var result) ? result : null;
         }
     }
 }

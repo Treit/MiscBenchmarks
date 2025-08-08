@@ -1,5 +1,6 @@
 # StringSwitchVsDictionary
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.27919.1000)
@@ -10,12 +11,14 @@ Unknown processor
 
 
 ```
-| Method                           | IterationCount | Mean       | Error     | StdDev    | Median     | Ratio | RatioSD | Gen0      | Allocated | Alloc Ratio |
-|--------------------------------- |--------------- |-----------:|----------:|----------:|-----------:|------:|--------:|----------:|----------:|------------:|
-| **StringSwitchWithToLowerInvariant** | **1000**           |   **547.4 μs** |  **16.50 μs** |  **48.39 μs** |   **539.0 μs** |  **1.01** |    **0.12** |  **132.8125** |  **576000 B** |        **1.00** |
-| CaseInsensitiveDictionary        | 1000           |   485.8 μs |  14.54 μs |  42.42 μs |   476.1 μs |  0.89 |    0.11 |         - |         - |        0.00 |
-| CaseInsensitiveFrozenDictionary  | 1000           |   237.6 μs |   4.72 μs |   9.64 μs |   236.4 μs |  0.44 |    0.04 |         - |         - |        0.00 |
-|                                  |                |            |           |           |            |       |         |           |           |             |
-| **StringSwitchWithToLowerInvariant** | **10000**          | **5,251.2 μs** | **185.11 μs** | **519.06 μs** | **5,133.3 μs** |  **1.01** |    **0.14** | **1328.1250** | **5760000 B** |        **1.00** |
-| CaseInsensitiveDictionary        | 10000          | 4,495.9 μs |  88.35 μs | 174.40 μs | 4,469.3 μs |  0.86 |    0.09 |         - |         - |        0.00 |
-| CaseInsensitiveFrozenDictionary  | 10000          | 2,340.4 μs |  46.64 μs |  89.86 μs | 2,301.4 μs |  0.45 |    0.04 |         - |         - |        0.00 |
+| Method                           | IterationCount | Mean        | Error     | StdDev    | Median      | Ratio | RatioSD | Gen0      | Allocated | Alloc Ratio |
+|--------------------------------- |--------------- |------------:|----------:|----------:|------------:|------:|--------:|----------:|----------:|------------:|
+| **StringSwitchWithToLowerInvariant** | **1000**           |    **591.8 μs** |  **25.86 μs** |  **73.79 μs** |    **574.3 μs** |  **1.01** |    **0.17** |  **132.8125** |  **576000 B** |       **1.000** |
+| CaseInsensitiveDictionary        | 1000           |    469.2 μs |  10.83 μs |  30.71 μs |    465.1 μs |  0.80 |    0.11 |         - |         - |       0.000 |
+| CaseInsensitiveFrozenDictionary  | 1000           |    229.9 μs |   4.50 μs |   6.31 μs |    230.4 μs |  0.39 |    0.05 |         - |         - |       0.000 |
+| EnumTryParseIgnoreCase           | 1000           |  1,927.9 μs |  55.17 μs | 144.36 μs |  1,904.6 μs |  3.30 |    0.45 |         - |       3 B |       0.000 |
+|                                  |                |             |           |           |             |       |         |           |           |             |
+| **StringSwitchWithToLowerInvariant** | **10000**          |  **5,521.4 μs** | **230.65 μs** | **658.06 μs** |  **5,357.0 μs** |  **1.01** |    **0.16** | **1328.1250** | **5760000 B** |       **1.000** |
+| CaseInsensitiveDictionary        | 10000          |  5,176.6 μs | 184.39 μs | 507.86 μs |  5,008.5 μs |  0.95 |    0.14 |         - |         - |       0.000 |
+| CaseInsensitiveFrozenDictionary  | 10000          |  2,647.0 μs |  90.99 μs | 263.97 μs |  2,580.3 μs |  0.49 |    0.07 |         - |         - |       0.000 |
+| EnumTryParseIgnoreCase           | 10000          | 18,975.8 μs | 371.08 μs | 397.05 μs | 18,991.1 μs |  3.48 |    0.39 |         - |      42 B |       0.000 |

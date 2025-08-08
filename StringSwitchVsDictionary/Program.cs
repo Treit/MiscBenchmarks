@@ -21,14 +21,17 @@
             var dictionaryResult = b.CaseInsensitiveDictionary();
             b.GlobalSetup();
             var frozenDictionaryResult = b.CaseInsensitiveFrozenDictionary();
+            b.GlobalSetup();
+            var enumTryParseResult = b.EnumTryParseIgnoreCase();
 
             // Output results for comparison
             Console.WriteLine($"String Switch with ToLowerInvariant: {switchResult}");
             Console.WriteLine($"Case-Insensitive Dictionary: {dictionaryResult}");
             Console.WriteLine($"Case-Insensitive FrozenDictionary: {frozenDictionaryResult}");
+            Console.WriteLine($"Enum.TryParse with IgnoreCase: {enumTryParseResult}");
 
             // Verify results are equivalent
-            Console.WriteLine($"All results equal: {switchResult == dictionaryResult && dictionaryResult == frozenDictionaryResult}");
+            Console.WriteLine($"All results equal: {switchResult == dictionaryResult && dictionaryResult == frozenDictionaryResult && frozenDictionaryResult == enumTryParseResult}");
 #endif
         }
     }
