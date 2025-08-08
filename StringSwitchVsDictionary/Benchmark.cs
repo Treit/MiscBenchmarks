@@ -75,7 +75,7 @@ namespace StringSwitchVsDictionary
             };
         }
 
-        [Benchmark(Baseline = true)]
+        [Benchmark]
         public int StringSwitchWithToLowerInvariant()
         {
             int count = 0;
@@ -107,7 +107,7 @@ namespace StringSwitchVsDictionary
             return count;
         }
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public int CaseInsensitiveFrozenDictionary()
         {
             int count = 0;
