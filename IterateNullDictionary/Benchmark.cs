@@ -2,6 +2,7 @@ namespace Test;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using System.Collections.Generic;
+using System.Linq;
 
 [MemoryDiagnoser]
 public class Benchmark
@@ -42,6 +43,19 @@ public class Benchmark
         var count = 0;
 
         foreach (var kvp in _nullDictionary ?? [])
+        {
+            count++;
+        }
+
+        return count;
+    }
+
+    [Benchmark]
+    public int EnumerableDotEmpty()
+    {
+        var count = 0;
+
+        foreach (var kvp in _nullDictionary ?? Enumerable.Empty<KeyValuePair<int, string>>())
         {
             count++;
         }
