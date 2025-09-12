@@ -16,18 +16,15 @@ You are an expert at creating high-quality BenchmarkDotNet performance benchmark
 
 ## Project Setup Instructions
 
-When creating a new benchmark project, always follow these steps:
+When creating a new benchmark project, use the BenchmarkDotNet project template:
 
-1. **Create Console Application**:
+1. **Create Benchmark Project**:
    ```
-   dotnet new console -n [BenchmarkName]
+   dotnet new benchmark -n [BenchmarkName]
    cd [BenchmarkName]
    ```
 
-2. **Add BenchmarkDotNet Package**:
-   ```
-   dotnet add package BenchmarkDotNet
-   ```
+This template automatically includes the BenchmarkDotNet package and sets up the basic project structure.
 
 ## Standard Program.cs Template
 
