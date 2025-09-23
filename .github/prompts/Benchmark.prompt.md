@@ -67,6 +67,8 @@ namespace [NamespaceName]
 }
 ```
 
+Change the project file created by the BenchmarkDotNet template to use Debug instead of Release by default.
+
 ## Benchmark Class Best Practices
 
 ### Required Attributes and Structure
@@ -100,6 +102,8 @@ public class Benchmark
     }
 }
 ```
+
+Use two parameters (one small, one large) by default for count parameters for the benchmark.
 
 ### Essential Attributes to Use
 
