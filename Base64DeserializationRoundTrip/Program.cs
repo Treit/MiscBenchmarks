@@ -12,33 +12,43 @@ namespace Base64DeserializationRoundTrip
 #else
             // Debug mode: Test benchmark methods and compare results
             var b = new Benchmarks();
-            b.Count = 100; // Use small count for debug
+            b.ListSize = 10; // Use small list size for debug
             b.GlobalSetup();
 
             // Test each benchmark method
-            var result1 = b.RoundTripThroughString();
+            var result1 = b.RoundTripThroughString_SmallData();
             b.GlobalSetup();
-            var result2 = b.DirectFromBytes();
+            var result2 = b.DirectFromBytes_SmallData();
             b.GlobalSetup();
+            var result3 = b.DirectFromSpan_SmallData();
+            b.GlobalSetup();
+            var result4 = b.RoundTripThroughString_LargeData();
+            b.GlobalSetup();
+            var result5 = b.DirectFromBytes_LargeData();
+            b.GlobalSetup();
+            var result6 = b.DirectFromSpan_LargeData();
 
             // Output results for comparison
-            Console.WriteLine($"RoundTripThroughString: {result1.Length} items");
-            Console.WriteLine($"DirectFromBytes: {result2.Length} items");
+            Console.WriteLine($"RoundTripThroughString_SmallData: {result1.Items.Count} items");
+            Console.WriteLine($"DirectFromBytes_SmallData: {result2.Items.Count} items");
+            Console.WriteLine($"DirectFromSpan_SmallData: {result3.Items.Count} items");
+            Console.WriteLine($"RoundTripThroughString_LargeData: {result4.Items.Count} items");
+            Console.WriteLine($"DirectFromBytes_LargeData: {result5.Items.Count} items");
+            Console.WriteLine($"DirectFromSpan_LargeData: {result6.Items.Count} items");
 
             // Verify results are equivalent
-            bool allEqual = result1.Length == result2.Length;
-            if (allEqual && result1.Length > 0)
-            {
-                // Compare first item in detail
-                var item1 = result1[0];
-                var item2 = result2[0];
+            bool smallDataEqual = result1.Items.Count == result2.Items.Count &&
+                                 result2.Items.Count == result3.Items.Count &&
+                                 result1.Id == result2.Id && result2.Id == result3.Id;
 
-                allEqual = item1.Id == item2.Id &&
-                          item1.Name == item2.Name &&
-                          Math.Abs(item1.Value - item2.Value) < 0.0001;
-            }
+            bool largeDataEqual = result4.Items.Count == result5.Items.Count &&
+                                 result5.Items.Count == result6.Items.Count &&
+                                 result4.Id == result5.Id && result5.Id == result6.Id;
 
-            Console.WriteLine($"Results equivalent: {allEqual}");
+            Console.WriteLine($"Small data results equivalent: {smallDataEqual}");
+            Console.WriteLine($"Large data results equivalent: {largeDataEqual}");
+            Console.WriteLine($"Expected small data size: 10, actual: {result1.Items.Count}");
+            Console.WriteLine($"Expected large data size: {b.ListSize}, actual: {result4.Items.Count}");
 #endif
         }
     }

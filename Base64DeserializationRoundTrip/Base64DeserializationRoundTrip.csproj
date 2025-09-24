@@ -9,7 +9,7 @@
     <DebugSymbols>true</DebugSymbols>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
-    <Configuration>Release</Configuration>
+    <Configuration>Debug</Configuration>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>

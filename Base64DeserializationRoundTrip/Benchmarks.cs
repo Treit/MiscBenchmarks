@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using BenchmarkDotNet.Attributes;
@@ -9,80 +10,139 @@ namespace Base64DeserializationRoundTrip
     public class Benchmarks
     {
         [Params(10, 100_000)]
-        public int Count { get; set; }
+        public int ListSize { get; set; }
 
-        private string[] _base64Strings = null!;
+        private string _base64StringSmallData = null!;
+        private string _base64StringLargeData = null!;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
-            // Create test data: JSON objects encoded as base64
-            _base64Strings = new string[Count];
             var random = new Random(42);
 
-            for (int i = 0; i < Count; i++)
+            // Create test objects with lists of the specified size
+            var testObjectWithSmallList = new TestDataWithList
             {
-                var testObject = new TestData
-                {
-                    Id = i,
-                    Name = $"Test Item {i}",
-                    Value = random.NextDouble(),
-                    IsActive = i % 2 == 0,
-                    Timestamp = DateTime.UtcNow.AddDays(-random.Next(365))
-                };
+                Id = 1,
+                Name = "Test Object with Small List",
+                Value = random.NextDouble(),
+                IsActive = true,
+                Timestamp = DateTime.UtcNow,
+                Items = CreateItemList(10, random) // Small list
+            };
 
-                var json = JsonSerializer.Serialize(testObject);
-                var bytes = Encoding.UTF8.GetBytes(json);
-                _base64Strings[i] = Convert.ToBase64String(bytes);
+            var testObjectWithLargeList = new TestDataWithList
+            {
+                Id = 2,
+                Name = "Test Object with Large List",
+                Value = random.NextDouble(),
+                IsActive = false,
+                Timestamp = DateTime.UtcNow,
+                Items = CreateItemList(ListSize, random) // Variable size list
+            };
+
+            // Serialize and encode as base64
+            var jsonSmall = JsonSerializer.Serialize(testObjectWithSmallList);
+            var bytesSmall = Encoding.UTF8.GetBytes(jsonSmall);
+            _base64StringSmallData = Convert.ToBase64String(bytesSmall);
+
+            var jsonLarge = JsonSerializer.Serialize(testObjectWithLargeList);
+            var bytesLarge = Encoding.UTF8.GetBytes(jsonLarge);
+            _base64StringLargeData = Convert.ToBase64String(bytesLarge);
+        }
+
+        private List<DataItem> CreateItemList(int count, Random random)
+        {
+            var items = new List<DataItem>(count);
+            for (int i = 0; i < count; i++)
+            {
+                items.Add(new DataItem
+                {
+                    ItemId = i,
+                    Description = $"Item {i} - {Guid.NewGuid()}",
+                    Score = random.NextDouble() * 100,
+                    Tags = new[] { $"tag{i % 5}", $"category{i % 3}", $"type{i % 7}" },
+                    CreatedAt = DateTime.UtcNow.AddMinutes(-random.Next(10000))
+                });
             }
+            return items;
         }
 
         [Benchmark]
-        public TestData[] RoundTripThroughString()
+        public TestDataWithList RoundTripThroughString_SmallData()
         {
-            var results = new TestData[Count];
+            // Round-trip approach: base64 → bytes → string → deserialize (small data)
+            var bytesUps = Convert.FromBase64String(_base64StringSmallData);
+            var jsonStringUps = Encoding.UTF8.GetString(bytesUps);
 
-            for (int i = 0; i < Count; i++)
+            if (!string.IsNullOrEmpty(jsonStringUps))
             {
-                // Round-trip approach: base64 → bytes → string → deserialize
-                var bytesUps = Convert.FromBase64String(_base64Strings[i]);
-                var jsonStringUps = Encoding.UTF8.GetString(bytesUps);
-
-                if (!string.IsNullOrEmpty(jsonStringUps))
-                {
-                    results[i] = JsonSerializer.Deserialize<TestData>(jsonStringUps)!;
-                }
+                return JsonSerializer.Deserialize<TestDataWithList>(jsonStringUps)!;
             }
 
-            return results;
+            return new TestDataWithList();
+        }
+
+        [Benchmark]
+        public TestDataWithList DirectFromBytes_SmallData()
+        {
+            // Direct approach: base64 → bytes → deserialize directly (small data)
+            var bytesUps = Convert.FromBase64String(_base64StringSmallData);
+
+            if (bytesUps.Length > 0)
+            {
+                return JsonSerializer.Deserialize<TestDataWithList>(bytesUps)!;
+            }
+
+            return new TestDataWithList();
+        }
+
+        [Benchmark]
+        public TestDataWithList RoundTripThroughString_LargeData()
+        {
+            // Round-trip approach: base64 → bytes → string → deserialize (large data)
+            var bytesUps = Convert.FromBase64String(_base64StringLargeData);
+            var jsonStringUps = Encoding.UTF8.GetString(bytesUps);
+
+            if (!string.IsNullOrEmpty(jsonStringUps))
+            {
+                return JsonSerializer.Deserialize<TestDataWithList>(jsonStringUps)!;
+            }
+
+            return new TestDataWithList();
         }
 
         [Benchmark(Baseline = true)]
-        public TestData[] DirectFromBytes()
+        public TestDataWithList DirectFromBytes_LargeData()
         {
-            var results = new TestData[Count];
+            // Direct approach: base64 → bytes → deserialize directly (large data)
+            var bytesUps = Convert.FromBase64String(_base64StringLargeData);
 
-            for (int i = 0; i < Count; i++)
+            if (bytesUps.Length > 0)
             {
-                // Direct approach: base64 → bytes → deserialize directly
-                var bytesUps = Convert.FromBase64String(_base64Strings[i]);
-
-                if (bytesUps.Length > 0)
-                {
-                    results[i] = JsonSerializer.Deserialize<TestData>(bytesUps)!;
-                }
+                return JsonSerializer.Deserialize<TestDataWithList>(bytesUps)!;
             }
 
-            return results;
+            return new TestDataWithList();
         }
     }
 
-    public class TestData
+    public class TestDataWithList
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public double Value { get; set; }
         public bool IsActive { get; set; }
         public DateTime Timestamp { get; set; }
+        public List<DataItem> Items { get; set; } = new();
+    }
+
+    public class DataItem
+    {
+        public int ItemId { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public double Score { get; set; }
+        public string[] Tags { get; set; } = Array.Empty<string>();
+        public DateTime CreatedAt { get; set; }
     }
 }
