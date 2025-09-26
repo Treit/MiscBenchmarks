@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 
@@ -18,6 +19,10 @@ namespace KeyValuePairIteration
         private ReadOnlyDictionary<int, string> _readOnlyDictionary;
         private FrozenDictionary<int, string> _frozenDictionary;
         private List<KeyValuePair<int, string>> _list;
+        private SortedList<int, string> _sortedList;
+        private ImmutableDictionary<int, string> _immutableDictionary;
+        private ImmutableSortedDictionary<int, string> _immutableSortedDictionary;
+        private KeyValuePair<int, string>[] _array;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -33,6 +38,10 @@ namespace KeyValuePairIteration
             _readOnlyDictionary = new ReadOnlyDictionary<int, string>(_dictionary);
             _frozenDictionary = _dictionary.ToFrozenDictionary();
             _list = _dictionary.ToList();
+            _sortedList = new SortedList<int, string>(_dictionary);
+            _immutableDictionary = _dictionary.ToImmutableDictionary();
+            _immutableSortedDictionary = _dictionary.ToImmutableSortedDictionary();
+            _array = _dictionary.ToArray();
         }
 
         [Benchmark]
@@ -84,6 +93,50 @@ namespace KeyValuePairIteration
         {
             long sum = 0;
             foreach (var kvp in _list)
+            {
+                sum += kvp.Key + kvp.Value.Length;
+            }
+            return sum;
+        }
+
+        [Benchmark]
+        public long EnumerateSortedList()
+        {
+            long sum = 0;
+            foreach (var kvp in _sortedList)
+            {
+                sum += kvp.Key + kvp.Value.Length;
+            }
+            return sum;
+        }
+
+        [Benchmark]
+        public long EnumerateImmutableDictionary()
+        {
+            long sum = 0;
+            foreach (var kvp in _immutableDictionary)
+            {
+                sum += kvp.Key + kvp.Value.Length;
+            }
+            return sum;
+        }
+
+        [Benchmark]
+        public long EnumerateImmutableSortedDictionary()
+        {
+            long sum = 0;
+            foreach (var kvp in _immutableSortedDictionary)
+            {
+                sum += kvp.Key + kvp.Value.Length;
+            }
+            return sum;
+        }
+
+        [Benchmark]
+        public long EnumerateArray()
+        {
+            long sum = 0;
+            foreach (var kvp in _array)
             {
                 sum += kvp.Key + kvp.Value.Length;
             }

@@ -15,5 +15,6 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.15.2" />
     <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.15.2"/>
+    <PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
   </ItemGroup>
 </Project>
