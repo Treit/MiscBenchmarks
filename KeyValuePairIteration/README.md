@@ -1,6 +1,7 @@
 # Enumerating KeyValuePair objects
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.27954.1)
@@ -11,24 +12,24 @@ Unknown processor
 
 
 ```
-| Method                             | Count | Mean          | Error        | StdDev        | Median        | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|----------------------------------- |------ |--------------:|-------------:|--------------:|--------------:|------:|--------:|-------:|----------:|------------:|
-| **EnumerateDictionary**                | **100**   |     **134.06 ns** |     **2.718 ns** |      **6.460 ns** |     **132.76 ns** |  **1.39** |    **0.07** |      **-** |         **-** |          **NA** |
-| EnumerateSortedDictionary          | 100   |   1,210.74 ns |    25.033 ns |     73.022 ns |   1,188.60 ns | 12.53 |    0.76 | 0.0343 |     152 B |          NA |
-| EnumerateReadOnlyDictionary        | 100   |     975.28 ns |    19.558 ns |     20.927 ns |     972.41 ns | 10.10 |    0.23 | 0.0114 |      56 B |          NA |
-| EnumerateFrozenDictionary          | 100   |     231.04 ns |     3.807 ns |      3.561 ns |     230.34 ns |  2.39 |    0.04 |      - |         - |          NA |
-| EnumerateList                      | 100   |      96.61 ns |     0.897 ns |      0.795 ns |      96.66 ns |  1.00 |    0.01 |      - |         - |          NA |
-| EnumerateSortedList                | 100   |     397.10 ns |     6.284 ns |      5.571 ns |     396.96 ns |  4.11 |    0.06 | 0.0110 |      48 B |          NA |
-| EnumerateImmutableDictionary       | 100   |   2,252.26 ns |    39.886 ns |     48.984 ns |   2,246.96 ns | 23.31 |    0.53 |      - |         - |          NA |
-| EnumerateImmutableSortedDictionary | 100   |     891.03 ns |    15.645 ns |     22.933 ns |     887.84 ns |  9.22 |    0.24 |      - |         - |          NA |
-| EnumerateArray                     | 100   |      60.35 ns |     1.078 ns |      0.901 ns |      60.15 ns |  0.62 |    0.01 |      - |         - |          NA |
-|                                    |       |               |              |               |               |       |         |        |           |             |
-| **EnumerateDictionary**                | **10000** |  **14,126.09 ns** |   **169.560 ns** |    **150.311 ns** |  **14,131.93 ns** |  **1.18** |    **0.02** |      **-** |         **-** |          **NA** |
-| EnumerateSortedDictionary          | 10000 | 117,139.68 ns | 2,333.515 ns |  4,439.755 ns | 115,750.26 ns |  9.77 |    0.41 |      - |     264 B |          NA |
-| EnumerateReadOnlyDictionary        | 10000 |  95,667.45 ns | 1,805.676 ns |  1,854.297 ns |  95,284.55 ns |  7.98 |    0.21 |      - |      56 B |          NA |
-| EnumerateFrozenDictionary          | 10000 |  23,976.53 ns |   473.254 ns |    790.702 ns |  23,919.56 ns |  2.00 |    0.07 |      - |         - |          NA |
-| EnumerateList                      | 10000 |  11,990.03 ns |   232.964 ns |    228.802 ns |  11,945.34 ns |  1.00 |    0.03 |      - |         - |          NA |
-| EnumerateSortedList                | 10000 |  42,345.46 ns |   835.744 ns |  1,250.902 ns |  42,576.88 ns |  3.53 |    0.12 |      - |      48 B |          NA |
-| EnumerateImmutableDictionary       | 10000 | 342,582.09 ns | 6,847.612 ns | 19,866.165 ns | 340,517.85 ns | 28.58 |    1.73 |      - |         - |          NA |
-| EnumerateImmutableSortedDictionary | 10000 |  89,217.16 ns | 1,713.351 ns |  2,401.879 ns |  89,362.72 ns |  7.44 |    0.24 |      - |         - |          NA |
-| EnumerateArray                     | 10000 |   7,878.90 ns |   134.228 ns |    118.990 ns |   7,855.07 ns |  0.66 |    0.02 |      - |         - |          NA |
+| Method                             | Count | Mean        | Error     | StdDev     | Median      | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|----------------------------------- |------ |------------:|----------:|-----------:|------------:|------:|--------:|-------:|----------:|------------:|
+| EnumerateDictionary                | 100   |   128.13 ns |  2.579 ns |   4.165 ns |   127.59 ns |  1.29 |    0.06 |      - |         - |          NA |
+| EnumerateSortedDictionary          | 100   | 1,163.26 ns | 22.733 ns |  27.062 ns | 1,159.42 ns | 11.67 |    0.53 | 0.0343 |     152 B |          NA |
+| EnumerateReadOnlyDictionary        | 100   |   969.50 ns | 16.729 ns |  15.649 ns |   971.75 ns |  9.72 |    0.41 | 0.0124 |      56 B |          NA |
+| EnumerateFrozenDictionary          | 100   |   230.29 ns |  4.130 ns |   3.864 ns |   230.72 ns |  2.31 |    0.10 |      - |         - |          NA |
+| EnumerateList                      | 100   |    99.85 ns |  2.035 ns |   4.064 ns |    99.35 ns |  1.00 |    0.06 |      - |         - |          NA |
+| EnumerateSortedList                | 100   |   411.74 ns |  8.264 ns |  16.313 ns |   409.01 ns |  4.13 |    0.23 | 0.0110 |      48 B |          NA |
+| EnumerateImmutableDictionary       | 100   | 2,510.62 ns | 50.007 ns | 138.570 ns | 2,482.52 ns | 25.18 |    1.70 |      - |         - |          NA |
+| EnumerateImmutableSortedDictionary | 100   | 1,016.98 ns | 35.665 ns | 102.903 ns |   986.69 ns | 10.20 |    1.10 |      - |         - |          NA |
+| EnumerateArray                     | 100   |    62.25 ns |  1.239 ns |   2.328 ns |    61.71 ns |  0.62 |    0.03 |      - |         - |          NA |
+| EnumerateHashSet                   | 100   |   202.18 ns |  4.087 ns |   4.197 ns |   202.56 ns |  2.03 |    0.09 |      - |         - |          NA |
+| EnumerateSortedSet                 | 100   |   555.00 ns | 11.105 ns |  18.857 ns |   548.64 ns |  5.57 |    0.29 | 0.0343 |     152 B |          NA |
+| EnumerateImmutableHashSet          | 100   | 2,792.87 ns | 55.629 ns |  81.540 ns | 2,769.97 ns | 28.01 |    1.36 |      - |         - |          NA |
+| EnumerateImmutableSortedSet        | 100   |   926.64 ns | 16.175 ns |  15.130 ns |   929.57 ns |  9.29 |    0.39 |      - |         - |          NA |
+| EnumerateHashtable                 | 100   | 1,766.63 ns | 35.209 ns |  81.602 ns | 1,746.76 ns | 17.72 |    1.07 | 0.7534 |    3256 B |          NA |
+| EnumerateArrayList                 | 100   |   509.97 ns | 25.753 ns |  75.934 ns |   482.33 ns |  5.12 |    0.78 | 0.0110 |      48 B |          NA |
+| EnumerateQueue                     | 100   |   741.22 ns | 14.906 ns |  41.799 ns |   734.04 ns |  7.44 |    0.51 | 0.0086 |      40 B |          NA |
+| EnumerateStack                     | 100   |   468.97 ns | 10.181 ns |  29.536 ns |   458.88 ns |  4.70 |    0.35 | 0.0091 |      40 B |          NA |
+| EnumerateGenericQueue              | 100   |   345.82 ns |  9.329 ns |  26.616 ns |   341.69 ns |  3.47 |    0.30 |      - |         - |          NA |
+| EnumerateGenericStack              | 100   |   359.61 ns |  7.027 ns |  14.034 ns |   356.45 ns |  3.61 |    0.20 |      - |         - |          NA |
