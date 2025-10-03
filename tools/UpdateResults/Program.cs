@@ -6,8 +6,8 @@ var projectName = dir.Name;
 var resultsDir = new DirectoryInfo(Path.Combine(dir.FullName, @"BenchmarkDotNet.Artifacts\results"));
 var resultFiles = resultsDir.GetFiles("*.md");
 
-var resultsPath = resultFiles.FirstOrDefault(x => x.Name.Contains("Benchmark-report-github.md"))?.FullName;
-var resultsAsmPath = resultFiles.FirstOrDefault(x => x.Name.Contains("Benchmark-asm.md"))?.FullName;
+var resultsPath = resultFiles.FirstOrDefault(x => x.Name.Contains("-report-github.md"))?.FullName;
+var resultsAsmPath = resultFiles.FirstOrDefault(x => x.Name.Contains("-asm.md"))?.FullName;
 
 if (!File.Exists(resultsPath))
 {
