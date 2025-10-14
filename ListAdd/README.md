@@ -3,22 +3,24 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27783.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.102
-  [Host]     : .NET 8.0.12 (8.0.1224.60305), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.12 (8.0.1224.60305), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                          | Count | Mean      | Error    | StdDev    | Median    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|-------------------------------- |------ |----------:|---------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
-| AddToListWithForEachLoop        | 100   | 462.36 ns | 9.412 ns | 27.306 ns | 450.34 ns | 10.21 |    0.70 | 0.2832 |    1224 B |        2.68 |
-| AddToListPresetCapacity         | 100   | 331.27 ns | 6.493 ns |  6.947 ns | 331.88 ns |  7.00 |    0.31 | 0.1149 |     496 B |        1.09 |
-| AddToListWithToListDotForEach   | 100   | 430.56 ns | 8.655 ns |  6.758 ns | 431.48 ns |  9.06 |    0.36 | 0.4005 |    1728 B |        3.79 |
-| AddToListWithAddRange           | 100   |  47.96 ns | 0.937 ns |  0.920 ns |  47.83 ns |  1.02 |    0.06 | 0.1057 |     456 B |        1.00 |
-| AddToListPresetCapacityAddRange | 100   |  48.19 ns | 0.985 ns |  1.413 ns |  47.84 ns |  1.03 |    0.05 | 0.1057 |     456 B |        1.00 |
-| ToList                          | 100   |  53.83 ns | 1.099 ns |  2.009 ns |  53.56 ns |  1.17 |    0.05 | 0.1057 |     456 B |        1.00 |
-| AddToListWithConstructor        | 100   |  46.27 ns | 0.967 ns |  2.221 ns |  45.87 ns |  1.00 |    0.00 | 0.1057 |     456 B |        1.00 |
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.27971.1)
+Unknown processor
+.NET SDK 10.0.100-preview.6.25358.103
+  [Host]     : .NET 9.0.8 (9.0.825.36511), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+  DefaultJob : .NET 9.0.8 (9.0.825.36511), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+
+
+```
+| Method                              | Count | Mean       | Error     | StdDev    | Ratio | RatioSD | Gen0    | Gen1    | Gen2    | Allocated | Alloc Ratio |
+|------------------------------------ |------ |-----------:|----------:|----------:|------:|--------:|--------:|--------:|--------:|----------:|------------:|
+| AddValueTypesWithForEach            | 10000 | 117.487 μs | 2.3412 μs | 6.0850 μs |  1.00 |    0.00 | 41.6260 | 41.6260 | 41.6260 | 256.32 KB |        1.00 |
+| AddReferenceTypesWithForEach        | 10000 | 123.823 μs | 2.3778 μs | 5.6971 μs |  1.05 |    0.08 | 41.6260 | 41.6260 | 41.6260 | 256.32 KB |        1.00 |
+| AddValueTypesPresetCapacity         | 10000 |  21.398 μs | 0.4125 μs | 0.4413 μs |  0.19 |    0.01 | 18.4937 |  3.0823 |       - |  78.18 KB |        0.31 |
+| AddReferenceTypesPresetCapacity     | 10000 |  36.223 μs | 0.6207 μs | 0.5806 μs |  0.31 |    0.02 | 18.4937 |  3.0518 |       - |  78.18 KB |        0.31 |
+| AddValueTypesWithAddRange           | 10000 |   7.380 μs | 0.0925 μs | 0.0820 μs |  0.06 |    0.00 | 18.5165 |  3.0823 |       - |  78.18 KB |        0.31 |
+| AddReferenceTypesWithAddRange       | 10000 |   9.362 μs | 0.1840 μs | 0.3364 μs |  0.08 |    0.00 | 18.5089 |  3.0823 |       - |  78.18 KB |        0.31 |
+| ValueTypesToListWithConstructor     | 10000 |   7.795 μs | 0.1529 μs | 0.2380 μs |  0.07 |    0.00 | 18.5089 |  3.0823 |       - |  78.18 KB |        0.31 |
+| ReferenceTypesToListWithConstructor | 10000 |   9.551 μs | 0.1868 μs | 0.2619 μs |  0.08 |    0.00 | 18.5089 |  3.0823 |       - |  78.18 KB |        0.31 |
