@@ -17,6 +17,8 @@
 
         private static readonly object FileLock = new();
         private static readonly string DataFilePath = Path.Combine(Path.GetTempPath(), "LargeFileReadBufferSizes.bin");
+        private static bool _cleanupRegistered;
+
         private static readonly int[] BufferSizesValues =
         {
             4 * 1024,
@@ -25,8 +27,6 @@
             24 * 1024 * 1024,
             1024 * 1024 * 1024,
         };
-
-        private static bool _cleanupRegistered;
 
         [ParamsSource(nameof(BufferSizes))]
         public int BufferSizeBytes { get; set; }
@@ -52,7 +52,7 @@
                     FileMode.Open,
                     FileAccess.Read,
                     FileShare.Read,
-                    bufferSize: 4096,
+                    bufferSize: BufferSizeBytes,
                     FileOptions.SequentialScan);
 
                 int bytesRead;
