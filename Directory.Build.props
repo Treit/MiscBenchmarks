@@ -6,7 +6,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <BenchmarkDotNetVersion>0.13.12</BenchmarkDotNetVersion>
+    <BenchmarkDotNetVersion>0.15.2</BenchmarkDotNetVersion>
   </PropertyGroup>
 
 </Project>
