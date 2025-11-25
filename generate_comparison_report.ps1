@@ -34,12 +34,12 @@ $comparisons = Get-Content $ComparisonPath -Raw | ConvertFrom-Json
 # Prepare table rows
 $tableRows = ""
 foreach ($comp in $comparisons) {
-    $perfChange = if ($comp.TimeChangePercent) { 
+    $perfChange = if ($comp.TimeChangePercent) {
         $formatted = "{0:F2}" -f $comp.TimeChangePercent
         if ($comp.TimeChangePercent -gt 0) { "+$formatted%" } else { "$formatted%" }
     } else { "-" }
-    
-    $memChange = if ($comp.MemoryChangePercent) { 
+
+    $memChange = if ($comp.MemoryChangePercent) {
         $formatted = "{0:F2}" -f $comp.MemoryChangePercent
         if ($comp.MemoryChangePercent -gt 0) { "+$formatted%" } else { "$formatted%" }
     } else { "-" }    $perfClass = if ($comp.TimeChangePercent -lt -5) { "improvement" }
