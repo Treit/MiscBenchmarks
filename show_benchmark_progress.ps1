@@ -70,10 +70,13 @@ if (-not (Test-Path $progressFile)) {
 
 Clear-Host
 Write-Host "Benchmark Progress Monitor" -ForegroundColor Cyan
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host ""
 
 $lastCurrent = -1
+
+# Hide cursor
+[Console]::CursorVisible = $false
 
 try {
     while ($true) {
@@ -81,26 +84,26 @@ try {
             try {
                 $progress = Get-Content $progressFile -Raw | ConvertFrom-Json
 
-                # Only update display if progress changed
-                if ($progress.Current -ne $lastCurrent) {
+                # Calculate elapsed time (always update)
+                $startTime = [DateTime]::Parse($progress.StartTime)
+                $elapsed = (Get-Date) - $startTime
+
+                # Estimate remaining time
+                if ($progress.Current -gt 0 -and $progress.Current -lt $progress.Total) {
+                    $avgTimePerBenchmark = $elapsed.TotalSeconds / $progress.Current
+                    $remaining = [TimeSpan]::FromSeconds($avgTimePerBenchmark * ($progress.Total - $progress.Current))
+                    $eta = "ETA: " + (Format-Duration $remaining)
+                }
+                elseif ($progress.IsComplete) {
+                    $eta = "Complete!"
+                }
+                else {
+                    $eta = "Calculating..."
+                }
+
+                # Update display on progress change OR every refresh interval
+                if ($progress.Current -ne $lastCurrent -or $true) {
                     $lastCurrent = $progress.Current
-
-                    # Calculate elapsed time
-                    $startTime = [DateTime]::Parse($progress.StartTime)
-                    $elapsed = (Get-Date) - $startTime
-
-                    # Estimate remaining time
-                    if ($progress.Current -gt 0 -and $progress.Current -lt $progress.Total) {
-                        $avgTimePerBenchmark = $elapsed.TotalSeconds / $progress.Current
-                        $remaining = [TimeSpan]::FromSeconds($avgTimePerBenchmark * ($progress.Total - $progress.Current))
-                        $eta = "ETA: " + (Format-Duration $remaining)
-                    }
-                    elseif ($progress.IsComplete) {
-                        $eta = "Complete!"
-                    }
-                    else {
-                        $eta = "Calculating..."
-                    }
 
                     # Move cursor to top
                     [Console]::SetCursorPosition(0, 3)
