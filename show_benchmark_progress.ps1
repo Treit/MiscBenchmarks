@@ -35,10 +35,15 @@ function Get-ProgressBar {
     $filled = [Math]::Floor(($percent / 100) * $Width)
     $empty = $Width - $filled
 
-    $bar = "█" * $filled + "░" * $empty
+    $filledBar = "█" * $filled
+    $emptyBar = "░" * $empty
     $percentStr = $percent.ToString("0.0").PadLeft(5)
 
-    return "[$bar] $percentStr%"
+    return @{
+        Filled = $filledBar
+        Empty = $emptyBar
+        Percent = $percentStr
+    }
 }
 
 function Format-Duration {
@@ -119,7 +124,10 @@ try {
 
                     # Display progress
                     $progressBar = Get-ProgressBar -Current $progress.Current -Total $progress.Total -Width 60
-                    Write-Host "Progress: $progressBar"
+                    Write-Host "Progress: [" -NoNewline
+                    Write-Host $progressBar.Filled -NoNewline -ForegroundColor Green
+                    Write-Host $progressBar.Empty -NoNewline
+                    Write-Host "] $($progressBar.Percent)%"
 
                     Write-Host ""
                     Write-Host "Status   : $($progress.Status.PadRight(20))" -ForegroundColor $(
