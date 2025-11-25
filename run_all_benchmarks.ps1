@@ -49,6 +49,32 @@ $ErrorActionPreference = 'Stop'
 # Progress file for tracking
 $progressFile = Join-Path $PSScriptRoot "benchmark_progress.json"
 
+# Helper function to write progress with retry on file lock
+function Write-ProgressFile {
+    param(
+        [string]$Path,
+        [hashtable]$Data,
+        [int]$MaxRetries = 5,
+        [int]$DelayMs = 100
+    )
+
+    $attempt = 0
+    while ($attempt -lt $MaxRetries) {
+        try {
+            $Data | ConvertTo-Json | Set-Content $Path -ErrorAction Stop
+            return
+        }
+        catch {
+            $attempt++
+            if ($attempt -ge $MaxRetries) {
+                Write-Warning "Failed to write progress file after $MaxRetries attempts: $_"
+                return
+            }
+            Start-Sleep -Milliseconds $DelayMs
+        }
+    }
+}
+
 # Parse skip list
 $skipList = @()
 if ($Skip) {
@@ -84,7 +110,7 @@ $progressData = @{
     Status = "Starting"
     IsComplete = $false
 }
-$progressData | ConvertTo-Json | Set-Content $progressFile
+Write-ProgressFile -Path $progressFile -Data $progressData
 
 if ($DryRun) {
     Write-Host ""
@@ -121,7 +147,7 @@ foreach ($dir in $benchmarkDirs) {
     $progressData.Succeeded = $succeeded
     $progressData.Failed = $failed
     $progressData.BuildFailed = $buildFailed
-    $progressData | ConvertTo-Json | Set-Content $progressFile
+    Write-ProgressFile -Path $progressFile -Data $progressData
 
     Push-Location $dir.FullName
     try {
@@ -165,7 +191,7 @@ foreach ($dir in $benchmarkDirs) {
         $progressData.Succeeded = $succeeded
         $progressData.Failed = $failed
         $progressData.BuildFailed = $buildFailed
-        $progressData | ConvertTo-Json | Set-Content $progressFile
+        Write-ProgressFile -Path $progressFile -Data $progressData
     }
     catch {
         $errorMessage = $_.Exception.Message
@@ -185,7 +211,7 @@ foreach ($dir in $benchmarkDirs) {
         $progressData.FailedBenchmarks = $failedBenchmarks
         $progressData.BuildFailed = $buildFailed
         $progressData.BuildFailedBenchmarks = $buildFailedBenchmarks
-        $progressData | ConvertTo-Json | Set-Content $progressFile
+        Write-ProgressFile -Path $progressFile -Data $progressData
     }
     finally {
         Pop-Location
@@ -204,7 +230,7 @@ $progressData.Status = "Complete"
 $progressData.IsComplete = $true
 $progressData.EndTime = $endTime.ToString("o")
 $progressData.Duration = $duration.ToString()
-$progressData | ConvertTo-Json | Set-Content $progressFile
+Write-ProgressFile -Path $progressFile -Data $progressData
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "Summary:" -ForegroundColor Cyan
