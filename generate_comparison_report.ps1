@@ -1,11 +1,10 @@
 #!/usr/bin/env pwsh
 <#
 .SYNOPSIS
-    Generates an HTML comparison report with charts showing .NET 10 performance changes.
+    Generates an HTML table report showing all .NET 10 benchmark comparisons.
 
 .DESCRIPTION
-    Creates an interactive HTML report comparing baseline benchmark results with .NET 10 results.
-    Includes charts showing improvements, regressions, and distribution of changes.
+    Creates a sortable HTML table with all benchmark results showing performance and memory changes.
 
 .PARAMETER ComparisonPath
     Path to the comparison JSON file. Defaults to "comparison_results.json".
@@ -32,17 +31,43 @@ if (-not (Test-Path $ComparisonPath)) {
 Write-Host "Loading comparison data..." -ForegroundColor Cyan
 $comparisons = Get-Content $ComparisonPath -Raw | ConvertFrom-Json
 
-# Categorize changes
-$improvements = $comparisons | Where-Object { $_.TimeChangePercent -and $_.TimeChangePercent -lt -5 }
-$regressions = $comparisons | Where-Object { $_.TimeChangePercent -and $_.TimeChangePercent -gt 5 }
-$noChange = $comparisons | Where-Object { $_.TimeChangePercent -and [Math]::Abs($_.TimeChangePercent) -le 5 }
+# Prepare table rows
+$tableRows = ""
+foreach ($comp in $comparisons) {
+    $perfChange = if ($comp.TimeChangePercent) { 
+        $formatted = "{0:F2}" -f $comp.TimeChangePercent
+        if ($comp.TimeChangePercent -gt 0) { "+$formatted%" } else { "$formatted%" }
+    } else { "-" }
+    
+    $memChange = if ($comp.MemoryChangePercent) { 
+        $formatted = "{0:F2}" -f $comp.MemoryChangePercent
+        if ($comp.MemoryChangePercent -gt 0) { "+$formatted%" } else { "$formatted%" }
+    } else { "-" }    $perfClass = if ($comp.TimeChangePercent -lt -5) { "improvement" }
+                 elseif ($comp.TimeChangePercent -gt 5) { "regression" }
+                 else { "" }
 
-# Prepare data for charts
-$improvementsTop = $improvements | Sort-Object TimeChangePercent | Select-Object -First 20
-$regressionsTop = $regressions | Sort-Object TimeChangePercent -Descending | Select-Object -First 20
+    $memClass = if ($comp.MemoryChangePercent -lt -5) { "improvement" }
+                elseif ($comp.MemoryChangePercent -gt 5) { "regression" }
+                else { "" }
 
-$improvementsJson = $improvementsTop | ConvertTo-Json -Compress
-$regressionsJson = $regressionsTop | ConvertTo-Json -Compress
+    $githubUrl = "https://github.com/Treit/MiscBenchmarks/tree/main/$($comp.BenchmarkName)"
+
+    $tableRows += @"
+        <tr>
+            <td><a href="$githubUrl" target="_blank">$($comp.BenchmarkName)</a></td>
+            <td>$($comp.Method)</td>
+            <td>$($comp.BaselineVersion)</td>
+            <td>$($comp.NewVersion)</td>
+            <td>$($comp.BaselineTime)</td>
+            <td>$($comp.NewTime)</td>
+            <td class="$perfClass">$perfChange</td>
+            <td>$($comp.BaselineMemory)</td>
+            <td>$($comp.NewMemory)</td>
+            <td class="$memClass">$memChange</td>
+        </tr>
+
+"@
+}
 
 $html = @"
 <!DOCTYPE html>
@@ -51,7 +76,6 @@ $html = @"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>.NET 10 Benchmark Comparison Report</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -60,309 +84,220 @@ $html = @"
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: #0d1117;
+            color: #c9d1d9;
             padding: 20px;
-            min-height: 100vh;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 100%;
             margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 40px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            padding: 30px;
         }
 
         h1 {
-            color: #333;
+            color: #58a6ff;
             margin-bottom: 10px;
-            font-size: 2.5em;
+            font-size: 2em;
+            font-weight: 600;
+            border-bottom: 1px solid #21262d;
+            padding-bottom: 10px;
         }
 
         .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1.1em;
-        }
-
-        .summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 25px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .stat-card.improvement {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-        }
-
-        .stat-card.regression {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        }
-
-        .stat-number {
-            font-size: 3em;
-            font-weight: bold;
-            color: #333;
-            margin: 10px 0;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .chart-container {
-            margin: 40px 0;
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            color: #333;
+            color: #8b949e;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
+            font-size: 1em;
         }
 
-        canvas {
-            max-height: 500px;
-        }
-
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-            text-align: center;
-            color: #999;
-            font-size: 0.9em;
-        }
-
-        .legend {
+        .controls {
             margin: 20px 0;
             padding: 15px;
-            background: #f0f0f0;
+            background: #0d1117;
+            border: 1px solid #30363d;
             border-radius: 6px;
         }
 
-        .legend-item {
+        .search-box {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            font-size: 14px;
+            background: #0d1117;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: #21262d;
+            color: #58a6ff;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 2px solid #30363d;
+        }
+
+        th:hover {
+            background: #30363d;
+        }
+
+        th::after {
+            content: ' ⇅';
+            opacity: 0.5;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #21262d;
+        }
+
+        tr:hover {
+            background: #0d1117;
+        }
+
+        a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .improvement {
+            color: #3fb950;
+            font-weight: 600;
+        }
+
+        .regression {
+            color: #f85149;
+            font-weight: 600;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #21262d;
+            text-align: center;
+            color: #8b949e;
+            font-size: 0.9em;
+        }
+
+        .stats {
             display: inline-block;
-            margin-right: 20px;
+            margin: 10px 20px;
             font-size: 0.95em;
+            color: #8b949e;
         }
 
-        .legend-icon {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            margin-right: 5px;
-            border-radius: 2px;
+        .stats strong {
+            color: #c9d1d9;
         }
-
-        .improvement-icon { background: #4CAF50; }
-        .regression-icon { background: #f44336; }
-        .nochange-icon { background: #9E9E9E; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 .NET 10 Benchmark Comparison</h1>
-        <p class="subtitle">Performance analysis of benchmark results upgrading to .NET 10</p>
+        <h1>.NET 10 Benchmark Comparison</h1>
+        <p class="subtitle">All benchmark results comparing baseline vs .NET 10 performance</p>
 
-        <div class="summary">
-            <div class="stat-card improvement">
-                <div class="stat-label">Improvements</div>
-                <div class="stat-number">$($improvements.Count)</div>
-                <div class="stat-label">Faster</div>
-            </div>
-            <div class="stat-card regression">
-                <div class="stat-label">Regressions</div>
-                <div class="stat-number">$($regressions.Count)</div>
-                <div class="stat-label">Slower</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">No Change</div>
-                <div class="stat-number">$($noChange.Count)</div>
-                <div class="stat-label">Similar</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Total Compared</div>
-                <div class="stat-number">$($comparisons.Count)</div>
-                <div class="stat-label">Benchmarks</div>
+        <div class="controls">
+            <input type="text" id="searchBox" class="search-box" placeholder="Search benchmarks..." onkeyup="filterTable()">
+            <div>
+                <span class="stats">Total: <strong>$($comparisons.Count)</strong> benchmarks</span>
+                <span class="stats">🟢 Improvements: <strong>$(($comparisons | Where-Object { $_.TimeChangePercent -lt -5 }).Count)</strong></span>
+                <span class="stats">🔴 Regressions: <strong>$(($comparisons | Where-Object { $_.TimeChangePercent -gt 5 }).Count)</strong></span>
             </div>
         </div>
 
-        <div class="legend">
-            <div class="legend-item">
-                <span class="legend-icon improvement-icon"></span>
-                <span>Improvement (faster/less memory)</span>
-            </div>
-            <div class="legend-item">
-                <span class="legend-icon regression-icon"></span>
-                <span>Regression (slower/more memory)</span>
-            </div>
-            <div class="legend-item">
-                <span class="legend-icon nochange-icon"></span>
-                <span>No significant change (±5%)</span>
-            </div>
-        </div>
-
-        <div class="chart-container">
-            <h2>📈 Top 20 Performance Improvements</h2>
-            <canvas id="improvementsChart"></canvas>
-        </div>
-
-        <div class="chart-container">
-            <h2>📉 Top 20 Performance Regressions</h2>
-            <canvas id="regressionsChart"></canvas>
-        </div>
-
-        <div class="chart-container">
-            <h2>📊 Change Distribution</h2>
-            <canvas id="distributionChart"></canvas>
-        </div>
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Benchmark</th>
+                    <th onclick="sortTable(1)">Method</th>
+                    <th onclick="sortTable(2)">Baseline Ver</th>
+                    <th onclick="sortTable(3)">New Ver</th>
+                    <th onclick="sortTable(4)">Baseline Time</th>
+                    <th onclick="sortTable(5)">New Time</th>
+                    <th onclick="sortTable(6)">Perf Change</th>
+                    <th onclick="sortTable(7)">Baseline Memory</th>
+                    <th onclick="sortTable(8)">New Memory</th>
+                    <th onclick="sortTable(9)">Memory Change</th>
+                </tr>
+            </thead>
+            <tbody>
+$tableRows
+            </tbody>
+        </table>
 
         <div class="footer">
             <p>Generated on $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</p>
-            <p>Report created from $($comparisons.Count) benchmark comparisons</p>
+            <p>Click column headers to sort • Use search box to filter results</p>
         </div>
     </div>
 
     <script>
-        const improvements = $improvementsJson;
-        const regressions = $regressionsJson;
+        let sortDirection = {};
 
-        // Improvements Chart
-        new Chart(document.getElementById('improvementsChart'), {
-            type: 'bar',
-            data: {
-                labels: improvements.map(x => x.BenchmarkName + '/' + x.Method).map(x => x.length > 50 ? x.substring(0, 47) + '...' : x),
-                datasets: [{
-                    label: 'Performance Improvement (%)',
-                    data: improvements.map(x => Math.abs(x.TimeChangePercent)),
-                    backgroundColor: 'rgba(76, 175, 80, 0.7)',
-                    borderColor: 'rgba(76, 175, 80, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.parsed.x.toFixed(2) + '% faster';
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Performance Improvement (%)'
-                        }
-                    }
-                }
-            }
-        });
+        function sortTable(columnIndex) {
+            const table = document.getElementById('resultsTable');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
 
-        // Regressions Chart
-        new Chart(document.getElementById('regressionsChart'), {
-            type: 'bar',
-            data: {
-                labels: regressions.map(x => x.BenchmarkName + '/' + x.Method).map(x => x.length > 50 ? x.substring(0, 47) + '...' : x),
-                datasets: [{
-                    label: 'Performance Regression (%)',
-                    data: regressions.map(x => x.TimeChangePercent),
-                    backgroundColor: 'rgba(244, 67, 54, 0.7)',
-                    borderColor: 'rgba(244, 67, 54, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.parsed.x.toFixed(2) + '% slower';
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Performance Regression (%)'
-                        }
-                    }
-                }
-            }
-        });
+            sortDirection[columnIndex] = !sortDirection[columnIndex];
+            const ascending = sortDirection[columnIndex];
 
-        // Distribution Chart
-        new Chart(document.getElementById('distributionChart'), {
-            type: 'pie',
-            data: {
-                labels: ['Improvements', 'Regressions', 'No Change'],
-                datasets: [{
-                    data: [$($improvements.Count), $($regressions.Count), $($noChange.Count)],
-                    backgroundColor: [
-                        'rgba(76, 175, 80, 0.7)',
-                        'rgba(244, 67, 54, 0.7)',
-                        'rgba(158, 158, 158, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(76, 175, 80, 1)',
-                        'rgba(244, 67, 54, 1)',
-                        'rgba(158, 158, 158, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = ((context.parsed / total) * 100).toFixed(1);
-                                return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
-                            }
-                        }
-                    }
+            rows.sort((a, b) => {
+                let aVal = a.cells[columnIndex].textContent.trim();
+                let bVal = b.cells[columnIndex].textContent.trim();
+
+                // Try to parse as number (for percentage columns)
+                const aNum = parseFloat(aVal.replace(/[+%,]/g, ''));
+                const bNum = parseFloat(bVal.replace(/[+%,]/g, ''));
+
+                if (!isNaN(aNum) && !isNaN(bNum)) {
+                    return ascending ? aNum - bNum : bNum - aNum;
                 }
-            }
-        });
+
+                return ascending ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+            });
+
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        function filterTable() {
+            const input = document.getElementById('searchBox');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('resultsTable');
+            const rows = table.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        }
     </script>
 </body>
 </html>

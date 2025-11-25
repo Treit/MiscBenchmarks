@@ -145,13 +145,20 @@ if ($NewResultsPath -and (Test-Path $NewResultsPath)) {
 else {
     Write-Host "Extracting current results from README.md files..." -ForegroundColor Gray
     # Run the extraction script and capture results
-    $tempFile = [System.IO.Path]::GetTempFileName() + ".json"
-    & "$PSScriptRoot\extract_baseline_results.ps1" -OutputPath ([System.IO.Path]::GetTempPath()) | Out-Null
-    $extractedJson = Join-Path ([System.IO.Path]::GetTempPath()) "baseline_results.json"
-    if (Test-Path $extractedJson) {
-        Move-Item $extractedJson $tempFile -Force
-        $newResults = Get-Content $tempFile -Raw | ConvertFrom-Json
-        Remove-Item $tempFile
+    $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) "BenchmarkComparison_$(Get-Random)"
+    New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
+
+    try {
+        & "$PSScriptRoot\extract_baseline_results.ps1" -OutputPath $tempDir | Out-Null
+        $extractedJson = Join-Path $tempDir "baseline_results.json"
+        if (Test-Path $extractedJson) {
+            $newResults = Get-Content $extractedJson -Raw | ConvertFrom-Json
+        }
+    }
+    finally {
+        if (Test-Path $tempDir) {
+            Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
     }
 }
 
@@ -184,19 +191,45 @@ foreach ($newResult in $newResults) {
     $key = "$($newResult.BenchmarkName)|$($newResult.Method)"
 
     if ($baselineIndex.ContainsKey($key)) {
-        # Find matching baseline (prefer same Count/Iterations parameter if available)
+        # Find matching baseline - require exact match on ALL parameters
         $matchingBaseline = $null
-        foreach ($baselineResult in $baselineIndex[$key]) {
-            if ($newResult.Count -eq $baselineResult.Count -or
-                $newResult.Iterations -eq $baselineResult.Iterations -or
-                (-not $newResult.Count -and -not $newResult.Iterations)) {
+        $baselineCandidates = $baselineIndex[$key]
+
+        # Get all parameter properties (excluding standard result columns)
+        $standardProps = @('BenchmarkName', 'DotNetVersion', 'Method', 'Mean', 'Error',
+                          'StdDev', 'Median', 'Ratio', 'Gen0', 'Gen1', 'Gen2',
+                          'Allocated', 'AllocRatio', 'CodeSize', 'RatioSD')
+        $newParams = $newResult.PSObject.Properties |
+            Where-Object { $_.Name -notin $standardProps } |
+            ForEach-Object { $_.Name }
+
+        # Try to find exact match by all parameters
+        foreach ($baselineResult in $baselineCandidates) {
+            $allMatch = $true
+
+            foreach ($paramName in $newParams) {
+                $newValue = $newResult.$paramName
+                $baselineValue = $baselineResult.$paramName
+
+                # Parameters must match exactly (or both be null/empty)
+                $paramMatch = ($newValue -eq $baselineValue) -or
+                             ([string]::IsNullOrWhiteSpace($newValue) -and [string]::IsNullOrWhiteSpace($baselineValue))
+
+                if (-not $paramMatch) {
+                    $allMatch = $false
+                    break
+                }
+            }
+
+            if ($allMatch) {
                 $matchingBaseline = $baselineResult
                 break
             }
         }
 
+        # Skip this comparison if no exact parameter match found
         if (-not $matchingBaseline) {
-            $matchingBaseline = $baselineIndex[$key][0]
+            continue
         }
 
         # Parse time values
@@ -254,7 +287,12 @@ Write-Host "  No significant change: $noChange" -ForegroundColor Gray
 Write-Host ""
 
 # Ensure output directory exists
-$outputDir = Join-Path $PSScriptRoot $OutputPath
+if ([System.IO.Path]::IsPathRooted($OutputPath)) {
+    $outputDir = $OutputPath
+} else {
+    $outputDir = Join-Path $PSScriptRoot $OutputPath
+}
+
 if (-not (Test-Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }

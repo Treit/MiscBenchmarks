@@ -81,7 +81,9 @@ function Parse-BenchmarkTable {
         if ($row.Count -ge 2) {
             $rowData = @{}
             for ($j = 0; $j -lt [Math]::Min($headers.Count, $row.Count); $j++) {
-                $rowData[$headers[$j]] = $row[$j]
+                # Strip markdown bold markers (**) from cell values
+                $cellValue = $row[$j] -replace '\*\*', ''
+                $rowData[$headers[$j]] = $cellValue
             }
             $results += $rowData
         }
@@ -124,6 +126,7 @@ foreach ($readme in $readmeFiles) {
 
         if ($tableResults.Count -gt 0) {
             foreach ($result in $tableResults) {
+                # Create base entry with known fields
                 $entry = [PSCustomObject]@{
                     BenchmarkName = $benchmarkName
                     DotNetVersion = $dotnetVersion
@@ -141,6 +144,18 @@ foreach ($readme in $readmeFiles) {
                     Count = $result['Count']
                     Iterations = $result['Iterations']
                     CodeSize = $result['Code Size']
+                }
+
+                # Add any additional columns as custom parameters
+                # This captures benchmark-specific parameters like ElementCount, Size, Length, etc.
+                $standardColumns = @('Method', 'Mean', 'Error', 'StdDev', 'Median', 'Ratio',
+                                    'Gen0', 'Gen1', 'Gen2', 'Allocated', 'Alloc Ratio',
+                                    'Count', 'Iterations', 'Code Size', 'RatioSD')
+
+                foreach ($key in $result.Keys) {
+                    if ($key -notin $standardColumns -and -not [string]::IsNullOrWhiteSpace($result[$key])) {
+                        $entry | Add-Member -NotePropertyName $key -NotePropertyValue $result[$key] -Force
+                    }
                 }
 
                 $allResults += $entry
@@ -166,7 +181,12 @@ Write-Host "  Errors: $errorCount" -ForegroundColor White
 Write-Host ""
 
 # Ensure output directory exists
-$outputDir = Join-Path $scriptRoot $OutputPath
+if ([System.IO.Path]::IsPathRooted($OutputPath)) {
+    $outputDir = $OutputPath
+} else {
+    $outputDir = Join-Path $scriptRoot $OutputPath
+}
+
 if (-not (Test-Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
