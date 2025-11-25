@@ -128,9 +128,13 @@ foreach ($dir in $benchmarkDirs) {
         # Build the dotnet run command
         $runArgs = @('run', '-c', 'Release')
 
+        # If no framework specified, default to net10.0 (BenchmarkDotNet will run all target frameworks)
         if ($Framework) {
             $runArgs += '--framework'
             $runArgs += $Framework
+        } else {
+            $runArgs += '--framework'
+            $runArgs += 'net10.0'
         }
 
         # Run benchmark (show output to console and capture it)
