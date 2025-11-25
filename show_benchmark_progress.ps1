@@ -75,7 +75,7 @@ Write-Host ""
 
 $lastCurrent = -1
 $lastUpdate = [DateTime]::MinValue
-$timeUpdateInterval = 1  # Update time every 1 second
+$timeUpdateInterval = 10  # Update time every 1 second
 
 # Hide cursor
 [Console]::CursorVisible = $false

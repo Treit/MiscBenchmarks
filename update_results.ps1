@@ -1,5 +1,5 @@
 $pwd = $PSScriptRoot
-$tool = Join-Path $pwd "tools\UpdateResults\bin\Debug\net8.0\UpdateResults.exe"
+$tool = Join-Path $pwd "tools\UpdateResults\bin\Debug\net10.0\UpdateResults.exe"
 if (!(Test-Path $tool)) 
 {
     $toolDir = Join-Path $pwd "tools\UpdateResults"
