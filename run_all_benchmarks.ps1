@@ -134,7 +134,11 @@ foreach ($dir in $benchmarkDirs) {
         }
 
         # Run benchmark (show output to console and capture it)
-        $output = dotnet @runArgs 2>&1 | Tee-Object -Variable capturedOutput
+        $capturedOutput = New-Object System.Collections.ArrayList
+        $output = & dotnet @runArgs 2>&1 | ForEach-Object {
+            [void]$capturedOutput.Add($_)
+            Write-Host $_
+        }
         $exitCode = $LASTEXITCODE
 
         if ($exitCode -ne 0) {
@@ -147,9 +151,7 @@ foreach ($dir in $benchmarkDirs) {
             } else {
                 throw "Benchmark failed with exit code $exitCode"
             }
-        }
-
-        # Update README
+        }        # Update README
         & "$PSScriptRoot\update_results.ps1" .
 
         Write-Host "  ✓ Completed and README updated" -ForegroundColor Green
