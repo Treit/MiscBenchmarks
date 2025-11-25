@@ -1,25 +1,26 @@
 # Array vs. Dictionary lookups by simple integer keys.
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                Method | Iterations |          Mean |      Error |     StdDev | Allocated |
-|---------------------- |----------- |--------------:|-----------:|-----------:|----------:|
-|      **LookupUsingArray** |         **10** |      **18.15 μs** |   **0.049 μs** |   **0.046 μs** |         **-** |
-| LookupUsingDictionary |         10 |      19.53 μs |   0.041 μs |   0.036 μs |         - |
-|      **LookupUsingArray** |        **100** |     **181.09 μs** |   **0.093 μs** |   **0.087 μs** |         **-** |
-| LookupUsingDictionary |        100 |     195.27 μs |   0.354 μs |   0.331 μs |         - |
-|      **LookupUsingArray** |       **1000** |   **1,810.53 μs** |   **1.597 μs** |   **1.416 μs** |         **-** |
-| LookupUsingDictionary |       1000 |   1,949.98 μs |   1.752 μs |   1.553 μs |         - |
-|      **LookupUsingArray** |      **10000** |  **18,104.29 μs** |  **10.782 μs** |   **9.004 μs** |         **-** |
-| LookupUsingDictionary |      10000 |  19,522.37 μs |  19.306 μs |  18.059 μs |         - |
-|      **LookupUsingArray** |     **100000** | **181,054.62 μs** | **171.718 μs** | **160.625 μs** |         **-** |
-| LookupUsingDictionary |     100000 | 195,161.50 μs | 285.076 μs | 252.712 μs |         - |
+| Method                | Iterations | Mean          | Error        | StdDev       | Allocated |
+|---------------------- |----------- |--------------:|-------------:|-------------:|----------:|
+| **LookupUsingArray**      | **10**         |      **18.22 μs** |     **0.103 μs** |     **0.096 μs** |         **-** |
+| LookupUsingDictionary | 10         |      18.84 μs |     0.091 μs |     0.085 μs |         - |
+| **LookupUsingArray**      | **100**        |     **182.10 μs** |     **0.694 μs** |     **0.649 μs** |         **-** |
+| LookupUsingDictionary | 100        |     188.41 μs |     0.782 μs |     0.731 μs |         - |
+| **LookupUsingArray**      | **1000**       |   **1,821.02 μs** |     **3.437 μs** |     **3.215 μs** |         **-** |
+| LookupUsingDictionary | 1000       |   1,898.47 μs |     3.606 μs |     3.373 μs |         - |
+| **LookupUsingArray**      | **10000**      |  **18,203.76 μs** |    **86.860 μs** |    **81.249 μs** |         **-** |
+| LookupUsingDictionary | 10000      |  18,830.75 μs |   101.818 μs |    95.241 μs |         - |
+| **LookupUsingArray**      | **100000**     | **182,080.20 μs** | **1,073.452 μs** | **1,004.108 μs** |         **-** |
+| LookupUsingDictionary | 100000     | 189,531.92 μs | 1,198.354 μs | 1,120.941 μs |         - |

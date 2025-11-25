@@ -2,24 +2,25 @@
 
 
 
+
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26085.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.202
-  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
 | Method                                   | Count   | Mean         | Error      | StdDev     | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------------------------------- |-------- |-------------:|-----------:|-----------:|------:|--------:|-------:|----------:|------------:|
-| **SumDataBitConverter**                      | **100**     |     **64.21 μs** |   **1.270 μs** |   **3.456 μs** |  **0.98** |    **0.07** | **0.9766** |   **4.59 KB** |        **1.01** |
-| SumDataBinaryPrimitives                  | 100     |     67.39 μs |   1.330 μs |   2.805 μs |  1.03 |    0.06 | 0.9766 |   4.55 KB |        1.00 |
-| SumDataMemoryMarshalCast                 | 100     |     64.39 μs |   1.260 μs |   2.545 μs |  0.98 |    0.07 | 0.9766 |   4.55 KB |        1.00 |
-| SumDataMemoryMarshalCastAndVectorizedSum | 100     |     65.87 μs |   1.315 μs |   2.745 μs |  1.00 |    0.00 | 0.9766 |   4.55 KB |        1.00 |
+| **SumDataBitConverter**                      | **100**     |     **70.50 μs** |   **0.893 μs** |   **0.835 μs** |  **0.95** |    **0.02** | **0.2441** |   **4.57 KB** |        **1.01** |
+| SumDataBinaryPrimitives                  | 100     |     75.13 μs |   0.834 μs |   0.780 μs |  1.01 |    0.02 | 0.2441 |   4.54 KB |        1.00 |
+| SumDataMemoryMarshalCast                 | 100     |     73.62 μs |   1.453 μs |   2.765 μs |  0.99 |    0.04 | 0.2441 |   4.54 KB |        1.00 |
+| SumDataMemoryMarshalCastAndVectorizedSum | 100     |     74.30 μs |   1.361 μs |   1.206 μs |  1.00 |    0.02 | 0.2441 |   4.54 KB |        1.00 |
 |                                          |         |              |            |            |       |         |        |           |             |
-| **SumDataBitConverter**                      | **1000000** | **18,198.52 μs** | **359.663 μs** | **819.134 μs** |  **3.84** |    **0.15** |      **-** |   **4.59 KB** |        **1.01** |
-| SumDataBinaryPrimitives                  | 1000000 |  7,895.97 μs | 155.735 μs | 284.769 μs |  1.65 |    0.08 |      - |   4.56 KB |        1.00 |
-| SumDataMemoryMarshalCast                 | 1000000 |  5,362.87 μs | 102.488 μs | 122.005 μs |  1.12 |    0.02 |      - |   4.56 KB |        1.00 |
-| SumDataMemoryMarshalCastAndVectorizedSum | 1000000 |  4,843.76 μs |  59.564 μs |  46.503 μs |  1.00 |    0.00 |      - |   4.56 KB |        1.00 |
+| **SumDataBitConverter**                      | **1000000** | **11,645.99 μs** | **233.101 μs** | **334.307 μs** |  **3.07** |    **0.16** |      **-** |   **4.57 KB** |        **1.01** |
+| SumDataBinaryPrimitives                  | 1000000 |  6,185.51 μs |  25.583 μs |  23.931 μs |  1.63 |    0.07 |      - |   4.54 KB |        1.00 |
+| SumDataMemoryMarshalCast                 | 1000000 |  6,100.52 μs | 121.754 μs | 291.714 μs |  1.61 |    0.10 |      - |   4.54 KB |        1.00 |
+| SumDataMemoryMarshalCastAndVectorizedSum | 1000000 |  3,805.59 μs |  74.584 μs | 140.087 μs |  1.00 |    0.06 |      - |   4.54 KB |        1.00 |

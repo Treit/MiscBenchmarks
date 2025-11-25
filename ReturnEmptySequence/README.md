@@ -2,19 +2,20 @@
 
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|             Method |      Mean |     Error |    StdDev | Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
+| Method             | Mean      | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |------------------- |----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
-| EnumerableDotEmpty |  5.301 ns | 0.0270 ns | 0.0240 ns |  1.00 |    0.00 |      - |         - |          NA |
-|      ArrayDotEmpty | 16.846 ns | 0.0343 ns | 0.0287 ns |  3.18 |    0.01 |      - |         - |          NA |
-|      NewEmptyArray | 18.721 ns | 0.0483 ns | 0.0403 ns |  3.53 |    0.02 | 0.0014 |      24 B |          NA |
-|       NewEmptyList | 12.560 ns | 0.1293 ns | 0.1079 ns |  2.37 |    0.02 | 0.0019 |      32 B |          NA |
+| EnumerableDotEmpty | 0.0000 ns | 0.0000 ns | 0.0000 ns |     ? |       ? |      - |         - |           ? |
+| ArrayDotEmpty      | 0.0000 ns | 0.0000 ns | 0.0000 ns |     ? |       ? |      - |         - |           ? |
+| NewEmptyArray      | 0.0000 ns | 0.0000 ns | 0.0000 ns |     ? |       ? |      - |         - |           ? |
+| NewEmptyList       | 3.9230 ns | 0.0604 ns | 0.0535 ns |     ? |       ? | 0.0019 |      32 B |           ? |

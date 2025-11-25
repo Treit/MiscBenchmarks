@@ -1,16 +1,17 @@
 # Creating an array using ToArray vs. Collection Expression.
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27793.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.102
-  [Host]     : .NET 8.0.12 (8.0.1224.60305), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.12 (8.0.1224.60305), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method               | Mean     | Error    | StdDev   | Median   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|--------------------- |---------:|---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| ToArray              | 41.02 ns | 0.901 ns | 2.482 ns | 40.26 ns |  1.00 |    0.00 | 0.0111 |      48 B |        1.00 |
-| CollectionExpression | 64.62 ns | 1.354 ns | 2.299 ns | 64.07 ns |  1.54 |    0.09 | 0.0315 |     136 B |        2.83 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method               | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|--------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| ToArray              | 19.26 ns | 0.179 ns | 0.159 ns |  1.00 |    0.01 | 0.0029 |      48 B |        1.00 |
+| CollectionExpression | 19.32 ns | 0.321 ns | 0.300 ns |  1.00 |    0.02 | 0.0029 |      48 B |        1.00 |

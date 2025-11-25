@@ -1,20 +1,25 @@
 # Deep cloning an object.
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27734.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-rc.2.24474.11
-  [Host]     : .NET 7.0.20 (7.0.2024.26716), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.20 (7.0.2024.26716), X64 RyuJIT AVX2
-
 
 ```
-| Method                   | Count | Mean          | Error        | StdDev        | Ratio | RatioSD | Gen0       | Gen1      | Gen2      | Allocated    | Alloc Ratio |
-|------------------------- |------ |--------------:|-------------:|--------------:|------:|--------:|-----------:|----------:|----------:|-------------:|------------:|
-| **CloneWithBinaryFormatter** | **10**    |     **173.95 μs** |     **2.752 μs** |      **2.440 μs** |  **3.69** |    **0.16** |    **29.5410** |    **4.1504** |         **-** |    **125.12 KB** |        **3.99** |
-| CloneWithJson            | 10    |      46.91 μs |     0.829 μs |      1.693 μs |  1.00 |    0.00 |     7.3853 |    0.0610 |         - |     31.35 KB |        1.00 |
-|                          |       |               |              |               |       |         |            |           |           |              |             |
-| **CloneWithBinaryFormatter** | **10000** | **398,654.49 μs** | **7,692.612 μs** | **10,783.967 μs** |  **4.44** |    **0.18** | **14000.0000** | **8000.0000** | **3000.0000** | **107309.68 KB** |        **2.92** |
-| CloneWithJson            | 10000 |  89,837.06 μs | 1,777.740 μs |  2,549.581 μs |  1.00 |    0.00 |  3333.3333 | 2000.0000 |  500.0000 |  36723.49 KB |        1.00 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                   | Count | Mean         | Error        | StdDev       | Ratio | RatioSD | Gen0      | Gen1      | Gen2     | Allocated   | Alloc Ratio |
+|------------------------- |------ |-------------:|-------------:|-------------:|------:|--------:|----------:|----------:|---------:|------------:|------------:|
+| **CloneWithBinaryFormatter** | **10**    |           **NA** |           **NA** |           **NA** |     **?** |       **?** |        **NA** |        **NA** |       **NA** |          **NA** |           **?** |
+| CloneWithJson            | 10    |     25.53 μs |     0.143 μs |     0.127 μs |  1.00 |    0.01 |    1.8921 |    0.1831 |        - |    30.98 KB |        1.00 |
+|                          |       |              |              |              |       |         |           |           |          |             |             |
+| **CloneWithBinaryFormatter** | **10000** |           **NA** |           **NA** |           **NA** |     **?** |       **?** |        **NA** |        **NA** |       **NA** |          **NA** |           **?** |
+| CloneWithJson            | 10000 | 57,855.95 μs | 1,146.441 μs | 1,407.932 μs |  1.00 |    0.03 | 1444.4444 | 1333.3333 | 444.4444 | 30126.46 KB |        1.00 |
+
+Benchmarks with issues:
+  Benchmark.CloneWithBinaryFormatter: DefaultJob [Count=10]
+  Benchmark.CloneWithBinaryFormatter: DefaultJob [Count=10000]

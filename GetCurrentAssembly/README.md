@@ -1,17 +1,18 @@
 # Getting the current assembly.
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|               Method |       Mean |     Error |    StdDev | Ratio |
+| Method               | Mean       | Error     | StdDev    | Ratio |
 |--------------------- |-----------:|----------:|----------:|------:|
-| GetExecutingAssembly | 572.528 ns | 1.4878 ns | 1.3917 ns |  1.00 |
-|    TypeofDotAssembly |   7.463 ns | 0.0229 ns | 0.0203 ns |  0.01 |
+| GetExecutingAssembly | 368.855 ns | 1.5691 ns | 1.4678 ns |  1.00 |
+| TypeofDotAssembly    |   3.783 ns | 0.0168 ns | 0.0140 ns |  0.01 |

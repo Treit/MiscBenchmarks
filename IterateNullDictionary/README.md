@@ -6,18 +6,20 @@ The original code did:
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27902.1000)
-Unknown processor
-.NET SDK 9.0.302
-  [Host]     : .NET 8.0.18 (8.0.1825.31117), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.18 (8.0.1825.31117), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                 | Count | Mean       | Error     | StdDev    | Median     | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|----------------------- |------ |-----------:|----------:|----------:|-----------:|------:|--------:|-------:|----------:|------------:|
-| NewDictionary          | 1000  | 12.8563 ns | 0.3815 ns | 1.1189 ns | 12.6304 ns | 57.22 |   28.62 | 0.0185 |      80 B |          NA |
-| EmptyCollectionLiteral | 1000  | 13.4026 ns | 0.4217 ns | 1.2166 ns | 13.4459 ns | 59.18 |   27.69 | 0.0185 |      80 B |          NA |
-| NullCheck              | 1000  |  0.2918 ns | 0.0556 ns | 0.1594 ns |  0.2273 ns |  1.00 |    0.00 |      - |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                 | Count | Mean      | Error     | StdDev    | Ratio | RatioSD | Allocated | Alloc Ratio |
+|----------------------- |------ |----------:|----------:|----------:|------:|--------:|----------:|------------:|
+| NewDictionary          | 1000  | 0.5338 ns | 0.0126 ns | 0.0118 ns |  2.48 |    0.07 |         - |          NA |
+| EmptyCollectionLiteral | 1000  | 0.5614 ns | 0.0179 ns | 0.0168 ns |  2.61 |    0.09 |         - |          NA |
+| EnumerableDotEmpty     | 1000  | 3.0173 ns | 0.0300 ns | 0.0281 ns | 14.00 |    0.27 |         - |          NA |
+| NullCheck              | 1000  | 0.2155 ns | 0.0044 ns | 0.0037 ns |  1.00 |    0.02 |         - |          NA |

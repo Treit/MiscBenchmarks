@@ -2,17 +2,18 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27823.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.201
-  [Host]     : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method          | Mean     | Error    | StdDev   | Median   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------- |---------:|---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| Equals          | 33.41 ns | 0.647 ns | 1.739 ns | 32.72 ns |  1.00 |    0.00 | 0.0074 |      32 B |        1.00 |
-| ReferenceEquals | 31.01 ns | 0.652 ns | 1.775 ns | 30.52 ns |  0.93 |    0.07 | 0.0074 |      32 B |        1.00 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method          | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| Equals          | 14.82 ns | 0.293 ns | 0.274 ns |  1.00 |    0.03 | 0.0019 |      32 B |        1.00 |
+| ReferenceEquals | 13.20 ns | 0.152 ns | 0.142 ns |  0.89 |    0.02 | 0.0019 |      32 B |        1.00 |

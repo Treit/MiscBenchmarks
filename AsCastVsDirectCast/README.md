@@ -1,23 +1,24 @@
 # 'as' cast vs direct C-style cast
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|     Method |   Count |            Mean |        Error |       StdDev | Ratio |
-|----------- |-------- |----------------:|-------------:|-------------:|------:|
-|     **AsCast** |      **10** |        **108.3 ns** |      **0.64 ns** |      **0.60 ns** |  **1.00** |
-| DirectCast |      10 |        101.6 ns |      1.11 ns |      1.04 ns |  0.94 |
-|            |         |                 |              |              |       |
-|     **AsCast** |    **1000** |     **10,958.0 ns** |    **122.15 ns** |    **108.28 ns** |  **1.00** |
-| DirectCast |    1000 |     11,022.3 ns |     51.51 ns |     48.18 ns |  1.01 |
-|            |         |                 |              |              |       |
-|     **AsCast** | **1000000** | **11,182,833.8 ns** | **51,760.20 ns** | **43,222.11 ns** |  **1.00** |
-| DirectCast | 1000000 | 10,284,217.1 ns | 39,505.46 ns | 36,953.43 ns |  0.92 |
+| Method     | Count   | Mean            | Error         | StdDev        | Ratio | RatioSD |
+|----------- |-------- |----------------:|--------------:|--------------:|------:|--------:|
+| **AsCast**     | **10**      |        **12.25 ns** |      **0.079 ns** |      **0.070 ns** |  **1.00** |    **0.01** |
+| DirectCast | 10      |        13.49 ns |      0.127 ns |      0.113 ns |  1.10 |    0.01 |
+|            |         |                 |               |               |       |         |
+| **AsCast**     | **1000**    |     **1,052.33 ns** |      **6.917 ns** |      **6.470 ns** |  **1.00** |    **0.01** |
+| DirectCast | 1000    |     1,060.74 ns |      9.248 ns |      8.198 ns |  1.01 |    0.01 |
+|            |         |                 |               |               |       |         |
+| **AsCast**     | **1000000** | **1,420,308.51 ns** | **14,514.454 ns** | **13,576.830 ns** |  **1.00** |    **0.01** |
+| DirectCast | 1000000 | 1,324,906.58 ns | 21,046.829 ns | 19,687.217 ns |  0.93 |    0.02 |

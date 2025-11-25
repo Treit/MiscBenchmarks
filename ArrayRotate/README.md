@@ -1,30 +1,31 @@
 # Rotating an array
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                   Method | Amount |     Mean |    Error |   StdDev |   Gen0 | Allocated |
+| Method                   | Amount | Mean     | Error    | StdDev   | Gen0   | Allocated |
 |------------------------- |------- |---------:|---------:|---------:|-------:|----------:|
-|    **RotateLeftWithReverse** |      **1** | **27.38 ns** | **0.205 ns** | **0.171 ns** |      **-** |         **-** |
-|       RotateLeftWithCopy |      1 | 59.61 ns | 0.617 ns | 0.547 ns | 0.0048 |      80 B |
-|   RotateLeftWithJuggling |      1 | 25.89 ns | 0.573 ns | 1.158 ns |      - |         - |
-| RotateLeftArrayCopyAaron |      1 | 17.22 ns | 0.288 ns | 0.269 ns | 0.0048 |      80 B |
-|    **RotateLeftWithReverse** |      **4** | **27.13 ns** | **0.095 ns** | **0.084 ns** |      **-** |         **-** |
-|       RotateLeftWithCopy |      4 | 59.56 ns | 0.690 ns | 0.646 ns | 0.0048 |      80 B |
-|   RotateLeftWithJuggling |      4 | 28.51 ns | 0.173 ns | 0.154 ns |      - |         - |
-| RotateLeftArrayCopyAaron |      4 | 17.22 ns | 0.201 ns | 0.188 ns | 0.0048 |      80 B |
-|    **RotateLeftWithReverse** |     **16** | **26.60 ns** | **0.102 ns** | **0.091 ns** |      **-** |         **-** |
-|       RotateLeftWithCopy |     16 | 59.43 ns | 0.690 ns | 0.612 ns | 0.0048 |      80 B |
-|   RotateLeftWithJuggling |     16 | 38.70 ns | 0.171 ns | 0.152 ns |      - |         - |
-| RotateLeftArrayCopyAaron |     16 | 16.49 ns | 0.123 ns | 0.115 ns | 0.0048 |      80 B |
-|    **RotateLeftWithReverse** |     **24** | **30.08 ns** | **0.271 ns** | **0.253 ns** |      **-** |         **-** |
-|       RotateLeftWithCopy |     24 | 59.49 ns | 0.306 ns | 0.271 ns | 0.0048 |      80 B |
-|   RotateLeftWithJuggling |     24 | 28.08 ns | 0.105 ns | 0.099 ns |      - |         - |
-| RotateLeftArrayCopyAaron |     24 | 15.96 ns | 0.203 ns | 0.190 ns | 0.0048 |      80 B |
+| **RotateLeftWithReverse**    | **1**      | **30.87 ns** | **0.321 ns** | **0.300 ns** |      **-** |         **-** |
+| RotateLeftWithCopy       | 1      | 59.37 ns | 1.159 ns | 1.084 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | 1      | 22.34 ns | 0.208 ns | 0.195 ns |      - |         - |
+| RotateLeftArrayCopyAaron | 1      | 12.67 ns | 0.276 ns | 0.244 ns | 0.0048 |      80 B |
+| **RotateLeftWithReverse**    | **4**      | **33.87 ns** | **0.347 ns** | **0.307 ns** |      **-** |         **-** |
+| RotateLeftWithCopy       | 4      | 59.66 ns | 0.928 ns | 0.868 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | 4      | 26.68 ns | 0.212 ns | 0.198 ns |      - |         - |
+| RotateLeftArrayCopyAaron | 4      | 11.92 ns | 0.085 ns | 0.080 ns | 0.0048 |      80 B |
+| **RotateLeftWithReverse**    | **16**     | **29.28 ns** | **0.311 ns** | **0.291 ns** |      **-** |         **-** |
+| RotateLeftWithCopy       | 16     | 60.21 ns | 1.187 ns | 1.110 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | 16     | 35.58 ns | 0.230 ns | 0.204 ns |      - |         - |
+| RotateLeftArrayCopyAaron | 16     | 11.56 ns | 0.139 ns | 0.123 ns | 0.0048 |      80 B |
+| **RotateLeftWithReverse**    | **24**     | **31.50 ns** | **0.272 ns** | **0.255 ns** |      **-** |         **-** |
+| RotateLeftWithCopy       | 24     | 58.94 ns | 0.782 ns | 0.694 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | 24     | 26.70 ns | 0.287 ns | 0.268 ns |      - |         - |
+| RotateLeftArrayCopyAaron | 24     | 12.18 ns | 0.222 ns | 0.207 ns | 0.0048 |      80 B |

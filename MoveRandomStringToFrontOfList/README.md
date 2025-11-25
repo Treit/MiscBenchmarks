@@ -2,29 +2,30 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27718.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.6.24328.19
-  [Host]     : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                                         | Count   | Mean              | Error            | StdDev            | Median            | Ratio    | RatioSD | Gen0   | Allocated  | Alloc Ratio |
-|----------------------------------------------- |-------- |------------------:|-----------------:|------------------:|------------------:|---------:|--------:|-------:|-----------:|------------:|
-| **MoveUsingLinqOrderByRandomWithUnecessaryToList** | **5**       |         **829.62 ns** |        **16.554 ns** |         **39.981 ns** |         **818.46 ns** |    **31.38** |    **2.01** | **0.1907** |      **824 B** |          **NA** |
-| MoveUsingRandomIndex                           | 5       |         530.43 ns |         7.098 ns |          6.640 ns |         527.53 ns |    19.83 |    0.79 | 0.0696 |      304 B |          NA |
-| MoveUsingCollectionsMarshal                    | 5       |         528.83 ns |        10.594 ns |         10.404 ns |         529.49 ns |    19.78 |    0.77 | 0.0696 |      304 B |          NA |
-| MoveUsingCollectionsMarshalAndSharedRandom     | 5       |          26.59 ns |         0.601 ns |          0.936 ns |          26.27 ns |     1.00 |    0.00 |      - |          - |          NA |
-|                                                |         |                   |                  |                   |                   |          |         |        |            |             |
-| **MoveUsingLinqOrderByRandomWithUnecessaryToList** | **100**     |       **4,494.08 ns** |        **89.452 ns** |        **241.840 ns** |       **4,457.41 ns** |    **99.86** |    **3.76** | **0.7172** |     **3096 B** |          **NA** |
-| MoveUsingRandomIndex                           | 100     |         583.39 ns |        11.588 ns |         23.932 ns |         583.14 ns |    13.56 |    0.42 | 0.0696 |      304 B |          NA |
-| MoveUsingCollectionsMarshal                    | 100     |         528.62 ns |         9.175 ns |         10.566 ns |         530.06 ns |    12.26 |    0.33 | 0.0696 |      304 B |          NA |
-| MoveUsingCollectionsMarshalAndSharedRandom     | 100     |          43.05 ns |         0.781 ns |          0.652 ns |          43.02 ns |     1.00 |    0.00 |      - |          - |          NA |
-|                                                |         |                   |                  |                   |                   |          |         |        |            |             |
-| **MoveUsingLinqOrderByRandomWithUnecessaryToList** | **1000000** | **239,864,207.53 ns** | **6,095,922.145 ns** | **17,293,116.494 ns** | **231,849,066.67 ns** | **1,182.39** |  **108.84** |      **-** | **24000733 B** |          **NA** |
-| MoveUsingRandomIndex                           | 1000000 |     910,403.01 ns |    29,666.038 ns |     83,673.587 ns |     903,627.49 ns |     4.51 |    0.51 |      - |      304 B |          NA |
-| MoveUsingCollectionsMarshal                    | 1000000 |     488,304.22 ns |     9,050.197 ns |     13,545.909 ns |     486,468.75 ns |     2.33 |    0.20 |      - |      304 B |          NA |
-| MoveUsingCollectionsMarshalAndSharedRandom     | 1000000 |     202,910.59 ns |     4,458.490 ns |     12,354.454 ns |     198,901.00 ns |     1.00 |    0.00 |      - |          - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                                         | Count   | Mean              | Error            | StdDev           | Ratio    | RatioSD | Gen0   | Allocated  | Alloc Ratio |
+|----------------------------------------------- |-------- |------------------:|-----------------:|-----------------:|---------:|--------:|-------:|-----------:|------------:|
+| **MoveUsingLinqOrderByRandomWithUnecessaryToList** | **5**       |         **542.00 ns** |         **5.492 ns** |         **4.869 ns** |    **23.10** |    **0.21** | **0.0505** |      **856 B** |          **NA** |
+| MoveUsingRandomIndex                           | 5       |         368.66 ns |         2.821 ns |         2.639 ns |    15.71 |    0.12 | 0.0181 |      304 B |          NA |
+| MoveUsingCollectionsMarshal                    | 5       |         361.19 ns |         3.863 ns |         3.614 ns |    15.39 |    0.16 | 0.0181 |      304 B |          NA |
+| MoveUsingCollectionsMarshalAndSharedRandom     | 5       |          23.46 ns |         0.079 ns |         0.074 ns |     1.00 |    0.00 |      - |          - |          NA |
+|                                                |         |                   |                  |                  |          |         |        |            |             |
+| **MoveUsingLinqOrderByRandomWithUnecessaryToList** | **100**     |       **2,644.98 ns** |        **21.202 ns** |        **19.832 ns** |    **67.52** |    **0.60** | **0.1869** |     **3128 B** |          **NA** |
+| MoveUsingRandomIndex                           | 100     |         351.97 ns |         2.062 ns |         1.828 ns |     8.98 |    0.06 | 0.0181 |      304 B |          NA |
+| MoveUsingCollectionsMarshal                    | 100     |         352.61 ns |         3.127 ns |         2.925 ns |     9.00 |    0.09 | 0.0181 |      304 B |          NA |
+| MoveUsingCollectionsMarshalAndSharedRandom     | 100     |          39.17 ns |         0.217 ns |         0.203 ns |     1.00 |    0.01 |      - |          - |          NA |
+|                                                |         |                   |                  |                  |          |         |        |            |             |
+| **MoveUsingLinqOrderByRandomWithUnecessaryToList** | **1000000** | **167,426,817.20 ns** | **1,685,814.167 ns** | **2,574,416.494 ns** | **1,709.59** |   **28.17** |      **-** | **24000728 B** |          **NA** |
+| MoveUsingRandomIndex                           | 1000000 |     385,315.21 ns |       718.790 ns |       637.189 ns |     3.93 |    0.03 |      - |      304 B |          NA |
+| MoveUsingCollectionsMarshal                    | 1000000 |     189,088.00 ns |       765.163 ns |       678.297 ns |     1.93 |    0.01 |      - |      304 B |          NA |
+| MoveUsingCollectionsMarshalAndSharedRandom     | 1000000 |      97,937.87 ns |       699.628 ns |       654.433 ns |     1.00 |    0.01 |      - |          - |          NA |

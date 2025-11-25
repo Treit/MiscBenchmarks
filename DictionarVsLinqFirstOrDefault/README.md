@@ -1,26 +1,27 @@
 # Finding matches using Dictionary vs Linear Search using LINQ.
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                                Method | Count |              Mean |            Error |           StdDev |    Ratio | RatioSD |   Gen0 | Allocated | Alloc Ratio |
-|-------------------------------------- |------ |------------------:|-----------------:|-----------------:|---------:|--------:|-------:|----------:|------------:|
-|            **FindMatchesUsingDictionary** |    **10** |          **53.06 ns** |         **0.103 ns** |         **0.080 ns** |     **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-|         FindMatchesUsingFirstOrDeault |    10 |         431.31 ns |         7.452 ns |         6.971 ns |     8.13 |    0.15 | 0.0763 |    1280 B |          NA |
-| FindMatchesUsingFirstOrDeaultNoLambda |    10 |         389.14 ns |         4.829 ns |         4.281 ns |     7.33 |    0.08 | 0.0620 |    1040 B |          NA |
-|                                       |       |                   |                  |                  |          |         |        |           |             |
-|            **FindMatchesUsingDictionary** |   **100** |         **583.44 ns** |         **1.007 ns** |         **0.786 ns** |     **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-|         FindMatchesUsingFirstOrDeault |   100 |      18,582.46 ns |       365.491 ns |       341.881 ns |    31.72 |    0.57 | 0.7629 |   12800 B |          NA |
-| FindMatchesUsingFirstOrDeaultNoLambda |   100 |      18,724.08 ns |       207.229 ns |       193.842 ns |    32.10 |    0.32 | 0.6104 |   10400 B |          NA |
-|                                       |       |                   |                  |                  |          |         |        |           |             |
-|            **FindMatchesUsingDictionary** | **10000** |      **53,904.20 ns** |       **439.253 ns** |       **410.877 ns** |     **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-|         FindMatchesUsingFirstOrDeault | 10000 | 154,123,071.74 ns | 3,024,789.074 ns | 3,825,389.681 ns | 2,884.48 |   84.79 |      - | 1280016 B |          NA |
-| FindMatchesUsingFirstOrDeaultNoLambda | 10000 | 158,874,769.64 ns | 1,677,588.566 ns | 1,487,138.568 ns | 2,948.50 |   34.73 |      - | 1040100 B |          NA |
+| Method                                | Count | Mean             | Error          | StdDev         | Ratio  | RatioSD | Gen0    | Allocated | Alloc Ratio |
+|-------------------------------------- |------ |-----------------:|---------------:|---------------:|-------:|--------:|--------:|----------:|------------:|
+| **FindMatchesUsingDictionary**            | **10**    |         **28.92 ns** |       **0.256 ns** |       **0.239 ns** |   **1.00** |    **0.01** |       **-** |         **-** |          **NA** |
+| FindMatchesUsingFirstOrDeault         | 10    |        150.07 ns |       2.384 ns |       2.230 ns |   5.19 |    0.09 |  0.0525 |     880 B |          NA |
+| FindMatchesUsingFirstOrDeaultNoLambda | 10    |        103.81 ns |       1.151 ns |       1.076 ns |   3.59 |    0.05 |  0.0381 |     640 B |          NA |
+|                                       |       |                  |                |                |        |         |         |           |             |
+| **FindMatchesUsingDictionary**            | **100**   |        **294.55 ns** |       **1.944 ns** |       **1.818 ns** |   **1.00** |    **0.01** |       **-** |         **-** |          **NA** |
+| FindMatchesUsingFirstOrDeault         | 100   |      3,534.57 ns |      24.017 ns |      20.056 ns |  12.00 |    0.10 |  0.5226 |    8800 B |          NA |
+| FindMatchesUsingFirstOrDeaultNoLambda | 100   |      2,717.21 ns |      24.931 ns |      23.320 ns |   9.23 |    0.09 |  0.3815 |    6400 B |          NA |
+|                                       |       |                  |                |                |        |         |         |           |             |
+| **FindMatchesUsingDictionary**            | **10000** |     **32,121.29 ns** |     **275.129 ns** |     **257.355 ns** |   **1.00** |    **0.01** |       **-** |         **-** |          **NA** |
+| FindMatchesUsingFirstOrDeault         | 10000 | 25,391,346.88 ns | 129,229.514 ns | 114,558.598 ns | 790.53 |    7.04 | 31.2500 |  880000 B |          NA |
+| FindMatchesUsingFirstOrDeaultNoLambda | 10000 | 20,718,823.32 ns | 110,860.555 ns |  92,573.584 ns | 645.06 |    5.73 | 31.2500 |  640000 B |          NA |

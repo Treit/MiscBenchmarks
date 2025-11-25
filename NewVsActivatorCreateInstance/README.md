@@ -3,17 +3,18 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26090.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.2.24157.14
-  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                             | Count | Mean     | Error    | StdDev   | Gen0    | Gen1   | Allocated |
-|----------------------------------- |------ |---------:|---------:|---------:|--------:|-------:|----------:|
-| CreateUsingNew                     | 1000  | 63.21 μs | 1.276 μs | 3.620 μs | 22.3389 | 4.8828 |  94.34 KB |
-| CreateUsingActivatorCreateInstance | 1000  | 64.00 μs | 1.247 μs | 2.048 μs | 22.3389 | 4.8828 |  94.34 KB |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                             | Count | Mean     | Error    | StdDev   | Gen0   | Gen1   | Allocated |
+|----------------------------------- |------ |---------:|---------:|---------:|-------:|-------:|----------:|
+| CreateUsingNew                     | 1000  | 31.12 μs | 0.458 μs | 0.406 μs | 5.7373 | 1.4038 |  94.34 KB |
+| CreateUsingActivatorCreateInstance | 1000  | 31.34 μs | 0.478 μs | 0.424 μs | 5.7373 | 1.4038 |  94.34 KB |

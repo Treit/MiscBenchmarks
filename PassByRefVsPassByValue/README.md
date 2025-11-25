@@ -1,24 +1,25 @@
 # Passing classes vs. structs.
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                 Method | Count |      Mean |     Error |    StdDev |    Median | Ratio | RatioSD | Allocated | Alloc Ratio |
-|----------------------- |------ |----------:|----------:|----------:|----------:|------:|--------:|----------:|------------:|
-|  Pass16ByteStructByRef | 10000 |  9.329 μs | 0.0361 μs | 0.0337 μs |  9.312 μs |  0.28 |    0.03 |         - |          NA |
-|       Pass16ByteStruct | 10000 |  9.335 μs | 0.0508 μs | 0.0450 μs |  9.315 μs |  0.29 |    0.03 |         - |          NA |
-|       Pass32ByteStruct | 10000 | 16.595 μs | 0.0939 μs | 0.0879 μs | 16.621 μs |  0.51 |    0.06 |         - |          NA |
-|        Pass16ByteClass | 10000 | 16.649 μs | 0.1719 μs | 0.1524 μs | 16.680 μs |  0.51 |    0.06 |         - |          NA |
-|        Pass32ByteClass | 10000 | 16.652 μs | 0.1328 μs | 0.1177 μs | 16.693 μs |  0.51 |    0.06 |         - |          NA |
-|  Pass32ByteStructByRef | 10000 | 17.142 μs | 0.1293 μs | 0.1210 μs | 17.160 μs |  0.52 |    0.06 |         - |          NA |
-|      Pass128ByteStruct | 10000 | 22.092 μs | 0.8345 μs | 2.4605 μs | 23.448 μs |  0.68 |    0.12 |         - |          NA |
-| Pass128ByteStructByRef | 10000 | 22.713 μs | 0.6798 μs | 2.0045 μs | 23.489 μs |  0.70 |    0.11 |         - |          NA |
-|       Pass128ByteClass | 10000 | 32.799 μs | 1.2329 μs | 3.6352 μs | 34.754 μs |  1.00 |    0.00 |         - |          NA |
+| Method                 | Count | Mean      | Error     | StdDev    | Ratio | RatioSD | Allocated | Alloc Ratio |
+|----------------------- |------ |----------:|----------:|----------:|------:|--------:|----------:|------------:|
+| Pass16ByteStructByRef  | 10000 |  9.599 μs | 0.0636 μs | 0.0595 μs |  0.29 |    0.01 |         - |          NA |
+| Pass16ByteStruct       | 10000 |  9.603 μs | 0.0558 μs | 0.0522 μs |  0.29 |    0.01 |         - |          NA |
+| Pass32ByteStruct       | 10000 | 20.048 μs | 0.1464 μs | 0.1369 μs |  0.60 |    0.02 |         - |          NA |
+| Pass32ByteClass        | 10000 | 20.068 μs | 0.1054 μs | 0.0986 μs |  0.60 |    0.02 |         - |          NA |
+| Pass32ByteStructByRef  | 10000 | 20.091 μs | 0.1282 μs | 0.1199 μs |  0.60 |    0.02 |         - |          NA |
+| Pass16ByteClass        | 10000 | 20.245 μs | 0.1314 μs | 0.1230 μs |  0.60 |    0.02 |         - |          NA |
+| Pass128ByteStruct      | 10000 | 20.262 μs | 0.5047 μs | 1.4882 μs |  0.60 |    0.05 |         - |          NA |
+| Pass128ByteStructByRef | 10000 | 21.732 μs | 0.4270 μs | 0.6648 μs |  0.65 |    0.03 |         - |          NA |
+| Pass128ByteClass       | 10000 | 33.673 μs | 0.6536 μs | 0.9783 μs |  1.00 |    0.04 |         - |          NA |

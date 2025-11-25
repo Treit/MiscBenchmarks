@@ -2,17 +2,18 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26096.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.2.24157.14
-  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method               | Mean      | Error     | StdDev   | Median    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|--------------------- |----------:|----------:|---------:|----------:|------:|--------:|-------:|----------:|------------:|
-| EnumGetValuesTypeof  | 173.59 ns | 12.438 ns | 36.67 ns | 162.11 ns |  2.74 |    0.94 | 0.0148 |      64 B |        1.00 |
-| EnumGetValuesGeneric |  66.74 ns |  4.170 ns | 12.30 ns |  64.11 ns |  1.00 |    0.00 | 0.0148 |      64 B |        1.00 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method               | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|--------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| EnumGetValuesTypeof  | 83.70 ns | 0.585 ns | 0.548 ns |  3.60 |    0.03 | 0.0038 |      64 B |        1.00 |
+| EnumGetValuesGeneric | 23.27 ns | 0.146 ns | 0.122 ns |  1.00 |    0.01 | 0.0038 |      64 B |        1.00 |

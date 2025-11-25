@@ -3,24 +3,25 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26231.5000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.2.24157.14
-  [Host]     : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                  | Count  | Mean           | Error        | StdDev        | Median         | Ratio | RatioSD |
-|------------------------ |------- |---------------:|-------------:|--------------:|---------------:|------:|--------:|
-| **DeQuoteWithTrim**         | **100**    |     **1,775.7 ns** |     **34.21 ns** |      **46.82 ns** |     **1,773.3 ns** |  **1.00** |    **0.00** |
-| DeQuoteWithSubstring    | 100    |       981.1 ns |     19.68 ns |      53.21 ns |       976.4 ns |  0.56 |    0.05 |
-| DeQuoteWithRangePattern | 100    |       871.3 ns |     17.50 ns |      35.76 ns |       856.0 ns |  0.50 |    0.03 |
-| DeQuoteWithSpan         | 100    |     1,090.2 ns |     20.73 ns |      23.87 ns |     1,087.9 ns |  0.62 |    0.02 |
-|                         |        |                |              |               |                |       |         |
-| **DeQuoteWithTrim**         | **100000** | **1,716,693.9 ns** | **50,577.06 ns** | **145,926.37 ns** | **1,652,111.3 ns** |  **1.00** |    **0.00** |
-| DeQuoteWithSubstring    | 100000 | 1,063,951.7 ns | 20,979.85 ns |  50,266.38 ns | 1,047,963.7 ns |  0.61 |    0.06 |
-| DeQuoteWithRangePattern | 100000 |   895,948.4 ns | 16,842.72 ns |  35,893.22 ns |   883,443.7 ns |  0.51 |    0.04 |
-| DeQuoteWithSpan         | 100000 | 1,172,989.2 ns | 23,002.66 ns |  43,764.94 ns | 1,157,536.2 ns |  0.66 |    0.06 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                  | Count  | Mean         | Error       | StdDev      | Ratio | RatioSD |
+|------------------------ |------- |-------------:|------------:|------------:|------:|--------:|
+| **DeQuoteWithTrim**         | **100**    |     **860.0 ns** |    **12.91 ns** |    **12.08 ns** |  **1.00** |    **0.02** |
+| DeQuoteWithSubstring    | 100    |     621.6 ns |    10.19 ns |     9.53 ns |  0.72 |    0.01 |
+| DeQuoteWithRangePattern | 100    |     624.8 ns |     9.11 ns |     8.52 ns |  0.73 |    0.01 |
+| DeQuoteWithSpan         | 100    |     762.8 ns |     7.83 ns |     6.94 ns |  0.89 |    0.01 |
+|                         |        |              |             |             |       |         |
+| **DeQuoteWithTrim**         | **100000** | **868,172.4 ns** | **7,061.42 ns** | **5,896.61 ns** |  **1.00** |    **0.01** |
+| DeQuoteWithSubstring    | 100000 | 653,380.0 ns | 7,920.67 ns | 7,021.47 ns |  0.75 |    0.01 |
+| DeQuoteWithRangePattern | 100000 | 669,609.4 ns | 6,836.53 ns | 6,060.41 ns |  0.77 |    0.01 |
+| DeQuoteWithSpan         | 100000 | 765,290.5 ns | 7,480.51 ns | 6,246.57 ns |  0.88 |    0.01 |

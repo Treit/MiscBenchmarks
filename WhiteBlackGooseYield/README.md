@@ -1,18 +1,19 @@
 # Goose wants to see what Yield does.
 
 
+
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26244.5000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.5.24307.3
-  [Host]     : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
 | Method      | Count | Mean        | Error      | StdDev       | Median      | Ratio  | RatioSD | Allocated | Alloc Ratio |
 |------------ |------ |------------:|-----------:|-------------:|------------:|-------:|--------:|----------:|------------:|
-| NoYield     | 10000 |    16.03 μs |   0.424 μs |     1.230 μs |    15.59 μs |   1.00 |    0.00 |         - |          NA |
-| TaskYield   | 10000 | 2,917.35 μs |  76.563 μs |   225.749 μs | 2,943.83 μs | 182.79 |   20.44 |     171 B |          NA |
-| ThreadYield | 10000 | 9,740.89 μs | 939.217 μs | 2,555.209 μs | 8,814.54 μs | 610.10 |  178.46 |      50 B |          NA |
+| NoYield     | 10000 |    15.62 μs |   0.092 μs |     0.086 μs |    15.65 μs |   1.00 |    0.01 |         - |          NA |
+| TaskYield   | 10000 | 1,829.40 μs |  36.111 μs |    66.934 μs | 1,796.56 μs | 117.15 |    4.29 |     168 B |          NA |
+| ThreadYield | 10000 | 4,779.08 μs | 817.697 μs | 2,359.243 μs | 4,423.06 μs | 306.04 |  150.36 |         - |          NA |

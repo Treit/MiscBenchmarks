@@ -1,29 +1,30 @@
 # Executing tasks simulating a slow 500 millisecond I/O task.
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                   Method | Count |       Mean |     Error |    StdDev |     Median | Ratio | RatioSD | Allocated | Alloc Ratio |
-|------------------------- |------ |-----------:|----------:|----------:|-----------:|------:|--------:|----------:|------------:|
-|                  **TaskRun** |    **10** |   **512.4 ms** |   **3.40 ms** |   **3.18 ms** |   **512.5 ms** |  **1.00** |    **0.00** |         **-** |          **NA** |
-|                AsyncTask |    10 |   505.6 ms |   1.79 ms |   1.67 ms |   505.3 ms |  0.99 |    0.01 |         - |          NA |
-|  TaskRunSetMinThreads100 |    10 |   506.4 ms |   1.29 ms |   1.01 ms |   506.1 ms |  0.99 |    0.01 |         - |          NA |
-| TaskRunSetMinThreads1000 |    10 |   505.5 ms |   2.42 ms |   2.15 ms |   506.2 ms |  0.99 |    0.01 |         - |          NA |
-|                          |       |            |           |           |            |       |         |           |             |
-|                  **TaskRun** |   **250** | **1,673.0 ms** | **147.80 ms** | **394.51 ms** | **1,521.4 ms** |  **1.00** |    **0.00** |   **43456 B** |        **1.00** |
-|                AsyncTask |   250 |   506.2 ms |   2.58 ms |   2.28 ms |   506.9 ms |  0.22 |    0.03 |   74960 B |        1.72 |
-|  TaskRunSetMinThreads100 |   250 | 1,519.1 ms |   2.67 ms |   2.37 ms | 1,519.1 ms |  0.67 |    0.08 |   42832 B |        0.99 |
-| TaskRunSetMinThreads1000 |   250 |   513.4 ms |   5.28 ms |   4.93 ms |   515.5 ms |  0.23 |    0.03 |   43456 B |        1.00 |
-|                          |       |            |           |           |            |       |         |           |             |
-|                  **TaskRun** |  **1000** | **3,439.4 ms** | **334.86 ms** | **987.34 ms** | **3,043.9 ms** |  **1.00** |    **0.00** |  **168832 B** |        **1.00** |
-|                AsyncTask |  1000 |   504.8 ms |   2.32 ms |   2.06 ms |   504.6 ms |  0.10 |    0.01 |  296936 B |        1.76 |
-|  TaskRunSetMinThreads100 |  1000 | 3,174.5 ms | 246.60 ms | 727.10 ms | 3,037.4 ms |  0.94 |    0.08 |  168832 B |        1.00 |
-| TaskRunSetMinThreads1000 |  1000 |   524.5 ms |   1.67 ms |   1.56 ms |   524.3 ms |  0.10 |    0.01 |  169456 B |        1.00 |
+| Method                   | Count | Mean       | Error     | StdDev      | Median     | Ratio | RatioSD | Allocated | Alloc Ratio |
+|------------------------- |------ |-----------:|----------:|------------:|-----------:|------:|--------:|----------:|------------:|
+| **TaskRun**                  | **10**    |   **501.9 ms** |   **0.58 ms** |     **0.48 ms** |   **502.1 ms** |  **1.00** |    **0.00** |   **1.78 KB** |        **1.00** |
+| AsyncTask                | 10    |   500.6 ms |   3.74 ms |     3.32 ms |   501.7 ms |  1.00 |    0.01 |   3.15 KB |        1.77 |
+| TaskRunSetMinThreads100  | 10    |   501.8 ms |   1.32 ms |     1.03 ms |   501.6 ms |  1.00 |    0.00 |   1.78 KB |        1.00 |
+| TaskRunSetMinThreads1000 | 10    |   501.7 ms |   1.75 ms |     1.37 ms |   501.4 ms |  1.00 |    0.00 |   1.78 KB |        1.00 |
+|                          |       |            |           |             |            |       |         |           |             |
+| **TaskRun**                  | **250**   | **2,384.3 ms** | **367.77 ms** | **1,031.27 ms** | **2,024.3 ms** |  **1.15** |    **0.64** |  **41.16 KB** |        **1.00** |
+| AsyncTask                | 250   |   500.2 ms |   3.50 ms |     3.28 ms |   501.3 ms |  0.24 |    0.08 |  72.52 KB |        1.76 |
+| TaskRunSetMinThreads100  | 250   | 1,521.3 ms |   4.71 ms |     4.18 ms | 1,523.1 ms |  0.74 |    0.24 |  41.16 KB |        1.00 |
+| TaskRunSetMinThreads1000 | 250   |   513.5 ms |   1.40 ms |     1.31 ms |   514.0 ms |  0.25 |    0.08 |  41.16 KB |        1.00 |
+|                          |       |            |           |             |            |       |         |           |             |
+| **TaskRun**                  | **1000**  | **4,633.9 ms** | **908.53 ms** | **2,606.74 ms** | **3,533.5 ms** |  **1.25** |    **0.89** |  **164.2 KB** |        **1.00** |
+| AsyncTask                | 1000  |   501.0 ms |   1.28 ms |     1.14 ms |   501.6 ms |  0.14 |    0.05 | 289.32 KB |        1.76 |
+| TaskRunSetMinThreads100  | 1000  | 5,043.6 ms |   3.78 ms |     3.54 ms | 5,044.8 ms |  1.36 |    0.52 | 166.04 KB |        1.01 |
+| TaskRunSetMinThreads1000 | 1000  |   521.4 ms |   1.16 ms |     0.97 ms |   521.6 ms |  0.14 |    0.05 |  164.2 KB |        1.00 |
