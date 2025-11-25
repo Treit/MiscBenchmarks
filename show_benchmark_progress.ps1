@@ -74,6 +74,8 @@ Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host ""
 
 $lastCurrent = -1
+$lastUpdate = [DateTime]::MinValue
+$timeUpdateInterval = 1  # Update time every 1 second
 
 # Hide cursor
 [Console]::CursorVisible = $false
@@ -84,7 +86,7 @@ try {
             try {
                 $progress = Get-Content $progressFile -Raw | ConvertFrom-Json
 
-                # Calculate elapsed time (always update)
+                # Calculate elapsed time
                 $startTime = [DateTime]::Parse($progress.StartTime)
                 $elapsed = (Get-Date) - $startTime
 
@@ -101,34 +103,37 @@ try {
                     $eta = "Calculating..."
                 }
 
-                # Update display on progress change OR every refresh interval
-                if ($progress.Current -ne $lastCurrent -or $true) {
-                    $lastCurrent = $progress.Current
+                # Update display if progress changed OR time update interval elapsed
+                $now = Get-Date
+                $shouldUpdate = $progress.Current -ne $lastCurrent -or ($now - $lastUpdate).TotalSeconds -ge $timeUpdateInterval
 
-                    # Move cursor to top
-                    [Console]::SetCursorPosition(0, 3)
+                if ($shouldUpdate) {
+                    $lastCurrent = $progress.Current
+                    $lastUpdate = $now
+
+                    # Clear screen and redraw
+                    Clear-Host
+                    Write-Host "Benchmark Progress Monitor" -ForegroundColor Cyan
+                    Write-Host ("=" * 80) -ForegroundColor Cyan
+                    Write-Host ""
 
                     # Display progress
                     $progressBar = Get-ProgressBar -Current $progress.Current -Total $progress.Total -Width 60
-                    Write-Host "Progress: $progressBar" -NoNewline
-                    Write-Host (" " * 20)  # Clear rest of line
+                    Write-Host "Progress: $progressBar"
 
                     Write-Host ""
-                    Write-Host "Status   : $($progress.Status.PadRight(20))" -NoNewline -ForegroundColor $(
+                    Write-Host "Status   : $($progress.Status.PadRight(20))" -ForegroundColor $(
                         switch ($progress.Status) {
                             "Running" { "Yellow" }
                             "Complete" { "Green" }
                             default { "White" }
                         }
                     )
-                    Write-Host (" " * 20)  # Clear rest of line
 
-                    Write-Host "Current  : $($progress.CurrentBenchmark.PadRight(50))" -NoNewline -ForegroundColor Cyan
-                    Write-Host (" " * 20)  # Clear rest of line
+                    Write-Host "Current  : $($progress.CurrentBenchmark.PadRight(50))" -ForegroundColor Cyan
 
                     Write-Host ""
-                    Write-Host "Count    : $($progress.Current) / $($progress.Total)" -NoNewline
-                    Write-Host (" " * 20)  # Clear rest of line
+                    Write-Host "Count    : $($progress.Current) / $($progress.Total)"
 
                     Write-Host "Succeeded: " -NoNewline
                     Write-Host $progress.Succeeded.ToString().PadRight(10) -NoNewline -ForegroundColor Green
@@ -136,15 +141,12 @@ try {
                     Write-Host $progress.Failed.ToString().PadRight(5) -NoNewline -ForegroundColor $(if ($progress.Failed -gt 0) { "Red" } else { "White" })
                     Write-Host "Failed (build): " -NoNewline
                     $buildFailed = if ($progress.BuildFailed) { $progress.BuildFailed } else { 0 }
-                    Write-Host $buildFailed.ToString().PadRight(5) -NoNewline -ForegroundColor $(if ($buildFailed -gt 0) { "Red" } else { "White" })
-                    Write-Host (" " * 20)  # Clear rest of line
+                    Write-Host $buildFailed.ToString() -ForegroundColor $(if ($buildFailed -gt 0) { "Red" } else { "White" })
 
                     Write-Host ""
-                    Write-Host "Elapsed  : $(Format-Duration $elapsed)" -NoNewline
-                    Write-Host (" " * 20)  # Clear rest of line
+                    Write-Host "Elapsed  : $(Format-Duration $elapsed)"
 
-                    Write-Host "$eta" -NoNewline -ForegroundColor $(if ($progress.IsComplete) { "Green" } else { "Yellow" })
-                    Write-Host (" " * 20)  # Clear rest of line
+                    Write-Host "$eta" -ForegroundColor $(if ($progress.IsComplete) { "Green" } else { "Yellow" })
 
                     # Show failed benchmarks if any
                     $buildFailed = if ($progress.BuildFailed) { $progress.BuildFailed } else { 0 }
@@ -172,6 +174,7 @@ try {
                         Write-Host ""
                         break
                     }
+                }
                 }
             }
             catch {
