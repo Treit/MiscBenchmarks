@@ -70,7 +70,7 @@ if (-not (Test-Path $progressFile)) {
 
 Clear-Host
 Write-Host "Benchmark Progress Monitor" -ForegroundColor Cyan
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host ""
 
 $lastCurrent = -1
