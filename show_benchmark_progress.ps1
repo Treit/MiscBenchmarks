@@ -129,8 +129,11 @@ try {
 
                     Write-Host "Succeeded: " -NoNewline
                     Write-Host $progress.Succeeded.ToString().PadRight(10) -NoNewline -ForegroundColor Green
-                    Write-Host "Failed: " -NoNewline
-                    Write-Host $progress.Failed.ToString().PadRight(10) -NoNewline -ForegroundColor $(if ($progress.Failed -gt 0) { "Red" } else { "White" })
+                    Write-Host "Failed (runtime): " -NoNewline
+                    Write-Host $progress.Failed.ToString().PadRight(5) -NoNewline -ForegroundColor $(if ($progress.Failed -gt 0) { "Red" } else { "White" })
+                    Write-Host "Failed (build): " -NoNewline
+                    $buildFailed = if ($progress.BuildFailed) { $progress.BuildFailed } else { 0 }
+                    Write-Host $buildFailed.ToString().PadRight(5) -NoNewline -ForegroundColor $(if ($buildFailed -gt 0) { "Red" } else { "White" })
                     Write-Host (" " * 20)  # Clear rest of line
 
                     Write-Host ""
@@ -141,9 +144,18 @@ try {
                     Write-Host (" " * 20)  # Clear rest of line
 
                     # Show failed benchmarks if any
+                    $buildFailed = if ($progress.BuildFailed) { $progress.BuildFailed } else { 0 }
+                    if ($buildFailed -gt 0 -and $progress.BuildFailedBenchmarks) {
+                        Write-Host ""
+                        Write-Host "Build failures:" -ForegroundColor Red
+                        foreach ($failed in $progress.BuildFailedBenchmarks) {
+                            Write-Host "  • $failed" -ForegroundColor Red
+                        }
+                    }
+
                     if ($progress.Failed -gt 0 -and $progress.FailedBenchmarks) {
                         Write-Host ""
-                        Write-Host "Failed benchmarks:" -ForegroundColor Red
+                        Write-Host "Runtime failures:" -ForegroundColor Red
                         foreach ($failed in $progress.FailedBenchmarks) {
                             Write-Host "  • $failed" -ForegroundColor Red
                         }

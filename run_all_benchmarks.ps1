@@ -78,6 +78,8 @@ $progressData = @{
     Succeeded = 0
     Failed = 0
     FailedBenchmarks = @()
+    BuildFailed = 0
+    BuildFailedBenchmarks = @()
     StartTime = (Get-Date).ToString("o")
     Status = "Starting"
     IsComplete = $false
@@ -101,6 +103,8 @@ $current = 0
 $succeeded = 0
 $failed = 0
 $failedBenchmarks = @()
+$buildFailed = 0
+$buildFailedBenchmarks = @()
 
 $startTime = Get-Date
 
@@ -116,6 +120,7 @@ foreach ($dir in $benchmarkDirs) {
     $progressData.Status = "Running"
     $progressData.Succeeded = $succeeded
     $progressData.Failed = $failed
+    $progressData.BuildFailed = $buildFailed
     $progressData | ConvertTo-Json | Set-Content $progressFile
 
     Push-Location $dir.FullName
@@ -133,7 +138,14 @@ foreach ($dir in $benchmarkDirs) {
         $exitCode = $LASTEXITCODE
 
         if ($exitCode -ne 0) {
-            throw "Benchmark failed with exit code $exitCode"
+            # Check if it's a build failure
+            $isBuildFailure = $output -match "Build FAILED" -or $output -match "error CS\d+" -or $output -match "error MSB\d+"
+
+            if ($isBuildFailure) {
+                throw "Build failed"
+            } else {
+                throw "Benchmark failed with exit code $exitCode"
+            }
         }
 
         # Update README
@@ -144,16 +156,28 @@ foreach ($dir in $benchmarkDirs) {
 
         # Update progress file
         $progressData.Succeeded = $succeeded
+        $progressData.Failed = $failed
+        $progressData.BuildFailed = $buildFailed
         $progressData | ConvertTo-Json | Set-Content $progressFile
     }
     catch {
-        Write-Host "  ✗ ERROR: $_" -ForegroundColor Red
-        $failed++
-        $failedBenchmarks += $benchmarkName
+        $errorMessage = $_.Exception.Message
+
+        if ($errorMessage -like "*Build failed*") {
+            Write-Host "  ✗ BUILD FAILED" -ForegroundColor Red
+            $buildFailed++
+            $buildFailedBenchmarks += $benchmarkName
+        } else {
+            Write-Host "  ✗ ERROR: $errorMessage" -ForegroundColor Red
+            $failed++
+            $failedBenchmarks += $benchmarkName
+        }
 
         # Update progress file
         $progressData.Failed = $failed
         $progressData.FailedBenchmarks = $failedBenchmarks
+        $progressData.BuildFailed = $buildFailed
+        $progressData.BuildFailedBenchmarks = $buildFailedBenchmarks
         $progressData | ConvertTo-Json | Set-Content $progressFile
     }
     finally {
@@ -179,16 +203,26 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "Summary:" -ForegroundColor Cyan
 Write-Host "  Total: $total"
 Write-Host "  Succeeded: $succeeded" -ForegroundColor Green
-Write-Host "  Failed: $failed" -ForegroundColor $(if ($failed -gt 0) { "Red" } else { "Green" })
+Write-Host "  Failed (runtime): $failed" -ForegroundColor $(if ($failed -gt 0) { "Red" } else { "Green" })
+Write-Host "  Failed (build): $buildFailed" -ForegroundColor $(if ($buildFailed -gt 0) { "Red" } else { "Green" })
 Write-Host "  Duration: $($duration.ToString('hh\:mm\:ss'))"
+
+if ($buildFailed -gt 0) {
+    Write-Host ""
+    Write-Host "Build failures:" -ForegroundColor Red
+    foreach ($name in $buildFailedBenchmarks) {
+        Write-Host "  - $name" -ForegroundColor Red
+    }
+}
 
 if ($failed -gt 0) {
     Write-Host ""
-    Write-Host "Failed benchmarks:" -ForegroundColor Red
+    Write-Host "Runtime failures:" -ForegroundColor Red
     foreach ($name in $failedBenchmarks) {
         Write-Host "  - $name" -ForegroundColor Red
     }
 }
 
+$totalFailed = $failed + $buildFailed
 Write-Host ""
-Write-Host "All benchmarks completed!" -ForegroundColor $(if ($failed -eq 0) { "Green" } else { "Yellow" })
+Write-Host "All benchmarks completed!" -ForegroundColor $(if ($totalFailed -eq 0) { "Green" } else { "Yellow" })
