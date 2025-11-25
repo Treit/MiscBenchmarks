@@ -1,18 +1,19 @@
 # Deserializing JSON using a few different techniques with a large complex object
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27828.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.201
-  [Host]     : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                        | Count | Mean     | Error     | StdDev    | Gen0     | Gen1     | Gen2     | Allocated  |
-|------------------------------ |------ |---------:|----------:|----------:|---------:|---------:|---------:|-----------:|
-| DeserializeWithJsonDocument   | 100   | 1.616 ms | 0.0322 ms | 0.0440 ms | 136.7188 |  68.3594 |        - |  713.17 KB |
-| DeserializeWithJsonNode       | 100   | 3.226 ms | 0.0504 ms | 0.0495 ms | 328.1250 | 218.7500 | 109.3750 | 2053.64 KB |
-| DeserializeWithJsonSerializer | 100   | 1.599 ms | 0.0287 ms | 0.0503 ms | 121.0938 |  72.2656 |        - |  635.23 KB |
-| DeserializeWithSourceGen      | 100   | 1.579 ms | 0.0302 ms | 0.0268 ms | 121.0938 |  72.2656 |        - |  635.23 KB |
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                        | Count | Mean       | Error    | StdDev   | Gen0     | Gen1     | Gen2     | Allocated  |
+|------------------------------ |------ |-----------:|---------:|---------:|---------:|---------:|---------:|-----------:|
+| DeserializeWithJsonDocument   | 100   | 1,045.8 μs |  9.76 μs |  8.66 μs |  39.0625 |  17.5781 |        - |  668.15 KB |
+| DeserializeWithJsonNode       | 100   | 2,122.2 μs | 26.39 μs | 22.04 μs | 125.0000 | 109.3750 | 109.3750 | 2221.08 KB |
+| DeserializeWithJsonSerializer | 100   |   933.3 μs |  2.46 μs |  2.18 μs |  38.0859 |  15.6250 |        - |  635.23 KB |
+| DeserializeWithSourceGen      | 100   |   978.7 μs | 13.75 μs | 12.87 μs |  37.1094 |  15.6250 |        - |  635.23 KB |

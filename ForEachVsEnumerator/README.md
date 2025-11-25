@@ -1,52 +1,53 @@
 # ForEach vs. directly using the enumerator.
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                            Method |  Count |           Mean |        Error |      StdDev | Ratio | RatioSD |     Gen0 | Allocated | Alloc Ratio |
-|---------------------------------- |------- |---------------:|-------------:|------------:|------:|--------:|---------:|----------:|------------:|
-|            **MaxUsingEnumeratorList** |   **1000** |     **1,530.5 ns** |      **5.75 ns** |     **5.38 ns** |  **2.33** |    **0.01** |   **0.0019** |      **40 B** |          **NA** |
-|               MaxUsingForEachList |   1000 |       655.8 ns |      4.18 ns |     3.71 ns |  1.00 |    0.00 |        - |         - |          NA |
-|         MaxUsingForEachListSorted |   1000 |       758.9 ns |     33.28 ns |    98.13 ns |  1.09 |    0.12 |        - |         - |          NA |
-|               MaxUsingForLoopList |   1000 |       668.8 ns |      6.65 ns |     5.90 ns |  1.02 |    0.01 |        - |         - |          NA |
-|         MaxUsingForLoopListSorted |   1000 |       632.0 ns |      1.88 ns |     1.76 ns |  0.96 |    0.01 |        - |         - |          NA |
-|           MaxUsingEnumeratorArray |   1000 |    33,068.8 ns |     85.22 ns |    71.16 ns | 50.45 |    0.28 |   1.4038 |   24032 B |          NA |
-|              MaxUsingForEachArray |   1000 |       344.1 ns |      1.89 ns |     1.67 ns |  0.52 |    0.00 |        - |         - |          NA |
-| MaxUsingForEachArrayLocalVariable |   1000 |       348.4 ns |      1.48 ns |     1.32 ns |  0.53 |    0.00 |        - |         - |          NA |
-|        MaxUsingForEachArraySorted |   1000 |       319.0 ns |      1.00 ns |     0.94 ns |  0.49 |    0.00 |        - |         - |          NA |
-|              MaxUsingForLoopArray |   1000 |       661.3 ns |      2.20 ns |     1.95 ns |  1.01 |    0.01 |        - |         - |          NA |
-| MaxUsingForLoopArrayLocalVariable |   1000 |       365.4 ns |      3.87 ns |     3.43 ns |  0.56 |    0.01 |        - |         - |          NA |
-|        MaxUsingForLoopArraySorted |   1000 |       627.7 ns |      2.88 ns |     2.56 ns |  0.96 |    0.01 |        - |         - |          NA |
-|          MaxUsingEnumeratorList64 |   1000 |     1,550.6 ns |      1.43 ns |     1.27 ns |  2.36 |    0.01 |   0.0019 |      40 B |          NA |
-|             MaxUsingForEachList64 |   1000 |       678.7 ns |      3.09 ns |     2.89 ns |  1.03 |    0.01 |        - |         - |          NA |
-|             MaxUsingForLoopList64 |   1000 |       652.7 ns |      3.46 ns |     3.07 ns |  1.00 |    0.01 |        - |         - |          NA |
-|         MaxUsingEnumeratorArray64 |   1000 |    33,696.4 ns |    102.62 ns |    95.99 ns | 51.39 |    0.34 |   1.4038 |   24032 B |          NA |
-|            MaxUsingForEachArray64 |   1000 |       369.6 ns |      2.62 ns |     2.45 ns |  0.56 |    0.01 |        - |         - |          NA |
-|            MaxUsingForLoopArray64 |   1000 |       687.7 ns |      4.48 ns |     4.19 ns |  1.05 |    0.01 |        - |         - |          NA |
-|                                   |        |                |              |             |       |         |          |           |             |
-|            **MaxUsingEnumeratorList** | **100000** |   **149,655.8 ns** |    **478.52 ns** |   **447.61 ns** |  **2.39** |    **0.02** |        **-** |      **40 B** |          **NA** |
-|               MaxUsingForEachList | 100000 |    62,624.5 ns |    423.64 ns |   396.27 ns |  1.00 |    0.00 |        - |         - |          NA |
-|         MaxUsingForEachListSorted | 100000 |    62,717.1 ns |    422.55 ns |   395.26 ns |  1.00 |    0.01 |        - |         - |          NA |
-|               MaxUsingForLoopList | 100000 |    62,686.8 ns |    240.37 ns |   200.72 ns |  1.00 |    0.01 |        - |         - |          NA |
-|         MaxUsingForLoopListSorted | 100000 |    63,347.0 ns |    332.77 ns |   311.28 ns |  1.01 |    0.01 |        - |         - |          NA |
-|           MaxUsingEnumeratorArray | 100000 | 3,292,812.6 ns |  9,490.94 ns | 8,413.47 ns | 52.56 |    0.38 | 140.6250 | 2400034 B |          NA |
-|              MaxUsingForEachArray | 100000 |    31,426.1 ns |    207.32 ns |   173.12 ns |  0.50 |    0.01 |        - |         - |          NA |
-| MaxUsingForEachArrayLocalVariable | 100000 |    31,264.2 ns |    141.10 ns |   117.83 ns |  0.50 |    0.00 |        - |         - |          NA |
-|        MaxUsingForEachArraySorted | 100000 |    31,284.0 ns |     53.30 ns |    47.25 ns |  0.50 |    0.00 |        - |         - |          NA |
-|              MaxUsingForLoopArray | 100000 |    62,279.6 ns |     88.82 ns |    74.17 ns |  0.99 |    0.01 |        - |         - |          NA |
-| MaxUsingForLoopArrayLocalVariable | 100000 |    31,397.4 ns |    103.24 ns |    96.57 ns |  0.50 |    0.00 |        - |         - |          NA |
-|        MaxUsingForLoopArraySorted | 100000 |    62,152.2 ns |     80.32 ns |    62.71 ns |  0.99 |    0.01 |        - |         - |          NA |
-|          MaxUsingEnumeratorList64 | 100000 |   154,623.2 ns |    347.53 ns |   308.08 ns |  2.47 |    0.02 |        - |      40 B |          NA |
-|             MaxUsingForEachList64 | 100000 |    64,989.7 ns |    466.22 ns |   436.10 ns |  1.04 |    0.01 |        - |         - |          NA |
-|             MaxUsingForLoopList64 | 100000 |    63,223.9 ns |    256.29 ns |   227.19 ns |  1.01 |    0.01 |        - |         - |          NA |
-|         MaxUsingEnumeratorArray64 | 100000 | 3,251,488.0 ns | 10,081.01 ns | 8,418.10 ns | 51.89 |    0.38 | 140.6250 | 2400034 B |          NA |
-|            MaxUsingForEachArray64 | 100000 |    31,620.9 ns |     58.62 ns |    48.95 ns |  0.50 |    0.00 |        - |         - |          NA |
-|            MaxUsingForLoopArray64 | 100000 |    62,685.6 ns |     59.00 ns |    52.30 ns |  1.00 |    0.01 |        - |         - |          NA |
+| Method                            | Count  | Mean         | Error       | StdDev      | Median       | Ratio | RatioSD | Gen0     | Allocated | Alloc Ratio |
+|---------------------------------- |------- |-------------:|------------:|------------:|-------------:|------:|--------:|---------:|----------:|------------:|
+| **MaxUsingEnumeratorList**            | **1000**   |     **656.9 ns** |     **3.21 ns** |     **2.50 ns** |     **657.5 ns** |  **0.98** |    **0.01** |        **-** |         **-** |          **NA** |
+| MaxUsingForEachList               | 1000   |     672.0 ns |     4.24 ns |     3.97 ns |     672.1 ns |  1.00 |    0.01 |        - |         - |          NA |
+| MaxUsingForEachListSorted         | 1000   |     631.4 ns |     4.68 ns |     4.38 ns |     633.0 ns |  0.94 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopList               | 1000   |     912.6 ns |    18.08 ns |    38.15 ns |     927.0 ns |  1.36 |    0.06 |        - |         - |          NA |
+| MaxUsingForLoopListSorted         | 1000   |     636.7 ns |     4.14 ns |     3.88 ns |     636.2 ns |  0.95 |    0.01 |        - |         - |          NA |
+| MaxUsingEnumeratorArray           | 1000   |   6,602.2 ns |    49.08 ns |    45.91 ns |   6,600.3 ns |  9.82 |    0.09 |   1.4343 |   24000 B |          NA |
+| MaxUsingForEachArray              | 1000   |     330.5 ns |     2.75 ns |     2.29 ns |     330.6 ns |  0.49 |    0.00 |        - |         - |          NA |
+| MaxUsingForEachArrayLocalVariable | 1000   |     342.8 ns |     4.66 ns |     4.14 ns |     343.0 ns |  0.51 |    0.01 |        - |         - |          NA |
+| MaxUsingForEachArraySorted        | 1000   |     593.7 ns |    16.37 ns |    48.26 ns |     617.3 ns |  0.88 |    0.07 |        - |         - |          NA |
+| MaxUsingForLoopArray              | 1000   |     651.4 ns |     3.15 ns |     2.63 ns |     653.1 ns |  0.97 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopArrayLocalVariable | 1000   |     372.5 ns |     7.14 ns |     9.77 ns |     369.8 ns |  0.55 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopArraySorted        | 1000   |     632.8 ns |     5.65 ns |     5.29 ns |     633.6 ns |  0.94 |    0.01 |        - |         - |          NA |
+| MaxUsingEnumeratorList64          | 1000   |     668.7 ns |     2.43 ns |     2.15 ns |     669.4 ns |  1.00 |    0.01 |        - |         - |          NA |
+| MaxUsingForEachList64             | 1000   |     690.4 ns |     5.29 ns |     4.95 ns |     690.8 ns |  1.03 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopList64             | 1000   |     666.5 ns |     4.55 ns |     4.26 ns |     667.9 ns |  0.99 |    0.01 |        - |         - |          NA |
+| MaxUsingEnumeratorArray64         | 1000   |   6,613.9 ns |    52.73 ns |    49.32 ns |   6,619.3 ns |  9.84 |    0.09 |   1.4343 |   24000 B |          NA |
+| MaxUsingForEachArray64            | 1000   |     361.4 ns |     5.20 ns |     4.87 ns |     361.1 ns |  0.54 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopArray64            | 1000   |     648.6 ns |     4.54 ns |     4.25 ns |     649.9 ns |  0.97 |    0.01 |        - |         - |          NA |
+|                                   |        |              |             |             |              |       |         |          |           |             |
+| **MaxUsingEnumeratorList**            | **100000** |  **63,619.5 ns** |   **720.31 ns** |   **638.54 ns** |  **63,397.6 ns** |  **1.01** |    **0.01** |        **-** |         **-** |          **NA** |
+| MaxUsingForEachList               | 100000 |  62,794.7 ns |   477.49 ns |   446.64 ns |  63,096.9 ns |  1.00 |    0.01 |        - |         - |          NA |
+| MaxUsingForEachListSorted         | 100000 |  62,818.6 ns |   581.94 ns |   515.87 ns |  62,944.5 ns |  1.00 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopList               | 100000 |  62,904.8 ns |   414.44 ns |   387.67 ns |  63,068.9 ns |  1.00 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopListSorted         | 100000 |  63,067.6 ns |   486.20 ns |   454.79 ns |  63,284.8 ns |  1.00 |    0.01 |        - |         - |          NA |
+| MaxUsingEnumeratorArray           | 100000 | 653,029.7 ns | 6,643.96 ns | 6,214.76 ns | 654,739.4 ns | 10.40 |    0.12 | 142.5781 | 2400000 B |          NA |
+| MaxUsingForEachArray              | 100000 |  31,546.4 ns |   257.86 ns |   241.20 ns |  31,387.1 ns |  0.50 |    0.01 |        - |         - |          NA |
+| MaxUsingForEachArrayLocalVariable | 100000 |  31,599.5 ns |   316.31 ns |   280.40 ns |  31,624.6 ns |  0.50 |    0.01 |        - |         - |          NA |
+| MaxUsingForEachArraySorted        | 100000 |  62,627.5 ns |   407.65 ns |   381.32 ns |  62,387.5 ns |  1.00 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopArray              | 100000 |  62,709.3 ns |   452.82 ns |   423.57 ns |  62,958.6 ns |  1.00 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopArrayLocalVariable | 100000 |  31,541.8 ns |   310.92 ns |   290.84 ns |  31,522.5 ns |  0.50 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopArraySorted        | 100000 |  62,978.6 ns |   483.87 ns |   452.61 ns |  63,123.1 ns |  1.00 |    0.01 |        - |         - |          NA |
+| MaxUsingEnumeratorList64          | 100000 |  64,939.7 ns |   531.00 ns |   496.70 ns |  65,087.6 ns |  1.03 |    0.01 |        - |         - |          NA |
+| MaxUsingForEachList64             | 100000 |  63,290.3 ns |   418.67 ns |   391.62 ns |  63,288.3 ns |  1.01 |    0.01 |        - |         - |          NA |
+| MaxUsingForLoopList64             | 100000 |  63,461.7 ns |   396.26 ns |   370.66 ns |  63,671.8 ns |  1.01 |    0.01 |        - |         - |          NA |
+| MaxUsingEnumeratorArray64         | 100000 | 657,078.2 ns | 8,771.59 ns | 8,204.95 ns | 657,292.9 ns | 10.46 |    0.15 | 142.5781 | 2400000 B |          NA |
+| MaxUsingForEachArray64            | 100000 |  31,904.0 ns |   192.02 ns |   179.62 ns |  31,975.1 ns |  0.51 |    0.00 |        - |         - |          NA |
+| MaxUsingForLoopArray64            | 100000 |  63,205.0 ns |   519.10 ns |   485.56 ns |  63,373.1 ns |  1.01 |    0.01 |        - |         - |          NA |

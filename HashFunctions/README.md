@@ -3,26 +3,27 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26096.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.2.24157.14
-  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                        | Size | Mean       | Error    | StdDev    | Median     | Ratio | RatioSD | Gen0   | Gen1   | Allocated | Alloc Ratio |
-|------------------------------ |----- |-----------:|---------:|----------:|-----------:|------:|--------:|-------:|-------:|----------:|------------:|
-| HashJenkins                   | 1024 | 1,402.6 ns | 19.91 ns |  18.62 ns | 1,403.4 ns |  6.40 |    0.16 |      - |      - |         - |          NA |
-| HashCRC32                     | 1024 | 2,060.4 ns | 20.61 ns |  19.28 ns | 2,050.3 ns |  9.39 |    0.18 |      - |      - |         - |          NA |
-| HashSystemIOHashingCRC32      | 1024 | 2,295.2 ns | 44.60 ns |  56.41 ns | 2,286.1 ns | 10.52 |    0.38 | 0.0114 |      - |      56 B |          NA |
-| HashMurmur32                  | 1024 |   377.4 ns |  8.24 ns |  22.83 ns |   368.2 ns |  1.81 |    0.13 |      - |      - |         - |          NA |
-| HashFNV1_32                   | 1024 | 1,120.2 ns | 16.97 ns |  15.87 ns | 1,119.5 ns |  5.12 |    0.09 |      - |      - |         - |          NA |
-| HashMurmur64                  | 1024 |   219.2 ns |  4.34 ns |   3.84 ns |   217.9 ns |  1.00 |    0.00 |      - |      - |         - |          NA |
-| HashMD5GoogleGemini           | 1024 | 2,897.9 ns | 52.07 ns |  43.48 ns | 2,913.2 ns | 13.21 |    0.33 | 0.0458 | 0.0420 |     208 B |          NA |
-| HashFNV1_64                   | 1024 | 1,120.8 ns | 19.54 ns |  18.28 ns | 1,124.8 ns |  5.12 |    0.12 |      - |      - |         - |          NA |
-| HashFNV1_32_StackOverflowLinq | 1024 | 1,676.0 ns | 11.69 ns |   9.76 ns | 1,672.8 ns |  7.64 |    0.13 | 0.0057 |      - |      32 B |          NA |
-| Hash64BitUsingSHA2            | 1024 | 3,526.3 ns | 83.29 ns | 233.55 ns | 3,440.6 ns | 16.10 |    1.22 | 0.0534 |      - |     240 B |          NA |
-| Hash64BitUsingMD5ChatGPT      | 1024 | 2,551.5 ns | 50.36 ns |  49.46 ns | 2,549.4 ns | 11.68 |    0.34 | 0.0458 |      - |     208 B |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                        | Size | Mean       | Error    | StdDev   | Ratio | RatioSD | Gen0   | Gen1   | Allocated | Alloc Ratio |
+|------------------------------ |----- |-----------:|---------:|---------:|------:|--------:|-------:|-------:|----------:|------------:|
+| HashJenkins                   | 1024 | 1,581.2 ns |  4.91 ns |  3.84 ns |  9.70 |    0.06 |      - |      - |         - |          NA |
+| HashCRC32                     | 1024 | 2,528.6 ns | 12.14 ns | 11.36 ns | 15.51 |    0.11 |      - |      - |         - |          NA |
+| HashSystemIOHashingCRC32      | 1024 | 2,536.7 ns | 15.19 ns | 14.20 ns | 15.56 |    0.13 |      - |      - |      32 B |          NA |
+| HashMurmur32                  | 1024 |   400.1 ns |  1.48 ns |  1.38 ns |  2.45 |    0.02 |      - |      - |         - |          NA |
+| HashFNV1_32                   | 1024 | 1,255.8 ns |  5.71 ns |  5.35 ns |  7.70 |    0.06 |      - |      - |         - |          NA |
+| HashMurmur64                  | 1024 |   163.0 ns |  1.07 ns |  1.00 ns |  1.00 |    0.01 |      - |      - |         - |          NA |
+| HashMD5GoogleGemini           | 1024 | 2,916.6 ns | 28.19 ns | 23.54 ns | 17.89 |    0.18 | 0.0114 | 0.0076 |     216 B |          NA |
+| HashFNV1_64                   | 1024 | 1,255.5 ns |  5.65 ns |  5.29 ns |  7.70 |    0.06 |      - |      - |         - |          NA |
+| HashFNV1_32_StackOverflowLinq | 1024 | 1,258.3 ns |  6.29 ns |  5.25 ns |  7.72 |    0.06 |      - |      - |         - |          NA |
+| Hash64BitUsingSHA2            | 1024 | 1,112.7 ns |  9.01 ns |  8.43 ns |  6.83 |    0.06 | 0.0134 |      - |     248 B |          NA |
+| Hash64BitUsingMD5ChatGPT      | 1024 | 2,708.2 ns | 17.73 ns | 14.80 ns | 16.61 |    0.13 | 0.0114 |      - |     216 B |          NA |

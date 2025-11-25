@@ -3,19 +3,20 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27852.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.203
-  [Host]     : .NET 8.0.15 (8.0.1525.16413), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.15 (8.0.1525.16413), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                            | Count | Mean      | Error     | StdDev    | Median    | Ratio | RatioSD | Allocated | Alloc Ratio |
-|---------------------------------- |------ |----------:|----------:|----------:|----------:|------:|--------:|----------:|------------:|
-| LookupUsingDictionaryInt          | 1000  |  5.274 ns | 0.5414 ns | 1.5963 ns |  4.590 ns |  1.00 |    0.00 |         - |          NA |
-| LookupUsingFrozenDictionaryInt    | 1000  |  3.552 ns | 0.2110 ns | 0.6189 ns |  3.426 ns |  0.73 |    0.24 |         - |          NA |
-| LookupUsingDictionaryString       | 1000  | 11.374 ns | 0.7518 ns | 2.1569 ns | 10.552 ns |  2.31 |    0.73 |         - |          NA |
-| LookupUsingFrozenDictionaryString | 1000  |  8.608 ns | 0.5953 ns | 1.7365 ns |  8.297 ns |  1.77 |    0.61 |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                            | Count | Mean     | Error     | StdDev    | Ratio | RatioSD | Allocated | Alloc Ratio |
+|---------------------------------- |------ |---------:|----------:|----------:|------:|--------:|----------:|------------:|
+| LookupUsingDictionaryInt          | 1000  | 3.059 ns | 0.0255 ns | 0.0226 ns |  1.00 |    0.01 |         - |          NA |
+| LookupUsingFrozenDictionaryInt    | 1000  | 1.186 ns | 0.0437 ns | 0.0409 ns |  0.39 |    0.01 |         - |          NA |
+| LookupUsingDictionaryString       | 1000  | 5.075 ns | 0.0302 ns | 0.0283 ns |  1.66 |    0.01 |         - |          NA |
+| LookupUsingFrozenDictionaryString | 1000  | 6.602 ns | 0.0804 ns | 0.0753 ns |  2.16 |    0.03 |         - |          NA |

@@ -1,24 +1,25 @@
 # Checking if strings are the same using StartsWith vs. Equals.
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26080.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.200
-  [Host]     : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                            | Count | StringLength | Mean       | Error    | StdDev    | Median     | Ratio | RatioSD | Allocated | Alloc Ratio |
-|---------------------------------- |------ |------------- |-----------:|---------:|----------:|-----------:|------:|--------:|----------:|------------:|
-| **StartsWithOrdinalIgnoreCase**       | **100**   | **3**            |   **324.2 ns** |  **6.48 ns** |  **14.48 ns** |   **321.8 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| EqualsOrdinalIgnoreCase           | 100   | 3            |   268.4 ns |  4.76 ns |   9.73 ns |   264.5 ns |  0.83 |    0.05 |         - |          NA |
-| AsSpanEqualsOrdinalIgnoreCase     | 100   | 3            |   583.2 ns | 11.62 ns |  14.28 ns |   579.4 ns |  1.78 |    0.10 |         - |          NA |
-| AsSpanStartsWithOrdinalIgnoreCase | 100   | 3            |   585.8 ns | 20.88 ns |  56.09 ns |   567.7 ns |  1.80 |    0.17 |         - |          NA |
-|                                   |       |              |            |          |           |            |       |         |           |             |
-| **StartsWithOrdinalIgnoreCase**       | **100**   | **100**          |   **359.7 ns** |  **7.24 ns** |  **16.93 ns** |   **354.9 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| EqualsOrdinalIgnoreCase           | 100   | 100          |   303.7 ns |  6.03 ns |  15.12 ns |   299.3 ns |  0.85 |    0.05 |         - |          NA |
-| AsSpanEqualsOrdinalIgnoreCase     | 100   | 100          | 2,046.2 ns | 60.44 ns | 166.47 ns | 1,969.6 ns |  5.80 |    0.57 |         - |          NA |
-| AsSpanStartsWithOrdinalIgnoreCase | 100   | 100          | 2,120.7 ns | 42.44 ns | 103.31 ns | 2,103.4 ns |  5.92 |    0.44 |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                            | Count | StringLength | Mean     | Error   | StdDev  | Ratio | RatioSD | Allocated | Alloc Ratio |
+|---------------------------------- |------ |------------- |---------:|--------:|--------:|------:|--------:|----------:|------------:|
+| **StartsWithOrdinalIgnoreCase**       | **100**   | **3**            | **165.1 ns** | **1.22 ns** | **1.14 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| EqualsOrdinalIgnoreCase           | 100   | 3            | 143.8 ns | 1.00 ns | 0.94 ns |  0.87 |    0.01 |         - |          NA |
+| AsSpanEqualsOrdinalIgnoreCase     | 100   | 3            | 319.9 ns | 3.74 ns | 3.32 ns |  1.94 |    0.02 |         - |          NA |
+| AsSpanStartsWithOrdinalIgnoreCase | 100   | 3            | 310.9 ns | 2.13 ns | 1.99 ns |  1.88 |    0.02 |         - |          NA |
+|                                   |       |              |          |         |         |       |         |           |             |
+| **StartsWithOrdinalIgnoreCase**       | **100**   | **100**          | **267.7 ns** | **1.96 ns** | **1.83 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| EqualsOrdinalIgnoreCase           | 100   | 100          | 264.6 ns | 2.16 ns | 1.92 ns |  0.99 |    0.01 |         - |          NA |
+| AsSpanEqualsOrdinalIgnoreCase     | 100   | 100          | 892.7 ns | 2.10 ns | 1.86 ns |  3.34 |    0.02 |         - |          NA |
+| AsSpanStartsWithOrdinalIgnoreCase | 100   | 100          | 888.4 ns | 2.33 ns | 2.18 ns |  3.32 |    0.02 |         - |          NA |

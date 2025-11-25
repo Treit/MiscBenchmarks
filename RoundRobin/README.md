@@ -3,19 +3,20 @@
 
 
 
+
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27734.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-rc.2.24474.11
-  [Host]     : .NET 8.0.10 (8.0.1024.46610), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.10 (8.0.1024.46610), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
 | Method                             | Count | Mean     | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------------------------- |------ |---------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
-| RoundRobinUsingListAndEnumerators  | 10    | 1.737 μs | 0.0229 μs | 0.0191 μs |  1.00 |    0.00 | 0.4845 |   2.05 KB |        1.00 |
-| RoundRobinUsingQueue               | 10    | 4.742 μs | 0.0865 μs | 0.0962 μs |  2.74 |    0.06 | 0.9995 |   4.23 KB |        2.06 |
-| RoundRobinUsingQueueAndEnumerators | 10    | 2.500 μs | 0.0409 μs | 0.0362 μs |  1.44 |    0.02 | 0.5379 |   2.27 KB |        1.11 |
-| RoundRobinUsingSuperLinqInterleave | 10    | 2.192 μs | 0.0244 μs | 0.0191 μs |  1.26 |    0.02 | 0.5417 |   2.29 KB |        1.12 |
+| RoundRobinUsingListAndEnumerators  | 10    | 1.002 μs | 0.0093 μs | 0.0078 μs |  1.00 |    0.01 | 0.1106 |   1.82 KB |        1.00 |
+| RoundRobinUsingQueue               | 10    | 2.786 μs | 0.0255 μs | 0.0239 μs |  2.78 |    0.03 | 0.2441 |   4.04 KB |        2.22 |
+| RoundRobinUsingQueueAndEnumerators | 10    | 1.713 μs | 0.0280 μs | 0.0248 μs |  1.71 |    0.03 | 0.1259 |   2.09 KB |        1.15 |
+| RoundRobinUsingSuperLinqInterleave | 10    | 1.284 μs | 0.0108 μs | 0.0096 μs |  1.28 |    0.01 | 0.1278 |    2.1 KB |        1.15 |

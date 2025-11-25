@@ -6,38 +6,39 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27758.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100
-  [Host]     : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                      | Value                | Mean       | Error     | StdDev    | Median     | Ratio  | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------------------- |--------------------- |-----------:|----------:|----------:|-----------:|-------:|--------:|-------:|----------:|------------:|
-| **CheckWithNewHashSet**         | **gibberish**            | **89.5225 ns** | **1.8373 ns** | **4.5070 ns** | **88.5506 ns** | **168.96** |   **16.10** | **0.0408** |     **176 B** |          **NA** |
-| CheckWithStaticHashSet      | gibberish            | 13.3259 ns | 0.2622 ns | 0.2190 ns | 13.2809 ns |  24.09 |    2.05 |      - |         - |          NA |
-| CheckWithSimpleEqualityTest | gibberish            |  0.5522 ns | 0.0452 ns | 0.0464 ns |  0.5463 ns |   1.00 |    0.00 |      - |         - |          NA |
-| CheckWithCharListPattern    | gibberish            |  0.0175 ns | 0.0235 ns | 0.0242 ns |  0.0138 ns |   0.03 |    0.04 |      - |         - |          NA |
-| CheckWithSearchValues       | gibberish            | 13.7353 ns | 0.3064 ns | 0.4586 ns | 13.5652 ns |  24.92 |    2.23 |      - |         - |          NA |
-|                             |                      |            |           |           |            |        |         |        |           |             |
-| **CheckWithNewHashSet**         | **needle**               | **87.7790 ns** | **0.8906 ns** | **0.7895 ns** | **87.8739 ns** | **252.39** |   **25.71** | **0.0408** |     **176 B** |          **NA** |
-| CheckWithStaticHashSet      | needle               | 14.5515 ns | 0.3178 ns | 0.4242 ns | 14.5624 ns |  41.97 |    4.42 |      - |         - |          NA |
-| CheckWithSimpleEqualityTest | needle               |  0.3516 ns | 0.0381 ns | 0.0357 ns |  0.3564 ns |   1.00 |    0.00 |      - |         - |          NA |
-| CheckWithCharListPattern    | needle               |  3.5701 ns | 0.1054 ns | 0.1035 ns |  3.5836 ns |  10.27 |    1.16 |      - |         - |          NA |
-| CheckWithSearchValues       | needle               | 14.5021 ns | 0.3219 ns | 0.8134 ns | 14.2096 ns |  42.75 |    3.55 |      - |         - |          NA |
-|                             |                      |            |           |           |            |        |         |        |           |             |
-| **CheckWithNewHashSet**         | **needle_in_a_haystac**  | **92.0440 ns** | **1.8353 ns** | **1.6270 ns** | **91.6128 ns** | **153.02** |   **32.97** | **0.0408** |     **176 B** |          **NA** |
-| CheckWithStaticHashSet      | needle_in_a_haystac  | 20.6174 ns | 0.4434 ns | 0.9057 ns | 20.3610 ns |  34.12 |    5.84 |      - |         - |          NA |
-| CheckWithSimpleEqualityTest | needle_in_a_haystac  |  0.6172 ns | 0.0479 ns | 0.1072 ns |  0.5786 ns |   1.00 |    0.00 |      - |         - |          NA |
-| CheckWithCharListPattern    | needle_in_a_haystac  |  0.0179 ns | 0.0199 ns | 0.0204 ns |  0.0160 ns |   0.03 |    0.04 |      - |         - |          NA |
-| CheckWithSearchValues       | needle_in_a_haystac  | 21.0373 ns | 0.4340 ns | 0.9618 ns | 20.7957 ns |  34.94 |    5.84 |      - |         - |          NA |
-|                             |                      |            |           |           |            |        |         |        |           |             |
-| **CheckWithNewHashSet**         | **needle_in_a_haystack** | **98.0424 ns** | **1.4986 ns** | **1.4018 ns** | **98.2660 ns** |  **59.58** |    **4.10** | **0.0408** |     **176 B** |          **NA** |
-| CheckWithStaticHashSet      | needle_in_a_haystack | 22.9928 ns | 0.8260 ns | 2.3298 ns | 21.8386 ns |  20.30 |    3.71 |      - |         - |          NA |
-| CheckWithSimpleEqualityTest | needle_in_a_haystack |  1.1588 ns | 0.1018 ns | 0.3001 ns |  1.0083 ns |   1.00 |    0.00 |      - |         - |          NA |
-| CheckWithCharListPattern    | needle_in_a_haystack | 11.2555 ns | 0.2553 ns | 0.2507 ns | 11.2233 ns |   6.84 |    0.50 |      - |         - |          NA |
-| CheckWithSearchValues       | needle_in_a_haystack | 21.9668 ns | 0.3221 ns | 0.2855 ns | 22.0060 ns |  13.33 |    0.87 |      - |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                      | Value                | Mean       | Error     | StdDev    | Ratio  | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------------------- |--------------------- |-----------:|----------:|----------:|-------:|--------:|-------:|----------:|------------:|
+| **CheckWithNewHashSet**         | **gibberish**            | **69.5894 ns** | **0.7675 ns** | **0.7179 ns** | **135.05** |    **5.77** | **0.0105** |     **176 B** |          **NA** |
+| CheckWithStaticHashSet      | gibberish            | 14.7327 ns | 0.1743 ns | 0.1630 ns |  28.59 |    1.23 |      - |         - |          NA |
+| CheckWithSimpleEqualityTest | gibberish            |  0.5162 ns | 0.0240 ns | 0.0225 ns |   1.00 |    0.06 |      - |         - |          NA |
+| CheckWithCharListPattern    | gibberish            |  0.2578 ns | 0.0150 ns | 0.0133 ns |   0.50 |    0.03 |      - |         - |          NA |
+| CheckWithSearchValues       | gibberish            | 13.0733 ns | 0.0349 ns | 0.0309 ns |  25.37 |    1.06 |      - |         - |          NA |
+|                             |                      |            |           |           |        |         |        |           |             |
+| **CheckWithNewHashSet**         | **needle**               | **71.2918 ns** | **0.6938 ns** | **0.6490 ns** | **399.32** |   **33.24** | **0.0105** |     **176 B** |          **NA** |
+| CheckWithStaticHashSet      | needle               | 12.4283 ns | 0.0910 ns | 0.0760 ns |  69.61 |    5.78 |      - |         - |          NA |
+| CheckWithSimpleEqualityTest | needle               |  0.1797 ns | 0.0159 ns | 0.0148 ns |   1.01 |    0.12 |      - |         - |          NA |
+| CheckWithCharListPattern    | needle               |  1.6316 ns | 0.0144 ns | 0.0128 ns |   9.14 |    0.76 |      - |         - |          NA |
+| CheckWithSearchValues       | needle               | 11.4908 ns | 0.0535 ns | 0.0447 ns |  64.36 |    5.33 |      - |         - |          NA |
+|                             |                      |            |           |           |        |         |        |           |             |
+| **CheckWithNewHashSet**         | **needle_in_a_haystac**  | **79.7835 ns** | **0.5494 ns** | **0.4870 ns** | **151.04** |    **5.55** | **0.0105** |     **176 B** |          **NA** |
+| CheckWithStaticHashSet      | needle_in_a_haystac  | 21.3334 ns | 0.1516 ns | 0.1418 ns |  40.39 |    1.49 |      - |         - |          NA |
+| CheckWithSimpleEqualityTest | needle_in_a_haystac  |  0.5289 ns | 0.0223 ns | 0.0198 ns |   1.00 |    0.05 |      - |         - |          NA |
+| CheckWithCharListPattern    | needle_in_a_haystac  |  0.2683 ns | 0.0243 ns | 0.0227 ns |   0.51 |    0.05 |      - |         - |          NA |
+| CheckWithSearchValues       | needle_in_a_haystac  | 20.8435 ns | 0.1302 ns | 0.1218 ns |  39.46 |    1.45 |      - |         - |          NA |
+|                             |                      |            |           |           |        |         |        |           |             |
+| **CheckWithNewHashSet**         | **needle_in_a_haystack** | **81.9705 ns** | **0.7665 ns** | **0.7170 ns** | **169.99** |    **9.02** | **0.0105** |     **176 B** |          **NA** |
+| CheckWithStaticHashSet      | needle_in_a_haystack | 23.4603 ns | 0.1510 ns | 0.1338 ns |  48.65 |    2.56 |      - |         - |          NA |
+| CheckWithSimpleEqualityTest | needle_in_a_haystack |  0.4835 ns | 0.0277 ns | 0.0259 ns |   1.00 |    0.07 |      - |         - |          NA |
+| CheckWithCharListPattern    | needle_in_a_haystack |  5.9546 ns | 0.0749 ns | 0.0701 ns |  12.35 |    0.66 |      - |         - |          NA |
+| CheckWithSearchValues       | needle_in_a_haystack | 20.1473 ns | 0.2755 ns | 0.2577 ns |  41.78 |    2.25 |      - |         - |          NA |

@@ -1,24 +1,25 @@
 # Searching for several items in a list of strings.
 
+
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26080.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.200
-  [Host]   : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  ShortRun : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]   : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  ShortRun : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 Job=ShortRun  IterationCount=3  LaunchCount=1  
 WarmupCount=3  
 
 ```
-| Method                         | Count | Mean          | Error          | StdDev       | Ratio | RatioSD | Allocated | Alloc Ratio |
-|------------------------------- |------ |--------------:|---------------:|-------------:|------:|--------:|----------:|------------:|
-| **CheckWithForEachSinglePass**     | **5**     |      **36.93 ns** |       **5.679 ns** |     **0.311 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| CheckWithMultipleContainsCalls | 5     |      89.92 ns |      10.224 ns |     0.560 ns |  2.44 |    0.03 |         - |          NA |
-|                                |       |               |                |              |       |         |           |             |
-| **CheckWithForEachSinglePass**     | **50**    |     **239.36 ns** |      **43.144 ns** |     **2.365 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| CheckWithMultipleContainsCalls | 50    |     455.50 ns |      35.795 ns |     1.962 ns |  1.90 |    0.03 |         - |          NA |
-|                                |       |               |                |              |       |         |           |             |
-| **CheckWithForEachSinglePass**     | **50000** | **216,449.24 ns** | **125,790.571 ns** | **6,895.006 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| CheckWithMultipleContainsCalls | 50000 | 379,116.60 ns |  27,058.273 ns | 1,483.155 ns |  1.75 |    0.06 |         - |          NA |
+| Method                         | Count | Mean          | Error         | StdDev       | Ratio | Allocated | Alloc Ratio |
+|------------------------------- |------ |--------------:|--------------:|-------------:|------:|----------:|------------:|
+| **CheckWithForEachSinglePass**     | **5**     |      **26.95 ns** |      **3.420 ns** |     **0.187 ns** |  **1.00** |         **-** |          **NA** |
+| CheckWithMultipleContainsCalls | 5     |      24.65 ns |      1.781 ns |     0.098 ns |  0.91 |         - |          NA |
+|                                |       |               |               |              |       |           |             |
+| **CheckWithForEachSinglePass**     | **50**    |     **139.91 ns** |     **17.767 ns** |     **0.974 ns** |  **1.00** |         **-** |          **NA** |
+| CheckWithMultipleContainsCalls | 50    |     153.63 ns |     29.219 ns |     1.602 ns |  1.10 |         - |          NA |
+|                                |       |               |               |              |       |           |             |
+| **CheckWithForEachSinglePass**     | **50000** | **125,472.60 ns** | **16,716.070 ns** |   **916.264 ns** |  **1.00** |         **-** |          **NA** |
+| CheckWithMultipleContainsCalls | 50000 | 134,008.65 ns | 18,775.864 ns | 1,029.168 ns |  1.07 |         - |          NA |

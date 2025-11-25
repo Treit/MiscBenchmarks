@@ -3,20 +3,21 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27718.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.6.24328.19
-  [Host]     : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                                         | Count | Mean      | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|----------------------------------------------- |------ |----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| MemoryStreamToGuidUsingBitConverter            | 1000  | 422.49 ns | 7.452 ns | 6.223 ns | 40.30 |    0.77 | 0.0572 |     248 B |          NA |
-| MemoryStreamToGuidUsingToHexString             | 1000  |  54.00 ns | 1.015 ns | 1.246 ns |  5.15 |    0.18 | 0.0204 |      88 B |          NA |
-| MemoryStreamToGuidUsingSpanAndBigEndian        | 1000  |  10.50 ns | 0.141 ns | 0.125 ns |  1.00 |    0.00 |      - |         - |          NA |
-| MemoryStreamToGuidUsingBinaryPrimitivesChatGPT | 1000  |  14.67 ns | 0.321 ns | 0.285 ns |  1.40 |    0.04 |      - |         - |          NA |
-| MemoryStreamToGuidUsingReadByteOrThrowChatGPT  | 1000  |  49.17 ns | 0.744 ns | 0.581 ns |  4.69 |    0.08 |      - |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                                         | Count | Mean       | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|----------------------------------------------- |------ |-----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
+| MemoryStreamToGuidUsingBitConverter            | 1000  | 331.677 ns | 3.4796 ns | 3.0846 ns | 37.52 |    0.41 | 0.0148 |     248 B |          NA |
+| MemoryStreamToGuidUsingToHexString             | 1000  |  50.394 ns | 0.2132 ns | 0.1780 ns |  5.70 |    0.04 | 0.0052 |      88 B |          NA |
+| MemoryStreamToGuidUsingSpanAndBigEndian        | 1000  |   8.840 ns | 0.0639 ns | 0.0566 ns |  1.00 |    0.01 |      - |         - |          NA |
+| MemoryStreamToGuidUsingBinaryPrimitivesChatGPT | 1000  |  13.789 ns | 0.1209 ns | 0.1072 ns |  1.56 |    0.02 |      - |         - |          NA |
+| MemoryStreamToGuidUsingReadByteOrThrowChatGPT  | 1000  |  40.619 ns | 0.3102 ns | 0.2750 ns |  4.60 |    0.04 |      - |         - |          NA |

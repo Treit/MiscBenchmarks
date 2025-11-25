@@ -1,29 +1,30 @@
 # Finding min and max on different numeric types.
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|           Method |  Count |           Mean |       Error |      StdDev | Ratio | RatioSD |
-|----------------- |------- |---------------:|------------:|------------:|------:|--------:|
-|    **MinAndMaxInts** |     **10** |      **10.650 ns** |   **0.0768 ns** |   **0.0719 ns** |  **1.00** |    **0.00** |
-|   MinAndMaxLongs |     10 |       9.190 ns |   0.0110 ns |   0.0092 ns |  0.86 |    0.01 |
-|  MinAndMaxFloats |     10 |      13.873 ns |   0.1009 ns |   0.0843 ns |  1.30 |    0.01 |
-| MinAndMaxDoubles |     10 |      12.186 ns |   0.0431 ns |   0.0403 ns |  1.14 |    0.01 |
-|                  |        |                |             |             |       |         |
-|    **MinAndMaxInts** |    **100** |      **84.520 ns** |   **0.5390 ns** |   **0.5041 ns** |  **1.00** |    **0.00** |
-|   MinAndMaxLongs |    100 |      80.220 ns |   1.1447 ns |   1.0707 ns |  0.95 |    0.01 |
-|  MinAndMaxFloats |    100 |     131.893 ns |   1.0134 ns |   0.9479 ns |  1.56 |    0.01 |
-| MinAndMaxDoubles |    100 |      96.307 ns |   1.8693 ns |   1.4594 ns |  1.14 |    0.02 |
-|                  |        |                |             |             |       |         |
-|    **MinAndMaxInts** | **100000** |  **78,057.249 ns** | **200.8779 ns** | **178.0730 ns** |  **1.00** |    **0.00** |
-|   MinAndMaxLongs | 100000 |  78,798.775 ns | 240.5044 ns | 200.8320 ns |  1.01 |    0.00 |
-|  MinAndMaxFloats | 100000 |  93,340.042 ns |  37.8359 ns |  31.5947 ns |  1.20 |    0.00 |
-| MinAndMaxDoubles | 100000 | 124,929.110 ns | 133.2941 ns | 118.1618 ns |  1.60 |    0.00 |
+| Method           | Count  | Mean          | Error       | StdDev      | Ratio | RatioSD |
+|----------------- |------- |--------------:|------------:|------------:|------:|--------:|
+| **MinAndMaxInts**    | **10**     |     **10.081 ns** |   **0.1095 ns** |   **0.1024 ns** |  **1.00** |    **0.01** |
+| MinAndMaxLongs   | 10     |      9.601 ns |   0.0429 ns |   0.0401 ns |  0.95 |    0.01 |
+| MinAndMaxFloats  | 10     |     11.458 ns |   0.1525 ns |   0.1426 ns |  1.14 |    0.02 |
+| MinAndMaxDoubles | 10     |     11.155 ns |   0.0573 ns |   0.0536 ns |  1.11 |    0.01 |
+|                  |        |               |             |             |       |         |
+| **MinAndMaxInts**    | **100**    |     **85.822 ns** |   **0.6530 ns** |   **0.6108 ns** |  **1.00** |    **0.01** |
+| MinAndMaxLongs   | 100    |     85.846 ns |   0.4078 ns |   0.3814 ns |  1.00 |    0.01 |
+| MinAndMaxFloats  | 100    |    119.795 ns |   1.1893 ns |   1.1125 ns |  1.40 |    0.02 |
+| MinAndMaxDoubles | 100    |     97.678 ns |   1.0969 ns |   1.0261 ns |  1.14 |    0.01 |
+|                  |        |               |             |             |       |         |
+| **MinAndMaxInts**    | **100000** | **86,209.400 ns** | **501.9502 ns** | **469.5245 ns** |  **1.00** |    **0.01** |
+| MinAndMaxLongs   | 100000 | 94,811.611 ns | 516.5030 ns | 483.1372 ns |  1.10 |    0.01 |
+| MinAndMaxFloats  | 100000 | 94,521.369 ns | 466.2742 ns | 413.3399 ns |  1.10 |    0.01 |
+| MinAndMaxDoubles | 100000 | 86,506.209 ns | 457.3363 ns | 427.7926 ns |  1.00 |    0.01 |

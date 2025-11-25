@@ -6,24 +6,25 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27718.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.6.24328.19
-  [Host]     : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                             | Count   | Mean         | Error      | StdDev     | Ratio  | RatioSD | Gen0       | Allocated   | Alloc Ratio    |
-|----------------------------------- |-------- |-------------:|-----------:|-----------:|-------:|--------:|-----------:|------------:|---------------:|
-| SystemRandomStaticInstanceWithSeed | 1000000 |     9.026 ms |  0.0261 ms |  0.0204 ms |   1.00 |    0.00 |          - |         3 B |           1.00 |
-| SystemRandomLocalInstanceWithSeed  | 1000000 |     7.809 ms |  0.1342 ms |  0.1120 ms |   0.87 |    0.01 |          - |       307 B |         102.33 |
-| SystemRandomDotShared              | 1000000 |     4.464 ms |  0.0865 ms |  0.0889 ms |   0.50 |    0.01 |          - |         3 B |           1.00 |
-| SystemRandomStaticInstanceNoSeed   | 1000000 |     2.974 ms |  0.0195 ms |  0.0182 ms |   0.33 |    0.00 |          - |         2 B |           0.67 |
-| SystemRandomLocalInstanceNoSeed    | 1000000 |     2.413 ms |  0.0469 ms |  0.0730 ms |   0.27 |    0.01 |          - |        74 B |          24.67 |
-| SystemRandomWithLock               | 1000000 |    19.153 ms |  0.3817 ms |  0.4084 ms |   2.13 |    0.05 |          - |        12 B |           4.00 |
-| SystemRandomNewInstanceEveryTime   | 1000000 | 1,472.258 ms | 19.1034 ms | 15.9522 ms | 163.37 |    1.56 | 70000.0000 | 304000400 B | 101,333,466.67 |
-| SystemRandomThreadStatic           | 1000000 |     8.920 ms |  0.1725 ms |  0.2529 ms |   1.00 |    0.03 |          - |         3 B |           1.00 |
-| XorShiftRandom                     | 1000000 |     2.404 ms |  0.0126 ms |  0.0105 ms |   0.27 |    0.00 |          - |         3 B |           1.00 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                             | Count   | Mean         | Error     | StdDev    | Ratio  | RatioSD | Gen0       | Allocated   | Alloc Ratio |
+|----------------------------------- |-------- |-------------:|----------:|----------:|-------:|--------:|-----------:|------------:|------------:|
+| SystemRandomStaticInstanceWithSeed | 1000000 |     8.012 ms | 0.0069 ms | 0.0058 ms |   1.00 |    0.00 |          - |           - |          NA |
+| SystemRandomLocalInstanceWithSeed  | 1000000 |     6.967 ms | 0.0149 ms | 0.0139 ms |   0.87 |    0.00 |          - |       304 B |          NA |
+| SystemRandomDotShared              | 1000000 |     2.886 ms | 0.0154 ms | 0.0137 ms |   0.36 |    0.00 |          - |           - |          NA |
+| SystemRandomStaticInstanceNoSeed   | 1000000 |     2.193 ms | 0.0177 ms | 0.0165 ms |   0.27 |    0.00 |          - |           - |          NA |
+| SystemRandomLocalInstanceNoSeed    | 1000000 |     1.878 ms | 0.0042 ms | 0.0037 ms |   0.23 |    0.00 |          - |        72 B |          NA |
+| SystemRandomWithLock               | 1000000 |    15.734 ms | 0.0172 ms | 0.0144 ms |   1.96 |    0.00 |          - |           - |          NA |
+| SystemRandomNewInstanceEveryTime   | 1000000 | 1,179.508 ms | 2.8607 ms | 2.3888 ms | 147.22 |    0.31 | 18000.0000 | 304000000 B |          NA |
+| SystemRandomThreadStatic           | 1000000 |     7.497 ms | 0.0148 ms | 0.0131 ms |   0.94 |    0.00 |          - |           - |          NA |
+| XorShiftRandom                     | 1000000 |     1.879 ms | 0.0037 ms | 0.0033 ms |   0.23 |    0.00 |          - |           - |          NA |

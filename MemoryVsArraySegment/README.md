@@ -18,21 +18,22 @@ WarmupCount=3
 | PaginateWithArraySegment | 33554432 | 733,441.83 us | 977,551.55 us | 53,582.899 us | 28000.0000 | 11000.0000 | 3000.0000 | 196608.73 KB |
 |       PaginateWithMemory | 33554432 | 737,430.97 us |   4,289.21 us |    235.106 us | 28000.0000 | 11000.0000 | 3000.0000 | 196608.63 KB |
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                   Method |     Size |           Mean |         Error |        StdDev |       Gen0 |       Gen1 |      Gen2 |    Allocated |
+| Method                   | Size     | Mean           | Error         | StdDev        | Gen0       | Gen1       | Gen2      | Allocated    |
 |------------------------- |--------- |---------------:|--------------:|--------------:|-----------:|-----------:|----------:|-------------:|
-| **PaginateWithArraySegment** |     **3200** |       **3.377 μs** |     **0.0173 μs** |     **0.0162 μs** |     **1.1597** |     **0.0725** |         **-** |     **18.95 KB** |
-|       PaginateWithMemory |     3200 |       3.408 μs |     0.0355 μs |     0.0332 μs |     1.1597 |     0.0725 |         - |     18.95 KB |
-| **PaginateWithArraySegment** |    **32768** |      **32.069 μs** |     **0.2189 μs** |     **0.2048 μs** |    **11.7188** |     **5.7983** |         **-** |     **192.2 KB** |
-|       PaginateWithMemory |    32768 |      33.346 μs |     0.2368 μs |     0.2215 μs |    11.7188 |     5.7983 |         - |     192.2 KB |
-| **PaginateWithArraySegment** | **33554432** | **187,139.177 μs** | **3,698.7298 μs** | **7,471.6167 μs** | **11666.6667** | **11333.3333** | **2333.3333** |  **196609.3 KB** |
-|       PaginateWithMemory | 33554432 | 186,621.727 μs | 3,562.7394 μs | 7,115.1756 μs | 11666.6667 | 11333.3333 | 2333.3333 | 196609.27 KB |
+| **PaginateWithArraySegment** | **3200**     |       **3.418 μs** |     **0.0291 μs** |     **0.0243 μs** |     **1.1597** |     **0.0725** |         **-** |     **18.95 KB** |
+| PaginateWithMemory       | 3200     |       3.463 μs |     0.0290 μs |     0.0257 μs |     1.1597 |     0.0725 |         - |     18.95 KB |
+| **PaginateWithArraySegment** | **32768**    |      **33.516 μs** |     **0.4286 μs** |     **0.4009 μs** |    **11.7188** |     **5.7983** |         **-** |     **192.2 KB** |
+| PaginateWithMemory       | 32768    |      33.990 μs |     0.3829 μs |     0.3395 μs |    11.7188 |     5.7983 |         - |     192.2 KB |
+| **PaginateWithArraySegment** | **33554432** | **202,341.257 μs** | **4,004.4267 μs** | **8,705.2948 μs** | **11666.6667** | **11333.3333** | **2333.3333** | **196609.16 KB** |
+| PaginateWithMemory       | 33554432 | 202,660.599 μs | 4,001.2965 μs | 8,263.3717 μs | 11666.6667 | 11333.3333 | 2333.3333 | 196609.16 KB |

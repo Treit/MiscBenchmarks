@@ -2,24 +2,25 @@
 
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                                         Method | Iterations |            Mean |         Error |        StdDev |          Median | Ratio | RatioSD | Allocated | Alloc Ratio |
-|----------------------------------------------- |----------- |----------------:|--------------:|--------------:|----------------:|------:|--------:|----------:|------------:|
-|                    **DictonaryLookupUsingOrdinal** |         **10** |        **23.39 μs** |      **0.015 μs** |      **0.012 μs** |        **23.39 μs** |  **1.00** |    **0.00** |         **-** |          **NA** |
-|          DictonaryLookupUsingOrdinalIgnoreCase |         10 |        27.64 μs |      0.020 μs |      0.018 μs |        27.64 μs |  1.18 |    0.00 |         - |          NA |
-|           DictonaryLookupUsingInvariantCulture |         10 |       490.02 μs |      8.721 μs |      8.158 μs |       491.58 μs | 20.95 |    0.37 |         - |          NA |
-| DictonaryLookupUsingInvariantCultureIgnoreCase |         10 |       476.17 μs |      8.683 μs |      8.122 μs |       478.52 μs | 20.36 |    0.34 |         - |          NA |
-|                                                |            |                 |               |               |                 |       |         |           |             |
-|                    **DictonaryLookupUsingOrdinal** |     **100000** |   **231,241.29 μs** |    **476.048 μs** |    **422.004 μs** |   **231,304.00 μs** |  **1.00** |    **0.00** |         **-** |          **NA** |
-|          DictonaryLookupUsingOrdinalIgnoreCase |     100000 |   271,880.61 μs |  5,240.565 μs |  4,902.028 μs |   275,878.15 μs |  1.17 |    0.02 |         - |          NA |
-|           DictonaryLookupUsingInvariantCulture |     100000 | 4,719,349.08 μs | 37,347.952 μs | 31,187.231 μs | 4,718,710.00 μs | 20.41 |    0.15 |         - |          NA |
-| DictonaryLookupUsingInvariantCultureIgnoreCase |     100000 | 4,356,685.95 μs | 30,296.049 μs | 28,338.943 μs | 4,356,661.40 μs | 18.84 |    0.14 |         - |          NA |
+| Method                                         | Iterations | Mean            | Error         | StdDev        | Ratio | RatioSD | Allocated | Alloc Ratio |
+|----------------------------------------------- |----------- |----------------:|--------------:|--------------:|------:|--------:|----------:|------------:|
+| **DictonaryLookupUsingOrdinal**                    | **10**         |        **21.71 μs** |      **0.100 μs** |      **0.089 μs** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| DictonaryLookupUsingOrdinalIgnoreCase          | 10         |        33.18 μs |      0.254 μs |      0.238 μs |  1.53 |    0.01 |         - |          NA |
+| DictonaryLookupUsingInvariantCulture           | 10         |       454.58 μs |      4.571 μs |      4.276 μs | 20.94 |    0.21 |         - |          NA |
+| DictonaryLookupUsingInvariantCultureIgnoreCase | 10         |       457.19 μs |      4.293 μs |      3.806 μs | 21.06 |    0.19 |         - |          NA |
+|                                                |            |                 |               |               |       |         |           |             |
+| **DictonaryLookupUsingOrdinal**                    | **100000**     |   **216,388.49 μs** |  **1,241.302 μs** |  **1,161.115 μs** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| DictonaryLookupUsingOrdinalIgnoreCase          | 100000     |   306,643.15 μs |  1,727.022 μs |  1,530.960 μs |  1.42 |    0.01 |         - |          NA |
+| DictonaryLookupUsingInvariantCulture           | 100000     | 4,638,360.63 μs | 74,613.134 μs | 69,793.172 μs | 21.44 |    0.33 |         - |          NA |
+| DictonaryLookupUsingInvariantCultureIgnoreCase | 100000     | 4,591,253.15 μs | 40,148.407 μs | 37,554.845 μs | 21.22 |    0.20 |         - |          NA |

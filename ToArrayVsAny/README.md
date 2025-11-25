@@ -1,21 +1,22 @@
 # Finding if a collection has elements matching a collection. Any() vs. Length > 0 and variants.
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27673.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.6.24328.19
-  [Host]     : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.7 (8.0.724.31311), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                          | Count  | Mean            | Error         | StdDev        | Median          | Ratio     | RatioSD  | Gen0     | Gen1     | Gen2     | Allocated | Alloc Ratio |
-|-------------------------------- |------- |----------------:|--------------:|--------------:|----------------:|----------:|---------:|---------:|---------:|---------:|----------:|------------:|
-| **ToArrayDotLengthGreaterThanZero** | **10**     |       **188.52 ns** |      **3.741 ns** |      **7.208 ns** |       **186.10 ns** |      **9.04** |     **0.32** |   **0.0870** |        **-** |        **-** |     **376 B** |       **11.75** |
-| LinqCountGreaterThanZero        | 10     |        40.99 ns |      0.782 ns |      1.122 ns |        40.70 ns |      1.97 |     0.07 |   0.0111 |        - |        - |      48 B |        1.50 |
-| Any                             | 10     |        21.03 ns |      0.433 ns |      0.361 ns |        20.87 ns |      1.00 |     0.00 |   0.0074 |        - |        - |      32 B |        1.00 |
-|                                 |        |                 |               |               |                 |           |          |          |          |          |           |             |
-| **ToArrayDotLengthGreaterThanZero** | **100000** | **1,058,351.98 ns** | **20,345.522 ns** | **16,989.432 ns** | **1,057,572.17 ns** | **46,853.83** | **3,006.73** | **259.7656** | **234.3750** | **228.5156** | **1522325 B** |   **47,572.66** |
-| LinqCountGreaterThanZero        | 100000 |   145,850.66 ns |  3,147.275 ns |  8,876.946 ns |   144,158.50 ns |  6,386.50 |   578.03 |        - |        - |        - |      48 B |        1.50 |
-| Any                             | 100000 |        22.95 ns |      0.600 ns |      1.691 ns |        22.48 ns |      1.00 |     0.00 |   0.0074 |        - |        - |      32 B |        1.00 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                          | Count  | Mean           | Error          | StdDev         | Ratio      | RatioSD  | Gen0     | Gen1     | Gen2     | Allocated | Alloc Ratio |
+|-------------------------------- |------- |---------------:|---------------:|---------------:|-----------:|---------:|---------:|---------:|---------:|----------:|------------:|
+| **ToArrayDotLengthGreaterThanZero** | **10**     |      **95.696 ns** |      **0.7061 ns** |      **0.6259 ns** |      **43.32** |     **0.56** |   **0.0086** |        **-** |        **-** |     **144 B** |          **NA** |
+| LinqCountGreaterThanZero        | 10     |      32.070 ns |      0.3464 ns |      0.3071 ns |      14.52 |     0.21 |   0.0029 |        - |        - |      48 B |          NA |
+| Any                             | 10     |       2.209 ns |      0.0274 ns |      0.0256 ns |       1.00 |     0.02 |        - |        - |        - |         - |          NA |
+|                                 |        |                |                |                |            |          |          |          |          |           |             |
+| **ToArrayDotLengthGreaterThanZero** | **100000** | **772,492.214 ns** | **14,429.6110 ns** | **13,497.4671 ns** | **408,037.85** | **8,521.24** | **125.9766** | **125.9766** | **125.9766** |  **721172 B** |          **NA** |
+| LinqCountGreaterThanZero        | 100000 | 224,264.196 ns |    707.5123 ns |    590.8048 ns | 118,458.52 | 1,481.48 |        - |        - |        - |      48 B |          NA |
+| Any                             | 100000 |       1.893 ns |      0.0255 ns |      0.0238 ns |       1.00 |     0.02 |        - |        - |        - |         - |          NA |

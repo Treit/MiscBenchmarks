@@ -1,22 +1,23 @@
 # Interlocked.CompareExchange vs. Assignment
 
 
+
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26058.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
 | Method                           | Mean      | Error     | StdDev    | Median    | Ratio | RatioSD | Code Size |
 |--------------------------------- |----------:|----------:|----------:|----------:|------:|--------:|----------:|
-| SetToZeroSimpleAssignment        | 0.0101 ns | 0.0128 ns | 0.0309 ns | 0.0000 ns |     ? |       ? |      11 B |
-| SetToZeroWithInterlockedExchange | 7.9281 ns | 0.1069 ns | 0.0892 ns | 7.9132 ns |     ? |       ? |      16 B |
+| SetToZeroSimpleAssignment        | 0.0006 ns | 0.0013 ns | 0.0011 ns | 0.0000 ns |     ? |       ? |      11 B |
+| SetToZeroWithInterlockedExchange | 1.0594 ns | 0.0142 ns | 0.0126 ns | 1.0620 ns |     ? |       ? |      14 B |
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+## .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.SetToZeroSimpleAssignment()
        xor       eax,eax
@@ -26,15 +27,14 @@ Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
 ; Total bytes of code 11
 ```
 
-## .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+## .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 ```assembly
 ; Test.Benchmark.SetToZeroWithInterlockedExchange()
-       cmp       [rcx],cl
        lea       rax,[rcx+10]
        xor       edx,edx
        xchg      rdx,[rax]
        mov       rax,[rcx+10]
        ret
-; Total bytes of code 16
+; Total bytes of code 14
 ```
 

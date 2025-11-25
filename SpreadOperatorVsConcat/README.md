@@ -2,20 +2,21 @@
 
 
 
+
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26058.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  Job-LSLKOX : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  Job-CNUJVU : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 InvocationCount=1  UnrollFactor=1  
 
 ```
 | Method                     | Count | Mean       | Error     | StdDev     | Median     | Allocated |
 |--------------------------- |------ |-----------:|----------:|-----------:|-----------:|----------:|
-| **AddThenEnumerateWithSpread** | **100**   |   **7.880 μs** | **0.5133 μs** |  **1.4393 μs** |   **7.500 μs** |    **1256 B** |
-| AddThenEnumerateWithConcat | 100   |  14.679 μs | 0.2734 μs |  0.2424 μs |  14.700 μs |     536 B |
-| **AddThenEnumerateWithSpread** | **10000** | **103.839 μs** | **3.6361 μs** | **10.1360 μs** |  **98.500 μs** |   **80456 B** |
-| AddThenEnumerateWithConcat | 10000 | 153.454 μs | 3.0564 μs |  7.9440 μs | 149.900 μs |     536 B |
+| **AddThenEnumerateWithSpread** | **100**   |   **3.791 μs** | **0.2803 μs** |  **0.8266 μs** |   **4.100 μs** |     **856 B** |
+| AddThenEnumerateWithConcat | 100   |  12.970 μs | 0.2578 μs |  0.3614 μs |  12.900 μs |     136 B |
+| **AddThenEnumerateWithSpread** | **10000** |  **57.640 μs** | **8.1048 μs** | **23.7700 μs** |  **71.350 μs** |   **80056 B** |
+| AddThenEnumerateWithConcat | 10000 | 132.425 μs | 2.5253 μs |  2.4802 μs | 131.050 μs |     136 B |

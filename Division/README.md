@@ -2,24 +2,25 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27768.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100
-  [Host]     : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method             | Count  | Mean          | Error        | StdDev       | Ratio | RatioSD | Allocated | Alloc Ratio |
-|------------------- |------- |--------------:|-------------:|-------------:|------:|--------:|----------:|------------:|
-| **DivideUsingFloat**   | **100**    |      **63.68 ns** |     **0.564 ns** |     **0.500 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| DivideUsingDouble  | 100    |      65.35 ns |     1.320 ns |     1.622 ns |  1.02 |    0.03 |         - |          NA |
-| DivideUsingDecimal | 100    |   3,261.76 ns |    14.662 ns |    11.447 ns | 51.28 |    0.46 |         - |          NA |
-| DivideUsingInt     | 100    |      74.47 ns |     0.462 ns |     0.432 ns |  1.17 |    0.01 |         - |          NA |
-|                    |        |               |              |              |       |         |           |             |
-| **DivideUsingFloat**   | **100000** | **108,600.71 ns** | **1,117.949 ns** | **1,045.730 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| DivideUsingDouble  | 100000 | 109,048.10 ns |   583.415 ns |   517.182 ns |  1.01 |    0.01 |         - |          NA |
-| DivideUsingDecimal | 100000 | 616,152.68 ns | 7,532.093 ns | 7,045.525 ns |  5.67 |    0.07 |         - |          NA |
-| DivideUsingInt     | 100000 |  80,536.91 ns |   796.069 ns |   705.695 ns |  0.74 |    0.01 |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method             | Count  | Mean            | Error        | StdDev       | Ratio | RatioSD | Allocated | Alloc Ratio |
+|------------------- |------- |----------------:|-------------:|-------------:|------:|--------:|----------:|------------:|
+| **DivideUsingFloat**   | **100**    |        **59.97 ns** |     **0.451 ns** |     **0.422 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| DivideUsingDouble  | 100    |        59.92 ns |     0.574 ns |     0.537 ns |  1.00 |    0.01 |         - |          NA |
+| DivideUsingDecimal | 100    |     2,535.18 ns |    13.037 ns |    12.195 ns | 42.28 |    0.35 |         - |          NA |
+| DivideUsingInt     | 100    |        78.87 ns |     0.339 ns |     0.318 ns |  1.32 |    0.01 |         - |          NA |
+|                    |        |                 |              |              |       |         |           |             |
+| **DivideUsingFloat**   | **100000** |    **93,277.20 ns** |   **330.897 ns** |   **309.521 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
+| DivideUsingDouble  | 100000 |    93,263.76 ns |   347.541 ns |   290.212 ns |  1.00 |    0.00 |         - |          NA |
+| DivideUsingDecimal | 100000 | 1,062,376.68 ns | 7,786.064 ns | 7,283.089 ns | 11.39 |    0.08 |         - |          NA |
+| DivideUsingInt     | 100000 |    93,292.90 ns |   274.200 ns |   243.071 ns |  1.00 |    0.00 |         - |          NA |

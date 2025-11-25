@@ -1,20 +1,21 @@
 # Updating an existing dictionary entry.
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                             Method | Count |         Mean |       Error |      StdDev | Ratio |    Gen0 | Allocated | Alloc Ratio |
+| Method                             | Count | Mean         | Error       | StdDev      | Ratio | Gen0    | Allocated | Alloc Ratio |
 |----------------------------------- |------ |-------------:|------------:|------------:|------:|--------:|----------:|------------:|
-|           **IncrementUsingDictionary** |    **10** |     **296.5 ns** |     **0.39 ns** |     **0.35 ns** |  **1.00** |       **-** |         **-** |          **NA** |
-| IncrementUsingConcurrentDictionary |    10 |     549.3 ns |     1.37 ns |     1.21 ns |  1.85 |       - |         - |          NA |
+| **IncrementUsingDictionary**           | **10**    |     **167.6 ns** |     **0.94 ns** |     **0.88 ns** |  **1.00** |       **-** |         **-** |          **NA** |
+| IncrementUsingConcurrentDictionary | 10    |     382.9 ns |     1.52 ns |     1.35 ns |  2.28 |       - |         - |          NA |
 |                                    |       |              |             |             |       |         |           |             |
-|           **IncrementUsingDictionary** | **10000** | **524,790.1 ns** | **1,538.09 ns** | **1,438.73 ns** |  **1.00** | **18.5547** |  **310400 B** |        **1.00** |
-| IncrementUsingConcurrentDictionary | 10000 | 796,425.9 ns | 1,906.04 ns | 1,591.63 ns |  1.52 | 18.5547 |  310400 B |        1.00 |
+| **IncrementUsingDictionary**           | **10000** | **424,811.1 ns** | **1,656.37 ns** | **1,549.37 ns** |  **1.00** | **18.5547** |  **310400 B** |        **1.00** |
+| IncrementUsingConcurrentDictionary | 10000 | 560,082.1 ns | 4,901.33 ns | 4,584.70 ns |  1.32 | 18.5547 |  310400 B |        1.00 |

@@ -2,42 +2,43 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26085.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.202
-  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                          | Iterations | VectorLength | Mean          | Error       | StdDev      | Ratio | RatioSD | Gen0    | Allocated | Alloc Ratio |
-|-------------------------------- |----------- |------------- |--------------:|------------:|------------:|------:|--------:|--------:|----------:|------------:|
-| **ComputeDistanceLINQ**             | **1000**       | **2**            |    **151.384 μs** |   **1.0352 μs** |   **0.8082 μs** | **23.49** |    **0.19** | **59.3262** |  **256000 B** |          **NA** |
-| ComputeDistanceNonVectorized    | 1000       | 2            |      6.535 μs |   0.0863 μs |   0.0721 μs |  1.01 |    0.01 |       - |         - |          NA |
-| ComputeDistanceVectorizedMTreit | 1000       | 2            |     11.599 μs |   0.0936 μs |   0.0782 μs |  1.80 |    0.02 |       - |         - |          NA |
-| ComputeDistanceVectorizedAaron  | 1000       | 2            |     12.312 μs |   0.0796 μs |   0.0664 μs |  1.91 |    0.02 |       - |         - |          NA |
-| ComputeDistanceVectorizedAaron2 | 1000       | 2            |      6.445 μs |   0.0441 μs |   0.0412 μs |  1.00 |    0.00 |       - |         - |          NA |
-| ComputeDistanceTensorPrimitives | 1000       | 2            |     11.385 μs |   0.1410 μs |   0.1177 μs |  1.77 |    0.02 |       - |         - |          NA |
-|                                 |            |              |               |             |             |       |         |         |           |             |
-| **ComputeDistanceLINQ**             | **1000**       | **8**            |    **255.860 μs** |   **2.5685 μs** |   **2.2769 μs** | **33.49** |    **0.35** | **59.0820** |  **256000 B** |          **NA** |
-| ComputeDistanceNonVectorized    | 1000       | 8            |     17.040 μs |   0.3196 μs |   0.3282 μs |  2.23 |    0.05 |       - |         - |          NA |
-| ComputeDistanceVectorizedMTreit | 1000       | 8            |     16.058 μs |   0.1915 μs |   0.1495 μs |  2.10 |    0.02 |       - |         - |          NA |
-| ComputeDistanceVectorizedAaron  | 1000       | 8            |     15.747 μs |   0.0963 μs |   0.0752 μs |  2.06 |    0.01 |       - |         - |          NA |
-| ComputeDistanceVectorizedAaron2 | 1000       | 8            |      7.639 μs |   0.0306 μs |   0.0271 μs |  1.00 |    0.00 |       - |         - |          NA |
-| ComputeDistanceTensorPrimitives | 1000       | 8            |     26.801 μs |   0.4040 μs |   0.3779 μs |  3.51 |    0.05 |       - |         - |          NA |
-|                                 |            |              |               |             |             |       |         |         |           |             |
-| **ComputeDistanceLINQ**             | **1000**       | **100**          |  **2,306.091 μs** |  **15.8801 μs** |  **14.0773 μs** | **58.73** |    **0.43** | **58.5938** |  **256002 B** |          **NA** |
-| ComputeDistanceNonVectorized    | 1000       | 100          |    266.105 μs |   1.7804 μs |   1.6654 μs |  6.78 |    0.04 |       - |         - |          NA |
-| ComputeDistanceVectorizedMTreit | 1000       | 100          |    130.307 μs |   0.7230 μs |   0.6763 μs |  3.31 |    0.02 |       - |         - |          NA |
-| ComputeDistanceVectorizedAaron  | 1000       | 100          |     67.523 μs |   0.2515 μs |   0.2100 μs |  1.72 |    0.01 |       - |         - |          NA |
-| ComputeDistanceVectorizedAaron2 | 1000       | 100          |     39.296 μs |   0.1748 μs |   0.1365 μs |  1.00 |    0.00 |       - |         - |          NA |
-| ComputeDistanceTensorPrimitives | 1000       | 100          |     77.615 μs |   0.1636 μs |   0.1366 μs |  1.98 |    0.01 |       - |         - |          NA |
-|                                 |            |              |               |             |             |       |         |         |           |             |
-| **ComputeDistanceLINQ**             | **1000**       | **1024**         | **23,369.189 μs** | **196.8609 μs** | **184.1438 μs** | **75.14** |    **0.67** | **31.2500** |  **256012 B** |          **NA** |
-| ComputeDistanceNonVectorized    | 1000       | 1024         |  3,202.645 μs |  12.3067 μs |   9.6083 μs | 10.30 |    0.05 |       - |       2 B |          NA |
-| ComputeDistanceVectorizedMTreit | 1000       | 1024         |  1,339.689 μs |  10.8448 μs |  10.1442 μs |  4.31 |    0.03 |       - |       1 B |          NA |
-| ComputeDistanceVectorizedAaron  | 1000       | 1024         |    843.936 μs |   1.8083 μs |   1.5100 μs |  2.71 |    0.01 |       - |         - |          NA |
-| ComputeDistanceVectorizedAaron2 | 1000       | 1024         |    311.013 μs |   0.9196 μs |   0.8602 μs |  1.00 |    0.00 |       - |         - |          NA |
-| ComputeDistanceTensorPrimitives | 1000       | 1024         |    849.511 μs |   6.8389 μs |   6.3971 μs |  2.73 |    0.02 |       - |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                          | Iterations | VectorLength | Mean          | Error      | StdDev     | Ratio | RatioSD | Gen0    | Allocated | Alloc Ratio |
+|-------------------------------- |----------- |------------- |--------------:|-----------:|-----------:|------:|--------:|--------:|----------:|------------:|
+| **ComputeDistanceLINQ**             | **1000**       | **2**            |     **91.651 μs** |  **0.7640 μs** |  **0.6772 μs** | **11.31** |    **0.10** | **15.2588** |  **256000 B** |          **NA** |
+| ComputeDistanceNonVectorized    | 1000       | 2            |      7.539 μs |  0.0254 μs |  0.0225 μs |  0.93 |    0.01 |       - |         - |          NA |
+| ComputeDistanceVectorizedMTreit | 1000       | 2            |     12.123 μs |  0.0470 μs |  0.0440 μs |  1.50 |    0.01 |       - |         - |          NA |
+| ComputeDistanceVectorizedAaron  | 1000       | 2            |      9.971 μs |  0.0660 μs |  0.0617 μs |  1.23 |    0.01 |       - |         - |          NA |
+| ComputeDistanceVectorizedAaron2 | 1000       | 2            |      8.107 μs |  0.0438 μs |  0.0388 μs |  1.00 |    0.01 |       - |         - |          NA |
+| ComputeDistanceTensorPrimitives | 1000       | 2            |      7.010 μs |  0.0177 μs |  0.0156 μs |  0.86 |    0.00 |       - |         - |          NA |
+|                                 |            |              |               |            |            |       |         |         |           |             |
+| **ComputeDistanceLINQ**             | **1000**       | **8**            |    **161.149 μs** |  **1.4330 μs** |  **1.2703 μs** | **20.57** |    **0.20** | **15.1367** |  **256000 B** |          **NA** |
+| ComputeDistanceNonVectorized    | 1000       | 8            |     14.574 μs |  0.0409 μs |  0.0363 μs |  1.86 |    0.01 |       - |         - |          NA |
+| ComputeDistanceVectorizedMTreit | 1000       | 8            |     16.460 μs |  0.1254 μs |  0.1173 μs |  2.10 |    0.02 |       - |         - |          NA |
+| ComputeDistanceVectorizedAaron  | 1000       | 8            |     10.578 μs |  0.0787 μs |  0.0697 μs |  1.35 |    0.01 |       - |         - |          NA |
+| ComputeDistanceVectorizedAaron2 | 1000       | 8            |      7.836 μs |  0.0530 μs |  0.0496 μs |  1.00 |    0.01 |       - |         - |          NA |
+| ComputeDistanceTensorPrimitives | 1000       | 8            |     17.866 μs |  0.1359 μs |  0.1271 μs |  2.28 |    0.02 |       - |         - |          NA |
+|                                 |            |              |               |            |            |       |         |         |           |             |
+| **ComputeDistanceLINQ**             | **1000**       | **100**          |    **996.664 μs** | **10.2148 μs** |  **9.5549 μs** | **30.46** |    **0.39** | **13.6719** |  **256000 B** |          **NA** |
+| ComputeDistanceNonVectorized    | 1000       | 100          |    226.575 μs |  0.5153 μs |  0.4568 μs |  6.93 |    0.06 |       - |         - |          NA |
+| ComputeDistanceVectorizedMTreit | 1000       | 100          |     92.149 μs |  0.4733 μs |  0.4427 μs |  2.82 |    0.03 |       - |         - |          NA |
+| ComputeDistanceVectorizedAaron  | 1000       | 100          |     58.130 μs |  0.2436 μs |  0.2279 μs |  1.78 |    0.02 |       - |         - |          NA |
+| ComputeDistanceVectorizedAaron2 | 1000       | 100          |     32.718 μs |  0.3249 μs |  0.3039 μs |  1.00 |    0.01 |       - |         - |          NA |
+| ComputeDistanceTensorPrimitives | 1000       | 100          |     57.421 μs |  0.2281 μs |  0.2133 μs |  1.76 |    0.02 |       - |         - |          NA |
+|                                 |            |              |               |            |            |       |         |         |           |             |
+| **ComputeDistanceLINQ**             | **1000**       | **1024**         | **11,134.022 μs** | **66.9225 μs** | **62.5993 μs** | **44.34** |    **0.35** |       **-** |  **256000 B** |          **NA** |
+| ComputeDistanceNonVectorized    | 1000       | 1024         |  2,817.957 μs | 11.2835 μs | 10.5546 μs | 11.22 |    0.08 |       - |         - |          NA |
+| ComputeDistanceVectorizedMTreit | 1000       | 1024         |    892.228 μs |  2.0095 μs |  1.7814 μs |  3.55 |    0.02 |       - |         - |          NA |
+| ComputeDistanceVectorizedAaron  | 1000       | 1024         |    680.187 μs |  2.9675 μs |  2.7758 μs |  2.71 |    0.02 |       - |         - |          NA |
+| ComputeDistanceVectorizedAaron2 | 1000       | 1024         |    251.135 μs |  1.6011 μs |  1.4977 μs |  1.00 |    0.01 |       - |         - |          NA |
+| ComputeDistanceTensorPrimitives | 1000       | 1024         |    647.889 μs |  3.2348 μs |  3.0259 μs |  2.58 |    0.02 |       - |         - |          NA |

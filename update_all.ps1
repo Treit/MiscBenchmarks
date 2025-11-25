@@ -1,5 +1,5 @@
 # Yes I like to live dangerously 😎
-fastmod ">net7\.0<" ">net8.0<" --accept-all
+fastmod ">net9\.0<" ">net10.0<" --glob *.csproj --accept-all
 Get-ChildItem |
     Where-Object { $_.PSIsContainer } |
     ForEach {

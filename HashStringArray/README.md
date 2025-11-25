@@ -2,19 +2,20 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26231.5000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.2.24157.14
-  [Host]     : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.5 (8.0.524.21615), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                                             | Count | Mean      | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|--------------------------------------------------- |------ |----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
-| HashWithStringBuilder                              | 500   |  8.314 μs | 0.2117 μs | 0.6039 μs |  1.00 |    0.00 | 2.1362 |   9.03 KB |        1.00 |
-| HashWithStringDotJoin                              | 500   |  9.804 μs | 0.2404 μs | 0.6819 μs |  1.19 |    0.13 | 1.0529 |   4.47 KB |        0.49 |
-| HashWithMemoryMarshalCastAndStream                 | 500   | 13.055 μs | 0.2482 μs | 0.2955 μs |  1.49 |    0.10 | 1.2512 |   5.31 KB |        0.59 |
-| HashWithMemoryMarshalCastAndStreamPrecomputeLength | 500   | 14.202 μs | 0.4067 μs | 1.1733 μs |  1.72 |    0.17 | 0.7324 |   3.15 KB |        0.35 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                                             | Count | Mean     | Error     | StdDev    | Ratio | RatioSD | Gen0   | Gen1   | Allocated | Alloc Ratio |
+|--------------------------------------------------- |------ |---------:|----------:|----------:|------:|--------:|-------:|-------:|----------:|------------:|
+| HashWithStringBuilder                              | 500   | 3.802 μs | 0.0177 μs | 0.0157 μs |  1.00 |    0.01 | 0.5531 | 0.0076 |   9.04 KB |        1.00 |
+| HashWithStringDotJoin                              | 500   | 3.951 μs | 0.0778 μs | 0.1091 μs |  1.04 |    0.03 | 0.2670 |      - |   4.48 KB |        0.50 |
+| HashWithMemoryMarshalCastAndStream                 | 500   | 4.740 μs | 0.0513 μs | 0.0480 μs |  1.25 |    0.01 | 0.3204 |      - |   5.32 KB |        0.59 |
+| HashWithMemoryMarshalCastAndStreamPrecomputeLength | 500   | 4.945 μs | 0.0397 μs | 0.0332 μs |  1.30 |    0.01 | 0.1907 |      - |   3.16 KB |        0.35 |

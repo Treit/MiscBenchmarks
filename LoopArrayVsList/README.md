@@ -1,23 +1,24 @@
 # Looping over an array vs. a list.
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26052.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method           | Count  | Mean           | Error         | StdDev         | Ratio | RatioSD | Allocated | Alloc Ratio |
-|----------------- |------- |---------------:|--------------:|---------------:|------:|--------:|----------:|------------:|
-| **ForLoopArray**     | **10**     |       **4.588 ns** |     **0.1553 ns** |      **0.4479 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| ForEachLoopArray | 10     |       3.803 ns |     0.1146 ns |      0.0895 ns |  0.77 |    0.06 |         - |          NA |
-| ForLoopList      | 10     |      12.564 ns |     0.2873 ns |      0.7363 ns |  2.75 |    0.32 |         - |          NA |
-| ForEachLoopList  | 10     |      11.612 ns |     0.2672 ns |      0.5695 ns |  2.50 |    0.26 |         - |          NA |
-|                  |        |                |               |                |       |         |           |             |
-| **ForLoopArray**     | **100000** | **143,946.879 ns** | **3,201.0649 ns** |  **9,388.1691 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-| ForEachLoopArray | 100000 | 141,808.327 ns | 3,249.5172 ns |  9,581.2748 ns |  0.99 |    0.09 |         - |          NA |
-| ForLoopList      | 100000 | 152,587.442 ns | 4,053.0263 ns | 11,693.9075 ns |  1.07 |    0.11 |         - |          NA |
-| ForEachLoopList  | 100000 | 148,974.359 ns | 2,979.3963 ns |  6,602.1363 ns |  1.03 |    0.07 |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method           | Count  | Mean          | Error         | StdDev        | Median        | Ratio | RatioSD | Allocated | Alloc Ratio |
+|----------------- |------- |--------------:|--------------:|--------------:|--------------:|------:|--------:|----------:|------------:|
+| **ForLoopArray**     | **10**     |      **4.216 ns** |     **0.0244 ns** |     **0.0216 ns** |      **4.221 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| ForEachLoopArray | 10     |      4.223 ns |     0.0250 ns |     0.0234 ns |      4.227 ns |  1.00 |    0.01 |         - |          NA |
+| ForLoopList      | 10     |      8.275 ns |     0.1425 ns |     0.1333 ns |      8.238 ns |  1.96 |    0.03 |         - |          NA |
+| ForEachLoopList  | 10     |      8.602 ns |     0.0993 ns |     0.0929 ns |      8.591 ns |  2.04 |    0.02 |         - |          NA |
+|                  |        |               |               |               |               |       |         |           |             |
+| **ForLoopArray**     | **100000** | **63,427.877 ns** | **2,335.5447 ns** | **6,886.4068 ns** | **67,716.522 ns** |  **1.01** |    **0.16** |         **-** |          **NA** |
+| ForEachLoopArray | 100000 | 64,298.475 ns | 2,345.2432 ns | 6,915.0029 ns | 67,868.451 ns |  1.03 |    0.16 |         - |          NA |
+| ForLoopList      | 100000 | 72,357.262 ns |   680.3863 ns |   636.4337 ns | 72,174.133 ns |  1.16 |    0.13 |         - |          NA |
+| ForEachLoopList  | 100000 | 75,858.456 ns |   751.9129 ns |   703.3398 ns | 75,932.178 ns |  1.21 |    0.14 |         - |          NA |

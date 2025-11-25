@@ -2,36 +2,37 @@
 
 
 
+
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26085.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.202
-  [Host]   : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  ShortRun : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]   : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  ShortRun : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 Job=ShortRun  IterationCount=3  LaunchCount=1  
 WarmupCount=3  
 
 ```
-| Method                                         | Count  | Mean           | Error          | StdDev      | Ratio      | RatioSD   | Gen0    | Gen1   | Allocated | Alloc Ratio |
-|----------------------------------------------- |------- |---------------:|---------------:|------------:|-----------:|----------:|--------:|-------:|----------:|------------:|
-| **IListAnyResultsLinqAny**                         | **10**     |      **7.4845 ns** |      **1.5556 ns** |   **0.0853 ns** |      **21.46** |      **2.02** |       **-** |      **-** |         **-** |          **NA** |
-| IListAnyResultsIListDotCount                   | 10     |      0.3507 ns |      0.5623 ns |   0.0308 ns |       1.00 |      0.00 |       - |      - |         - |          NA |
-| IListAnyResultsLinqCount                       | 10     |      8.3848 ns |     23.2735 ns |   1.2757 ns |      24.19 |      5.26 |       - |      - |         - |          NA |
-| IListAnyResultsToListThenListDotCount          | 10     |     38.2053 ns |     19.9513 ns |   1.0936 ns |     109.44 |      9.31 |  0.0148 |      - |      64 B |          NA |
-| IListAnyResultsPatternMatchOnCountPropertyKesa | 10     |      0.3486 ns |      0.5179 ns |   0.0284 ns |       1.00 |      0.17 |       - |      - |         - |          NA |
-| IListAnyResultsPatternMatchOnListPatternAaron  | 10     |      0.6500 ns |      4.5633 ns |   0.2501 ns |       1.90 |      0.89 |       - |      - |         - |          NA |
-| IEnumerableAnyResultsLinqAny                   | 10     |     17.8504 ns |      7.7829 ns |   0.4266 ns |      51.13 |      4.03 |       - |      - |         - |          NA |
-| IEnumerableAnyResultsToListThenListDotCount    | 10     |     52.1122 ns |     12.7071 ns |   0.6965 ns |     149.30 |     12.20 |  0.0148 |      - |      64 B |          NA |
-| IEnumerableAnyResultsLinqCount                 | 10     |     16.8888 ns |      8.2288 ns |   0.4510 ns |      48.34 |      3.23 |       - |      - |         - |          NA |
-|                                                |        |                |                |             |            |           |         |        |           |             |
-| **IListAnyResultsLinqAny**                         | **100000** |      **7.8062 ns** |      **5.3052 ns** |   **0.2908 ns** |      **40.42** |      **8.48** |       **-** |      **-** |         **-** |          **NA** |
-| IListAnyResultsIListDotCount                   | 100000 |      0.1989 ns |      0.7610 ns |   0.0417 ns |       1.00 |      0.00 |       - |      - |         - |          NA |
-| IListAnyResultsLinqCount                       | 100000 |     10.3830 ns |     25.8511 ns |   1.4170 ns |      53.41 |     11.64 |       - |      - |         - |          NA |
-| IListAnyResultsToListThenListDotCount          | 100000 | 10,043.0664 ns |  2,540.1513 ns | 139.2343 ns |  51,770.00 |  9,111.93 | 18.5089 | 3.0823 |   80056 B |          NA |
-| IListAnyResultsPatternMatchOnCountPropertyKesa | 100000 |      0.3590 ns |      3.0532 ns |   0.1674 ns |       1.78 |      0.70 |       - |      - |         - |          NA |
-| IListAnyResultsPatternMatchOnListPatternAaron  | 100000 |      0.1071 ns |      0.3480 ns |   0.0191 ns |       0.55 |      0.11 |       - |      - |         - |          NA |
-| IEnumerableAnyResultsLinqAny                   | 100000 |     17.3713 ns |      4.5929 ns |   0.2518 ns |      89.69 |     16.88 |       - |      - |         - |          NA |
-| IEnumerableAnyResultsToListThenListDotCount    | 100000 | 26,232.0257 ns | 12,555.2304 ns | 688.1945 ns | 135,103.56 | 23,070.48 | 18.4937 | 3.0823 |   80056 B |          NA |
-| IEnumerableAnyResultsLinqCount                 | 100000 | 11,052.0912 ns | 11,204.6640 ns | 614.1654 ns |  57,230.24 | 12,318.18 |       - |      - |         - |          NA |
+| Method                                         | Count  | Mean           | Error          | StdDev        | Ratio      | RatioSD  | Gen0   | Gen1   | Allocated | Alloc Ratio |
+|----------------------------------------------- |------- |---------------:|---------------:|--------------:|-----------:|---------:|-------:|-------:|----------:|------------:|
+| **IListAnyResultsLinqAny**                         | **10**     |      **0.5623 ns** |      **0.6683 ns** |     **0.0366 ns** |       **1.58** |     **0.11** |      **-** |      **-** |         **-** |          **NA** |
+| IListAnyResultsIListDotCount                   | 10     |      0.3571 ns |      0.3197 ns |     0.0175 ns |       1.00 |     0.06 |      - |      - |         - |          NA |
+| IListAnyResultsLinqCount                       | 10     |      0.5420 ns |      0.1561 ns |     0.0086 ns |       1.52 |     0.07 |      - |      - |         - |          NA |
+| IListAnyResultsToListThenListDotCount          | 10     |     16.1861 ns |      3.6378 ns |     0.1994 ns |      45.40 |     2.02 | 0.0038 |      - |      64 B |          NA |
+| IListAnyResultsPatternMatchOnCountPropertyKesa | 10     |      0.3577 ns |      0.2571 ns |     0.0141 ns |       1.00 |     0.06 |      - |      - |         - |          NA |
+| IListAnyResultsPatternMatchOnListPatternAaron  | 10     |      0.3617 ns |      0.4876 ns |     0.0267 ns |       1.01 |     0.08 |      - |      - |         - |          NA |
+| IEnumerableAnyResultsLinqAny                   | 10     |      4.5809 ns |      0.6372 ns |     0.0349 ns |      12.85 |     0.56 |      - |      - |         - |          NA |
+| IEnumerableAnyResultsToListThenListDotCount    | 10     |     10.5574 ns |      1.6528 ns |     0.0906 ns |      29.61 |     1.30 | 0.0019 |      - |      32 B |          NA |
+| IEnumerableAnyResultsLinqCount                 | 10     |      5.9229 ns |      1.3351 ns |     0.0732 ns |      16.61 |     0.74 |      - |      - |         - |          NA |
+|                                                |        |                |                |               |            |          |        |        |           |             |
+| **IListAnyResultsLinqAny**                         | **100000** |      **0.5641 ns** |      **0.3305 ns** |     **0.0181 ns** |       **1.66** |     **0.06** |      **-** |      **-** |         **-** |          **NA** |
+| IListAnyResultsIListDotCount                   | 100000 |      0.3405 ns |      0.1876 ns |     0.0103 ns |       1.00 |     0.04 |      - |      - |         - |          NA |
+| IListAnyResultsLinqCount                       | 100000 |      0.5240 ns |      0.2274 ns |     0.0125 ns |       1.54 |     0.05 |      - |      - |         - |          NA |
+| IListAnyResultsToListThenListDotCount          | 100000 |  4,091.3256 ns |  2,568.7618 ns |   140.8025 ns |  12,024.35 |   480.57 | 4.7607 | 0.7935 |   80056 B |          NA |
+| IListAnyResultsPatternMatchOnCountPropertyKesa | 100000 |      0.3672 ns |      0.4742 ns |     0.0260 ns |       1.08 |     0.07 |      - |      - |         - |          NA |
+| IListAnyResultsPatternMatchOnListPatternAaron  | 100000 |      0.3664 ns |      0.3693 ns |     0.0202 ns |       1.08 |     0.06 |      - |      - |         - |          NA |
+| IEnumerableAnyResultsLinqAny                   | 100000 |      4.5599 ns |      0.6935 ns |     0.0380 ns |      13.40 |     0.37 |      - |      - |         - |          NA |
+| IEnumerableAnyResultsToListThenListDotCount    | 100000 | 44,687.5793 ns | 20,588.2873 ns | 1,128.5135 ns | 131,336.18 | 4,525.09 | 4.7607 | 0.7935 |   80056 B |          NA |
+| IEnumerableAnyResultsLinqCount                 | 100000 | 10,225.3108 ns |  1,361.9977 ns |    74.6557 ns |  30,052.05 |   822.19 |      - |      - |         - |          NA |

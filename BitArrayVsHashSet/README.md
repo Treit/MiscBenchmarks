@@ -4,17 +4,18 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27779.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100
-  [Host]     : .NET 8.0.11 (8.0.1124.51707), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.11 (8.0.1124.51707), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method              | Mean       | Error    | StdDev   | Ratio | RatioSD |
-|-------------------- |-----------:|---------:|---------:|------:|--------:|
-| LookupUsingHashSet  | 2,998.4 ns | 59.55 ns | 96.16 ns |  5.21 |    0.24 |
-| LookupUsingBitArray |   582.5 ns | 11.38 ns | 27.93 ns |  1.00 |    0.00 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method              | Mean       | Error   | StdDev  | Ratio | RatioSD |
+|-------------------- |-----------:|--------:|--------:|------:|--------:|
+| LookupUsingHashSet  | 1,298.1 ns | 7.64 ns | 6.77 ns |  2.11 |    0.02 |
+| LookupUsingBitArray |   614.6 ns | 6.86 ns | 6.42 ns |  1.00 |    0.01 |

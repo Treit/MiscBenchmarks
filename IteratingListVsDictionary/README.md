@@ -1,34 +1,35 @@
 # Iterating a list vs. iterating a dictionary.
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|                         Method |  Count |           Mean |       Error |      StdDev | Ratio | RatioSD | Allocated | Alloc Ratio |
-|------------------------------- |------- |---------------:|------------:|------------:|------:|--------:|----------:|------------:|
-|                    **IterateList** |      **3** |       **2.077 ns** |   **0.0107 ns** |   **0.0095 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-|          IterateDictionaryKeys |      3 |       4.654 ns |   0.0570 ns |   0.0533 ns |  2.24 |    0.03 |         - |          NA |
-|        IterateDictionaryValues |      3 |       4.879 ns |   0.1107 ns |   0.1035 ns |  2.35 |    0.05 |         - |          NA |
-| IterateDictionaryKeyValuePairs |      3 |       3.622 ns |   0.0933 ns |   0.0872 ns |  1.74 |    0.04 |         - |          NA |
-|                                |        |                |             |             |       |         |           |             |
-|                    **IterateList** |     **50** |      **32.655 ns** |   **0.1812 ns** |   **0.1606 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-|          IterateDictionaryKeys |     50 |      62.195 ns |   0.0641 ns |   0.0535 ns |  1.90 |    0.01 |         - |          NA |
-|        IterateDictionaryValues |     50 |      62.233 ns |   0.0805 ns |   0.0753 ns |  1.91 |    0.01 |         - |          NA |
-| IterateDictionaryKeyValuePairs |     50 |      62.183 ns |   0.0725 ns |   0.0678 ns |  1.90 |    0.01 |         - |          NA |
-|                                |        |                |             |             |       |         |           |             |
-|                    **IterateList** |   **1000** |     **626.399 ns** |   **0.6632 ns** |   **0.5538 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-|          IterateDictionaryKeys |   1000 |   1,245.643 ns |   0.7080 ns |   0.6276 ns |  1.99 |    0.00 |         - |          NA |
-|        IterateDictionaryValues |   1000 |   1,245.219 ns |   0.5553 ns |   0.4637 ns |  1.99 |    0.00 |         - |          NA |
-| IterateDictionaryKeyValuePairs |   1000 |   1,244.683 ns |   0.4760 ns |   0.3716 ns |  1.99 |    0.00 |         - |          NA |
-|                                |        |                |             |             |       |         |           |             |
-|                    **IterateList** | **100000** |  **62,294.753 ns** | **105.7814 ns** |  **98.9480 ns** |  **1.00** |    **0.00** |         **-** |          **NA** |
-|          IterateDictionaryKeys | 100000 | 156,240.422 ns | 184.1682 ns | 153.7888 ns |  2.51 |    0.01 |         - |          NA |
-|        IterateDictionaryValues | 100000 | 156,522.876 ns | 266.9765 ns | 236.6677 ns |  2.51 |    0.01 |         - |          NA |
-| IterateDictionaryKeyValuePairs | 100000 | 156,377.640 ns | 156.5331 ns | 130.7122 ns |  2.51 |    0.00 |         - |          NA |
+| Method                         | Count  | Mean          | Error       | StdDev      | Ratio | RatioSD | Allocated | Alloc Ratio |
+|------------------------------- |------- |--------------:|------------:|------------:|------:|--------:|----------:|------------:|
+| **IterateList**                    | **3**      |      **2.296 ns** |   **0.0387 ns** |   **0.0362 ns** |  **1.00** |    **0.02** |         **-** |          **NA** |
+| IterateDictionaryKeys          | 3      |      4.122 ns |   0.0259 ns |   0.0242 ns |  1.80 |    0.03 |         - |          NA |
+| IterateDictionaryValues        | 3      |      4.101 ns |   0.0268 ns |   0.0251 ns |  1.79 |    0.03 |         - |          NA |
+| IterateDictionaryKeyValuePairs | 3      |      2.847 ns |   0.0273 ns |   0.0255 ns |  1.24 |    0.02 |         - |          NA |
+|                                |        |               |             |             |       |         |           |             |
+| **IterateList**                    | **50**     |     **31.577 ns** |   **0.2480 ns** |   **0.2320 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| IterateDictionaryKeys          | 50     |     47.784 ns |   0.2161 ns |   0.1804 ns |  1.51 |    0.01 |         - |          NA |
+| IterateDictionaryValues        | 50     |     48.149 ns |   0.2000 ns |   0.1670 ns |  1.52 |    0.01 |         - |          NA |
+| IterateDictionaryKeyValuePairs | 50     |     46.862 ns |   0.2013 ns |   0.1883 ns |  1.48 |    0.01 |         - |          NA |
+|                                |        |               |             |             |       |         |           |             |
+| **IterateList**                    | **1000**   |    **630.270 ns** |   **3.3144 ns** |   **2.7677 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| IterateDictionaryKeys          | 1000   |    942.142 ns |   1.9722 ns |   1.7483 ns |  1.49 |    0.01 |         - |          NA |
+| IterateDictionaryValues        | 1000   |    942.639 ns |   6.4083 ns |   5.9943 ns |  1.50 |    0.01 |         - |          NA |
+| IterateDictionaryKeyValuePairs | 1000   |    941.759 ns |   0.9774 ns |   0.9142 ns |  1.49 |    0.01 |         - |          NA |
+|                                |        |               |             |             |       |         |           |             |
+| **IterateList**                    | **100000** | **62,595.606 ns** | **423.5320 ns** | **396.1721 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| IterateDictionaryKeys          | 100000 | 94,809.958 ns | 313.8800 ns | 278.2465 ns |  1.51 |    0.01 |         - |          NA |
+| IterateDictionaryValues        | 100000 | 94,900.276 ns | 310.7114 ns | 275.4375 ns |  1.52 |    0.01 |         - |          NA |
+| IterateDictionaryKeyValuePairs | 100000 | 95,024.763 ns | 465.3871 ns | 412.5536 ns |  1.52 |    0.01 |         - |          NA |

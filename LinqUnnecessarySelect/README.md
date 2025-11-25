@@ -2,20 +2,21 @@
 
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3447/23H2/2023Update/SunValley3)
-13th Gen Intel Core i7-1370P, 1 CPU, 20 logical and 14 physical cores
-.NET SDK 8.0.204
-  [Host]     : .NET 8.0.4 (8.0.424.16909), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.4 (8.0.424.16909), X64 RyuJIT AVX2
-
 
 ```
-| Method                           | Count  | Mean            | Error         | StdDev        | Ratio | RatioSD | Gen0     | Gen1     | Gen2     | Allocated | Alloc Ratio |
-|--------------------------------- |------- |----------------:|--------------:|--------------:|------:|--------:|---------:|---------:|---------:|----------:|------------:|
-| **FilterWithJustWhere**              | **10**     |        **84.28 ns** |      **1.645 ns** |      **1.538 ns** |  **1.00** |    **0.00** |   **0.0318** |        **-** |        **-** |     **400 B** |        **1.00** |
-| FilterWithUnnecessarySelectFirst | 10     |       157.72 ns |      3.024 ns |      2.829 ns |  1.87 |    0.05 |   0.0362 |        - |        - |     456 B |        1.14 |
-|                                  |        |                 |               |               |       |         |          |          |          |           |             |
-| **FilterWithJustWhere**              | **100000** |   **494,782.60 ns** |  **7,018.747 ns** |  **6,565.341 ns** |  **1.00** |    **0.00** | **257.8125** | **247.0703** | **247.0703** | **2099084 B** |        **1.00** |
-| FilterWithUnnecessarySelectFirst | 100000 | 1,110,371.27 ns | 21,040.221 ns | 25,839.281 ns |  2.24 |    0.07 | 335.9375 | 328.1250 | 326.1719 | 2097780 B |        1.00 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                           | Count  | Mean           | Error        | StdDev       | Ratio | RatioSD | Gen0     | Gen1     | Gen2     | Allocated | Alloc Ratio |
+|--------------------------------- |------- |---------------:|-------------:|-------------:|------:|--------:|---------:|---------:|---------:|----------:|------------:|
+| **FilterWithJustWhere**              | **10**     |       **107.6 ns** |      **0.67 ns** |      **0.59 ns** |  **1.00** |    **0.01** |   **0.0124** |        **-** |        **-** |     **208 B** |        **1.00** |
+| FilterWithUnnecessarySelectFirst | 10     |       155.4 ns |      1.50 ns |      1.33 ns |  1.44 |    0.01 |   0.0157 |        - |        - |     264 B |        1.27 |
+|                                  |        |                |              |              |       |         |          |          |          |           |             |
+| **FilterWithJustWhere**              | **100000** |   **780,057.5 ns** | **14,701.18 ns** | **13,751.49 ns** |  **1.00** |    **0.02** | **128.9063** | **128.9063** | **128.9063** |  **801156 B** |        **1.00** |
+| FilterWithUnnecessarySelectFirst | 100000 | 1,012,127.4 ns | 20,240.14 ns | 22,496.86 ns |  1.30 |    0.04 | 144.5313 | 144.5313 | 144.5313 |  801335 B |        1.00 |

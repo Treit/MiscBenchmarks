@@ -1,21 +1,22 @@
 # Indicating an empty sequence.
 
 
+
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27832.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.201
-  [Host]     : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  Job-FVRDIE : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  Job-KEOOAO : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 OutlierMode=DontRemove  MemoryRandomization=True  
 
 ```
-| Method                     | Mean        | Error      | StdDev     | Median      | Ratio | RatioSD | Gen0     | Allocated | Alloc Ratio |
-|--------------------------- |------------:|-----------:|-----------:|------------:|------:|--------:|---------:|----------:|------------:|
-| ReturnEnumerableEmpty      |   857.02 μs |  28.645 μs |  84.459 μs |   835.66 μs | 25.01 |    3.55 |        - |         - |          NA |
-| ReturnArrayEmpty           | 1,344.63 μs |  48.118 μs | 141.878 μs | 1,302.36 μs | 39.31 |    6.24 |        - |       2 B |          NA |
-| ReturnNewArray             | 2,557.60 μs | 130.981 μs | 386.200 μs | 2,400.46 μs | 74.93 |   15.31 | 554.6875 | 2400002 B |          NA |
-| ReturnNull                 |    34.73 μs |   1.581 μs |   4.662 μs |    33.70 μs |  1.00 |    0.00 |        - |         - |          NA |
-| ReturnCollectionExpression | 1,100.76 μs |  21.866 μs |  45.158 μs | 1,087.21 μs | 32.06 |    4.16 |        - |       1 B |          NA |
+| Method                     | Mean     | Error    | StdDev   | Ratio | Allocated | Alloc Ratio |
+|--------------------------- |---------:|---------:|---------:|------:|----------:|------------:|
+| ReturnEnumerableEmpty      | 31.33 μs | 0.201 μs | 0.188 μs |  1.00 |         - |          NA |
+| ReturnArrayEmpty           | 31.40 μs | 0.257 μs | 0.240 μs |  1.00 |         - |          NA |
+| ReturnNewArray             | 31.39 μs | 0.367 μs | 0.343 μs |  1.00 |         - |          NA |
+| ReturnNull                 | 31.33 μs | 0.278 μs | 0.260 μs |  1.00 |         - |          NA |
+| ReturnCollectionExpression | 31.39 μs | 0.338 μs | 0.316 μs |  1.00 |         - |          NA |

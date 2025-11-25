@@ -1,18 +1,19 @@
 # Counting how many chars in a string are digits
 
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26090.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100-preview.2.24157.14
-  [Host]     : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.3 (8.0.324.11423), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                      | Count   | Mean      | Error     | StdDev    | Ratio | RatioSD |
-|---------------------------- |-------- |----------:|----------:|----------:|------:|--------:|
-| CountDigitsUsingIsDigit     | 1000000 |  3.980 ms | 0.0556 ms | 0.0493 ms |  1.00 |    0.00 |
-| CountDigitsUsingSubtraction | 1000000 |  3.516 ms | 0.0356 ms | 0.0316 ms |  0.88 |    0.01 |
-| CountDigitsUsingHashSet     | 1000000 | 13.285 ms | 0.2649 ms | 0.4277 ms |  3.35 |    0.11 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                      | Count   | Mean     | Error     | StdDev    | Ratio | RatioSD |
+|---------------------------- |-------- |---------:|----------:|----------:|------:|--------:|
+| CountDigitsUsingIsDigit     | 1000000 | 2.620 ms | 0.0196 ms | 0.0184 ms |  1.00 |    0.01 |
+| CountDigitsUsingSubtraction | 1000000 | 2.413 ms | 0.0111 ms | 0.0104 ms |  0.92 |    0.01 |
+| CountDigitsUsingHashSet     | 1000000 | 9.731 ms | 0.0646 ms | 0.0604 ms |  3.71 |    0.03 |

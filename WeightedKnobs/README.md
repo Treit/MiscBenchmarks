@@ -2,19 +2,20 @@
 
 
 
+
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27828.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.201
-  [Host]     : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  Job-VYNGRO : .NET 8.0.14 (8.0.1425.11118), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  Job-KEOOAO : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 OutlierMode=DontRemove  MemoryRandomization=True  
 
 ```
-| Method                             | Count | Mean         | Error        | StdDev     | Median       | Ratio  | RatioSD | Gen0      | Gen1      | Gen2     | Allocated   | Alloc Ratio |
-|----------------------------------- |------ |-------------:|-------------:|-----------:|-------------:|-------:|--------:|----------:|----------:|---------:|------------:|------------:|
-| GetRandomWeightedKnobsOriginal     | 5000  | 52,763.36 μs | 1,049.045 μs | 981.277 μs | 52,429.08 μs | 579.90 |   24.33 | 2100.0000 | 1300.0000 | 500.0000 | 13154.75 KB |       78.46 |
-| GetRandomWeightedKnobsBinarySearch | 5000  |    143.04 μs |     8.894 μs |  26.224 μs |    133.06 μs |   1.51 |    0.24 |   39.3066 |    7.8125 |        - |   167.74 KB |        1.00 |
-| GetRandomWeightedKnobsFenwickTree  | 5000  |     94.68 μs |     2.340 μs |   6.899 μs |     92.47 μs |   1.00 |    0.00 |   39.5508 |         - |        - |   167.67 KB |        1.00 |
+| Method                             | Count | Mean         | Error      | StdDev     | Ratio  | RatioSD | Gen0      | Gen1      | Gen2     | Allocated   | Alloc Ratio |
+|----------------------------------- |------ |-------------:|-----------:|-----------:|-------:|--------:|----------:|----------:|---------:|------------:|------------:|
+| GetRandomWeightedKnobsOriginal     | 5000  | 39,285.13 μs | 257.284 μs | 240.664 μs | 588.22 |    9.45 | 1076.9231 | 1000.0000 | 538.4615 | 13061.42 KB |      166.79 |
+| GetRandomWeightedKnobsBinarySearch | 5000  |    135.11 μs |   2.084 μs |   1.949 μs |   2.02 |    0.04 |    4.6387 |    0.4883 |        - |    78.38 KB |        1.00 |
+| GetRandomWeightedKnobsFenwickTree  | 5000  |     66.80 μs |   1.101 μs |   1.030 μs |   1.00 |    0.02 |    4.7607 |    0.4883 |        - |    78.31 KB |        1.00 |

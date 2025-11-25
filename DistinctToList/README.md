@@ -1,22 +1,23 @@
 # Distinct count of lists
 
 
-``` ini
 
-BenchmarkDotNet=v0.13.3, OS=Windows 11 (10.0.22631.3007), VM=Hyper-V
-AMD EPYC 7763, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=8.0.101
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+```
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-|             Method |   Count |            Mean |         Error |        StdDev | Ratio | RatioSD |     Gen0 |     Gen1 |     Gen2 |  Allocated | Alloc Ratio |
+| Method             | Count   | Mean            | Error         | StdDev        | Ratio | RatioSD | Gen0     | Gen1     | Gen2     | Allocated  | Alloc Ratio |
 |------------------- |-------- |----------------:|--------------:|--------------:|------:|--------:|---------:|---------:|---------:|-----------:|------------:|
-| **ToListThenDistinct** |      **10** |        **181.8 ns** |       **1.88 ns** |       **1.76 ns** |  **1.00** |    **0.00** |   **0.0358** |        **-** |        **-** |      **600 B** |        **1.00** |
-| DistinctThenToList |      10 |        194.2 ns |       1.18 ns |       1.05 ns |  1.07 |    0.01 |   0.0353 |        - |        - |      592 B |        0.99 |
-|       DistinctOnly |      10 |        147.5 ns |       0.94 ns |       0.88 ns |  0.81 |    0.01 |   0.0296 |        - |        - |      496 B |        0.83 |
+| **ToListThenDistinct** | **10**      |        **150.9 ns** |       **1.55 ns** |       **1.45 ns** |  **1.00** |    **0.01** |   **0.0358** |        **-** |        **-** |      **600 B** |        **1.00** |
+| DistinctThenToList | 10      |        149.3 ns |       1.79 ns |       1.68 ns |  0.99 |    0.01 |   0.0353 |        - |        - |      592 B |        0.99 |
+| DistinctOnly       | 10      |        120.6 ns |       1.15 ns |       1.02 ns |  0.80 |    0.01 |   0.0296 |        - |        - |      496 B |        0.83 |
 |                    |         |                 |               |               |       |         |          |          |          |            |             |
-| **ToListThenDistinct** | **1000000** | **21,045,932.3 ns** | **388,874.29 ns** | **363,753.25 ns** |  **1.00** |    **0.00** | **500.0000** | **500.0000** | **500.0000** | **32793801 B** |        **1.00** |
-| DistinctThenToList | 1000000 | 24,188,788.9 ns | 482,385.21 ns | 736,653.17 ns |  1.14 |    0.04 | 555.5556 | 555.5556 | 555.5556 | 30789607 B |        0.94 |
-|       DistinctOnly | 1000000 | 19,449,190.4 ns | 265,068.84 ns | 247,945.56 ns |  0.92 |    0.02 | 312.5000 | 312.5000 | 312.5000 | 26789442 B |        0.82 |
+| **ToListThenDistinct** | **1000000** | **21,955,956.2 ns** | **376,061.20 ns** | **314,028.13 ns** |  **1.00** |    **0.02** | **500.0000** | **500.0000** | **500.0000** | **32792980 B** |        **1.00** |
+| DistinctThenToList | 1000000 | 19,687,772.4 ns | 392,897.59 ns | 403,476.89 ns |  0.90 |    0.02 | 600.0000 | 600.0000 | 600.0000 | 30789569 B |        0.94 |
+| DistinctOnly       | 1000000 | 16,587,068.8 ns | 274,076.21 ns | 242,961.42 ns |  0.76 |    0.01 | 500.0000 | 500.0000 | 500.0000 | 26789478 B |        0.82 |

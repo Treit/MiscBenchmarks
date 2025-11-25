@@ -1,17 +1,18 @@
 # Dictionary vs MemoryCache
 
-```
-
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.27779.1000)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 9.0.100
-  [Host]     : .NET 8.0.11 (8.0.1124.51707), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 8.0.11 (8.0.1124.51707), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                          | Count | Mean      | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|-------------------------------- |------ |----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| LookupUsingDictionary           | 1000  |  10.48 ns | 0.140 ns | 0.131 ns |  1.00 |    0.00 |      - |         - |          NA |
-| LookupUsingMemoryCache          | 1000  | 121.46 ns | 2.151 ns | 2.871 ns | 11.67 |    0.32 | 0.0074 |      32 B |          NA |
-| LookupUsingConcurrentDictionary | 1000  |  12.37 ns | 0.239 ns | 0.223 ns |  1.18 |    0.03 |      - |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                          | Count | Mean       | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|-------------------------------- |------ |-----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
+| LookupUsingDictionary           | 1000  |   5.008 ns | 0.0536 ns | 0.0501 ns |  1.00 |    0.01 |      - |         - |          NA |
+| LookupUsingMemoryCache          | 1000  | 105.002 ns | 0.4692 ns | 0.3918 ns | 20.97 |    0.22 | 0.0019 |      32 B |          NA |
+| LookupUsingConcurrentDictionary | 1000  |   5.191 ns | 0.0818 ns | 0.0766 ns |  1.04 |    0.02 |      - |         - |          NA |
