@@ -133,13 +133,14 @@ foreach ($dir in $benchmarkDirs) {
             $runArgs += $Framework
         }
 
-        # Run benchmark
-        $output = & dotnet @runArgs 2>&1
+        # Run benchmark (show output to console and capture it)
+        $output = dotnet @runArgs 2>&1 | Tee-Object -Variable capturedOutput
         $exitCode = $LASTEXITCODE
 
         if ($exitCode -ne 0) {
             # Check if it's a build failure
-            $isBuildFailure = $output -match "Build FAILED" -or $output -match "error CS\d+" -or $output -match "error MSB\d+"
+            $outputText = $capturedOutput -join "`n"
+            $isBuildFailure = $outputText -match "Build FAILED" -or $outputText -match "error CS\d+" -or $outputText -match "error MSB\d+"
 
             if ($isBuildFailure) {
                 throw "Build failed"
