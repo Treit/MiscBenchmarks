@@ -175,7 +175,6 @@ try {
                         break
                     }
                 }
-                }
             }
             catch {
                 # File might be locked during write, just skip this iteration
