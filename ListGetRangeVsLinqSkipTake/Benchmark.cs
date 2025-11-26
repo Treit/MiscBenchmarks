@@ -7,11 +7,11 @@ using System.Linq;
 [MemoryDiagnoser]
 public class Benchmark
 {
-    [Params(10, 1000, 1_000_000)]
-    public long ListSize { get; set; }
+    [Params(10, 1_000_000)]
+    public int ListSize { get; set; }
 
     [Params(5, 100)]
-    public long RangeSize { get; set; }
+    public int RangeSize { get; set; }
 
     private List<long> _list;
 
