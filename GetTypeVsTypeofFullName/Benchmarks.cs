@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using BenchmarkDotNet;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
 
 namespace GetTypeVsTypeofFullName
 {

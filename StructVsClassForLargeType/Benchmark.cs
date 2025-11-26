@@ -1,10 +1,13 @@
-﻿﻿﻿﻿﻿namespace Test;
+﻿﻿﻿﻿namespace Test;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using System;
 using System.Collections.Generic;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private LargeTypeStruct[] _structs;

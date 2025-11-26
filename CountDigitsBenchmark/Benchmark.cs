@@ -8,8 +8,11 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(100, 1000, 100_000)]

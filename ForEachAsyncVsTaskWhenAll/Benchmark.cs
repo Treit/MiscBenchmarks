@@ -6,8 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     static readonly List<string> s_files = new();

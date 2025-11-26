@@ -1,8 +1,9 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
 using Iced.Intel;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using BenchmarkDotNet.Jobs;
 
 namespace Test;
 

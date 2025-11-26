@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Jobs;
 
 public class ArraySumBenchmark
 {

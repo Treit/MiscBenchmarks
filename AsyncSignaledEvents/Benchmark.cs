@@ -1,4 +1,4 @@
-﻿namespace Benchmark
+namespace Benchmark
 {
     using BenchmarkDotNet.Attributes;
     using Microsoft.VisualStudio.Threading;
@@ -10,8 +10,11 @@
     using AsyncManualResetEvent = Microsoft.VisualStudio.Threading.AsyncManualResetEvent;
     using AsyncSemaphore = Microsoft.VisualStudio.Threading.AsyncSemaphore;
     using AsyncManualResetEventNito = Nito.AsyncEx.AsyncManualResetEvent;
+    using BenchmarkDotNet.Jobs;
 
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net90)]
+    [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {
         const string tmpfile = "03916c44-4be6-40cb-904c-1403dd6c4f3e.tmp";

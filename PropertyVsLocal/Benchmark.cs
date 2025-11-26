@@ -1,6 +1,7 @@
 namespace Test;
 using BenchmarkDotNet.Attributes;
 using System;
+using BenchmarkDotNet.Jobs;
 
 public class TestClass
 {
@@ -13,6 +14,8 @@ public class TestClass
 }
 
 [DisassemblyDiagnoser(printSource: true)]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(1, 100_000)]

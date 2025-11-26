@@ -2,6 +2,7 @@ namespace StringToEnumConversion
 {
     using BenchmarkDotNet.Attributes;
     using System;
+    using BenchmarkDotNet.Jobs;
 
     public enum PodcastKind
     {
@@ -10,6 +11,8 @@ namespace StringToEnumConversion
     }
 
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net90)]
+    [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {
         [Params(100, 10_000)]

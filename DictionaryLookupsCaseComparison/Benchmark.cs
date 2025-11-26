@@ -4,6 +4,7 @@ using BenchmarkDotNet.Diagnosers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using BenchmarkDotNet.Jobs;
 
 public class SomeClass
 {
@@ -14,6 +15,8 @@ public class SomeClass
 }
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10, 100_000)]

@@ -3,6 +3,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using System;
 using System.Collections.Generic;
+using BenchmarkDotNet.Jobs;
 
 public class SomeClass
 {
@@ -13,6 +14,8 @@ public class SomeClass
 }
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10, 100, 1000, 10_000, 100_000)]

@@ -1,4 +1,4 @@
-﻿namespace LargeFileReadBufferSizes
+namespace LargeFileReadBufferSizes
 {
     using System;
     using System.Buffers;
@@ -7,8 +7,11 @@
     using System.Runtime.InteropServices;
     using System.Security.Cryptography;
     using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Jobs;
 
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net90)]
+    [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {
         public const long FileSizeBytes = 5L * 1024 * 1024 * 1024;

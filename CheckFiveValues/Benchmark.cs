@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using Microsoft.VisualBasic;
+using BenchmarkDotNet.Jobs;
 
 public static class Constants
 {
@@ -15,6 +16,8 @@ public static class Constants
 }
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params("FirstValue", "LastValue", "ValueNotInSet")]

@@ -5,9 +5,12 @@ using BenchmarkDotNet.Order;
 using System;
 using System.Linq;
 using System.Text;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     public static Random random;

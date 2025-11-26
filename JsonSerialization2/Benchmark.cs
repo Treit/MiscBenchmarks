@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using BenchmarkDotNet.Jobs;
 
 namespace Test;
 record MyType(string Name, int Age);
@@ -15,6 +16,8 @@ internal partial class SourceGenerationContext : JsonSerializerContext
 }
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10, 1000)]

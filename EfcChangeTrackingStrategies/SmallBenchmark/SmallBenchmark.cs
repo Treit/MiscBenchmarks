@@ -1,5 +1,6 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using Microsoft.EntityFrameworkCore;
+using BenchmarkDotNet.Jobs;
 
 namespace Test;
 

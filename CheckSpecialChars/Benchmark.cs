@@ -8,8 +8,11 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Diagnostics.Tracing.Parsers;
 using System.Text;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private static HashSet<char> s_specialChars = new HashSet<char>(new char[] { '-', '_', '~', '!', '*', '\'', '(', ')', ';', '@', '&', '=', '+', '$', ',', '?', '#', '[', ']' });

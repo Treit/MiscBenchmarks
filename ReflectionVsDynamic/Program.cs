@@ -1,8 +1,9 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Reflection.Emit;
 using Benchmark;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Jobs;
 
 BenchmarkRunner.Run<Bench>();
 

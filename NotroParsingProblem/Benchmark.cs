@@ -3,8 +3,11 @@ using BenchmarkDotNet.Attributes;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private string _stringToParse = "[on] [AdvancementsAddon] [player] advancement (award|get|complete)";

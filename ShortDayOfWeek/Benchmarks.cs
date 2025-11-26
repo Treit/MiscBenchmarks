@@ -1,6 +1,7 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
+using BenchmarkDotNet.Jobs;
 
 namespace ShortDayOfWeek
 {

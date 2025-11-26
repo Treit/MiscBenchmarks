@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 
 [ShortRunJob]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
 
@@ -59,6 +61,7 @@ public class Benchmark
         };
 
         using (Process process = Process.Start(startInfo)!)
+using BenchmarkDotNet.Jobs;
         {
             await process.WaitForExitAsync();
             if (process.ExitCode == 0)

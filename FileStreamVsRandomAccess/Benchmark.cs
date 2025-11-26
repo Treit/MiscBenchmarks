@@ -4,6 +4,9 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.IO;
 
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
+
 public class Benchmark
 {
     [Params(3 * 1024 * 1024, 1024 * 1024 * 1024)]

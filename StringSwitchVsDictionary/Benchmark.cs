@@ -4,8 +4,11 @@ namespace StringSwitchVsDictionary
     using System;
     using System.Collections.Frozen;
     using System.Collections.Generic;
+    using BenchmarkDotNet.Jobs;
 
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net90)]
+    [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {
         private static readonly Dictionary<string, TestEnum> TestEnumDictionary = 

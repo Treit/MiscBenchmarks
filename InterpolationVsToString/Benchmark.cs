@@ -4,9 +4,12 @@ using BenchmarkDotNet.Diagnosers;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
 [MemoryRandomization]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private Dictionary<string, uint> _dict;

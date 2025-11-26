@@ -1,11 +1,14 @@
-﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
 //[ShortRunJob]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10, 10_000)]

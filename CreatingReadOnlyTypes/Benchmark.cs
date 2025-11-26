@@ -1,6 +1,7 @@
 namespace Test;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
 public class PropertyAccessorBenchmark

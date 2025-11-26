@@ -4,6 +4,7 @@ using BenchmarkDotNet.Diagnosers;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
+using BenchmarkDotNet.Jobs;
 
 static class Extensions
 {
@@ -11,6 +12,8 @@ static class Extensions
 }
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10_000)]

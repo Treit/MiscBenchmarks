@@ -15,6 +15,9 @@ public class TestClass
     public bool SomeFlag { get; set; }
 }
 
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
+
 public class Benchmark
 {
     [Params(10, 1000)]

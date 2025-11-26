@@ -4,8 +4,11 @@ using BenchmarkDotNet.Diagnosers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     static readonly List<string> s_RandomStrings = [];

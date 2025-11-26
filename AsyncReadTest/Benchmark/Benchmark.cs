@@ -1,11 +1,14 @@
-﻿namespace Benchmark
+namespace Benchmark
 {
     using BenchmarkDotNet.Attributes;
     using System.Threading;
     using System.Threading.Tasks;
     using TestLib;
+    using BenchmarkDotNet.Jobs;
 
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net90)]
+    [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {
         const int One_KB = 1024;

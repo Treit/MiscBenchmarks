@@ -3,6 +3,7 @@ using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BenchmarkDotNet.Jobs;
 
 /// <summary>
 /// Scenario here is from production real-world code, where we are
@@ -11,6 +12,8 @@ using System.Linq;
 /// those to zero in the target dictionary.
 /// </summary>
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(5000)]

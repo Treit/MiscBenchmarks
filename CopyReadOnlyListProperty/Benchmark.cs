@@ -4,6 +4,7 @@ namespace ObjectCopyingBenchmark
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using BenchmarkDotNet.Jobs;
 
     // Internal object - what we're copying from
     public class InternalObject
@@ -29,6 +30,8 @@ namespace ObjectCopyingBenchmark
     }
 
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net90)]
+    [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {
         private InternalObject[] _internalObjects = [];

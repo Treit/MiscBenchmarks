@@ -4,6 +4,7 @@ using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Order;
 using System;
 using System.Collections.Generic;
+using BenchmarkDotNet.Jobs;
 
 public struct TestStruct
 {
@@ -77,6 +78,8 @@ public class MediumStruct
 
 [MemoryDiagnoser]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     List<TestClass> _classes;
