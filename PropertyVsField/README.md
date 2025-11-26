@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,9 +15,9 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                        | Mean     | Error   | StdDev  | Code Size |
 |------------------------------ |---------:|--------:|--------:|----------:|
-| GetProperty                   | 383.2 ns | 1.48 ns | 1.31 ns |      42 B |
-| GetPropertyAggressiveInlining | 381.9 ns | 1.43 ns | 1.33 ns |      42 B |
-| GetField                      | 382.0 ns | 1.28 ns | 1.13 ns |      42 B |
+| GetProperty                   | 381.0 ns | 1.86 ns | 1.74 ns |      42 B |
+| GetPropertyAggressiveInlining | 380.1 ns | 1.25 ns | 1.17 ns |      42 B |
+| GetField                      | 380.7 ns | 2.02 ns | 1.89 ns |      42 B |
 
 ## .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 ```assembly

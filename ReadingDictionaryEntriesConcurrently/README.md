@@ -4,6 +4,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,25 +15,25 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 
 
 ```
-| Method                                               | Count  | Mean          | Error        | StdDev       | Ratio | RatioSD |
-|----------------------------------------------------- |------- |--------------:|-------------:|-------------:|------:|--------:|
-| **ConcurrentReadsUsingReaderWriterLockSlim**             | **10**     |      **44.48 μs** |     **0.880 μs** |     **1.113 μs** |  **1.19** |    **0.04** |
-| ConcurrentReadsUsingLock                             | 10     |      60.35 μs |     0.949 μs |     0.793 μs |  1.62 |    0.04 |
-| ConcurrentReadsUsingReaderWriterLock                 | 10     |      86.10 μs |     0.647 μs |     0.573 μs |  2.31 |    0.05 |
-| ConcurrentReadsUsingConcurrentDictionary             | 10     |      36.76 μs |     0.656 μs |     0.548 μs |  0.98 |    0.02 |
-| ConcurrentReadsUsingFrozentDictionary                | 10     |      37.87 μs |     0.684 μs |     0.640 μs |  1.01 |    0.03 |
-| ConcurrentReadsUsingDictionaryNoLockingNotThreadSafe | 10     |      37.34 μs |     0.697 μs |     0.716 μs |  1.00 |    0.03 |
-|                                                      |        |               |              |              |       |         |
-| **ConcurrentReadsUsingReaderWriterLockSlim**             | **1000**   |   **2,695.04 μs** |    **21.760 μs** |    **18.171 μs** |  **3.73** |    **0.03** |
-| ConcurrentReadsUsingLock                             | 1000   |   4,071.33 μs |    33.659 μs |    28.107 μs |  5.64 |    0.05 |
-| ConcurrentReadsUsingReaderWriterLock                 | 1000   |   9,551.17 μs |    62.362 μs |    58.334 μs | 13.24 |    0.12 |
-| ConcurrentReadsUsingConcurrentDictionary             | 1000   |     735.87 μs |     3.599 μs |     3.366 μs |  1.02 |    0.01 |
-| ConcurrentReadsUsingFrozentDictionary                | 1000   |     734.28 μs |     1.802 μs |     1.685 μs |  1.02 |    0.01 |
-| ConcurrentReadsUsingDictionaryNoLockingNotThreadSafe | 1000   |     721.68 μs |     5.381 μs |     5.033 μs |  1.00 |    0.01 |
-|                                                      |        |               |              |              |       |         |
-| **ConcurrentReadsUsingReaderWriterLockSlim**             | **100000** | **357,421.81 μs** | **2,823.751 μs** | **2,773.301 μs** |  **5.26** |    **0.05** |
-| ConcurrentReadsUsingLock                             | 100000 | 459,245.16 μs | 3,591.245 μs | 3,183.545 μs |  6.76 |    0.06 |
-| ConcurrentReadsUsingReaderWriterLock                 | 100000 | 908,980.76 μs | 9,480.268 μs | 7,916.453 μs | 13.38 |    0.13 |
-| ConcurrentReadsUsingConcurrentDictionary             | 100000 |  70,813.42 μs | 1,378.157 μs | 1,587.088 μs |  1.04 |    0.02 |
-| ConcurrentReadsUsingFrozentDictionary                | 100000 |  81,422.28 μs | 1,609.482 μs | 3,062.206 μs |  1.20 |    0.05 |
-| ConcurrentReadsUsingDictionaryNoLockingNotThreadSafe | 100000 |  67,946.66 μs |   481.141 μs |   375.643 μs |  1.00 |    0.01 |
+| Method                                               | Count  | Mean          | Error         | StdDev        | Median        | Ratio | RatioSD |
+|----------------------------------------------------- |------- |--------------:|--------------:|--------------:|--------------:|------:|--------:|
+| **ConcurrentReadsUsingReaderWriterLockSlim**             | **10**     |      **47.13 μs** |      **0.920 μs** |      **1.163 μs** |      **47.11 μs** |  **1.22** |    **0.03** |
+| ConcurrentReadsUsingLock                             | 10     |      47.10 μs |      0.398 μs |      0.353 μs |      47.10 μs |  1.22 |    0.01 |
+| ConcurrentReadsUsingReaderWriterLock                 | 10     |      51.64 μs |      0.997 μs |      1.066 μs |      51.29 μs |  1.33 |    0.03 |
+| ConcurrentReadsUsingConcurrentDictionary             | 10     |      39.95 μs |      0.701 μs |      0.621 μs |      40.02 μs |  1.03 |    0.02 |
+| ConcurrentReadsUsingFrozentDictionary                | 10     |      37.99 μs |      0.673 μs |      0.596 μs |      37.91 μs |  0.98 |    0.02 |
+| ConcurrentReadsUsingDictionaryNoLockingNotThreadSafe | 10     |      38.76 μs |      0.410 μs |      0.383 μs |      38.75 μs |  1.00 |    0.01 |
+|                                                      |        |               |               |               |               |       |         |
+| **ConcurrentReadsUsingReaderWriterLockSlim**             | **1000**   |   **2,789.06 μs** |     **43.829 μs** |     **36.600 μs** |   **2,775.22 μs** |  **3.55** |    **0.07** |
+| ConcurrentReadsUsingLock                             | 1000   |   4,743.21 μs |     39.663 μs |     33.121 μs |   4,753.52 μs |  6.04 |    0.10 |
+| ConcurrentReadsUsingReaderWriterLock                 | 1000   |   9,062.70 μs |    180.308 μs |    258.592 μs |   9,100.26 μs | 11.54 |    0.37 |
+| ConcurrentReadsUsingConcurrentDictionary             | 1000   |     875.98 μs |      7.013 μs |      5.856 μs |     875.12 μs |  1.12 |    0.02 |
+| ConcurrentReadsUsingFrozentDictionary                | 1000   |     778.05 μs |     12.980 μs |     12.142 μs |     774.11 μs |  0.99 |    0.02 |
+| ConcurrentReadsUsingDictionaryNoLockingNotThreadSafe | 1000   |     785.43 μs |     13.495 μs |     12.623 μs |     781.68 μs |  1.00 |    0.02 |
+|                                                      |        |               |               |               |               |       |         |
+| **ConcurrentReadsUsingReaderWriterLockSlim**             | **100000** | **379,646.43 μs** | **11,419.821 μs** | **33,130.974 μs** | **370,486.90 μs** |  **5.02** |    **0.49** |
+| ConcurrentReadsUsingLock                             | 100000 | 479,750.31 μs |  9,381.835 μs |  8,775.774 μs | 481,052.50 μs |  6.34 |    0.30 |
+| ConcurrentReadsUsingReaderWriterLock                 | 100000 | 833,531.06 μs | 27,831.947 μs | 82,063.129 μs | 860,725.55 μs | 11.02 |    1.18 |
+| ConcurrentReadsUsingConcurrentDictionary             | 100000 |  75,994.72 μs |  1,515.154 μs |  3,659.268 μs |  75,513.50 μs |  1.01 |    0.07 |
+| ConcurrentReadsUsingFrozentDictionary                | 100000 |  91,739.93 μs |  2,091.557 μs |  6,167.004 μs |  91,512.88 μs |  1.21 |    0.10 |
+| ConcurrentReadsUsingDictionaryNoLockingNotThreadSafe | 100000 |  75,755.95 μs |  1,498.873 μs |  3,352.444 μs |  75,894.84 μs |  1.00 |    0.06 |

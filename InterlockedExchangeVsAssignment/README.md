@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,8 +15,8 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                           | Mean      | Error     | StdDev    | Median    | Ratio | RatioSD | Code Size |
 |--------------------------------- |----------:|----------:|----------:|----------:|------:|--------:|----------:|
-| SetToZeroSimpleAssignment        | 0.0006 ns | 0.0013 ns | 0.0011 ns | 0.0000 ns |     ? |       ? |      11 B |
-| SetToZeroWithInterlockedExchange | 1.0594 ns | 0.0142 ns | 0.0126 ns | 1.0620 ns |     ? |       ? |      14 B |
+| SetToZeroSimpleAssignment        | 0.0010 ns | 0.0014 ns | 0.0012 ns | 0.0002 ns |     ? |       ? |      11 B |
+| SetToZeroWithInterlockedExchange | 1.0713 ns | 0.0102 ns | 0.0096 ns | 1.0732 ns |     ? |       ? |      14 B |
 
 ## .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 ```assembly

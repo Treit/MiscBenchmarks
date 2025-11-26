@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,5 +15,5 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                 | Mean     | Error   | StdDev  | Ratio | Allocated | Alloc Ratio |
 |----------------------- |---------:|--------:|--------:|------:|----------:|------------:|
-| AwaitTasksSequentially | 500.3 ms | 3.40 ms | 3.18 ms |  1.00 |   4.15 KB |        1.00 |
-| AwaitTasksUsingWhenAll | 500.7 ms | 3.57 ms | 3.34 ms |  1.00 |   4.43 KB |        1.07 |
+| AwaitTasksSequentially | 501.1 ms | 3.56 ms | 3.33 ms |  1.00 |   4.15 KB |        1.00 |
+| AwaitTasksUsingWhenAll | 501.4 ms | 2.96 ms | 2.62 ms |  1.00 |   4.43 KB |        1.07 |

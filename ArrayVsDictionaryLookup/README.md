@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,13 +15,13 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                | Iterations | Mean          | Error        | StdDev       | Allocated |
 |---------------------- |----------- |--------------:|-------------:|-------------:|----------:|
-| **LookupUsingArray**      | **10**         |      **18.22 μs** |     **0.103 μs** |     **0.096 μs** |         **-** |
-| LookupUsingDictionary | 10         |      18.84 μs |     0.091 μs |     0.085 μs |         - |
-| **LookupUsingArray**      | **100**        |     **182.10 μs** |     **0.694 μs** |     **0.649 μs** |         **-** |
-| LookupUsingDictionary | 100        |     188.41 μs |     0.782 μs |     0.731 μs |         - |
-| **LookupUsingArray**      | **1000**       |   **1,821.02 μs** |     **3.437 μs** |     **3.215 μs** |         **-** |
-| LookupUsingDictionary | 1000       |   1,898.47 μs |     3.606 μs |     3.373 μs |         - |
-| **LookupUsingArray**      | **10000**      |  **18,203.76 μs** |    **86.860 μs** |    **81.249 μs** |         **-** |
-| LookupUsingDictionary | 10000      |  18,830.75 μs |   101.818 μs |    95.241 μs |         - |
-| **LookupUsingArray**      | **100000**     | **182,080.20 μs** | **1,073.452 μs** | **1,004.108 μs** |         **-** |
-| LookupUsingDictionary | 100000     | 189,531.92 μs | 1,198.354 μs | 1,120.941 μs |         - |
+| **LookupUsingArray**      | **10**         |      **18.47 μs** |     **0.342 μs** |     **0.320 μs** |         **-** |
+| LookupUsingDictionary | 10         |      18.94 μs |     0.115 μs |     0.108 μs |         - |
+| **LookupUsingArray**      | **100**        |     **182.77 μs** |     **0.726 μs** |     **0.679 μs** |       **3 B** |
+| LookupUsingDictionary | 100        |     189.01 μs |     0.819 μs |     0.766 μs |         - |
+| **LookupUsingArray**      | **1000**       |   **1,828.64 μs** |     **5.162 μs** |     **4.310 μs** |         **-** |
+| LookupUsingDictionary | 1000       |   1,906.34 μs |     4.445 μs |     3.940 μs |         - |
+| **LookupUsingArray**      | **10000**      |  **18,273.56 μs** |   **110.707 μs** |   **103.555 μs** |         **-** |
+| LookupUsingDictionary | 10000      |  19,066.91 μs |   109.754 μs |   102.664 μs |         - |
+| **LookupUsingArray**      | **100000**     | **182,785.07 μs** | **1,128.518 μs** | **1,055.617 μs** |         **-** |
+| LookupUsingDictionary | 100000     | 189,434.77 μs | 1,205.848 μs | 1,127.951 μs |         - |

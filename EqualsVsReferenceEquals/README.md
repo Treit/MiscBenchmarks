@@ -3,6 +3,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -15,5 +16,5 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method          | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |---------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| Equals          | 14.82 ns | 0.293 ns | 0.274 ns |  1.00 |    0.03 | 0.0019 |      32 B |        1.00 |
-| ReferenceEquals | 13.20 ns | 0.152 ns | 0.142 ns |  0.89 |    0.02 | 0.0019 |      32 B |        1.00 |
+| Equals          | 16.60 ns | 0.267 ns | 0.250 ns |  1.00 |    0.02 | 0.0019 |      32 B |        1.00 |
+| ReferenceEquals | 13.59 ns | 0.143 ns | 0.127 ns |  0.82 |    0.01 | 0.0019 |      32 B |        1.00 |

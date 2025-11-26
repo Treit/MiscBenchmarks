@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,17 +15,17 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                            | Count   | Mean        | Error       | StdDev      | Median      | Ratio | RatioSD |
 |---------------------------------- |-------- |------------:|------------:|------------:|------------:|------:|--------:|
-| **ReadSynchronous**                   | **1000**    |    **103.7 μs** |     **2.00 μs** |     **2.39 μs** |    **104.4 μs** |  **1.00** |    **0.03** |
-| ReadAsyncAwait                    | 1000    |    165.8 μs |     3.26 μs |     6.73 μs |    167.0 μs |  1.60 |    0.08 |
-| ReadAsyncAwaitConfigureAwaitFalse | 1000    |    169.0 μs |     3.34 μs |     5.10 μs |    169.9 μs |  1.63 |    0.06 |
-| ReadAsyncAwaitConfigureAwaitTrue  | 1000    |    174.0 μs |     3.33 μs |     3.27 μs |    174.8 μs |  1.68 |    0.05 |
+| **ReadSynchronous**                   | **1000**    |    **105.4 μs** |     **0.58 μs** |     **0.51 μs** |    **105.4 μs** |  **1.00** |    **0.01** |
+| ReadAsyncAwait                    | 1000    |    175.4 μs |     3.41 μs |     3.19 μs |    176.0 μs |  1.66 |    0.03 |
+| ReadAsyncAwaitConfigureAwaitFalse | 1000    |    163.9 μs |     3.26 μs |     7.29 μs |    163.8 μs |  1.55 |    0.07 |
+| ReadAsyncAwaitConfigureAwaitTrue  | 1000    |    161.1 μs |     3.31 μs |     9.70 μs |    158.2 μs |  1.53 |    0.09 |
 |                                   |         |             |             |             |             |       |         |
-| **ReadSynchronous**                   | **100000**  |  **3,395.4 μs** |    **18.85 μs** |    **15.74 μs** |  **3,397.5 μs** |  **1.00** |    **0.01** |
-| ReadAsyncAwait                    | 100000  |  6,140.8 μs |   149.08 μs |   437.21 μs |  6,204.0 μs |  1.81 |    0.13 |
-| ReadAsyncAwaitConfigureAwaitFalse | 100000  |  6,327.6 μs |   180.99 μs |   519.30 μs |  6,563.0 μs |  1.86 |    0.15 |
-| ReadAsyncAwaitConfigureAwaitTrue  | 100000  |  5,746.2 μs |   121.51 μs |   358.28 μs |  5,687.5 μs |  1.69 |    0.11 |
+| **ReadSynchronous**                   | **100000**  |  **3,425.8 μs** |    **64.16 μs** |    **68.65 μs** |  **3,408.7 μs** |  **1.00** |    **0.03** |
+| ReadAsyncAwait                    | 100000  |  6,416.9 μs |   123.89 μs |   132.56 μs |  6,455.9 μs |  1.87 |    0.05 |
+| ReadAsyncAwaitConfigureAwaitFalse | 100000  |  5,834.4 μs |   184.73 μs |   530.02 μs |  5,676.0 μs |  1.70 |    0.16 |
+| ReadAsyncAwaitConfigureAwaitTrue  | 100000  |  5,908.3 μs |   172.45 μs |   500.30 μs |  5,827.4 μs |  1.73 |    0.15 |
 |                                   |         |             |             |             |             |       |         |
-| **ReadSynchronous**                   | **1000000** | **37,353.0 μs** |   **437.18 μs** |   **408.94 μs** | **37,312.5 μs** |  **1.00** |    **0.01** |
-| ReadAsyncAwait                    | 1000000 | 65,190.6 μs | 1,660.08 μs | 4,894.80 μs | 66,115.1 μs |  1.75 |    0.13 |
-| ReadAsyncAwaitConfigureAwaitFalse | 1000000 | 66,031.7 μs | 1,602.07 μs | 4,698.60 μs | 67,497.6 μs |  1.77 |    0.13 |
-| ReadAsyncAwaitConfigureAwaitTrue  | 1000000 | 62,664.1 μs | 1,996.19 μs | 5,791.30 μs | 61,487.3 μs |  1.68 |    0.16 |
+| **ReadSynchronous**                   | **1000000** | **37,409.8 μs** |   **487.60 μs** |   **456.10 μs** | **37,285.5 μs** |  **1.00** |    **0.02** |
+| ReadAsyncAwait                    | 1000000 | 70,250.1 μs | 1,400.19 μs | 2,261.04 μs | 70,449.2 μs |  1.88 |    0.06 |
+| ReadAsyncAwaitConfigureAwaitFalse | 1000000 | 69,757.0 μs | 1,393.15 μs | 3,766.46 μs | 71,105.2 μs |  1.86 |    0.10 |
+| ReadAsyncAwaitConfigureAwaitTrue  | 1000000 | 70,657.9 μs | 1,871.43 μs | 5,517.95 μs | 71,796.3 μs |  1.89 |    0.15 |

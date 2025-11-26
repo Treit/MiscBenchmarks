@@ -1,6 +1,7 @@
 # Testing if two sequences have at least one common element
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -11,18 +12,18 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 
 
 ```
-| Method                      | Count | Mean         | Error      | StdDev     | Median       | Ratio | RatioSD | Gen0   | Gen1   | Allocated | Alloc Ratio |
-|---------------------------- |------ |-------------:|-----------:|-----------:|-------------:|------:|--------:|-------:|-------:|----------:|------------:|
-| **ListAnyListContains**         | **10**    |     **18.75 ns** |   **0.099 ns** |   **0.092 ns** |     **18.78 ns** |  **1.45** |    **0.01** |      **-** |      **-** |         **-** |          **NA** |
-| ListAnyHashSetContains      | 10    |     19.61 ns |   0.425 ns |   0.788 ns |     19.62 ns |  1.51 |    0.06 |      - |      - |         - |          NA |
-| ListAnyFrozenSetContains    | 10    |     10.27 ns |   0.235 ns |   0.647 ns |     10.07 ns |  0.79 |    0.05 |      - |      - |         - |          NA |
-| LinqIntersectListThenAny    | 10    |    197.50 ns |   1.304 ns |   1.219 ns |    197.66 ns | 15.25 |    0.10 | 0.0257 |      - |     432 B |          NA |
-| HashSetOverlapsListMethod   | 10    |     24.31 ns |   0.117 ns |   0.109 ns |     24.31 ns |  1.88 |    0.01 |      - |      - |         - |          NA |
-| FrozenSetOverlapsListMethod | 10    |     12.95 ns |   0.038 ns |   0.036 ns |     12.94 ns |  1.00 |    0.00 |      - |      - |         - |          NA |
-|                             |       |              |            |            |              |       |         |        |        |           |             |
-| **ListAnyListContains**         | **1000**  | **42,613.28 ns** | **154.853 ns** | **120.899 ns** | **42,636.25 ns** | **31.00** |    **0.18** |      **-** |      **-** |         **-** |          **NA** |
-| ListAnyHashSetContains      | 1000  |  1,528.32 ns |   6.030 ns |   5.640 ns |  1,531.19 ns |  1.11 |    0.01 |      - |      - |         - |          NA |
-| ListAnyFrozenSetContains    | 1000  |  1,201.53 ns |   8.717 ns |   8.154 ns |  1,202.47 ns |  0.87 |    0.01 |      - |      - |         - |          NA |
-| LinqIntersectListThenAny    | 1000  | 11,732.21 ns |  74.561 ns |  69.745 ns | 11,742.48 ns |  8.53 |    0.07 | 1.0681 | 0.0610 |   17904 B |          NA |
-| HashSetOverlapsListMethod   | 1000  |  1,766.21 ns |  10.181 ns |   9.025 ns |  1,762.61 ns |  1.28 |    0.01 |      - |      - |         - |          NA |
-| FrozenSetOverlapsListMethod | 1000  |  1,374.83 ns |   7.582 ns |   7.092 ns |  1,376.23 ns |  1.00 |    0.01 |      - |      - |         - |          NA |
+| Method                      | Count | Mean         | Error      | StdDev     | Ratio | RatioSD | Gen0   | Gen1   | Allocated | Alloc Ratio |
+|---------------------------- |------ |-------------:|-----------:|-----------:|------:|--------:|-------:|-------:|----------:|------------:|
+| **ListAnyListContains**         | **10**    |     **18.74 ns** |   **0.261 ns** |   **0.231 ns** |  **1.45** |    **0.02** |      **-** |      **-** |         **-** |          **NA** |
+| ListAnyHashSetContains      | 10    |     19.42 ns |   0.097 ns |   0.091 ns |  1.51 |    0.01 |      - |      - |         - |          NA |
+| ListAnyFrozenSetContains    | 10    |     10.20 ns |   0.072 ns |   0.068 ns |  0.79 |    0.01 |      - |      - |         - |          NA |
+| LinqIntersectListThenAny    | 10    |    194.35 ns |   1.010 ns |   0.895 ns | 15.08 |    0.08 | 0.0257 |      - |     432 B |          NA |
+| HashSetOverlapsListMethod   | 10    |     24.73 ns |   0.074 ns |   0.070 ns |  1.92 |    0.01 |      - |      - |         - |          NA |
+| FrozenSetOverlapsListMethod | 10    |     12.89 ns |   0.038 ns |   0.036 ns |  1.00 |    0.00 |      - |      - |         - |          NA |
+|                             |       |              |            |            |       |         |        |        |           |             |
+| **ListAnyListContains**         | **1000**  | **42,834.84 ns** | **270.061 ns** | **252.615 ns** | **31.05** |    **0.21** |      **-** |      **-** |         **-** |          **NA** |
+| ListAnyHashSetContains      | 1000  |  1,537.95 ns |   7.099 ns |   6.640 ns |  1.11 |    0.01 |      - |      - |         - |          NA |
+| ListAnyFrozenSetContains    | 1000  |  1,207.96 ns |   8.089 ns |   7.566 ns |  0.88 |    0.01 |      - |      - |         - |          NA |
+| LinqIntersectListThenAny    | 1000  | 11,912.65 ns | 104.638 ns |  97.878 ns |  8.64 |    0.08 | 1.0681 | 0.0610 |   17904 B |          NA |
+| HashSetOverlapsListMethod   | 1000  |  1,776.29 ns |  11.858 ns |   9.902 ns |  1.29 |    0.01 |      - |      - |         - |          NA |
+| FrozenSetOverlapsListMethod | 1000  |  1,379.37 ns |   5.938 ns |   5.264 ns |  1.00 |    0.01 |      - |      - |         - |          NA |

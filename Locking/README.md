@@ -1,6 +1,7 @@
 # Locking
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,8 +15,8 @@ InvocationCount=1  UnrollFactor=1
 ```
 | Method                 | Mean       | Error     | StdDev    | Median     | Ratio | RatioSD | Allocated  | Alloc Ratio |
 |----------------------- |-----------:|----------:|----------:|-----------:|------:|--------:|-----------:|------------:|
-| RegularLock            |   1.666 ms | 0.0377 ms | 0.1094 ms |   1.686 ms |  1.00 |    0.09 |    4.85 KB |        1.00 |
-| SemaphoreWait          | 144.686 ms | 2.0059 ms | 1.8763 ms | 144.881 ms | 87.24 |    5.97 |    5.38 KB |        1.11 |
-| SemaphoreSlimWait      |   2.776 ms | 0.0709 ms | 0.2035 ms |   2.780 ms |  1.67 |    0.17 |    5.07 KB |        1.05 |
-| SemaphoreSlimWaitAsync |   3.310 ms | 0.0836 ms | 0.2411 ms |   3.287 ms |  2.00 |    0.20 | 1957.88 KB |      403.56 |
-| NitoAsyncMonitor       |   4.267 ms | 0.3270 ms | 0.9487 ms |   3.931 ms |  2.57 |    0.60 |  2967.2 KB |      611.60 |
+| RegularLock            |   1.784 ms | 0.0423 ms | 0.1228 ms |   1.789 ms |  1.00 |    0.10 |    5.95 KB |        1.00 |
+| SemaphoreWait          | 144.939 ms | 1.6678 ms | 2.4447 ms | 144.641 ms | 81.64 |    5.79 |    5.38 KB |        0.91 |
+| SemaphoreSlimWait      |   2.885 ms | 0.0813 ms | 0.2333 ms |   2.883 ms |  1.63 |    0.17 |    4.98 KB |        0.84 |
+| SemaphoreSlimWaitAsync |   3.480 ms | 0.1316 ms | 0.3818 ms |   3.483 ms |  1.96 |    0.25 | 2085.84 KB |      350.84 |
+| NitoAsyncMonitor       |   4.356 ms | 0.3601 ms | 1.0560 ms |   3.933 ms |  2.45 |    0.62 | 2866.63 KB |      482.17 |

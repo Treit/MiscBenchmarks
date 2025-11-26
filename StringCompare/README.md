@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,9 +15,9 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                     | Count | Mean       | Error     | StdDev    | Ratio | RatioSD |
 |--------------------------- |------ |-----------:|----------:|----------:|------:|--------:|
-| Ordinal                    | 1000  |  11.292 μs | 0.0585 μs | 0.0548 μs |  1.00 |    0.01 |
-| OrdinalIgnoreCase          | 1000  |   8.691 μs | 0.1098 μs | 0.1027 μs |  0.77 |    0.01 |
-| CurrentCulture             | 1000  | 138.393 μs | 1.0486 μs | 0.9809 μs | 12.26 |    0.10 |
-| CurrentCultureIgnoreCase   | 1000  | 207.595 μs | 0.8951 μs | 0.7475 μs | 18.39 |    0.11 |
-| InvariantCulture           | 1000  | 137.474 μs | 1.0662 μs | 0.9974 μs | 12.17 |    0.10 |
-| InvariantCultureIgnoreCase | 1000  | 220.301 μs | 0.7751 μs | 0.6871 μs | 19.51 |    0.11 |
+| Ordinal                    | 1000  |  11.317 μs | 0.0573 μs | 0.0536 μs |  1.00 |    0.01 |
+| OrdinalIgnoreCase          | 1000  |   8.639 μs | 0.0720 μs | 0.0674 μs |  0.76 |    0.01 |
+| CurrentCulture             | 1000  | 138.378 μs | 1.0752 μs | 1.0058 μs | 12.23 |    0.10 |
+| CurrentCultureIgnoreCase   | 1000  | 207.694 μs | 0.8385 μs | 0.7002 μs | 18.35 |    0.10 |
+| InvariantCulture           | 1000  | 137.149 μs | 0.8944 μs | 0.7928 μs | 12.12 |    0.09 |
+| InvariantCultureIgnoreCase | 1000  | 219.744 μs | 0.6752 μs | 0.6316 μs | 19.42 |    0.10 |

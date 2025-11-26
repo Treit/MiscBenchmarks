@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -12,22 +13,22 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 
 
 ```
-| Method                                   | Count   | Mean             | Error          | StdDev         | Ratio |
-|----------------------------------------- |-------- |-----------------:|---------------:|---------------:|------:|
-| **ForLoopCount**                             | **10**      |         **7.476 ns** |      **0.0623 ns** |      **0.0583 ns** |  **0.84** |
-| ForEachLoopCount                         | 10      |         8.912 ns |      0.0622 ns |      0.0582 ns |  1.00 |
-| ForEachLoopCountCollectionsMarshalAsSpan | 10      |         5.064 ns |      0.0323 ns |      0.0287 ns |  0.57 |
-| ListDotForEachLoopCount                  | 10      |        12.300 ns |      0.1289 ns |      0.1077 ns |  1.38 |
-| ListExplicitEnumeratorCount              | 10      |         8.901 ns |      0.0836 ns |      0.0782 ns |  1.00 |
-|                                          |         |                  |                |                |       |
-| **ForLoopCount**                             | **1000**    |       **721.775 ns** |      **3.7196 ns** |      **3.4793 ns** |  **0.90** |
-| ForEachLoopCount                         | 1000    |       806.402 ns |      3.0590 ns |      2.7117 ns |  1.00 |
-| ForEachLoopCountCollectionsMarshalAsSpan | 1000    |       521.113 ns |      4.9370 ns |      4.6181 ns |  0.65 |
-| ListDotForEachLoopCount                  | 1000    |       920.365 ns |      3.3543 ns |      2.9735 ns |  1.14 |
-| ListExplicitEnumeratorCount              | 1000    |       808.496 ns |      2.6458 ns |      2.0656 ns |  1.00 |
-|                                          |         |                  |                |                |       |
-| **ForLoopCount**                             | **1000000** | **1,724,774.219 ns** | **14,237.1084 ns** | **12,620.8258 ns** |  **0.99** |
-| ForEachLoopCount                         | 1000000 | 1,734,370.931 ns | 16,904.8793 ns | 15,812.8346 ns |  1.00 |
-| ForEachLoopCountCollectionsMarshalAsSpan | 1000000 | 1,422,217.331 ns | 16,656.2855 ns | 15,580.2998 ns |  0.82 |
-| ListDotForEachLoopCount                  | 1000000 | 1,845,514.193 ns | 24,766.7727 ns | 19,336.2671 ns |  1.06 |
-| ListExplicitEnumeratorCount              | 1000000 | 1,725,212.799 ns | 18,471.1917 ns | 17,277.9642 ns |  0.99 |
+| Method                                   | Count   | Mean             | Error          | StdDev         | Ratio | RatioSD |
+|----------------------------------------- |-------- |-----------------:|---------------:|---------------:|------:|--------:|
+| **ForLoopCount**                             | **10**      |         **7.478 ns** |      **0.0835 ns** |      **0.0781 ns** |  **0.84** |    **0.01** |
+| ForEachLoopCount                         | 10      |         8.910 ns |      0.0732 ns |      0.0685 ns |  1.00 |    0.01 |
+| ForEachLoopCountCollectionsMarshalAsSpan | 10      |         5.041 ns |      0.0355 ns |      0.0332 ns |  0.57 |    0.01 |
+| ListDotForEachLoopCount                  | 10      |        12.282 ns |      0.0692 ns |      0.0613 ns |  1.38 |    0.01 |
+| ListExplicitEnumeratorCount              | 10      |         8.926 ns |      0.0610 ns |      0.0541 ns |  1.00 |    0.01 |
+|                                          |         |                  |                |                |       |         |
+| **ForLoopCount**                             | **1000**    |       **723.807 ns** |      **4.2530 ns** |      **3.7702 ns** |  **0.90** |    **0.01** |
+| ForEachLoopCount                         | 1000    |       803.545 ns |      3.4090 ns |      3.1888 ns |  1.00 |    0.01 |
+| ForEachLoopCountCollectionsMarshalAsSpan | 1000    |       526.780 ns |      5.0758 ns |      4.4996 ns |  0.66 |    0.01 |
+| ListDotForEachLoopCount                  | 1000    |       922.376 ns |      4.2312 ns |      3.9579 ns |  1.15 |    0.01 |
+| ListExplicitEnumeratorCount              | 1000    |       808.810 ns |      3.1133 ns |      2.7599 ns |  1.01 |    0.01 |
+|                                          |         |                  |                |                |       |         |
+| **ForLoopCount**                             | **1000000** | **1,700,566.484 ns** | **15,210.3692 ns** | **14,227.7888 ns** |  **1.01** |    **0.01** |
+| ForEachLoopCount                         | 1000000 | 1,686,409.593 ns | 20,237.1556 ns | 16,898.9414 ns |  1.00 |    0.01 |
+| ForEachLoopCountCollectionsMarshalAsSpan | 1000000 | 1,444,446.833 ns | 13,550.4080 ns | 12,012.0837 ns |  0.86 |    0.01 |
+| ListDotForEachLoopCount                  | 1000000 | 1,840,987.625 ns | 36,672.7712 ns | 48,957.1003 ns |  1.09 |    0.03 |
+| ListExplicitEnumeratorCount              | 1000000 | 1,705,712.904 ns | 12,980.3305 ns | 12,141.8092 ns |  1.01 |    0.01 |

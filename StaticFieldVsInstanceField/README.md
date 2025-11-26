@@ -3,6 +3,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -15,11 +16,11 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method             | Count | Mean        | Error     | StdDev    | Allocated |
 |------------------- |------ |------------:|----------:|----------:|----------:|
-| **ReadInstanceField**  | **1**     |   **0.0075 ns** | **0.0056 ns** | **0.0053 ns** |         **-** |
-| ReadStaticField    | 1     |   0.3319 ns | 0.0171 ns | 0.0160 ns |         - |
-| WriteInstanceField | 1     |   3.7620 ns | 0.0323 ns | 0.0286 ns |         - |
-| WriteStaticField   | 1     |   4.0677 ns | 0.0304 ns | 0.0270 ns |         - |
-| **ReadInstanceField**  | **100**   |  **46.1268 ns** | **0.3619 ns** | **0.3385 ns** |         **-** |
-| ReadStaticField    | 100   |  38.8417 ns | 0.2443 ns | 0.2285 ns |         - |
-| WriteInstanceField | 100   | 349.9609 ns | 2.4756 ns | 2.1945 ns |         - |
-| WriteStaticField   | 100   | 349.8675 ns | 1.7679 ns | 1.3803 ns |         - |
+| **ReadInstanceField**  | **1**     |   **0.0080 ns** | **0.0046 ns** | **0.0040 ns** |         **-** |
+| ReadStaticField    | 1     |   0.3183 ns | 0.0176 ns | 0.0165 ns |         - |
+| WriteInstanceField | 1     |   4.3851 ns | 0.0278 ns | 0.0247 ns |         - |
+| WriteStaticField   | 1     |   4.6920 ns | 0.0239 ns | 0.0224 ns |         - |
+| **ReadInstanceField**  | **100**   |  **46.1438 ns** | **0.4548 ns** | **0.4254 ns** |         **-** |
+| ReadStaticField    | 100   |  38.8444 ns | 0.2632 ns | 0.2462 ns |         - |
+| WriteInstanceField | 100   | 349.5806 ns | 2.0652 ns | 1.8308 ns |         - |
+| WriteStaticField   | 100   | 350.2339 ns | 2.3605 ns | 2.2081 ns |         - |

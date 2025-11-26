@@ -4,6 +4,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -16,8 +17,8 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                                         | Count | Mean       | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------------------------------------- |------ |-----------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
-| MemoryStreamToGuidUsingBitConverter            | 1000  | 331.677 ns | 3.4796 ns | 3.0846 ns | 37.52 |    0.41 | 0.0148 |     248 B |          NA |
-| MemoryStreamToGuidUsingToHexString             | 1000  |  50.394 ns | 0.2132 ns | 0.1780 ns |  5.70 |    0.04 | 0.0052 |      88 B |          NA |
-| MemoryStreamToGuidUsingSpanAndBigEndian        | 1000  |   8.840 ns | 0.0639 ns | 0.0566 ns |  1.00 |    0.01 |      - |         - |          NA |
-| MemoryStreamToGuidUsingBinaryPrimitivesChatGPT | 1000  |  13.789 ns | 0.1209 ns | 0.1072 ns |  1.56 |    0.02 |      - |         - |          NA |
-| MemoryStreamToGuidUsingReadByteOrThrowChatGPT  | 1000  |  40.619 ns | 0.3102 ns | 0.2750 ns |  4.60 |    0.04 |      - |         - |          NA |
+| MemoryStreamToGuidUsingBitConverter            | 1000  | 334.468 ns | 4.2823 ns | 4.0057 ns | 36.65 |    0.46 | 0.0148 |     248 B |          NA |
+| MemoryStreamToGuidUsingToHexString             | 1000  |  50.120 ns | 0.4425 ns | 0.4139 ns |  5.49 |    0.05 | 0.0052 |      88 B |          NA |
+| MemoryStreamToGuidUsingSpanAndBigEndian        | 1000  |   9.127 ns | 0.0559 ns | 0.0437 ns |  1.00 |    0.01 |      - |         - |          NA |
+| MemoryStreamToGuidUsingBinaryPrimitivesChatGPT | 1000  |  13.871 ns | 0.2063 ns | 0.1930 ns |  1.52 |    0.02 |      - |         - |          NA |
+| MemoryStreamToGuidUsingReadByteOrThrowChatGPT  | 1000  |  40.727 ns | 0.3173 ns | 0.2968 ns |  4.46 |    0.04 |      - |         - |          NA |

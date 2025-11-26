@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,12 +15,12 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                          | Size | Mean       | Error     | StdDev    | Gen0   | Gen1   | Allocated |
 |-------------------------------- |----- |-----------:|----------:|----------:|-------:|-------:|----------:|
-| **TestBuildingGuidsWithStackAlloc** | **4**    |   **1.776 μs** | **0.0327 μs** | **0.0290 μs** | **0.0267** |      **-** |     **448 B** |
-| TestBuildingGuidsWithArrayPool  | 4    |   1.887 μs | 0.0189 μs | 0.0168 μs | 0.0267 |      - |     448 B |
-| TestBuildingGuidsWithNewArray   | 4    |   1.775 μs | 0.0083 μs | 0.0073 μs | 0.0362 |      - |     608 B |
-| **TestBuildingGuidsWithStackAlloc** | **100**  |  **45.421 μs** | **0.2374 μs** | **0.2104 μs** | **0.6714** |      **-** |   **11792 B** |
-| TestBuildingGuidsWithArrayPool  | 100  |  49.128 μs | 0.2858 μs | 0.2387 μs | 0.6714 |      - |   11792 B |
-| TestBuildingGuidsWithNewArray   | 100  |  45.390 μs | 0.2951 μs | 0.2760 μs | 0.9155 |      - |   15792 B |
-| **TestBuildingGuidsWithStackAlloc** | **1024** | **475.094 μs** | **1.1170 μs** | **0.8721 μs** | **6.3477** |      **-** |  **111304 B** |
-| TestBuildingGuidsWithArrayPool  | 1024 | 513.878 μs | 7.3071 μs | 6.8351 μs | 5.8594 |      - |  111304 B |
-| TestBuildingGuidsWithNewArray   | 1024 | 472.191 μs | 1.7989 μs | 1.5947 μs | 8.7891 | 0.4883 |  152264 B |
+| **TestBuildingGuidsWithStackAlloc** | **4**    |   **1.782 μs** | **0.0071 μs** | **0.0063 μs** | **0.0267** |      **-** |     **448 B** |
+| TestBuildingGuidsWithArrayPool  | 4    |   1.993 μs | 0.0147 μs | 0.0130 μs | 0.0267 |      - |     448 B |
+| TestBuildingGuidsWithNewArray   | 4    |   1.797 μs | 0.0141 μs | 0.0125 μs | 0.0362 |      - |     608 B |
+| **TestBuildingGuidsWithStackAlloc** | **100**  |  **45.361 μs** | **0.4033 μs** | **0.3773 μs** | **0.6714** |      **-** |   **11792 B** |
+| TestBuildingGuidsWithArrayPool  | 100  |  48.421 μs | 0.2864 μs | 0.2392 μs | 0.6714 |      - |   11792 B |
+| TestBuildingGuidsWithNewArray   | 100  |  44.292 μs | 0.3317 μs | 0.2770 μs | 0.9155 |      - |   15792 B |
+| **TestBuildingGuidsWithStackAlloc** | **1024** | **473.171 μs** | **0.7288 μs** | **0.5690 μs** | **6.3477** |      **-** |  **111304 B** |
+| TestBuildingGuidsWithArrayPool  | 1024 | 524.509 μs | 6.0345 μs | 5.6447 μs | 5.8594 |      - |  111304 B |
+| TestBuildingGuidsWithNewArray   | 1024 | 486.822 μs | 3.9270 μs | 3.4812 μs | 8.7891 | 0.4883 |  152264 B |

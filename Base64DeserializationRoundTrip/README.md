@@ -45,25 +45,25 @@ The direct approaches should outperform the round-trip approach, especially with
 
 ## How to Run
 
-```bash
-dotnet run -c Release
-```
 
 ```
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.26063.1)
-Intel Xeon W-2123 CPU 3.60GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.200
-  [Host]     : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  Job-XVRJLJ : .NET 8.0.2 (8.0.224.6711), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
-OutlierMode=DontRemove  MemoryRandomization=True
 
 ```
-| Method                | Count  | Mean           | Error         | StdDev        | Median         | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------------- |------- |---------------:|--------------:|--------------:|---------------:|------:|--------:|-------:|----------:|------------:|
-| **JustEnumerate**         | **10**     |       **4.618 ns** |     **0.1239 ns** |     **0.1568 ns** |       **4.582 ns** |  **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-| AnyCheckThenEnumerate | 10     |      64.347 ns |     4.9993 ns |    14.7407 ns |      57.995 ns | 12.55 |    0.68 | 0.0074 |      32 B |          NA |
-|                       |        |                |               |               |                |       |         |        |           |             |
-| **JustEnumerate**         | **100000** |  **35,547.062 ns** |   **707.7673 ns** | **1,925.5332 ns** |  **34,892.603 ns** |  **1.00** |    **0.00** |      **-** |         **-** |          **NA** |
-| AnyCheckThenEnumerate | 100000 | 368,679.915 ns | 4,162.2757 ns | 3,893.3953 ns | 368,073.730 ns |  9.99 |    0.67 |      - |      32 B |          NA |
+| Method                           | ListSize | Mean          | Error        | StdDev       | Ratio | RatioSD | Gen0      | Gen1      | Gen2     | Allocated   | Alloc Ratio |
+|--------------------------------- |--------- |--------------:|-------------:|-------------:|------:|--------:|----------:|----------:|---------:|------------:|------------:|
+| **RoundTripThroughString_SmallData** | **10**       |      **11.71 μs** |     **0.104 μs** |     **0.087 μs** |  **0.99** |    **0.01** |    **0.6409** |    **0.0153** |        **-** |    **10.68 KB** |        **1.56** |
+| DirectFromBytes_SmallData        | 10       |      11.37 μs |     0.058 μs |     0.049 μs |  0.96 |    0.01 |    0.4120 |         - |        - |     6.85 KB |        1.00 |
+| RoundTripThroughString_LargeData | 10       |      11.73 μs |     0.073 μs |     0.065 μs |  0.99 |    0.01 |    0.6409 |    0.0153 |        - |    10.68 KB |        1.56 |
+| DirectFromBytes_LargeData        | 10       |      11.87 μs |     0.083 μs |     0.064 μs |  1.00 |    0.01 |    0.4120 |         - |        - |     6.86 KB |        1.00 |
+|                                  |          |               |              |              |       |         |           |           |          |             |             |
+| **RoundTripThroughString_SmallData** | **100000**   |      **11.89 μs** |     **0.099 μs** |     **0.087 μs** | **0.000** |    **0.00** |    **0.6409** |         **-** |        **-** |    **10.67 KB** |       **0.000** |
+| DirectFromBytes_SmallData        | 100000   |      11.19 μs |     0.087 μs |     0.072 μs | 0.000 |    0.00 |    0.4120 |         - |        - |     6.85 KB |       0.000 |
+| RoundTripThroughString_LargeData | 100000   | 189,593.00 μs | 3,767.017 μs | 6,083.030 μs | 1.113 |    0.05 | 3000.0000 | 2666.6667 | 666.6667 | 97711.16 KB |       1.601 |
+| DirectFromBytes_LargeData        | 100000   | 170,521.27 μs | 3,029.015 μs | 4,625.626 μs | 1.001 |    0.04 | 3000.0000 | 2666.6667 | 666.6667 |    61022 KB |       1.000 |

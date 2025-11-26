@@ -1,4 +1,4 @@
-Scratchpad
+# GetTypeVsTypeofFullName
 
 ```
 
@@ -10,7 +10,7 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 
 
 ```
-| Method | PredicateCount | Mean     | Error     | StdDev    |
-|------- |--------------- |---------:|----------:|----------:|
-| **Test**   | **4**              | **1.790 ms** | **0.0485 ms** | **0.1408 ms** |
-| **Test**   | **8**              | **3.664 ms** | **0.0723 ms** | **0.0989 ms** |
+| Method    | Mean      | Error     | StdDev    | Median    |
+|---------- |----------:|----------:|----------:|----------:|
+| Scenario1 | 0.0028 ns | 0.0035 ns | 0.0033 ns | 0.0010 ns |
+| Scenario2 | 0.0012 ns | 0.0029 ns | 0.0026 ns | 0.0000 ns |

@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,10 +15,10 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                       | Count | Mean       | Error    | StdDev   | Ratio | RatioSD | Code Size |
 |----------------------------- |------ |-----------:|---------:|---------:|------:|--------:|----------:|
-| Ordinal                      | 1000  | 4,421.5 ns | 30.96 ns | 28.96 ns |  1.00 |    0.01 |     967 B |
-| OrdinalIgnoreCase            | 1000  |   754.7 ns |  3.84 ns |  3.41 ns |  0.17 |    0.00 |   1,162 B |
-| OrdinalLongStrings           | 1000  | 9,541.3 ns | 94.48 ns | 88.38 ns |  2.16 |    0.02 |     975 B |
-| OrdinalIgnoreCaseLongStrings | 1000  | 6,406.1 ns | 57.63 ns | 53.90 ns |  1.45 |    0.01 |   1,242 B |
+| Ordinal                      | 1000  | 4,469.4 ns | 83.05 ns | 77.69 ns |  1.00 |    0.02 |     967 B |
+| OrdinalIgnoreCase            | 1000  |   793.9 ns |  4.62 ns |  4.32 ns |  0.18 |    0.00 |   1,162 B |
+| OrdinalLongStrings           | 1000  | 9,485.8 ns | 80.18 ns | 66.95 ns |  2.12 |    0.04 |     975 B |
+| OrdinalIgnoreCaseLongStrings | 1000  | 6,300.4 ns | 35.02 ns | 32.76 ns |  1.41 |    0.02 |   1,242 B |
 
 ## .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 ```assembly
@@ -35,9 +36,9 @@ M00_L00:
        mov       rcx,[rbx+rsi*8+10]
        mov       edx,[rcx+8]
        add       rcx,0C
-       mov       r8,2F751E8ACE4
+       mov       r8,21B0552ACE4
        mov       r9d,7
-       call      qword ptr [7FFAECAD5920]; System.SpanHelpers.IndexOf(Char ByRef, Int32, Char ByRef, Int32)
+       call      qword ptr [7FFB0B5159F8]; System.SpanHelpers.IndexOf(Char ByRef, Int32, Char ByRef, Int32)
        test      eax,eax
        jge       short M00_L02
        inc       esi
@@ -147,7 +148,7 @@ M01_L02:
        pop       r13
        pop       r14
        pop       r15
-       jmp       qword ptr [7FFAEC7C7738]; System.PackedSpanHelpers.IndexOf[[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib],[System.PackedSpanHelpers+NopTransform, System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
+       jmp       qword ptr [7FFB0B207738]; System.PackedSpanHelpers.IndexOf[[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib],[System.PackedSpanHelpers+NopTransform, System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
 M01_L03:
        mov       rcx,rdi
        vzeroupper
@@ -164,12 +165,12 @@ M01_L03:
        pop       r13
        pop       r14
        pop       r15
-       jmp       qword ptr [7FFAEC8A4AB0]; System.SpanHelpers.NonPackedIndexOfValueType[[System.Int16, System.Private.CoreLib],[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
+       jmp       qword ptr [7FFB0B2E4AB0]; System.SpanHelpers.NonPackedIndexOfValueType[[System.Int16, System.Private.CoreLib],[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
 M01_L04:
        lea       rcx,[rdi+r14*2]
        movsx     rdx,r15w
        mov       r8d,r13d
-       call      qword ptr [7FFAEC8A4AB0]; System.SpanHelpers.NonPackedIndexOfValueType[[System.Int16, System.Private.CoreLib],[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
+       call      qword ptr [7FFB0B2E4AB0]; System.SpanHelpers.NonPackedIndexOfValueType[[System.Int16, System.Private.CoreLib],[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
        test      eax,eax
        jl        near ptr M01_L00
        sub       r13d,eax
@@ -181,7 +182,7 @@ M01_L04:
        mov       r8d,ebp
        add       r8,r8
        mov       rdx,rsi
-       call      qword ptr [7FFAEC62FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
+       call      qword ptr [7FFB0B06FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
        test      eax,eax
        jne       short M01_L05
        dec       r13d
@@ -244,7 +245,7 @@ M01_L13:
        mov       rdx,rsi
        vextractf128 xmm8,ymm6,1
        vextractf128 xmm9,ymm7,1
-       call      qword ptr [7FFAEC62FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
+       call      qword ptr [7FFB0B06FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
        test      eax,eax
        vinsertf128 ymm6,ymm6,xmm8,1
        vinsertf128 ymm7,ymm7,xmm9,1
@@ -318,7 +319,7 @@ M01_L25:
        mov       r8d,ebx
        add       r8,r8
        mov       rdx,rsi
-       call      qword ptr [7FFAEC62FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
+       call      qword ptr [7FFB0B06FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
        test      eax,eax
        mov       rax,[rsp+20]
        jne       short M01_L27
@@ -377,7 +378,7 @@ M00_L00:
        mov       rdi,[rbx+rsi*8+10]
        mov       ebp,[rdi+8]
        add       rdi,0C
-       mov       r14,22C4A56ACE4
+       mov       r14,2724A56ACE4
        cmp       ebp,7
        jge       short M00_L03
 M00_L01:
@@ -416,18 +417,18 @@ M00_L05:
        lea       ecx,[rbp-10]
        test      ecx,ecx
        jl        near ptr M00_L16
-       vbroadcastss ymm6,dword ptr [7FFAEC6ABCA0]
+       vbroadcastss ymm6,dword ptr [7FFB0B13BCA0]
        vmovd     xmm7,eax
        vpbroadcastw ymm7,xmm7
        movsxd    r12,ebp
        add       r12,0FFFFFFFFFFFFFFF0
 M00_L06:
        vmovups   ymm0,[rdi+r15*2]
-       vpor      ymm0,ymm0,[7FFAEC6ABCC0]
+       vpor      ymm0,ymm0,[7FFB0B13BCC0]
        vpcmpeqw  ymm0,ymm0,ymm6
        lea       rcx,[r15+r13]
        vmovups   ymm1,[rdi+rcx*2]
-       vpor      ymm1,ymm1,[7FFAEC6ABCC0]
+       vpor      ymm1,ymm1,[7FFB0B13BCC0]
        vpcmpeqw  ymm1,ymm1,ymm7
        vpand     ymm0,ymm1,ymm0
        vptest    ymm0,ymm0
@@ -446,7 +447,7 @@ M00_L07:
        mov       r8d,7
        vextractf128 xmm8,ymm6,1
        vextractf128 xmm9,ymm7,1
-       call      qword ptr [7FFAECAB5A10]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
+       call      qword ptr [7FFB0B545A10]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
        test      eax,eax
        vinsertf128 ymm6,ymm6,xmm8,1
        vinsertf128 ymm7,ymm7,xmm9,1
@@ -461,7 +462,7 @@ M00_L09:
        lea       rcx,[rdi+r15*2]
        mov       edx,66
        mov       r8d,ebp
-       call      qword ptr [7FFAECAB7F18]
+       call      qword ptr [7FFB0B547F18]
        test      eax,eax
        jl        near ptr M00_L01
        sub       ebp,eax
@@ -472,7 +473,7 @@ M00_L09:
        lea       rcx,[rdi+r15*2+2]
        lea       rdx,[r14+2]
        mov       r8d,6
-       call      qword ptr [7FFAECAB5A10]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
+       call      qword ptr [7FFB0B545A10]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
        test      eax,eax
        jne       short M00_L10
        dec       ebp
@@ -516,18 +517,18 @@ M00_L15:
        je        near ptr M00_L01
        jmp       short M00_L13
 M00_L16:
-       vbroadcastss xmm6,dword ptr [7FFAEC6ABCA0]
+       vbroadcastss xmm6,dword ptr [7FFB0B13BCA0]
        vmovd     xmm7,eax
        vpbroadcastw xmm7,xmm7
        movsxd    r12,ebp
        add       r12,0FFFFFFFFFFFFFFF8
 M00_L17:
        vmovups   xmm0,[rdi+r15*2]
-       vpor      xmm0,xmm0,[7FFAEC6ABCC0]
+       vpor      xmm0,xmm0,[7FFB0B13BCC0]
        vpcmpeqw  xmm0,xmm0,xmm6
        lea       rcx,[r15+r13]
        vmovups   xmm1,[rdi+rcx*2]
-       vpor      xmm1,xmm1,[7FFAEC6ABCC0]
+       vpor      xmm1,xmm1,[7FFB0B13BCC0]
        vpcmpeqw  xmm1,xmm1,xmm7
        vpand     xmm0,xmm1,xmm0
        vptest    xmm0,xmm0
@@ -551,7 +552,7 @@ M00_L20:
        lea       rcx,[rdi+rcx*2]
        mov       rdx,r14
        mov       r8d,7
-       call      qword ptr [7FFAECAB5A10]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
+       call      qword ptr [7FFB0B545A10]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
        test      eax,eax
        jne       short M00_L22
        blsr      ecx,[rsp+3C]
@@ -689,7 +690,7 @@ M01_L08:
        add       rcx,r8
        add       r8,rdx
        mov       edx,r9d
-       call      qword ptr [7FFAECABC1C8]
+       call      qword ptr [7FFB0B54C1C8]
        test      eax,eax
        sete      bl
        movzx     ebx,bl
@@ -717,9 +718,9 @@ M00_L00:
        mov       rcx,[rbx+rsi*8+10]
        mov       edx,[rcx+8]
        add       rcx,0C
-       mov       r8,2D2CA48ACE4
+       mov       r8,2518550ACE4
        mov       r9d,7
-       call      qword ptr [7FFAECAD59F8]; System.SpanHelpers.IndexOf(Char ByRef, Int32, Char ByRef, Int32)
+       call      qword ptr [7FFB0B525920]; System.SpanHelpers.IndexOf(Char ByRef, Int32, Char ByRef, Int32)
        test      eax,eax
        jge       short M00_L02
        inc       esi
@@ -856,7 +857,7 @@ M01_L06:
        pop       r13
        pop       r14
        pop       r15
-       jmp       qword ptr [7FFAEC7C7738]; System.PackedSpanHelpers.IndexOf[[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib],[System.PackedSpanHelpers+NopTransform, System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
+       jmp       qword ptr [7FFB0B217738]; System.PackedSpanHelpers.IndexOf[[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib],[System.PackedSpanHelpers+NopTransform, System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
 M01_L07:
        mov       rcx,rbx
        vzeroupper
@@ -873,7 +874,7 @@ M01_L07:
        pop       r13
        pop       r14
        pop       r15
-       jmp       qword ptr [7FFAEC8A4AB0]; System.SpanHelpers.NonPackedIndexOfValueType[[System.Int16, System.Private.CoreLib],[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
+       jmp       qword ptr [7FFB0B2F4AB0]; System.SpanHelpers.NonPackedIndexOfValueType[[System.Int16, System.Private.CoreLib],[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
 M01_L08:
        add       rdi,2
        test      r13d,r13d
@@ -882,7 +883,7 @@ M01_L09:
        lea       rcx,[rbx+r14*2]
        movsx     rdx,r15w
        mov       r8d,r13d
-       call      qword ptr [7FFAEC8A4AB0]; System.SpanHelpers.NonPackedIndexOfValueType[[System.Int16, System.Private.CoreLib],[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
+       call      qword ptr [7FFB0B2F4AB0]; System.SpanHelpers.NonPackedIndexOfValueType[[System.Int16, System.Private.CoreLib],[System.SpanHelpers+DontNegate`1[[System.Int16, System.Private.CoreLib]], System.Private.CoreLib]](Int16 ByRef, Int16, Int32)
        test      eax,eax
        jl        near ptr M01_L04
        sub       r13d,eax
@@ -894,7 +895,7 @@ M01_L09:
        mov       r8d,ebp
        add       r8,r8
        mov       rdx,rdi
-       call      qword ptr [7FFAEC62FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
+       call      qword ptr [7FFB0B07FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
        test      eax,eax
        jne       short M01_L10
        dec       r13d
@@ -930,7 +931,7 @@ M01_L14:
        mov       rdx,rdi
        vextractf128 xmm8,ymm6,1
        vextractf128 xmm9,ymm7,1
-       call      qword ptr [7FFAEC62FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
+       call      qword ptr [7FFB0B07FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
        test      eax,eax
        vinsertf128 ymm6,ymm6,xmm8,1
        vinsertf128 ymm7,ymm7,xmm9,1
@@ -999,7 +1000,7 @@ M01_L25:
        mov       r8d,esi
        add       r8,r8
        mov       rdx,rdi
-       call      qword ptr [7FFAEC62FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
+       call      qword ptr [7FFB0B07FB70]; System.SpanHelpers.SequenceEqual(Byte ByRef, Byte ByRef, UIntPtr)
        test      eax,eax
        mov       rax,[rsp+20]
        jne       short M01_L27
@@ -1051,7 +1052,7 @@ M01_L28:
        vmovaps   [rsp+50],xmm10
        vmovaps   [rsp+40],xmm11
        mov       rbx,[rcx+10]
-       vbroadcastss ymm6,dword ptr [7FFAEC69BDE0]
+       vbroadcastss ymm6,dword ptr [7FFB0B12BDE0]
        xor       esi,esi
        cmp       [rbx+8],esi
        jg        near ptr M00_L05
@@ -1090,7 +1091,7 @@ M00_L02:
        vextractf128 xmm9,ymm6,1
        vextractf128 xmm10,ymm7,1
        vextractf128 xmm11,ymm8,1
-       call      qword ptr [7FFAECAA59F8]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
+       call      qword ptr [7FFB0B535A10]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
        test      eax,eax
        vinsertf128 ymm6,ymm6,xmm9,1
        vinsertf128 ymm7,ymm7,xmm10,1
@@ -1109,7 +1110,7 @@ M00_L05:
        mov       rdi,[rbx+rsi*8+10]
        mov       ebp,[rdi+8]
        add       rdi,0C
-       mov       r14,2466A65ACE4
+       mov       r14,25A6C6EACE4
        cmp       ebp,7
        jl        short M00_L04
        add       ebp,0FFFFFFFA
@@ -1125,7 +1126,7 @@ M00_L07:
        lea       ecx,[rbp-10]
        test      ecx,ecx
        jl        near ptr M00_L15
-       vbroadcastss ymm7,dword ptr [7FFAEC69BDE4]
+       vbroadcastss ymm7,dword ptr [7FFB0B12BDE4]
        vmovd     xmm8,eax
        vpbroadcastw ymm8,xmm8
        movsxd    r12,ebp
@@ -1152,7 +1153,7 @@ M00_L10:
        mov       edx,66
        mov       r8d,ebp
        vextractf128 xmm9,ymm6,1
-       call      qword ptr [7FFAECAA7F18]
+       call      qword ptr [7FFB0B537F18]
        test      eax,eax
        vinsertf128 ymm6,ymm6,xmm9,1
        jl        near ptr M00_L04
@@ -1165,7 +1166,7 @@ M00_L10:
        lea       rdx,[r14+2]
        mov       r8d,6
        vextractf128 xmm9,ymm6,1
-       call      qword ptr [7FFAECAA59F8]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
+       call      qword ptr [7FFB0B535A10]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
        test      eax,eax
        vinsertf128 ymm6,ymm6,xmm9,1
        jne       short M00_L11
@@ -1200,18 +1201,18 @@ M00_L14:
        jne       near ptr M00_L02
        jmp       near ptr M00_L09
 M00_L15:
-       vbroadcastss xmm7,dword ptr [7FFAEC69BDE4]
+       vbroadcastss xmm7,dword ptr [7FFB0B12BDE4]
        vmovd     xmm8,eax
        vpbroadcastw xmm8,xmm8
        movsxd    r12,ebp
        lea       rbp,[r12-8]
 M00_L16:
        vmovups   xmm0,[rdi+r15*2]
-       vpor      xmm0,xmm0,[7FFAEC69BDF0]
+       vpor      xmm0,xmm0,[7FFB0B12BDF0]
        vpcmpeqw  xmm0,xmm0,xmm7
        lea       rcx,[r15+r13]
        vmovups   xmm1,[rdi+rcx*2]
-       vpor      xmm1,xmm1,[7FFAEC69BDF0]
+       vpor      xmm1,xmm1,[7FFB0B12BDF0]
        vpcmpeqw  xmm1,xmm1,xmm8
        vpand     xmm0,xmm1,xmm0
        vptest    xmm0,xmm0
@@ -1236,7 +1237,7 @@ M00_L19:
        mov       rdx,r14
        mov       r8d,7
        vextractf128 xmm9,ymm6,1
-       call      qword ptr [7FFAECAA59F8]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
+       call      qword ptr [7FFB0B535A10]; System.Globalization.Ordinal.EqualsIgnoreCase_Scalar(Char ByRef, Char ByRef, Int32)
        test      eax,eax
        vinsertf128 ymm6,ymm6,xmm9,1
        jne       short M00_L21
@@ -1376,7 +1377,7 @@ M01_L08:
        add       rcx,r8
        add       r8,rdx
        mov       edx,r9d
-       call      qword ptr [7FFAECAAC1C8]
+       call      qword ptr [7FFB0B53C1C8]
        test      eax,eax
        sete      bl
        movzx     ebx,bl

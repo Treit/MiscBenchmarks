@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -12,14 +13,14 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 
 
 ```
-| Method                        | Count  | Mean           | Error         | StdDev        | Median         | Ratio     | RatioSD | Allocated | Alloc Ratio |
-|------------------------------ |------- |---------------:|--------------:|--------------:|---------------:|----------:|--------:|----------:|------------:|
-| **SingleAnyWithMatch**            | **10**     |       **7.170 ns** |     **0.0547 ns** |     **0.0512 ns** |       **7.200 ns** |      **1.00** |    **0.01** |         **-** |          **NA** |
-| SingleAnyWithNoMatch          | 10     |       7.181 ns |     0.0488 ns |     0.0456 ns |       7.202 ns |      1.00 |    0.01 |         - |          NA |
-| MultipleCallsToAnyWithMatch   | 10     |      30.993 ns |     0.2288 ns |     0.2140 ns |      31.101 ns |      4.32 |    0.04 |         - |          NA |
-| MultipleCallsToAnyWithNoMatch | 10     |      30.746 ns |     0.2462 ns |     0.2303 ns |      30.873 ns |      4.29 |    0.04 |         - |          NA |
-|                               |        |                |               |               |                |           |         |           |             |
-| **SingleAnyWithMatch**            | **100000** |       **7.988 ns** |     **0.0621 ns** |     **0.0518 ns** |       **7.992 ns** |      **1.00** |    **0.01** |         **-** |          **NA** |
-| SingleAnyWithNoMatch          | 100000 |  66,000.478 ns | 1,670.1257 ns | 4,710.6196 ns |  68,063.196 ns |  8,262.95 |  589.07 |         - |          NA |
-| MultipleCallsToAnyWithMatch   | 100000 |  65,058.493 ns | 2,040.3461 ns | 5,919.4146 ns |  67,835.791 ns |  8,145.02 |  739.32 |         - |          NA |
-| MultipleCallsToAnyWithNoMatch | 100000 | 381,861.846 ns | 6,353.2559 ns | 5,942.8395 ns | 382,078.857 ns | 47,807.30 |  780.62 |         - |          NA |
+| Method                        | Count  | Mean           | Error         | StdDev        | Median         | Ratio     | RatioSD  | Allocated | Alloc Ratio |
+|------------------------------ |------- |---------------:|--------------:|--------------:|---------------:|----------:|---------:|----------:|------------:|
+| **SingleAnyWithMatch**            | **10**     |       **7.191 ns** |     **0.0688 ns** |     **0.0643 ns** |       **7.210 ns** |      **1.00** |     **0.01** |         **-** |          **NA** |
+| SingleAnyWithNoMatch          | 10     |       7.203 ns |     0.0601 ns |     0.0563 ns |       7.223 ns |      1.00 |     0.01 |         - |          NA |
+| MultipleCallsToAnyWithMatch   | 10     |      31.627 ns |     0.3514 ns |     0.3287 ns |      31.700 ns |      4.40 |     0.06 |         - |          NA |
+| MultipleCallsToAnyWithNoMatch | 10     |      31.780 ns |     0.3286 ns |     0.3074 ns |      31.889 ns |      4.42 |     0.06 |         - |          NA |
+|                               |        |                |               |               |                |           |          |           |             |
+| **SingleAnyWithMatch**            | **100000** |       **8.171 ns** |     **0.2000 ns** |     **0.2804 ns** |       **8.040 ns** |      **1.00** |     **0.05** |         **-** |          **NA** |
+| SingleAnyWithNoMatch          | 100000 |  67,465.524 ns | 1,345.3733 ns | 3,637.2952 ns |  68,589.087 ns |  8,266.07 |   517.96 |         - |          NA |
+| MultipleCallsToAnyWithMatch   | 100000 |  67,160.862 ns | 1,342.8440 ns | 3,809.4253 ns |  68,421.179 ns |  8,228.74 |   535.62 |         - |          NA |
+| MultipleCallsToAnyWithNoMatch | 100000 | 321,720.020 ns | 3,712.8043 ns | 3,472.9594 ns | 322,624.170 ns | 39,418.07 | 1,343.05 |         - |          NA |

@@ -8,6 +8,7 @@ Also lulz variants to try optimizing the counting code by GrabYoutPitchforks.
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -20,13 +21,13 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                        | Count | Mean     | Error     | StdDev    | Code Size |
 |------------------------------ |------ |---------:|----------:|----------:|----------:|
-| ForLoopCountField             | 10000 | 7.501 μs | 0.1302 μs | 0.1598 μs |      70 B |
-| ForLoopCountLocalVariable     | 10000 | 5.262 μs | 0.0545 μs | 0.0510 μs |      54 B |
-| ForEachLoopCountField         | 10000 | 5.305 μs | 0.0967 μs | 0.0905 μs |      54 B |
-| ForEachLoopCountLocalVariable | 10000 | 5.247 μs | 0.0478 μs | 0.0447 μs |      54 B |
-| Lulz1                         | 10000 | 5.475 μs | 0.0497 μs | 0.0465 μs |      60 B |
-| Lulz2                         | 10000 | 5.516 μs | 0.0544 μs | 0.0482 μs |      68 B |
-| Lulz3                         | 10000 | 5.563 μs | 0.0487 μs | 0.0431 μs |      58 B |
+| ForLoopCountField             | 10000 | 7.377 μs | 0.0580 μs | 0.0543 μs |      70 B |
+| ForLoopCountLocalVariable     | 10000 | 5.177 μs | 0.0307 μs | 0.0288 μs |      54 B |
+| ForEachLoopCountField         | 10000 | 5.237 μs | 0.0311 μs | 0.0291 μs |      54 B |
+| ForEachLoopCountLocalVariable | 10000 | 5.294 μs | 0.0287 μs | 0.0268 μs |      54 B |
+| Lulz1                         | 10000 | 5.732 μs | 0.0330 μs | 0.0293 μs |      60 B |
+| Lulz2                         | 10000 | 5.596 μs | 0.0328 μs | 0.0307 μs |      68 B |
+| Lulz3                         | 10000 | 5.884 μs | 0.0288 μs | 0.0270 μs |      58 B |
 
 ## .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 ```assembly

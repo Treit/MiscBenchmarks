@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,11 +15,11 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                 | Count | Mean         | Error      | StdDev     |
 |----------------------- |------ |-------------:|-----------:|-----------:|
-| **Sealed**                 | **10**    |     **3.541 μs** |  **0.0391 μs** |  **0.0365 μs** |
-| NonSealed              | 10    |     3.488 μs |  0.0267 μs |  0.0237 μs |
-| NonSealedVirtualMethod | 10    |     3.459 μs |  0.0268 μs |  0.0224 μs |
-| OneChild               | 10    |     3.523 μs |  0.0273 μs |  0.0242 μs |
-| **Sealed**                 | **1000**  | **2,597.363 μs** | **18.7112 μs** | **17.5025 μs** |
-| NonSealed              | 1000  | 2,591.695 μs | 17.9038 μs | 15.8713 μs |
-| NonSealedVirtualMethod | 1000  | 2,577.160 μs | 10.3804 μs |  8.6681 μs |
-| OneChild               | 1000  | 2,617.956 μs | 41.8920 μs | 39.1858 μs |
+| **Sealed**                 | **10**    |     **3.577 μs** |  **0.0163 μs** |  **0.0153 μs** |
+| NonSealed              | 10    |     3.588 μs |  0.0280 μs |  0.0261 μs |
+| NonSealedVirtualMethod | 10    |     3.538 μs |  0.0362 μs |  0.0339 μs |
+| OneChild               | 10    |     3.594 μs |  0.0142 μs |  0.0119 μs |
+| **Sealed**                 | **1000**  | **2,596.663 μs** | **13.8214 μs** | **11.5415 μs** |
+| NonSealed              | 1000  | 2,628.276 μs | 12.7877 μs | 11.3359 μs |
+| NonSealedVirtualMethod | 1000  | 2,627.663 μs | 28.0711 μs | 26.2577 μs |
+| OneChild               | 1000  | 2,586.350 μs | 21.7567 μs | 20.3512 μs |

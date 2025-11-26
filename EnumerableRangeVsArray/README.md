@@ -51,6 +51,7 @@ WarmupCount=3
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -63,37 +64,37 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                                    | Count   | Mean             | Error          | StdDev          | Median           | Ratio | RatioSD | Gen0     | Gen1     | Gen2     | Allocated | Alloc Ratio |
 |------------------------------------------ |-------- |-----------------:|---------------:|----------------:|-----------------:|------:|--------:|---------:|---------:|---------:|----------:|------------:|
-| **PopulateWithExplicitArray**                 | **10**      |         **6.843 ns** |      **0.1501 ns** |       **0.1404 ns** |         **6.805 ns** |  **1.00** |    **0.03** |   **0.0038** |        **-** |        **-** |      **64 B** |        **1.00** |
-| PopulateWithEnumerableRange               | 10      |        10.088 ns |      0.0938 ns |       0.0877 ns |        10.101 ns |  1.47 |    0.03 |   0.0062 |        - |        - |     104 B |        1.62 |
-| PopulateAndTakeAverageWithExplicitArray   | 10      |        24.007 ns |      0.1929 ns |       0.1805 ns |        24.025 ns |  3.51 |    0.07 |   0.0038 |        - |        - |      64 B |        1.00 |
-| PopulateAndTakeAverageWithEnumerableRange | 10      |        18.051 ns |      0.2703 ns |       0.2397 ns |        18.082 ns |  2.64 |    0.06 |   0.0024 |        - |        - |      40 B |        0.62 |
-| PopulateAndTakeSumWithExplicitArray       | 10      |        13.561 ns |      0.2798 ns |       0.2618 ns |        13.524 ns |  1.98 |    0.05 |   0.0062 |        - |        - |     104 B |        1.62 |
-| PopulateAndTakeSumWithEnumerableRange     | 10      |        33.012 ns |      0.3634 ns |       0.3399 ns |        33.061 ns |  4.83 |    0.11 |   0.0052 |        - |        - |      88 B |        1.38 |
+| **PopulateWithExplicitArray**                 | **10**      |         **6.994 ns** |      **0.1477 ns** |       **0.1382 ns** |         **6.997 ns** |  **1.00** |    **0.03** |   **0.0038** |        **-** |        **-** |      **64 B** |        **1.00** |
+| PopulateWithEnumerableRange               | 10      |        10.222 ns |      0.1787 ns |       0.1671 ns |        10.274 ns |  1.46 |    0.04 |   0.0062 |        - |        - |     104 B |        1.62 |
+| PopulateAndTakeAverageWithExplicitArray   | 10      |        23.759 ns |      0.2189 ns |       0.2048 ns |        23.729 ns |  3.40 |    0.07 |   0.0038 |        - |        - |      64 B |        1.00 |
+| PopulateAndTakeAverageWithEnumerableRange | 10      |        18.231 ns |      0.2567 ns |       0.2401 ns |        18.143 ns |  2.61 |    0.06 |   0.0024 |        - |        - |      40 B |        0.62 |
+| PopulateAndTakeSumWithExplicitArray       | 10      |        13.679 ns |      0.2647 ns |       0.2476 ns |        13.582 ns |  1.96 |    0.05 |   0.0062 |        - |        - |     104 B |        1.62 |
+| PopulateAndTakeSumWithEnumerableRange     | 10      |        34.470 ns |      0.4416 ns |       0.4131 ns |        34.394 ns |  4.93 |    0.11 |   0.0052 |        - |        - |      88 B |        1.38 |
 |                                           |         |                  |                |                 |                  |       |         |          |          |          |           |             |
-| **PopulateWithExplicitArray**                 | **100**     |        **51.783 ns** |      **0.6605 ns** |       **0.6179 ns** |        **51.957 ns** |  **1.00** |    **0.02** |   **0.0253** |        **-** |        **-** |     **424 B** |        **1.00** |
-| PopulateWithEnumerableRange               | 100     |        25.179 ns |      0.5203 ns |       0.5343 ns |        25.333 ns |  0.49 |    0.01 |   0.0277 |        - |        - |     464 B |        1.09 |
-| PopulateAndTakeAverageWithExplicitArray   | 100     |        64.903 ns |      1.0735 ns |       1.0042 ns |        64.904 ns |  1.25 |    0.02 |   0.0253 |        - |        - |     424 B |        1.00 |
-| PopulateAndTakeAverageWithEnumerableRange | 100     |       101.801 ns |      2.0607 ns |       5.0935 ns |       103.058 ns |  1.97 |    0.10 |   0.0024 |        - |        - |      40 B |        0.09 |
-| PopulateAndTakeSumWithExplicitArray       | 100     |        70.460 ns |      0.8762 ns |       0.8196 ns |        70.461 ns |  1.36 |    0.02 |   0.0492 |        - |        - |     824 B |        1.94 |
-| PopulateAndTakeSumWithEnumerableRange     | 100     |       129.973 ns |      1.9086 ns |       1.7853 ns |       129.839 ns |  2.51 |    0.04 |   0.0052 |        - |        - |      88 B |        0.21 |
+| **PopulateWithExplicitArray**                 | **100**     |        **47.059 ns** |      **0.3033 ns** |       **0.2688 ns** |        **47.061 ns** |  **1.00** |    **0.01** |   **0.0253** |        **-** |        **-** |     **424 B** |        **1.00** |
+| PopulateWithEnumerableRange               | 100     |        25.964 ns |      0.2961 ns |       0.2770 ns |        26.044 ns |  0.55 |    0.01 |   0.0277 |        - |        - |     464 B |        1.09 |
+| PopulateAndTakeAverageWithExplicitArray   | 100     |        65.073 ns |      0.9864 ns |       0.9227 ns |        64.768 ns |  1.38 |    0.02 |   0.0253 |        - |        - |     424 B |        1.00 |
+| PopulateAndTakeAverageWithEnumerableRange | 100     |        98.320 ns |      1.9934 ns |       4.7375 ns |        98.696 ns |  2.09 |    0.10 |   0.0024 |        - |        - |      40 B |        0.09 |
+| PopulateAndTakeSumWithExplicitArray       | 100     |        71.852 ns |      1.0551 ns |       0.9869 ns |        72.241 ns |  1.53 |    0.02 |   0.0492 |        - |        - |     824 B |        1.94 |
+| PopulateAndTakeSumWithEnumerableRange     | 100     |       133.519 ns |      2.6236 ns |       3.0213 ns |       134.536 ns |  2.84 |    0.06 |   0.0052 |        - |        - |      88 B |        0.21 |
 |                                           |         |                  |                |                 |                  |       |         |          |          |          |           |             |
-| **PopulateWithExplicitArray**                 | **1000**    |       **440.950 ns** |      **4.9444 ns** |       **4.3831 ns** |       **441.700 ns** |  **1.00** |    **0.01** |   **0.2403** |        **-** |        **-** |    **4024 B** |       **1.000** |
-| PopulateWithEnumerableRange               | 1000    |       174.615 ns |      3.4713 ns |       4.6341 ns |       175.003 ns |  0.40 |    0.01 |   0.2427 |        - |        - |    4064 B |       1.010 |
-| PopulateAndTakeAverageWithExplicitArray   | 1000    |       587.625 ns |      7.1387 ns |       6.6775 ns |       587.853 ns |  1.33 |    0.02 |   0.2403 |        - |        - |    4024 B |       1.000 |
-| PopulateAndTakeAverageWithEnumerableRange | 1000    |       688.830 ns |      6.2540 ns |       5.8500 ns |       687.219 ns |  1.56 |    0.02 |   0.0019 |        - |        - |      40 B |       0.010 |
-| PopulateAndTakeSumWithExplicitArray       | 1000    |       720.035 ns |      7.1030 ns |       6.2966 ns |       720.913 ns |  1.63 |    0.02 |   0.4787 |        - |        - |    8024 B |       1.994 |
-| PopulateAndTakeSumWithEnumerableRange     | 1000    |     1,102.879 ns |      8.4876 ns |       7.5241 ns |     1,105.320 ns |  2.50 |    0.03 |   0.0038 |        - |        - |      88 B |       0.022 |
+| **PopulateWithExplicitArray**                 | **1000**    |       **450.087 ns** |      **4.1567 ns** |       **3.8882 ns** |       **448.968 ns** |  **1.00** |    **0.01** |   **0.2403** |        **-** |        **-** |    **4024 B** |       **1.000** |
+| PopulateWithEnumerableRange               | 1000    |       177.779 ns |      3.4396 ns |       4.2241 ns |       178.012 ns |  0.40 |    0.01 |   0.2427 |        - |        - |    4064 B |       1.010 |
+| PopulateAndTakeAverageWithExplicitArray   | 1000    |       587.833 ns |      7.4300 ns |       6.5865 ns |       588.241 ns |  1.31 |    0.02 |   0.2403 |        - |        - |    4024 B |       1.000 |
+| PopulateAndTakeAverageWithEnumerableRange | 1000    |       688.463 ns |      9.2851 ns |       7.7535 ns |       685.927 ns |  1.53 |    0.02 |   0.0019 |        - |        - |      40 B |       0.010 |
+| PopulateAndTakeSumWithExplicitArray       | 1000    |       723.815 ns |      8.0776 ns |       7.1606 ns |       723.947 ns |  1.61 |    0.02 |   0.4787 |        - |        - |    8024 B |       1.994 |
+| PopulateAndTakeSumWithEnumerableRange     | 1000    |     1,105.217 ns |     10.9433 ns |       9.7010 ns |     1,107.676 ns |  2.46 |    0.03 |   0.0038 |        - |        - |      88 B |       0.022 |
 |                                           |         |                  |                |                 |                  |       |         |          |          |          |           |             |
-| **PopulateWithExplicitArray**                 | **100000**  |   **285,315.840 ns** |  **2,539.3101 ns** |   **2,375.2723 ns** |   **285,387.549 ns** |  **1.00** |    **0.01** | **124.5117** | **124.5117** | **124.5117** |  **400066 B** |       **1.000** |
-| PopulateWithEnumerableRange               | 100000  |   268,329.007 ns |  8,614.4013 ns |  25,399.7584 ns |   275,679.883 ns |  0.94 |    0.09 | 124.5117 | 124.5117 | 124.5117 |  400106 B |       1.000 |
-| PopulateAndTakeAverageWithExplicitArray   | 100000  |   304,715.345 ns |  2,931.0325 ns |   2,741.6896 ns |   305,075.830 ns |  1.07 |    0.01 | 124.5117 | 124.5117 | 124.5117 |  400066 B |       1.000 |
-| PopulateAndTakeAverageWithEnumerableRange | 100000  |    70,472.641 ns |    729.4023 ns |     646.5961 ns |    70,354.016 ns |  0.25 |    0.00 |        - |        - |        - |      40 B |       0.000 |
-| PopulateAndTakeSumWithExplicitArray       | 100000  |   569,262.307 ns | 11,336.2546 ns |  31,223.3397 ns |   574,360.693 ns |  2.00 |    0.11 | 249.0234 | 249.0234 | 249.0234 |  800108 B |       2.000 |
-| PopulateAndTakeSumWithEnumerableRange     | 100000  |   125,347.872 ns |    836.3209 ns |     698.3658 ns |   125,594.556 ns |  0.44 |    0.00 |        - |        - |        - |      88 B |       0.000 |
+| **PopulateWithExplicitArray**                 | **100000**  |   **269,518.697 ns** | **10,590.5548 ns** |  **31,060.2662 ns** |   **282,576.831 ns** |  **1.02** |    **0.19** | **124.7559** | **124.7559** | **124.7559** |  **400066 B** |       **1.000** |
+| PopulateWithEnumerableRange               | 100000  |   267,689.326 ns |  3,452.4664 ns |   3,229.4392 ns |   269,169.971 ns |  1.01 |    0.15 | 124.5117 | 124.5117 | 124.5117 |  400106 B |       1.000 |
+| PopulateAndTakeAverageWithExplicitArray   | 100000  |   297,036.228 ns |  6,672.1462 ns |  19,672.9751 ns |   301,128.857 ns |  1.12 |    0.19 | 124.5117 | 124.5117 | 124.5117 |  400066 B |       1.000 |
+| PopulateAndTakeAverageWithEnumerableRange | 100000  |    66,864.375 ns |    649.0638 ns |     607.1347 ns |    66,799.890 ns |  0.25 |    0.04 |        - |        - |        - |      40 B |       0.000 |
+| PopulateAndTakeSumWithExplicitArray       | 100000  |   543,255.188 ns | 14,177.0371 ns |  41,578.7988 ns |   553,735.254 ns |  2.05 |    0.35 | 249.0234 | 249.0234 | 249.0234 |  800108 B |       2.000 |
+| PopulateAndTakeSumWithEnumerableRange     | 100000  |   125,226.951 ns |  1,336.4925 ns |   1,184.7658 ns |   125,081.616 ns |  0.47 |    0.07 |        - |        - |        - |      88 B |       0.000 |
 |                                           |         |                  |                |                 |                  |       |         |          |          |          |           |             |
-| **PopulateWithExplicitArray**                 | **1000000** | **2,828,572.904 ns** | **26,077.2310 ns** |  **24,392.6581 ns** | **2,827,620.508 ns** |  **1.00** |    **0.01** | **996.0938** | **996.0938** | **996.0938** | **4000359 B** |       **1.000** |
-| PopulateWithEnumerableRange               | 1000000 | 2,643,524.605 ns | 81,952.2329 ns | 240,351.7301 ns | 2,710,630.078 ns |  0.93 |    0.08 | 996.0938 | 996.0938 | 996.0938 | 4000399 B |       1.000 |
-| PopulateAndTakeAverageWithExplicitArray   | 1000000 | 2,967,553.581 ns | 27,718.7035 ns |  25,928.0924 ns | 2,968,241.992 ns |  1.05 |    0.01 | 996.0938 | 996.0938 | 996.0938 | 4000359 B |       1.000 |
-| PopulateAndTakeAverageWithEnumerableRange | 1000000 |   677,194.999 ns |  4,116.5810 ns |   3,649.2418 ns |   678,020.850 ns |  0.24 |    0.00 |        - |        - |        - |      40 B |       0.000 |
-| PopulateAndTakeSumWithExplicitArray       | 1000000 | 2,153,497.708 ns | 17,480.8439 ns |  16,351.5923 ns | 2,155,499.609 ns |  0.76 |    0.01 | 500.0000 | 500.0000 | 500.0000 | 8000180 B |       2.000 |
-| PopulateAndTakeSumWithEnumerableRange     | 1000000 | 1,269,005.130 ns | 10,209.4049 ns |   9,549.8837 ns | 1,272,292.383 ns |  0.45 |    0.00 |        - |        - |        - |      88 B |       0.000 |
+| **PopulateWithExplicitArray**                 | **1000000** | **2,742,174.875 ns** | **70,822.5295 ns** | **208,821.8412 ns** | **2,792,666.016 ns** |  **1.01** |    **0.13** | **996.0938** | **996.0938** | **996.0938** | **4000359 B** |       **1.000** |
+| PopulateWithEnumerableRange               | 1000000 | 2,588,133.211 ns | 82,232.9222 ns | 239,877.3112 ns | 2,653,939.258 ns |  0.95 |    0.14 | 996.0938 | 996.0938 | 996.0938 | 4000399 B |       1.000 |
+| PopulateAndTakeAverageWithExplicitArray   | 1000000 | 2,903,293.776 ns | 28,595.7095 ns |  26,748.4444 ns | 2,909,534.766 ns |  1.07 |    0.12 | 996.0938 | 996.0938 | 996.0938 | 4000359 B |       1.000 |
+| PopulateAndTakeAverageWithEnumerableRange | 1000000 |   682,286.146 ns |  5,107.4969 ns |   4,777.5557 ns |   680,823.926 ns |  0.25 |    0.03 |        - |        - |        - |      40 B |       0.000 |
+| PopulateAndTakeSumWithExplicitArray       | 1000000 | 2,328,654.492 ns | 44,902.6644 ns |  44,100.4205 ns | 2,341,511.523 ns |  0.86 |    0.09 | 500.0000 | 500.0000 | 500.0000 | 8000180 B |       2.000 |
+| PopulateAndTakeSumWithEnumerableRange     | 1000000 | 1,251,546.445 ns |  8,235.2487 ns |   7,703.2567 ns | 1,254,647.070 ns |  0.46 |    0.05 |        - |        - |        - |      88 B |       0.000 |

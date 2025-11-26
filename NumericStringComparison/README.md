@@ -5,20 +5,21 @@ This benchmark compares different methods of string comparison when working with
 ## Results
 
 
-```
-
-BenchmarkDotNet v0.15.2, Windows 11 (10.0.27965.1)
-Unknown processor
-.NET SDK 10.0.100-preview.6.25358.103
-  [Host]     : .NET 9.0.8 (9.0.825.36511), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.8 (9.0.825.36511), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                        | Count | Mean     | Error     | StdDev    | Ratio | RatioSD | Allocated | Alloc Ratio |
-|------------------------------ |------ |---------:|----------:|----------:|------:|--------:|----------:|------------:|
-| EqualityOperator              | 1000  | 2.912 μs | 0.0578 μs | 0.1182 μs |  1.00 |    0.06 |         - |          NA |
-| StringEqualsOrdinal           | 1000  | 2.774 μs | 0.0526 μs | 0.0754 μs |  0.95 |    0.05 |         - |          NA |
-| StringEqualsOrdinalIgnoreCase | 1000  | 4.797 μs | 0.0676 μs | 0.0632 μs |  1.65 |    0.07 |         - |          NA |
-| StringInstanceEquals          | 1000  | 3.291 μs | 0.0625 μs | 0.0719 μs |  1.13 |    0.05 |         - |          NA |
-| StringInstanceEqualsOrdinal   | 1000  | 2.578 μs | 0.0514 μs | 0.0816 μs |  0.89 |    0.04 |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                        | Count | Mean     | Error     | StdDev    | Ratio | Allocated | Alloc Ratio |
+|------------------------------ |------ |---------:|----------:|----------:|------:|----------:|------------:|
+| EqualityOperator              | 1000  | 1.871 μs | 0.0049 μs | 0.0038 μs |  1.00 |         - |          NA |
+| StringEqualsOrdinal           | 1000  | 1.877 μs | 0.0220 μs | 0.0206 μs |  1.00 |         - |          NA |
+| StringEqualsOrdinalIgnoreCase | 1000  | 2.357 μs | 0.0189 μs | 0.0177 μs |  1.26 |         - |          NA |
+| StringInstanceEquals          | 1000  | 2.027 μs | 0.0131 μs | 0.0122 μs |  1.08 |         - |          NA |
+| StringInstanceEqualsOrdinal   | 1000  | 2.014 μs | 0.0192 μs | 0.0180 μs |  1.08 |         - |          NA |

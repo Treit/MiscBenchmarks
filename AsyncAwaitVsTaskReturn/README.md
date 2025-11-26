@@ -2,17 +2,18 @@
 
 
 
-```
-
-BenchmarkDotNet v0.15.2, Windows 11 (10.0.27891.1000)
-Unknown processor
-.NET SDK 9.0.301
-  [Host]     : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                    | Count | Mean      | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|-------------------------- |------ |----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| AsyncAwaitWithAwaitChain  | 100   | 129.24 μs | 2.549 μs | 5.958 μs |  2.09 |    0.12 | 6.8359 |  29.84 KB |        3.14 |
-| AsyncAwaitWithReturnChain | 100   |  61.98 μs | 1.215 μs | 2.399 μs |  1.00 |    0.05 | 2.1973 |   9.49 KB |        1.00 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                    | Count | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|-------------------------- |------ |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| AsyncAwaitWithAwaitChain  | 100   | 75.40 μs | 1.286 μs | 1.925 μs |  1.40 |    0.04 | 1.7090 |  29.84 KB |        3.13 |
+| AsyncAwaitWithReturnChain | 100   | 53.90 μs | 1.028 μs | 0.962 μs |  1.00 |    0.02 | 0.4883 |   9.55 KB |        1.00 |

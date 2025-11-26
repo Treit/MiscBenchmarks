@@ -3,6 +3,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,26 +15,26 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 OutlierMode=DontRemove  MemoryRandomization=True  
 
 ```
-| Method                                                    | Count | Mean         | Error       | StdDev      | Median       | Ratio | RatioSD | Allocated | Alloc Ratio |
-|---------------------------------------------------------- |------ |-------------:|------------:|------------:|-------------:|------:|--------:|----------:|------------:|
-| **IEnumerableForLoopWithCastToArray**                         | **10**    |     **4.379 ns** |   **0.0705 ns** |   **0.0660 ns** |     **4.365 ns** |  **1.00** |    **0.02** |         **-** |          **NA** |
-| IEnumerableForEachLoopWithArrayAsIEnumerable              | 10    |     4.578 ns |   0.0157 ns |   0.0146 ns |     4.578 ns |  1.05 |    0.02 |         - |          NA |
-| IEnumerableForEachLoopWithListAsIEnumerable               | 10    |    10.631 ns |   0.2450 ns |   0.7186 ns |    10.275 ns |  2.43 |    0.17 |         - |          NA |
-| IEnumerableForEachLoopWithCastToArray                     | 10    |     4.327 ns |   0.0321 ns |   0.0300 ns |     4.331 ns |  0.99 |    0.02 |         - |          NA |
-| IEnumerableForEachLoopWithCastToList                      | 10    |     9.041 ns |   0.0469 ns |   0.0438 ns |     9.060 ns |  2.07 |    0.03 |         - |          NA |
-| IEnumerableForEachLoopWithCastToListAndSpan               | 10    |     5.142 ns |   0.0273 ns |   0.0256 ns |     5.147 ns |  1.17 |    0.02 |         - |          NA |
-| IEnumerableForEachLoopWithCastToArrayAndSpan              | 10    |     4.153 ns |   0.0355 ns |   0.0332 ns |     4.153 ns |  0.95 |    0.02 |         - |          NA |
-| IEnumerableForEachLoopNoCastUnderlyingCollectionIsHashSet | 10    |    14.455 ns |   0.1231 ns |   0.1152 ns |    14.484 ns |  3.30 |    0.05 |         - |          NA |
-| IEnumerableForEachLoopDictionaryKeys                      | 10    |    14.270 ns |   0.1313 ns |   0.1228 ns |    14.299 ns |  3.26 |    0.05 |         - |          NA |
-| IEnumerableForEachLoopDictionaryKeyValuePairs             | 10    |    10.080 ns |   0.0583 ns |   0.0545 ns |    10.092 ns |  2.30 |    0.04 |         - |          NA |
-|                                                           |       |              |             |             |              |       |         |           |             |
-| **IEnumerableForLoopWithCastToArray**                         | **5000**  | **2,082.910 ns** |  **12.6090 ns** |  **11.7944 ns** | **2,087.794 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
-| IEnumerableForEachLoopWithArrayAsIEnumerable              | 5000  | 2,274.706 ns |  21.1541 ns |  19.7875 ns | 2,275.602 ns |  1.09 |    0.01 |         - |          NA |
-| IEnumerableForEachLoopWithListAsIEnumerable               | 5000  | 3,656.973 ns |  29.2377 ns |  27.3489 ns | 3,653.384 ns |  1.76 |    0.02 |         - |          NA |
-| IEnumerableForEachLoopWithCastToArray                     | 5000  | 2,071.128 ns |  16.1457 ns |  15.1027 ns | 2,079.701 ns |  0.99 |    0.01 |         - |          NA |
-| IEnumerableForEachLoopWithCastToList                      | 5000  | 3,675.333 ns |  10.5044 ns |   9.8258 ns | 3,672.388 ns |  1.76 |    0.01 |         - |          NA |
-| IEnumerableForEachLoopWithCastToListAndSpan               | 5000  | 2,083.867 ns |  15.6584 ns |  14.6469 ns | 2,088.354 ns |  1.00 |    0.01 |         - |          NA |
-| IEnumerableForEachLoopWithCastToArrayAndSpan              | 5000  | 2,075.217 ns |  13.9933 ns |  13.0894 ns | 2,083.396 ns |  1.00 |    0.01 |         - |          NA |
-| IEnumerableForEachLoopNoCastUnderlyingCollectionIsHashSet | 5000  | 6,086.568 ns |  31.9219 ns |  29.8598 ns | 6,079.907 ns |  2.92 |    0.02 |         - |          NA |
-| IEnumerableForEachLoopDictionaryKeys                      | 5000  | 5,091.972 ns | 101.6435 ns | 251.2376 ns | 5,141.185 ns |  2.44 |    0.12 |         - |          NA |
-| IEnumerableForEachLoopDictionaryKeyValuePairs             | 5000  | 4,805.933 ns |  62.5117 ns |  58.4735 ns | 4,807.842 ns |  2.31 |    0.03 |         - |          NA |
+| Method                                                    | Count | Mean         | Error      | StdDev     | Median       | Ratio | RatioSD | Allocated | Alloc Ratio |
+|---------------------------------------------------------- |------ |-------------:|-----------:|-----------:|-------------:|------:|--------:|----------:|------------:|
+| **IEnumerableForLoopWithCastToArray**                         | **10**    |     **4.772 ns** |  **0.0459 ns** |  **0.0429 ns** |     **4.767 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| IEnumerableForEachLoopWithArrayAsIEnumerable              | 10    |     4.585 ns |  0.0297 ns |  0.0278 ns |     4.585 ns |  0.96 |    0.01 |         - |          NA |
+| IEnumerableForEachLoopWithListAsIEnumerable               | 10    |    10.758 ns |  0.2462 ns |  0.6613 ns |    10.426 ns |  2.25 |    0.14 |         - |          NA |
+| IEnumerableForEachLoopWithCastToArray                     | 10    |     4.344 ns |  0.0394 ns |  0.0369 ns |     4.343 ns |  0.91 |    0.01 |         - |          NA |
+| IEnumerableForEachLoopWithCastToList                      | 10    |     9.070 ns |  0.0577 ns |  0.0539 ns |     9.082 ns |  1.90 |    0.02 |         - |          NA |
+| IEnumerableForEachLoopWithCastToListAndSpan               | 10    |     5.177 ns |  0.0243 ns |  0.0227 ns |     5.184 ns |  1.08 |    0.01 |         - |          NA |
+| IEnumerableForEachLoopWithCastToArrayAndSpan              | 10    |     4.148 ns |  0.0319 ns |  0.0299 ns |     4.147 ns |  0.87 |    0.01 |         - |          NA |
+| IEnumerableForEachLoopNoCastUnderlyingCollectionIsHashSet | 10    |    14.409 ns |  0.1068 ns |  0.0999 ns |    14.425 ns |  3.02 |    0.03 |         - |          NA |
+| IEnumerableForEachLoopDictionaryKeys                      | 10    |    14.437 ns |  0.2412 ns |  0.2257 ns |    14.410 ns |  3.03 |    0.05 |         - |          NA |
+| IEnumerableForEachLoopDictionaryKeyValuePairs             | 10    |    10.195 ns |  0.2335 ns |  0.4090 ns |    10.125 ns |  2.14 |    0.09 |         - |          NA |
+|                                                           |       |              |            |            |              |       |         |           |             |
+| **IEnumerableForLoopWithCastToArray**                         | **5000**  | **2,086.988 ns** | **23.6147 ns** | **22.0892 ns** | **2,092.881 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| IEnumerableForEachLoopWithArrayAsIEnumerable              | 5000  | 2,282.254 ns | 17.5591 ns | 16.4248 ns | 2,283.054 ns |  1.09 |    0.01 |         - |          NA |
+| IEnumerableForEachLoopWithListAsIEnumerable               | 5000  | 3,783.957 ns | 22.5993 ns | 21.1394 ns | 3,783.749 ns |  1.81 |    0.02 |         - |          NA |
+| IEnumerableForEachLoopWithCastToArray                     | 5000  | 2,081.386 ns | 16.3437 ns | 15.2879 ns | 2,090.670 ns |  1.00 |    0.01 |         - |          NA |
+| IEnumerableForEachLoopWithCastToList                      | 5000  | 3,689.089 ns | 16.2096 ns | 15.1624 ns | 3,682.506 ns |  1.77 |    0.02 |         - |          NA |
+| IEnumerableForEachLoopWithCastToListAndSpan               | 5000  | 2,085.939 ns | 17.3921 ns | 16.2686 ns | 2,093.381 ns |  1.00 |    0.01 |         - |          NA |
+| IEnumerableForEachLoopWithCastToArrayAndSpan              | 5000  | 2,086.949 ns | 24.2952 ns | 22.7258 ns | 2,087.839 ns |  1.00 |    0.01 |         - |          NA |
+| IEnumerableForEachLoopNoCastUnderlyingCollectionIsHashSet | 5000  | 6,259.483 ns | 81.6168 ns | 76.3444 ns | 6,267.551 ns |  3.00 |    0.05 |         - |          NA |
+| IEnumerableForEachLoopDictionaryKeys                      | 5000  | 4,876.112 ns | 53.3509 ns | 49.9045 ns | 4,871.958 ns |  2.34 |    0.03 |         - |          NA |
+| IEnumerableForEachLoopDictionaryKeyValuePairs             | 5000  | 4,770.957 ns | 45.9743 ns | 43.0044 ns | 4,758.575 ns |  2.29 |    0.03 |         - |          NA |

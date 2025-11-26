@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -12,22 +13,22 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 
 
 ```
-| Method                                    | Count | Mean         | Error        | StdDev     | Ratio | RatioSD | Allocated | Alloc Ratio |
-|------------------------------------------ |------ |-------------:|-------------:|-----------:|------:|--------:|----------:|------------:|
-| **FindIndexesInString**                       | **10**    |     **29.71 ns** |     **0.270 ns** |   **0.253 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
-| FindIndexesInIntArray                     | 10    |     31.55 ns |     0.335 ns |   0.297 ns |  1.06 |    0.01 |         - |          NA |
-| FindIndexesInCharArray                    | 10    |     28.74 ns |     0.216 ns |   0.202 ns |  0.97 |    0.01 |         - |          NA |
-| FindIndexesPointerArithmeticIntoCharArray | 10    |     37.09 ns |     0.396 ns |   0.370 ns |  1.25 |    0.02 |         - |          NA |
-| FindIndexesBytePointers                   | 10    |     28.57 ns |     0.325 ns |   0.304 ns |  0.96 |    0.01 |         - |          NA |
-|                                           |       |              |              |            |       |         |           |             |
-| **FindIndexesInString**                       | **100**   |    **307.68 ns** |     **2.696 ns** |   **2.521 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
-| FindIndexesInIntArray                     | 100   |    323.61 ns |     3.453 ns |   3.061 ns |  1.05 |    0.01 |         - |          NA |
-| FindIndexesInCharArray                    | 100   |    343.32 ns |     2.403 ns |   2.130 ns |  1.12 |    0.01 |         - |          NA |
-| FindIndexesPointerArithmeticIntoCharArray | 100   |    379.10 ns |     3.621 ns |   3.387 ns |  1.23 |    0.01 |         - |          NA |
-| FindIndexesBytePointers                   | 100   |    327.74 ns |     4.708 ns |   4.404 ns |  1.07 |    0.02 |         - |          NA |
-|                                           |       |              |              |            |       |         |           |             |
-| **FindIndexesInString**                       | **10000** | **64,374.20 ns** |   **338.947 ns** | **317.051 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
-| FindIndexesInIntArray                     | 10000 | 66,964.16 ns |   839.168 ns | 784.959 ns |  1.04 |    0.01 |         - |          NA |
-| FindIndexesInCharArray                    | 10000 | 66,166.51 ns |   382.206 ns | 357.516 ns |  1.03 |    0.01 |         - |          NA |
-| FindIndexesPointerArithmeticIntoCharArray | 10000 | 67,615.66 ns | 1,067.720 ns | 998.746 ns |  1.05 |    0.02 |         - |          NA |
-| FindIndexesBytePointers                   | 10000 | 64,995.01 ns |   448.963 ns | 419.960 ns |  1.01 |    0.01 |         - |          NA |
+| Method                                    | Count | Mean         | Error      | StdDev     | Ratio | RatioSD | Allocated | Alloc Ratio |
+|------------------------------------------ |------ |-------------:|-----------:|-----------:|------:|--------:|----------:|------------:|
+| **FindIndexesInString**                       | **10**    |     **28.49 ns** |   **0.257 ns** |   **0.240 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| FindIndexesInIntArray                     | 10    |     30.29 ns |   0.321 ns |   0.284 ns |  1.06 |    0.01 |         - |          NA |
+| FindIndexesInCharArray                    | 10    |     29.54 ns |   0.341 ns |   0.319 ns |  1.04 |    0.01 |         - |          NA |
+| FindIndexesPointerArithmeticIntoCharArray | 10    |     37.19 ns |   0.412 ns |   0.365 ns |  1.31 |    0.02 |         - |          NA |
+| FindIndexesBytePointers                   | 10    |     38.09 ns |   0.801 ns |   2.109 ns |  1.34 |    0.07 |         - |          NA |
+|                                           |       |              |            |            |       |         |           |             |
+| **FindIndexesInString**                       | **100**   |    **296.62 ns** |   **2.904 ns** |   **2.425 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| FindIndexesInIntArray                     | 100   |    338.66 ns |   3.938 ns |   3.491 ns |  1.14 |    0.01 |         - |          NA |
+| FindIndexesInCharArray                    | 100   |    332.30 ns |   3.272 ns |   2.900 ns |  1.12 |    0.01 |         - |          NA |
+| FindIndexesPointerArithmeticIntoCharArray | 100   |    389.57 ns |   2.804 ns |   2.486 ns |  1.31 |    0.01 |         - |          NA |
+| FindIndexesBytePointers                   | 100   |    292.98 ns |   2.052 ns |   1.919 ns |  0.99 |    0.01 |         - |          NA |
+|                                           |       |              |            |            |       |         |           |             |
+| **FindIndexesInString**                       | **10000** | **64,575.00 ns** | **722.114 ns** | **602.998 ns** |  **1.00** |    **0.01** |         **-** |          **NA** |
+| FindIndexesInIntArray                     | 10000 | 67,746.33 ns | 660.816 ns | 618.128 ns |  1.05 |    0.01 |         - |          NA |
+| FindIndexesInCharArray                    | 10000 | 66,074.43 ns | 600.264 ns | 561.488 ns |  1.02 |    0.01 |         - |          NA |
+| FindIndexesPointerArithmeticIntoCharArray | 10000 | 65,136.63 ns | 802.182 ns | 750.361 ns |  1.01 |    0.01 |         - |          NA |
+| FindIndexesBytePointers                   | 10000 | 63,900.58 ns | 588.786 ns | 550.751 ns |  0.99 |    0.01 |         - |          NA |

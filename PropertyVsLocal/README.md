@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,11 +15,11 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method              | Count  | Mean           | Error       | StdDev      | Median         | Ratio | RatioSD | Code Size |
 |-------------------- |------- |---------------:|------------:|------------:|---------------:|------:|--------:|----------:|
-| **PropertyAccess**      | **1**      |      **0.0011 ns** |   **0.0022 ns** |   **0.0019 ns** |      **0.0001 ns** |     **?** |       **?** |      **26 B** |
-| LocalVariableAccess | 1      |      0.0026 ns |   0.0023 ns |   0.0018 ns |      0.0027 ns |     ? |       ? |      27 B |
+| **PropertyAccess**      | **1**      |      **0.0012 ns** |   **0.0019 ns** |   **0.0016 ns** |      **0.0002 ns** |     **?** |       **?** |      **26 B** |
+| LocalVariableAccess | 1      |      0.0047 ns |   0.0054 ns |   0.0051 ns |      0.0018 ns |     ? |       ? |      27 B |
 |                     |        |                |             |             |                |       |         |           |
-| **PropertyAccess**      | **100000** | **31,454.7457 ns** | **245.5280 ns** | **229.6671 ns** | **31,613.9893 ns** |  **1.00** |    **0.01** |      **26 B** |
-| LocalVariableAccess | 100000 | 31,351.2789 ns | 220.0167 ns | 205.8038 ns | 31,224.0051 ns |  1.00 |    0.01 |      27 B |
+| **PropertyAccess**      | **100000** | **31,250.7910 ns** | **175.5380 ns** | **164.1983 ns** | **31,298.2605 ns** |  **1.00** |    **0.01** |      **26 B** |
+| LocalVariableAccess | 100000 | 31,249.4226 ns | 214.2203 ns | 200.3818 ns | 31,381.6589 ns |  1.00 |    0.01 |      27 B |
 
 ## .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 ```assembly

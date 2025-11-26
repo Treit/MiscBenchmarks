@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,11 +15,11 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                              | Count | Mean             | Error           | StdDev          |
 |------------------------------------ |------ |-----------------:|----------------:|----------------:|
-| **DictionaryContainsKey**               | **10**    |         **563.9 ns** |         **8.16 ns** |         **7.64 ns** |
-| ConcurrentDictionaryContainsKey     | 10    |         562.8 ns |         5.23 ns |         4.89 ns |
-| DictionaryKeysDotContains           | 10    |         573.6 ns |         6.96 ns |         5.81 ns |
-| ConcurrentDictionaryKeysDotContains | 10    |       2,438.7 ns |        31.65 ns |        26.43 ns |
-| **DictionaryContainsKey**               | **10000** |     **406,525.6 ns** |     **2,289.09 ns** |     **2,029.22 ns** |
-| ConcurrentDictionaryContainsKey     | 10000 |     362,813.8 ns |     4,729.65 ns |     4,424.12 ns |
-| DictionaryKeysDotContains           | 10000 |     407,380.2 ns |     3,326.24 ns |     3,111.37 ns |
-| ConcurrentDictionaryKeysDotContains | 10000 | 861,314,273.3 ns | 7,317,567.14 ns | 6,844,856.85 ns |
+| **DictionaryContainsKey**               | **10**    |         **561.4 ns** |         **6.43 ns** |         **5.70 ns** |
+| ConcurrentDictionaryContainsKey     | 10    |         559.1 ns |         6.43 ns |         6.01 ns |
+| DictionaryKeysDotContains           | 10    |         574.2 ns |         5.47 ns |         4.85 ns |
+| ConcurrentDictionaryKeysDotContains | 10    |       2,249.8 ns |        27.71 ns |        25.92 ns |
+| **DictionaryContainsKey**               | **10000** |     **405,259.2 ns** |     **2,060.01 ns** |     **1,720.20 ns** |
+| ConcurrentDictionaryContainsKey     | 10000 |     356,412.4 ns |     3,761.22 ns |     3,140.79 ns |
+| DictionaryKeysDotContains           | 10000 |     408,904.1 ns |     3,739.13 ns |     3,497.58 ns |
+| ConcurrentDictionaryKeysDotContains | 10000 | 877,167,533.3 ns | 7,088,152.62 ns | 6,630,262.37 ns |

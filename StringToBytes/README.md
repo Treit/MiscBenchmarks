@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -12,8 +13,8 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 
 
 ```
-| Method                                      | Count | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0    | Allocated | Alloc Ratio |
-|-------------------------------------------- |------ |---------:|---------:|---------:|------:|--------:|--------:|----------:|------------:|
-| StringToBytesUsingUnicodeEncoding           | 1000  | 69.49 μs | 1.044 μs | 0.977 μs |  1.00 |    0.02 | 13.3057 | 218.75 KB |        1.00 |
-| StringToBytesUsingHandRolledExtensionMethod | 1000  | 32.70 μs | 0.631 μs | 0.775 μs |  0.47 |    0.01 | 26.7334 |  437.5 KB |        2.00 |
-| StringToBytesUsingMemoryMarshal             | 1000  | 14.78 μs | 0.270 μs | 0.239 μs |  0.21 |    0.00 | 13.3820 | 218.75 KB |        1.00 |
+| Method                                      | Count | Mean     | Error    | StdDev   | Ratio | Gen0    | Allocated | Alloc Ratio |
+|-------------------------------------------- |------ |---------:|---------:|---------:|------:|--------:|----------:|------------:|
+| StringToBytesUsingUnicodeEncoding           | 1000  | 68.54 μs | 0.778 μs | 0.690 μs |  1.00 | 13.3057 | 218.75 KB |        1.00 |
+| StringToBytesUsingHandRolledExtensionMethod | 1000  | 34.09 μs | 0.660 μs | 0.734 μs |  0.50 | 26.7334 |  437.5 KB |        2.00 |
+| StringToBytesUsingMemoryMarshal             | 1000  | 14.36 μs | 0.278 μs | 0.273 μs |  0.21 | 13.3820 | 218.75 KB |        1.00 |

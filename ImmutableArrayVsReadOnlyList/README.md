@@ -1,19 +1,20 @@
 # Returning a collection of things that should not be mutated as an IReadOnlyList<T> vs. an ImmutableArray<T>.
 
-```
-
-BenchmarkDotNet v0.15.2, Windows 11 (10.0.27881.1000)
-Unknown processor
-.NET SDK 9.0.301
-  [Host]     : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method              | Iterations | Mean             | Error          | StdDev           | Median           | Ratio  | RatioSD | Gen0       | Allocated   | Alloc Ratio |
-|-------------------- |----------- |-----------------:|---------------:|-----------------:|-----------------:|-------:|--------:|-----------:|------------:|------------:|
-| **GetAsImmutableArray** | **10**         |      **4,494.05 ns** |      **89.694 ns** |       **260.218 ns** |      **4,449.66 ns** | **168.40** |   **11.20** |     **9.3231** |     **40240 B** |          **NA** |
-| GetAsReadOnlyList   | 10         |         26.72 ns |       0.555 ns |         0.927 ns |         26.52 ns |   1.00 |    0.05 |          - |           - |          NA |
-|                     |            |                  |                |                  |                  |        |         |            |             |             |
-| **GetAsImmutableArray** | **100000**     | **44,006,381.94 ns** | **874,326.041 ns** | **1,460,802.517 ns** | **44,012,060.00 ns** | **160.73** |   **15.76** | **93200.0000** | **402400000 B** |          **NA** |
-| GetAsReadOnlyList   | 100000     |    276,440.81 ns |  10,285.354 ns |    29,010.026 ns |    268,185.52 ns |   1.01 |    0.14 |          - |           - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method              | Iterations | Mean              | Error           | StdDev          | Ratio  | RatioSD | Gen0       | Allocated   | Alloc Ratio |
+|-------------------- |----------- |------------------:|----------------:|----------------:|-------:|--------:|-----------:|------------:|------------:|
+| **GetAsImmutableArray** | **10**         |      **1,672.572 ns** |      **10.6326 ns** |       **9.4255 ns** | **358.40** |    **2.80** |     **2.4052** |     **40240 B** |          **NA** |
+| GetAsReadOnlyList   | 10         |          4.667 ns |       0.0286 ns |       0.0268 ns |   1.00 |    0.01 |          - |           - |          NA |
+|                     |            |                   |                 |                 |        |         |            |             |             |
+| **GetAsImmutableArray** | **100000**     | **16,699,146.759 ns** | **328,826.0357 ns** | **460,968.2159 ns** | **408.38** |   **12.28** | **24031.2500** | **402400000 B** |          **NA** |
+| GetAsReadOnlyList   | 100000     |     40,897.797 ns |     591.3614 ns |     553.1598 ns |   1.00 |    0.02 |          - |           - |          NA |

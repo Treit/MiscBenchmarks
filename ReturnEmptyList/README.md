@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -15,8 +16,8 @@ OutlierMode=DontRemove  MemoryRandomization=True
 ```
 | Method                     | Mean     | Error    | StdDev   | Ratio | Allocated | Alloc Ratio |
 |--------------------------- |---------:|---------:|---------:|------:|----------:|------------:|
-| ReturnEnumerableEmpty      | 31.33 μs | 0.201 μs | 0.188 μs |  1.00 |         - |          NA |
-| ReturnArrayEmpty           | 31.40 μs | 0.257 μs | 0.240 μs |  1.00 |         - |          NA |
-| ReturnNewArray             | 31.39 μs | 0.367 μs | 0.343 μs |  1.00 |         - |          NA |
-| ReturnNull                 | 31.33 μs | 0.278 μs | 0.260 μs |  1.00 |         - |          NA |
-| ReturnCollectionExpression | 31.39 μs | 0.338 μs | 0.316 μs |  1.00 |         - |          NA |
+| ReturnEnumerableEmpty      | 31.31 μs | 0.336 μs | 0.315 μs |  1.00 |         - |          NA |
+| ReturnArrayEmpty           | 31.29 μs | 0.324 μs | 0.303 μs |  1.00 |         - |          NA |
+| ReturnNewArray             | 31.34 μs | 0.256 μs | 0.239 μs |  1.00 |         - |          NA |
+| ReturnNull                 | 31.30 μs | 0.326 μs | 0.305 μs |  1.00 |         - |          NA |
+| ReturnCollectionExpression | 31.27 μs | 0.283 μs | 0.265 μs |  1.00 |         - |          NA |

@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -14,7 +15,7 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                                                       | Count | Mean      | Error    | StdDev   | Ratio | RatioSD | Gen0    | Allocated | Alloc Ratio |
 |------------------------------------------------------------- |------ |----------:|---------:|---------:|------:|--------:|--------:|----------:|------------:|
-| GetTokenFromUrlToStringSplitWithLinqAndUnnecessaryNullChecks | 1000  | 137.26 μs | 1.547 μs | 1.447 μs |  6.50 |    0.08 | 30.0293 | 491.48 KB |       10.13 |
-| GetTokenFromUrlToStringSplitWithLinq                         | 1000  | 131.53 μs | 1.960 μs | 1.833 μs |  6.23 |    0.10 | 30.0293 | 491.48 KB |       10.13 |
-| GetTokenFromUrlToStringWithIndexOfAndSubstring               | 1000  |  21.13 μs | 0.190 μs | 0.178 μs |  1.00 |    0.01 |  2.9602 |  48.52 KB |        1.00 |
-| GetTokenFromUrlAbsolutePathWithIndexOfAndSubstring           | 1000  |  22.96 μs | 0.206 μs | 0.183 μs |  1.09 |    0.01 |  2.9602 |  48.52 KB |        1.00 |
+| GetTokenFromUrlToStringSplitWithLinqAndUnnecessaryNullChecks | 1000  | 136.40 μs | 2.083 μs | 1.949 μs |  6.40 |    0.15 | 30.0293 | 491.48 KB |       10.13 |
+| GetTokenFromUrlToStringSplitWithLinq                         | 1000  | 130.91 μs | 2.519 μs | 2.356 μs |  6.15 |    0.16 | 30.0293 | 491.48 KB |       10.13 |
+| GetTokenFromUrlToStringWithIndexOfAndSubstring               | 1000  |  21.30 μs | 0.414 μs | 0.425 μs |  1.00 |    0.03 |  2.9602 |  48.52 KB |        1.00 |
+| GetTokenFromUrlAbsolutePathWithIndexOfAndSubstring           | 1000  |  22.67 μs | 0.181 μs | 0.151 μs |  1.06 |    0.02 |  2.9602 |  48.52 KB |        1.00 |

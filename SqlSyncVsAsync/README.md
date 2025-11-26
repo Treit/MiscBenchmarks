@@ -4,6 +4,7 @@ This benchmark assumes you have the AdventureWorks2019 sample database installed
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)

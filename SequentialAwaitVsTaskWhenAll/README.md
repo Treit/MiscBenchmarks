@@ -2,6 +2,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -15,11 +16,11 @@ InvocationCount=1  UnrollFactor=1
 ```
 | Method                 | Count | Mean       | Error     | StdDev    | Ratio | RatioSD | Allocated  | Alloc Ratio |
 |----------------------- |------ |-----------:|----------:|----------:|------:|--------:|-----------:|------------:|
-| **AwaitTasksSequentially** | **10**    |   **4.793 ms** | **0.0946 ms** | **0.1263 ms** |  **1.00** |    **0.04** |   **21.68 KB** |        **1.00** |
-| AwaitTasksUsingWhenAll | 10    |   4.768 ms | 0.0857 ms | 0.1230 ms |  1.00 |    0.04 |   33.21 KB |        1.53 |
+| **AwaitTasksSequentially** | **10**    |   **4.627 ms** | **0.0924 ms** | **0.2160 ms** |  **1.00** |    **0.07** |   **18.47 KB** |        **1.00** |
+| AwaitTasksUsingWhenAll | 10    |   4.651 ms | 0.0930 ms | 0.1746 ms |  1.01 |    0.06 |   30.91 KB |        1.67 |
 |                        |       |            |           |           |       |         |            |             |
-| **AwaitTasksSequentially** | **100**   |  **53.201 ms** | **1.0635 ms** | **2.1484 ms** |  **1.00** |    **0.06** |  **236.64 KB** |        **1.00** |
-| AwaitTasksUsingWhenAll | 100   |  52.690 ms | 0.9298 ms | 1.5534 ms |  0.99 |    0.05 |   236.7 KB |        1.00 |
+| **AwaitTasksSequentially** | **100**   |  **48.304 ms** | **0.3501 ms** | **0.3275 ms** |  **1.00** |    **0.01** |  **272.03 KB** |        **1.00** |
+| AwaitTasksUsingWhenAll | 100   |  48.611 ms | 0.9224 ms | 0.8177 ms |  1.01 |    0.02 |  266.23 KB |        0.98 |
 |                        |       |            |           |           |       |         |            |             |
-| **AwaitTasksSequentially** | **1000**  | **521.060 ms** | **5.7796 ms** | **4.8262 ms** |  **1.00** |    **0.01** | **2484.98 KB** |        **1.00** |
-| AwaitTasksUsingWhenAll | 1000  | 524.420 ms | 5.1576 ms | 4.8245 ms |  1.01 |    0.01 | 2484.86 KB |        1.00 |
+| **AwaitTasksSequentially** | **1000**  | **505.272 ms** | **9.3905 ms** | **8.3244 ms** |  **1.00** |    **0.02** | **2484.98 KB** |        **1.00** |
+| AwaitTasksUsingWhenAll | 1000  | 504.834 ms | 7.8827 ms | 7.3735 ms |  1.00 |    0.02 | 2486.56 KB |        1.00 |

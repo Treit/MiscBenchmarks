@@ -4,23 +4,24 @@ Picking n elements at random from a list without duplicates.
 
 
 
-```
-
-BenchmarkDotNet v0.15.2, Windows 11 (10.0.27891.1000)
-Unknown processor
-.NET SDK 9.0.301
-  [Host]     : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-
 
 ```
-| Method                               | SourceCount | SelectCount | Mean        | Error      | StdDev    | Median      | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|------------------------------------- |------------ |------------ |------------:|-----------:|----------:|------------:|------:|--------:|-------:|----------:|------------:|
-| CryptographicRngWithHashSet          | 500         | 3           |   475.87 ns |  34.133 ns | 100.64 ns |   446.88 ns |  5.48 |    1.91 | 0.0553 |     240 B |        1.50 |
-| SharedRandomWithHashSet              | 500         | 3           |   166.08 ns |  13.648 ns |  40.24 ns |   151.71 ns |  1.91 |    0.71 | 0.0556 |     240 B |        1.50 |
-| SharedRandomWithBoolArray            | 500         | 3           |   131.84 ns |  10.389 ns |  30.63 ns |   130.27 ns |  1.52 |    0.55 | 0.1391 |     600 B |        3.75 |
-| SharedRandomWithStackAllocBoolArray  | 500         | 3           |    93.27 ns |   9.149 ns |  26.98 ns |    82.29 ns |  1.07 |    0.43 | 0.0167 |      72 B |        0.45 |
-| SharedRandomWithWithStackAllocBitSet | 500         | 3           |    93.17 ns |   9.222 ns |  27.19 ns |    78.90 ns |  1.07 |    0.44 | 0.0167 |      72 B |        0.45 |
-| SharedRandomWithBitArray             | 500         | 3           |    94.00 ns |   9.292 ns |  27.40 ns |    90.34 ns |  1.08 |    0.44 | 0.0370 |     160 B |        1.00 |
-| FisherYatesShuffleSuggestedByCopilot | 500         | 3           | 2,057.75 ns |  41.165 ns | 109.16 ns | 2,040.25 ns | 23.70 |    6.58 | 0.0343 |     160 B |        1.00 |
-| ReservoirSampling                    | 500         | 3           | 3,619.32 ns | 116.353 ns | 324.34 ns | 3,539.21 ns | 41.69 |   11.98 | 0.0076 |      40 B |        0.25 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                               | SourceCount | SelectCount | Mean        | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|------------------------------------- |------------ |------------ |------------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| CryptographicRngWithHashSet          | 500         | 3           |   206.73 ns | 0.960 ns | 0.898 ns |  5.83 |    0.07 | 0.0105 |     176 B |        1.10 |
+| SharedRandomWithHashSet              | 500         | 3           |    65.34 ns | 0.627 ns | 0.556 ns |  1.84 |    0.03 | 0.0105 |     176 B |        1.10 |
+| SharedRandomWithBoolArray            | 500         | 3           |    43.91 ns | 0.737 ns | 0.689 ns |  1.24 |    0.02 | 0.0358 |     600 B |        3.75 |
+| SharedRandomWithStackAllocBoolArray  | 500         | 3           |    68.07 ns | 0.784 ns | 0.733 ns |  1.92 |    0.03 | 0.0043 |      72 B |        0.45 |
+| SharedRandomWithWithStackAllocBitSet | 500         | 3           |    49.40 ns | 0.731 ns | 0.648 ns |  1.39 |    0.02 | 0.0043 |      72 B |        0.45 |
+| SharedRandomWithBitArray             | 500         | 3           |    35.46 ns | 0.487 ns | 0.431 ns |  1.00 |    0.02 | 0.0095 |     160 B |        1.00 |
+| FisherYatesShuffleSuggestedByCopilot | 500         | 3           | 1,405.65 ns | 7.434 ns | 6.590 ns | 39.65 |    0.50 | 0.0095 |     160 B |        1.00 |
+| ReservoirSampling                    | 500         | 3           | 1,540.85 ns | 6.147 ns | 5.449 ns | 43.46 |    0.53 | 0.0019 |      40 B |        0.25 |
