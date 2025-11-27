@@ -1,5 +1,6 @@
 namespace Test;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.IO;

@@ -4,17 +4,22 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
 AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 .NET SDK 10.0.100
-  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
-  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-| Method          | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| Equals          | 16.60 ns | 0.267 ns | 0.250 ns |  1.00 |    0.02 | 0.0019 |      32 B |        1.00 |
-| ReferenceEquals | 13.59 ns | 0.143 ns | 0.127 ns |  0.82 |    0.01 | 0.0019 |      32 B |        1.00 |
+| Method          | Job       | Runtime   | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------- |---------- |---------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| Equals          | .NET 10.0 | .NET 10.0 | 15.65 ns | 0.337 ns | 0.375 ns |  1.00 |    0.03 | 0.0019 |      32 B |        1.00 |
+| ReferenceEquals | .NET 10.0 | .NET 10.0 | 14.24 ns | 0.304 ns | 0.338 ns |  0.91 |    0.03 | 0.0019 |      32 B |        1.00 |
+|                 |           |           |          |          |          |       |         |        |           |             |
+| Equals          | .NET 9.0  | .NET 9.0  | 15.56 ns | 0.320 ns | 0.300 ns |  1.00 |    0.03 | 0.0019 |      32 B |        1.00 |
+| ReferenceEquals | .NET 9.0  | .NET 9.0  | 13.74 ns | 0.301 ns | 0.281 ns |  0.88 |    0.02 | 0.0019 |      32 B |        1.00 |

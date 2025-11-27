@@ -3,24 +3,36 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
 AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 .NET SDK 10.0.100
-  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
-  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-| Method                         | Count  | Mean           | Error         | StdDev        | Median         | Ratio | RatioSD | Gen0    | Gen1    | Gen2    | Allocated | Alloc Ratio |
-|------------------------------- |------- |---------------:|--------------:|--------------:|---------------:|------:|--------:|--------:|--------:|--------:|----------:|------------:|
-| **IterateUsingNormalForEachLoop**  | **10**     |       **8.637 ns** |     **0.0459 ns** |     **0.0359 ns** |       **8.635 ns** |  **1.00** |    **0.01** |       **-** |       **-** |       **-** |         **-** |          **NA** |
-| IterateUsingNormalForLoop      | 10     |       8.431 ns |     0.1611 ns |     0.1507 ns |       8.388 ns |  0.98 |    0.02 |       - |       - |       - |         - |          NA |
-| IterateUsingAsArrayForLoop     | 10     |      23.230 ns |     0.4925 ns |     1.0707 ns |      23.339 ns |  2.69 |    0.12 |  0.0062 |       - |       - |     104 B |          NA |
-| IterateUsingAsArrayForEachLoop | 10     |      23.232 ns |     0.4909 ns |     1.0568 ns |      23.100 ns |  2.69 |    0.12 |  0.0062 |       - |       - |     104 B |          NA |
-|                                |        |                |               |               |                |       |         |         |         |         |           |             |
-| **IterateUsingNormalForEachLoop**  | **100000** | **142,693.240 ns** | **2,823.7764 ns** | **7,238.4189 ns** | **145,586.597 ns** |  **1.00** |    **0.08** |       **-** |       **-** |       **-** |         **-** |          **NA** |
-| IterateUsingNormalForLoop      | 100000 | 140,921.331 ns | 3,133.3014 ns | 8,939.4860 ns | 144,447.998 ns |  0.99 |    0.08 |       - |       - |       - |         - |          NA |
-| IterateUsingAsArrayForLoop     | 100000 | 281,756.615 ns | 3,395.9380 ns | 3,176.5626 ns | 281,874.561 ns |  1.98 |    0.11 | 66.8945 | 66.8945 | 66.8945 |  800040 B |          NA |
-| IterateUsingAsArrayForEachLoop | 100000 | 280,435.861 ns | 2,463.8986 ns | 2,184.1820 ns | 280,474.512 ns |  1.97 |    0.11 | 65.9180 | 65.9180 | 65.9180 |  800039 B |          NA |
+| Method                         | Job       | Runtime   | Count  | Mean           | Error         | StdDev         | Median         | Ratio | RatioSD | Gen0    | Gen1    | Gen2    | Allocated | Alloc Ratio |
+|------------------------------- |---------- |---------- |------- |---------------:|--------------:|---------------:|---------------:|------:|--------:|--------:|--------:|--------:|----------:|------------:|
+| **IterateUsingNormalForEachLoop**  | **.NET 10.0** | **.NET 10.0** | **10**     |       **8.737 ns** |     **0.0649 ns** |      **0.0575 ns** |       **8.750 ns** |  **1.00** |    **0.01** |       **-** |       **-** |       **-** |         **-** |          **NA** |
+| IterateUsingNormalForLoop      | .NET 10.0 | .NET 10.0 | 10     |       8.485 ns |     0.1969 ns |      0.2107 ns |       8.457 ns |  0.97 |    0.02 |       - |       - |       - |         - |          NA |
+| IterateUsingAsArrayForLoop     | .NET 10.0 | .NET 10.0 | 10     |      25.411 ns |     0.5397 ns |      1.3540 ns |      25.548 ns |  2.91 |    0.16 |  0.0062 |       - |       - |     104 B |          NA |
+| IterateUsingAsArrayForEachLoop | .NET 10.0 | .NET 10.0 | 10     |      24.573 ns |     0.5226 ns |      1.2820 ns |      24.655 ns |  2.81 |    0.15 |  0.0062 |       - |       - |     104 B |          NA |
+|                                |           |           |        |                |               |                |                |       |         |         |         |         |           |             |
+| IterateUsingNormalForEachLoop  | .NET 9.0  | .NET 9.0  | 10     |       8.688 ns |     0.0689 ns |      0.0645 ns |       8.708 ns |  1.00 |    0.01 |       - |       - |       - |         - |          NA |
+| IterateUsingNormalForLoop      | .NET 9.0  | .NET 9.0  | 10     |       8.361 ns |     0.1899 ns |      0.2031 ns |       8.464 ns |  0.96 |    0.02 |       - |       - |       - |         - |          NA |
+| IterateUsingAsArrayForLoop     | .NET 9.0  | .NET 9.0  | 10     |      22.884 ns |     0.4883 ns |      1.2779 ns |      22.761 ns |  2.63 |    0.15 |  0.0062 |       - |       - |     104 B |          NA |
+| IterateUsingAsArrayForEachLoop | .NET 9.0  | .NET 9.0  | 10     |      23.125 ns |     0.4937 ns |      1.4479 ns |      23.161 ns |  2.66 |    0.17 |  0.0062 |       - |       - |     104 B |          NA |
+|                                |           |           |        |                |               |                |                |       |         |         |         |         |           |             |
+| **IterateUsingNormalForEachLoop**  | **.NET 10.0** | **.NET 10.0** | **100000** | **133,502.427 ns** | **3,719.3440 ns** | **10,966.5706 ns** | **126,622.144 ns** |  **1.01** |    **0.12** |       **-** |       **-** |       **-** |         **-** |          **NA** |
+| IterateUsingNormalForLoop      | .NET 10.0 | .NET 10.0 | 100000 | 132,994.294 ns | 3,985.4031 ns | 11,751.0518 ns | 138,782.739 ns |  1.00 |    0.12 |       - |       - |       - |         - |          NA |
+| IterateUsingAsArrayForLoop     | .NET 10.0 | .NET 10.0 | 100000 | 275,313.402 ns | 7,319.7410 ns | 21,582.4230 ns | 275,257.056 ns |  2.08 |    0.23 | 57.1289 | 57.1289 | 57.1289 |  800034 B |          NA |
+| IterateUsingAsArrayForEachLoop | .NET 10.0 | .NET 10.0 | 100000 | 272,570.617 ns | 5,929.7673 ns | 17,390.9822 ns | 270,071.875 ns |  2.06 |    0.21 | 57.6172 | 57.6172 | 57.6172 |  800035 B |          NA |
+|                                |           |           |        |                |               |                |                |       |         |         |         |         |           |             |
+| IterateUsingNormalForEachLoop  | .NET 9.0  | .NET 9.0  | 100000 | 129,721.209 ns | 4,096.4153 ns | 12,078.3738 ns | 130,516.016 ns |  1.01 |    0.13 |       - |       - |       - |         - |          NA |
+| IterateUsingNormalForLoop      | .NET 9.0  | .NET 9.0  | 100000 | 148,305.860 ns | 3,706.3983 ns | 10,928.3997 ns | 154,844.543 ns |  1.15 |    0.14 |       - |       - |       - |         - |          NA |
+| IterateUsingAsArrayForLoop     | .NET 9.0  | .NET 9.0  | 100000 | 255,857.278 ns | 4,903.1784 ns |  5,646.5075 ns | 257,582.312 ns |  1.99 |    0.19 | 64.2090 | 64.2090 | 64.2090 |  800039 B |          NA |
+| IterateUsingAsArrayForEachLoop | .NET 9.0  | .NET 9.0  | 100000 | 270,992.030 ns | 6,882.9830 ns | 20,294.6321 ns | 267,947.510 ns |  2.11 |    0.25 | 56.1523 | 56.1523 | 56.1523 |  800034 B |          NA |

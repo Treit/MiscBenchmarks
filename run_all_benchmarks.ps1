@@ -9,6 +9,11 @@
     When projects target multiple frameworks (e.g., net9.0;net10.0), BenchmarkDotNet
     will automatically run against all frameworks and compare the results.
 
+    The script maintains a skip list (benchmark_skiplist.txt) that tracks completed benchmarks.
+    As each benchmark completes successfully, it's added to the skip list. If the script is
+    interrupted, you can restart it and it will skip already-completed benchmarks, resuming
+    from where it left off.
+
 .PARAMETER DryRun
     If specified, shows what would be run without actually executing benchmarks.
 
@@ -17,11 +22,11 @@
     project targets multiple frameworks, BenchmarkDotNet will run against all of them.
 
 .PARAMETER Skip
-    Comma-separated list of benchmark names to skip.
+    Comma-separated list of additional benchmark names to skip (beyond those in the skip list file).
 
 .EXAMPLE
     .\run_all_benchmarks.ps1
-    Runs all benchmarks and updates README files
+    Runs all benchmarks and updates README files, skipping any already-completed benchmarks
 
 .EXAMPLE
     .\run_all_benchmarks.ps1 -Framework net10.0
@@ -29,7 +34,10 @@
 
 .EXAMPLE
     .\run_all_benchmarks.ps1 -Skip "BubbleSort,SlowBenchmark"
-    Runs all benchmarks except the specified ones
+    Runs all benchmarks except the specified ones (and those in the skip list)
+
+.NOTES
+    To start fresh and re-run all benchmarks, delete the benchmark_skiplist.txt file.
 #>
 
 [CmdletBinding()]
@@ -48,6 +56,9 @@ $ErrorActionPreference = 'Stop'
 
 # Progress file for tracking
 $progressFile = Join-Path $PSScriptRoot "benchmark_progress.json"
+
+# Skip list file for tracking completed benchmarks
+$skipListFile = Join-Path $PSScriptRoot "benchmark_skiplist.txt"
 
 # Helper function to write progress with retry on file lock
 function Write-ProgressFile {
@@ -75,11 +86,56 @@ function Write-ProgressFile {
     }
 }
 
-# Parse skip list
+# Helper function to add a benchmark to the skip list with retry on file lock
+function Add-ToSkipList {
+    param(
+        [string]$Path,
+        [string]$BenchmarkName,
+        [int]$MaxRetries = 5,
+        [int]$DelayMs = 100
+    )
+
+    $attempt = 0
+    while ($attempt -lt $MaxRetries) {
+        try {
+            # Read existing content, add new entry if not present, sort, and write back
+            $existing = @()
+            if (Test-Path $Path) {
+                $existing = Get-Content $Path | Where-Object { $_.Trim() -ne '' }
+            }
+            
+            if ($BenchmarkName -notin $existing) {
+                $existing += $BenchmarkName
+                $existing | Sort-Object | Out-File $Path -Encoding utf8 -ErrorAction Stop
+            }
+            return
+        }
+        catch {
+            $attempt++
+            if ($attempt -ge $MaxRetries) {
+                Write-Warning "Failed to update skip list after $MaxRetries attempts: $_"
+                return
+            }
+            Start-Sleep -Milliseconds $DelayMs
+        }
+    }
+}
+
+# Load skip list from file (benchmarks already completed)
+$fileSkipList = @()
+if (Test-Path $skipListFile) {
+    $fileSkipList = Get-Content $skipListFile | Where-Object { $_.Trim() -ne '' } | ForEach-Object { $_.Trim() }
+    Write-Host "Loaded skip list with $($fileSkipList.Count) already-completed benchmarks" -ForegroundColor Cyan
+}
+
+# Parse skip list from command line parameter
 $skipList = @()
 if ($Skip) {
     $skipList = $Skip -split ',' | ForEach-Object { $_.Trim() }
 }
+
+# Combine both skip lists
+$combinedSkipList = @($fileSkipList) + @($skipList) | Select-Object -Unique
 
 # Get all benchmark directories (directories with .csproj files, excluding tools)
 $benchmarkDirs = Get-ChildItem -Path $PSScriptRoot -Directory |
@@ -88,9 +144,13 @@ $benchmarkDirs = Get-ChildItem -Path $PSScriptRoot -Directory |
         (Test-Path (Join-Path $_.FullName "*.csproj"))
     }
 
-if ($skipList.Count -gt 0) {
-    Write-Host "Skipping: $($skipList -join ', ')" -ForegroundColor Yellow
-    $benchmarkDirs = $benchmarkDirs | Where-Object { $_.Name -notin $skipList }
+if ($combinedSkipList.Count -gt 0) {
+    $skippedCount = ($benchmarkDirs | Where-Object { $_.Name -in $combinedSkipList }).Count
+    Write-Host "Skipping $skippedCount already-completed benchmarks" -ForegroundColor Yellow
+    if ($skipList.Count -gt 0) {
+        Write-Host "Additional command-line skips: $($skipList -join ', ')" -ForegroundColor Yellow
+    }
+    $benchmarkDirs = $benchmarkDirs | Where-Object { $_.Name -notin $combinedSkipList }
 }
 
 $total = $benchmarkDirs.Count
@@ -186,6 +246,9 @@ foreach ($dir in $benchmarkDirs) {
 
         Write-Host "  ✓ Completed and README updated" -ForegroundColor Green
         $succeeded++
+
+        # Add to skip list so we can resume from here if interrupted
+        Add-ToSkipList -Path $skipListFile -BenchmarkName $benchmarkName
 
         # Update progress file
         $progressData.Succeeded = $succeeded
