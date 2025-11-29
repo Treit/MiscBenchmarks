@@ -1,6 +1,7 @@
 # Different methods of comparing strings
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -13,11 +14,11 @@ AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 ```
 | Method                      | numIterations | Mean      | Error    | StdDev   |
 |---------------------------- |-------------- |----------:|---------:|---------:|
-| **EqualsObject**                | **10**            |  **31.34 ns** | **0.487 ns** | **0.432 ns** |
-| EqualsString                | 10            |  31.85 ns | 0.363 ns | 0.339 ns |
-| EqualsStringExplicitOrdinal | 10            |  31.90 ns | 0.264 ns | 0.246 ns |
-| EqualsStringOperator        | 10            |  32.59 ns | 0.252 ns | 0.236 ns |
-| **EqualsObject**                | **100**           | **312.98 ns** | **2.580 ns** | **2.414 ns** |
-| EqualsString                | 100           | 311.78 ns | 2.078 ns | 1.944 ns |
-| EqualsStringExplicitOrdinal | 100           | 314.65 ns | 1.596 ns | 1.493 ns |
-| EqualsStringOperator        | 100           | 312.86 ns | 1.789 ns | 1.674 ns |
+| **EqualsObject**                | **10**            |  **31.62 ns** | **0.212 ns** | **0.199 ns** |
+| EqualsString                | 10            |  31.67 ns | 0.245 ns | 0.230 ns |
+| EqualsStringExplicitOrdinal | 10            |  31.53 ns | 0.297 ns | 0.278 ns |
+| EqualsStringOperator        | 10            |  32.40 ns | 0.209 ns | 0.174 ns |
+| **EqualsObject**                | **100**           | **311.94 ns** | **2.903 ns** | **2.573 ns** |
+| EqualsString                | 100           | 309.89 ns | 0.535 ns | 0.501 ns |
+| EqualsStringExplicitOrdinal | 100           | 312.92 ns | 1.595 ns | 1.492 ns |
+| EqualsStringOperator        | 100           | 312.21 ns | 1.002 ns | 0.837 ns |

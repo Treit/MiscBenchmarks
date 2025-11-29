@@ -1,6 +1,7 @@
 namespace Test;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Jobs;
 using global::Benchmark;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +39,6 @@ public class Benchmark
         var sql = "select OrderQty from Sales.SalesOrderDetail";
         using var cmd = new SqlCommand(sql, _conn);
         using var reader = cmd.ExecuteReader();
-using BenchmarkDotNet.Jobs;
 
         var result = new List<short>();
 

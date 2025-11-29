@@ -5,17 +5,22 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
 AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 .NET SDK 10.0.100
-  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
-  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-| Method                        | Mean    | Error    | StdDev   | Ratio | RatioSD |
-|------------------------------ |--------:|---------:|---------:|------:|--------:|
-| BuildCodeThatUsesExplicitType | 2.409 s | 0.0311 s | 0.0291 s |  1.00 |    0.02 |
-| BuildCodeThatUsesVar          | 2.677 s | 0.0192 s | 0.0180 s |  1.11 |    0.01 |
+| Method                        | Job       | Runtime   | Mean     | Error   | StdDev  | Ratio |
+|------------------------------ |---------- |---------- |---------:|--------:|--------:|------:|
+| BuildCodeThatUsesExplicitType | .NET 10.0 | .NET 10.0 | 117.8 ms | 0.70 ms | 0.62 ms |  1.00 |
+| BuildCodeThatUsesVar          | .NET 10.0 | .NET 10.0 | 117.8 ms | 0.71 ms | 0.63 ms |  1.00 |
+|                               |           |           |          |         |         |       |
+| BuildCodeThatUsesExplicitType | .NET 9.0  | .NET 9.0  | 118.0 ms | 0.91 ms | 0.81 ms |  1.00 |
+| BuildCodeThatUsesVar          | .NET 9.0  | .NET 9.0  | 118.0 ms | 1.06 ms | 0.83 ms |  1.00 |

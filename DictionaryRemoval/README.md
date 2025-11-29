@@ -3,6 +3,7 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
@@ -16,16 +17,16 @@ InvocationCount=1  UnrollFactor=1
 ```
 | Method                           | Count | Mean         | Error       | StdDev      | Median       | Ratio | RatioSD | Allocated | Alloc Ratio |
 |--------------------------------- |------ |-------------:|------------:|------------:|-------------:|------:|--------:|----------:|------------:|
-| **RegularDictionary**                | **100**   |     **2.404 μs** |   **0.2142 μs** |   **0.6316 μs** |     **2.100 μs** |  **1.06** |    **0.37** |         **-** |          **NA** |
-| ConcurrentDictionary             | 100   |     6.367 μs |   0.5556 μs |   1.6209 μs |     5.500 μs |  2.81 |    0.96 |         - |          NA |
-| ImmutableDictionaryRemove        | 100   |   134.474 μs |   5.7416 μs |  16.8390 μs |   136.000 μs | 59.33 |   15.26 |   45600 B |          NA |
-| ImmutableDictionaryRemoveRange   | 100   |   100.521 μs |   3.3164 μs |   9.3539 μs |    99.500 μs | 44.35 |   10.76 |    7704 B |          NA |
-| RegularDictionaryWithContainsKey | 100   |     3.374 μs |   0.2266 μs |   0.6464 μs |     3.100 μs |  1.49 |    0.44 |         - |          NA |
-| RegularDictionaryBulkRemove      | 100   |    10.173 μs |   0.3297 μs |   0.9354 μs |    10.000 μs |  4.49 |    1.09 |     112 B |          NA |
+| **RegularDictionary**                | **100**   |     **2.137 μs** |   **0.0469 μs** |   **0.0958 μs** |     **2.100 μs** |  **1.00** |    **0.06** |         **-** |          **NA** |
+| ConcurrentDictionary             | 100   |     5.006 μs |   0.1060 μs |   0.1088 μs |     5.000 μs |  2.35 |    0.11 |         - |          NA |
+| ImmutableDictionaryRemove        | 100   |   107.519 μs |   2.1388 μs |   2.1005 μs |   107.650 μs | 50.41 |    2.41 |   45600 B |          NA |
+| ImmutableDictionaryRemoveRange   | 100   |    86.335 μs |   1.6888 μs |   1.9448 μs |    86.150 μs | 40.47 |    1.99 |    7704 B |          NA |
+| RegularDictionaryWithContainsKey | 100   |     2.824 μs |   0.0618 μs |   0.1468 μs |     2.800 μs |  1.32 |    0.09 |         - |          NA |
+| RegularDictionaryBulkRemove      | 100   |     9.157 μs |   0.1824 μs |   0.2617 μs |     9.200 μs |  4.29 |    0.22 |     112 B |          NA |
 |                                  |       |              |             |             |              |       |         |           |             |
-| **RegularDictionary**                | **10000** |   **151.525 μs** |  **12.0768 μs** |  **34.6507 μs** |   **143.800 μs** |  **1.05** |    **0.33** |         **-** |          **NA** |
-| ConcurrentDictionary             | 10000 |   317.388 μs |  22.4778 μs |  64.4930 μs |   281.500 μs |  2.20 |    0.66 |         - |          NA |
-| ImmutableDictionaryRemove        | 10000 | 6,752.671 μs | 103.0682 μs | 147.8174 μs | 6,709.650 μs | 46.79 |   10.09 | 8783616 B |          NA |
-| ImmutableDictionaryRemoveRange   | 10000 | 5,156.794 μs | 101.6608 μs | 214.4371 μs | 5,196.250 μs | 35.73 |    7.81 |  759896 B |          NA |
-| RegularDictionaryWithContainsKey | 10000 |   207.796 μs |  14.1637 μs |  40.4098 μs |   201.850 μs |  1.44 |    0.42 |         - |          NA |
-| RegularDictionaryBulkRemove      | 10000 |   286.570 μs |  16.3823 μs |  46.4740 μs |   281.700 μs |  1.99 |    0.54 |     112 B |          NA |
+| **RegularDictionary**                | **10000** |   **131.635 μs** |   **8.3360 μs** |  **24.1842 μs** |   **127.250 μs** |  **1.03** |    **0.25** |         **-** |          **NA** |
+| ConcurrentDictionary             | 10000 |   381.958 μs |   4.1409 μs |   3.2329 μs |   382.150 μs |  2.99 |    0.49 |         - |          NA |
+| ImmutableDictionaryRemove        | 10000 | 6,854.905 μs | 131.5558 μs | 161.5624 μs | 6,851.200 μs | 53.66 |    8.89 | 8783616 B |          NA |
+| ImmutableDictionaryRemoveRange   | 10000 | 5,103.519 μs | 100.6655 μs | 210.1264 μs | 5,088.500 μs | 39.95 |    6.76 |  759896 B |          NA |
+| RegularDictionaryWithContainsKey | 10000 |   150.593 μs |   1.9666 μs |   1.7433 μs |   150.150 μs |  1.18 |    0.19 |         - |          NA |
+| RegularDictionaryBulkRemove      | 10000 |   241.131 μs |  11.6229 μs |  33.7201 μs |   221.400 μs |  1.89 |    0.41 |     112 B |          NA |

@@ -3,20 +3,28 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
 AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 .NET SDK 10.0.100
-  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
-  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-| Method                  | Count   | Mean           | Error        | StdDev       | Ratio | RatioSD |
-|------------------------ |-------- |---------------:|-------------:|-------------:|------:|--------:|
-| **WhereThenFirstOrDefault** | **100**     |       **128.1 ns** |      **1.51 ns** |      **1.41 ns** |  **1.00** |    **0.02** |
-| FirstOrDefault          | 100     |       105.3 ns |      0.57 ns |      0.51 ns |  0.82 |    0.01 |
-|                         |         |                |              |              |       |         |
-| **WhereThenFirstOrDefault** | **1000000** | **1,974,016.1 ns** | **37,237.33 ns** | **29,072.46 ns** |  **1.00** |    **0.02** |
-| FirstOrDefault          | 1000000 | 2,087,606.5 ns | 35,281.94 ns | 45,876.49 ns |  1.06 |    0.03 |
+| Method                  | Job       | Runtime   | Count   | Mean           | Error        | StdDev       | Ratio |
+|------------------------ |---------- |---------- |-------- |---------------:|-------------:|-------------:|------:|
+| **WhereThenFirstOrDefault** | **.NET 10.0** | **.NET 10.0** | **100**     |       **151.5 ns** |      **0.62 ns** |      **0.52 ns** |  **1.00** |
+| FirstOrDefault          | .NET 10.0 | .NET 10.0 | 100     |       103.6 ns |      0.14 ns |      0.12 ns |  0.68 |
+|                         |           |           |         |                |              |              |       |
+| WhereThenFirstOrDefault | .NET 9.0  | .NET 9.0  | 100     |       152.8 ns |      0.65 ns |      0.58 ns |  1.00 |
+| FirstOrDefault          | .NET 9.0  | .NET 9.0  | 100     |       131.6 ns |      0.27 ns |      0.22 ns |  0.86 |
+|                         |           |           |         |                |              |              |       |
+| **WhereThenFirstOrDefault** | **.NET 10.0** | **.NET 10.0** | **1000000** | **1,852,029.6 ns** | **13,614.06 ns** | **11,368.36 ns** |  **1.00** |
+| FirstOrDefault          | .NET 10.0 | .NET 10.0 | 1000000 | 1,782,914.7 ns | 12,564.98 ns | 11,753.29 ns |  0.96 |
+|                         |           |           |         |                |              |              |       |
+| WhereThenFirstOrDefault | .NET 9.0  | .NET 9.0  | 1000000 | 1,860,388.0 ns | 10,179.77 ns |  9,522.17 ns |  1.00 |
+| FirstOrDefault          | .NET 9.0  | .NET 9.0  | 1000000 | 1,786,495.3 ns |  9,644.05 ns |  9,021.05 ns |  0.96 |

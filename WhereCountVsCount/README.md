@@ -3,20 +3,28 @@
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
 AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 .NET SDK 10.0.100
-  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
-  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-| Method             | Count | Mean          | Error       | StdDev      | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|------------------- |------ |--------------:|------------:|------------:|------:|--------:|-------:|----------:|------------:|
-| **WhereDotCount**      | **10**    |     **36.007 ns** |   **0.4071 ns** |   **0.3808 ns** |  **6.75** |    **0.07** | **0.0029** |      **48 B** |          **NA** |
-| CountWithPredicate | 10    |      5.334 ns |   0.0200 ns |   0.0188 ns |  1.00 |    0.00 |      - |         - |          NA |
-|                    |       |               |             |             |       |         |        |           |             |
-| **WhereDotCount**      | **10000** | **19,264.237 ns** | **137.6111 ns** | **128.7215 ns** |  **2.99** |    **0.03** |      **-** |      **48 B** |          **NA** |
-| CountWithPredicate | 10000 |  6,435.015 ns |  48.8009 ns |  45.6484 ns |  1.00 |    0.01 |      - |         - |          NA |
+| Method             | Job       | Runtime   | Count | Mean          | Error      | StdDev     | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|------------------- |---------- |---------- |------ |--------------:|-----------:|-----------:|------:|--------:|-------:|----------:|------------:|
+| **WhereDotCount**      | **.NET 10.0** | **.NET 10.0** | **10**    |     **35.475 ns** |  **0.3282 ns** |  **0.3070 ns** |  **6.40** |    **0.05** | **0.0029** |      **48 B** |          **NA** |
+| CountWithPredicate | .NET 10.0 | .NET 10.0 | 10    |      5.544 ns |  0.0090 ns |  0.0075 ns |  1.00 |    0.00 |      - |         - |          NA |
+|                    |           |           |       |               |            |            |       |         |        |           |             |
+| WhereDotCount      | .NET 9.0  | .NET 9.0  | 10    |     35.160 ns |  0.2354 ns |  0.2202 ns |  6.33 |    0.04 | 0.0029 |      48 B |          NA |
+| CountWithPredicate | .NET 9.0  | .NET 9.0  | 10    |      5.550 ns |  0.0227 ns |  0.0190 ns |  1.00 |    0.00 |      - |         - |          NA |
+|                    |           |           |       |               |            |            |       |         |        |           |             |
+| **WhereDotCount**      | **.NET 10.0** | **.NET 10.0** | **10000** | **22,263.800 ns** | **55.7095 ns** | **49.3850 ns** |  **3.52** |    **0.01** |      **-** |      **48 B** |          **NA** |
+| CountWithPredicate | .NET 10.0 | .NET 10.0 | 10000 |  6,326.272 ns | 10.8403 ns |  9.0522 ns |  1.00 |    0.00 |      - |         - |          NA |
+|                    |           |           |       |               |            |            |       |         |        |           |             |
+| WhereDotCount      | .NET 9.0  | .NET 9.0  | 10000 | 19,197.654 ns | 52.0039 ns | 46.1001 ns |  3.03 |    0.01 |      - |      48 B |          NA |
+| CountWithPredicate | .NET 9.0  | .NET 9.0  | 10000 |  6,343.558 ns | 13.3357 ns | 11.8217 ns |  1.00 |    0.00 |      - |         - |          NA |

@@ -1,5 +1,6 @@
 namespace Test;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
 using System;
 using System.Collections.Generic;
 using System.IO;

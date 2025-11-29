@@ -9,25 +9,38 @@ See the ArraySum benchmark for some other results.
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
 AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 .NET SDK 10.0.100
-  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
-  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-| Method                                | Size | Mean         | Error     | StdDev    | Ratio | RatioSD |
-|-------------------------------------- |----- |-------------:|----------:|----------:|------:|--------:|
-| SumJagged                             | 1000 |    771.10 μs |  3.577 μs |  3.171 μs |  0.77 |    0.01 |
-| SumMultiDimensional                   | 1000 |  1,002.83 μs |  8.329 μs |  7.384 μs |  1.00 |    0.01 |
-| SumMultiDimensionalReversedIndexes    | 1000 |  1,304.17 μs | 10.052 μs |  9.403 μs |  1.30 |    0.01 |
-| SumJaggedReversedIndexes              | 1000 |  1,462.12 μs |  6.839 μs |  6.063 μs |  1.46 |    0.01 |
-| SumJaggedOptimizedKozi                | 1000 |    357.27 μs |  3.361 μs |  3.144 μs |  0.36 |    0.00 |
-| SumMultiDimensionalLocalVariableGoose | 1000 |    739.16 μs |  4.217 μs |  3.521 μs |  0.74 |    0.01 |
-| SumJaggedLocalVariableGoose           | 1000 |    634.68 μs |  2.624 μs |  2.455 μs |  0.63 |    0.01 |
-| SumHandrolledAkseli                   | 1000 |     19.01 μs |  0.137 μs |  0.128 μs |  0.02 |    0.00 |
-| SumJaggedLinq                         | 1000 |  1,919.58 μs |  6.712 μs |  5.950 μs |  1.91 |    0.01 |
-| SumMultiDimensionalLinq               | 1000 | 10,025.97 μs | 94.219 μs | 88.132 μs | 10.00 |    0.11 |
+| Method                                | Job       | Runtime   | Size | Mean        | Error      | StdDev     | Ratio | RatioSD |
+|-------------------------------------- |---------- |---------- |----- |------------:|-----------:|-----------:|------:|--------:|
+| SumJagged                             | .NET 10.0 | .NET 10.0 | 1000 |   772.50 μs |   2.114 μs |   1.765 μs |  0.73 |    0.00 |
+| SumMultiDimensional                   | .NET 10.0 | .NET 10.0 | 1000 | 1,055.97 μs |   7.111 μs |   6.652 μs |  1.00 |    0.01 |
+| SumMultiDimensionalReversedIndexes    | .NET 10.0 | .NET 10.0 | 1000 | 1,362.25 μs |   1.780 μs |   1.578 μs |  1.29 |    0.01 |
+| SumJaggedReversedIndexes              | .NET 10.0 | .NET 10.0 | 1000 | 1,445.38 μs |   1.250 μs |   1.169 μs |  1.37 |    0.01 |
+| SumJaggedOptimizedKozi                | .NET 10.0 | .NET 10.0 | 1000 |   348.68 μs |   0.647 μs |   0.540 μs |  0.33 |    0.00 |
+| SumMultiDimensionalLocalVariableGoose | .NET 10.0 | .NET 10.0 | 1000 |   735.83 μs |   2.182 μs |   1.934 μs |  0.70 |    0.00 |
+| SumJaggedLocalVariableGoose           | .NET 10.0 | .NET 10.0 | 1000 |   628.18 μs |   1.721 μs |   1.610 μs |  0.59 |    0.00 |
+| SumHandrolledAkseli                   | .NET 10.0 | .NET 10.0 | 1000 |    18.86 μs |   0.061 μs |   0.057 μs |  0.02 |    0.00 |
+| SumJaggedLinq                         | .NET 10.0 | .NET 10.0 | 1000 | 1,914.60 μs |   6.622 μs |   6.194 μs |  1.81 |    0.01 |
+| SumMultiDimensionalLinq               | .NET 10.0 | .NET 10.0 | 1000 | 9,660.54 μs | 189.369 μs | 194.468 μs |  9.15 |    0.19 |
+|                                       |           |           |      |             |            |            |       |         |
+| SumJagged                             | .NET 9.0  | .NET 9.0  | 1000 |   769.26 μs |   2.899 μs |   2.711 μs |  0.73 |    0.00 |
+| SumMultiDimensional                   | .NET 9.0  | .NET 9.0  | 1000 | 1,047.28 μs |   4.724 μs |   4.188 μs |  1.00 |    0.01 |
+| SumMultiDimensionalReversedIndexes    | .NET 9.0  | .NET 9.0  | 1000 | 1,369.13 μs |   1.761 μs |   1.561 μs |  1.31 |    0.01 |
+| SumJaggedReversedIndexes              | .NET 9.0  | .NET 9.0  | 1000 | 1,455.18 μs |   1.359 μs |   1.061 μs |  1.39 |    0.01 |
+| SumJaggedOptimizedKozi                | .NET 9.0  | .NET 9.0  | 1000 |   348.52 μs |   0.340 μs |   0.302 μs |  0.33 |    0.00 |
+| SumMultiDimensionalLocalVariableGoose | .NET 9.0  | .NET 9.0  | 1000 |   731.73 μs |   0.716 μs |   0.559 μs |  0.70 |    0.00 |
+| SumJaggedLocalVariableGoose           | .NET 9.0  | .NET 9.0  | 1000 |   627.30 μs |   0.713 μs |   0.632 μs |  0.60 |    0.00 |
+| SumHandrolledAkseli                   | .NET 9.0  | .NET 9.0  | 1000 |    19.10 μs |   0.062 μs |   0.058 μs |  0.02 |    0.00 |
+| SumJaggedLinq                         | .NET 9.0  | .NET 9.0  | 1000 | 1,904.90 μs |   4.709 μs |   4.174 μs |  1.82 |    0.01 |
+| SumMultiDimensionalLinq               | .NET 9.0  | .NET 9.0  | 1000 | 9,711.61 μs |  74.044 μs |  65.638 μs |  9.27 |    0.07 |
