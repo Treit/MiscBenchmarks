@@ -70,8 +70,6 @@ foreach ($comp in $comparisons) {
             <td><a href="$githubUrl" target="_blank">$($comp.BenchmarkName)</a></td>
             <td>$($comp.Method)</td>
             <td>$paramsStr</td>
-            <td>$($comp.Net9Version)</td>
-            <td>$($comp.Net10Version)</td>
             <td>$($comp.Net9Time)</td>
             <td>$($comp.Net10Time)</td>
             <td class="$perfClass">$perfChange</td>
@@ -306,14 +304,12 @@ $html = @"
                     <th onclick="sortTable(0)">Benchmark</th>
                     <th onclick="sortTable(1)">Method</th>
                     <th onclick="sortTable(2)">Parameters</th>
-                    <th onclick="sortTable(3)">.NET 9 Ver</th>
-                    <th onclick="sortTable(4)">.NET 10 Ver</th>
-                    <th onclick="sortTable(5)">.NET 9 Time</th>
-                    <th onclick="sortTable(6)">.NET 10 Time</th>
-                    <th onclick="sortTable(7)">Perf Change</th>
-                    <th onclick="sortTable(8)">.NET 9 Memory</th>
-                    <th onclick="sortTable(9)">.NET 10 Memory</th>
-                    <th onclick="sortTable(10)">Memory Change</th>
+                    <th onclick="sortTable(3)">.NET 9 Time</th>
+                    <th onclick="sortTable(4)">.NET 10 Time</th>
+                    <th onclick="sortTable(5)">Perf Change</th>
+                    <th onclick="sortTable(6)">.NET 9 Memory</th>
+                    <th onclick="sortTable(7)">.NET 10 Memory</th>
+                    <th onclick="sortTable(8)">Memory Change</th>
                 </tr>
             </thead>
             <tbody>
@@ -386,7 +382,7 @@ $tableRows
         function checkFilterMatch(row) {
             if (currentFilter === 'all') return true;
 
-            const perfChangeCell = row.cells[7];
+            const perfChangeCell = row.cells[5];
             const perfChangeText = perfChangeCell.textContent.trim();
 
             if (perfChangeText === '-') return false;
