@@ -3,9 +3,12 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using System;
 using System.Collections.Generic;
+using BenchmarkDotNet.Jobs;
 
 [ShortRunJob]
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private string _firstPriority = "ABC";

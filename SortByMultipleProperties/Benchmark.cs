@@ -2,10 +2,13 @@ namespace Test;
 using BenchmarkDotNet.Attributes;
 using System;
 using System.Linq;
+using BenchmarkDotNet.Jobs;
 
 public record Something(string Name, int X, int Y, double Z, Guid Id);
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10000)]

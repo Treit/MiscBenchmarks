@@ -1,31 +1,50 @@
 # Rotating an array
 
 
+
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
 AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 .NET SDK 10.0.100
-  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
-  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-| Method                   | Amount | Mean     | Error    | StdDev   | Gen0   | Allocated |
-|------------------------- |------- |---------:|---------:|---------:|-------:|----------:|
-| **RotateLeftWithReverse**    | **1**      | **30.87 ns** | **0.321 ns** | **0.300 ns** |      **-** |         **-** |
-| RotateLeftWithCopy       | 1      | 59.37 ns | 1.159 ns | 1.084 ns | 0.0048 |      80 B |
-| RotateLeftWithJuggling   | 1      | 22.34 ns | 0.208 ns | 0.195 ns |      - |         - |
-| RotateLeftArrayCopyAaron | 1      | 12.67 ns | 0.276 ns | 0.244 ns | 0.0048 |      80 B |
-| **RotateLeftWithReverse**    | **4**      | **33.87 ns** | **0.347 ns** | **0.307 ns** |      **-** |         **-** |
-| RotateLeftWithCopy       | 4      | 59.66 ns | 0.928 ns | 0.868 ns | 0.0048 |      80 B |
-| RotateLeftWithJuggling   | 4      | 26.68 ns | 0.212 ns | 0.198 ns |      - |         - |
-| RotateLeftArrayCopyAaron | 4      | 11.92 ns | 0.085 ns | 0.080 ns | 0.0048 |      80 B |
-| **RotateLeftWithReverse**    | **16**     | **29.28 ns** | **0.311 ns** | **0.291 ns** |      **-** |         **-** |
-| RotateLeftWithCopy       | 16     | 60.21 ns | 1.187 ns | 1.110 ns | 0.0048 |      80 B |
-| RotateLeftWithJuggling   | 16     | 35.58 ns | 0.230 ns | 0.204 ns |      - |         - |
-| RotateLeftArrayCopyAaron | 16     | 11.56 ns | 0.139 ns | 0.123 ns | 0.0048 |      80 B |
-| **RotateLeftWithReverse**    | **24**     | **31.50 ns** | **0.272 ns** | **0.255 ns** |      **-** |         **-** |
-| RotateLeftWithCopy       | 24     | 58.94 ns | 0.782 ns | 0.694 ns | 0.0048 |      80 B |
-| RotateLeftWithJuggling   | 24     | 26.70 ns | 0.287 ns | 0.268 ns |      - |         - |
-| RotateLeftArrayCopyAaron | 24     | 12.18 ns | 0.222 ns | 0.207 ns | 0.0048 |      80 B |
+| Method                   | Job       | Runtime   | Amount | Mean     | Error    | StdDev   | Gen0   | Allocated |
+|------------------------- |---------- |---------- |------- |---------:|---------:|---------:|-------:|----------:|
+| **RotateLeftWithReverse**    | **.NET 10.0** | **.NET 10.0** | **1**      | **34.25 ns** | **0.450 ns** | **0.399 ns** |      **-** |         **-** |
+| RotateLeftWithCopy       | .NET 10.0 | .NET 10.0 | 1      | 59.48 ns | 1.032 ns | 0.915 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | .NET 10.0 | .NET 10.0 | 1      | 22.48 ns | 0.239 ns | 0.224 ns |      - |         - |
+| RotateLeftArrayCopyAaron | .NET 10.0 | .NET 10.0 | 1      | 12.52 ns | 0.151 ns | 0.141 ns | 0.0048 |      80 B |
+| RotateLeftWithReverse    | .NET 9.0  | .NET 9.0  | 1      | 33.80 ns | 0.255 ns | 0.226 ns |      - |         - |
+| RotateLeftWithCopy       | .NET 9.0  | .NET 9.0  | 1      | 59.84 ns | 1.206 ns | 1.128 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | .NET 9.0  | .NET 9.0  | 1      | 22.39 ns | 0.157 ns | 0.147 ns |      - |         - |
+| RotateLeftArrayCopyAaron | .NET 9.0  | .NET 9.0  | 1      | 12.94 ns | 0.206 ns | 0.193 ns | 0.0048 |      80 B |
+| **RotateLeftWithReverse**    | **.NET 10.0** | **.NET 10.0** | **4**      | **33.91 ns** | **0.355 ns** | **0.332 ns** |      **-** |         **-** |
+| RotateLeftWithCopy       | .NET 10.0 | .NET 10.0 | 4      | 60.16 ns | 1.134 ns | 1.061 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | .NET 10.0 | .NET 10.0 | 4      | 28.11 ns | 0.329 ns | 0.308 ns |      - |         - |
+| RotateLeftArrayCopyAaron | .NET 10.0 | .NET 10.0 | 4      | 11.83 ns | 0.241 ns | 0.226 ns | 0.0048 |      80 B |
+| RotateLeftWithReverse    | .NET 9.0  | .NET 9.0  | 4      | 34.01 ns | 0.324 ns | 0.303 ns |      - |         - |
+| RotateLeftWithCopy       | .NET 9.0  | .NET 9.0  | 4      | 59.61 ns | 0.749 ns | 0.664 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | .NET 9.0  | .NET 9.0  | 4      | 27.43 ns | 0.316 ns | 0.296 ns |      - |         - |
+| RotateLeftArrayCopyAaron | .NET 9.0  | .NET 9.0  | 4      | 11.96 ns | 0.208 ns | 0.184 ns | 0.0048 |      80 B |
+| **RotateLeftWithReverse**    | **.NET 10.0** | **.NET 10.0** | **16**     | **29.48 ns** | **0.329 ns** | **0.308 ns** |      **-** |         **-** |
+| RotateLeftWithCopy       | .NET 10.0 | .NET 10.0 | 16     | 59.77 ns | 1.090 ns | 0.910 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | .NET 10.0 | .NET 10.0 | 16     | 37.03 ns | 0.265 ns | 0.234 ns |      - |         - |
+| RotateLeftArrayCopyAaron | .NET 10.0 | .NET 10.0 | 16     | 11.80 ns | 0.254 ns | 0.212 ns | 0.0048 |      80 B |
+| RotateLeftWithReverse    | .NET 9.0  | .NET 9.0  | 16     | 29.45 ns | 0.393 ns | 0.368 ns |      - |         - |
+| RotateLeftWithCopy       | .NET 9.0  | .NET 9.0  | 16     | 60.37 ns | 1.216 ns | 1.302 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | .NET 9.0  | .NET 9.0  | 16     | 35.90 ns | 0.480 ns | 0.426 ns |      - |         - |
+| RotateLeftArrayCopyAaron | .NET 9.0  | .NET 9.0  | 16     | 11.64 ns | 0.192 ns | 0.180 ns | 0.0048 |      80 B |
+| **RotateLeftWithReverse**    | **.NET 10.0** | **.NET 10.0** | **24**     | **37.99 ns** | **0.391 ns** | **0.365 ns** |      **-** |         **-** |
+| RotateLeftWithCopy       | .NET 10.0 | .NET 10.0 | 24     | 60.21 ns | 1.276 ns | 1.418 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | .NET 10.0 | .NET 10.0 | 24     | 26.52 ns | 0.371 ns | 0.329 ns |      - |         - |
+| RotateLeftArrayCopyAaron | .NET 10.0 | .NET 10.0 | 24     | 11.84 ns | 0.213 ns | 0.189 ns | 0.0048 |      80 B |
+| RotateLeftWithReverse    | .NET 9.0  | .NET 9.0  | 24     | 37.89 ns | 0.444 ns | 0.393 ns |      - |         - |
+| RotateLeftWithCopy       | .NET 9.0  | .NET 9.0  | 24     | 59.74 ns | 0.753 ns | 0.668 ns | 0.0048 |      80 B |
+| RotateLeftWithJuggling   | .NET 9.0  | .NET 9.0  | 24     | 26.55 ns | 0.343 ns | 0.321 ns |      - |         - |
+| RotateLeftArrayCopyAaron | .NET 9.0  | .NET 9.0  | 24     | 11.84 ns | 0.217 ns | 0.193 ns | 0.0048 |      80 B |

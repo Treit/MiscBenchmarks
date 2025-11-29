@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
 
 namespace SortWithEnumParsing
 {
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net90)]
+    [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {
         private static readonly string[] HolidayNames = Enum.GetNames<Holiday>();

@@ -1,14 +1,17 @@
-﻿namespace Test;
+namespace Test;
 
 using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperLinq;
+using BenchmarkDotNet.Jobs;
 
 public record MyClass(int Id, string Name);
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     List<MyClass> _data;

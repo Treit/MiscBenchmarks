@@ -3,6 +3,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
 public partial class Benchmark

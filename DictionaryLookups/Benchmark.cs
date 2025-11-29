@@ -9,6 +9,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.Specialized;
+using BenchmarkDotNet.Jobs;
 
 public record SomeClass(int Id)
 {
@@ -19,6 +20,8 @@ public record SomeClass(int Id)
 }
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10_000)]

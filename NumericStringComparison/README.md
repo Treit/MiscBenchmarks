@@ -5,20 +5,29 @@ This benchmark compares different methods of string comparison when working with
 ## Results
 
 
-```
-
-BenchmarkDotNet v0.15.2, Windows 11 (10.0.27965.1)
-Unknown processor
-.NET SDK 10.0.100-preview.6.25358.103
-  [Host]     : .NET 9.0.8 (9.0.825.36511), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.8 (9.0.825.36511), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 
 ```
-| Method                        | Count | Mean     | Error     | StdDev    | Ratio | RatioSD | Allocated | Alloc Ratio |
-|------------------------------ |------ |---------:|----------:|----------:|------:|--------:|----------:|------------:|
-| EqualityOperator              | 1000  | 2.912 μs | 0.0578 μs | 0.1182 μs |  1.00 |    0.06 |         - |          NA |
-| StringEqualsOrdinal           | 1000  | 2.774 μs | 0.0526 μs | 0.0754 μs |  0.95 |    0.05 |         - |          NA |
-| StringEqualsOrdinalIgnoreCase | 1000  | 4.797 μs | 0.0676 μs | 0.0632 μs |  1.65 |    0.07 |         - |          NA |
-| StringInstanceEquals          | 1000  | 3.291 μs | 0.0625 μs | 0.0719 μs |  1.13 |    0.05 |         - |          NA |
-| StringInstanceEqualsOrdinal   | 1000  | 2.578 μs | 0.0514 μs | 0.0816 μs |  0.89 |    0.04 |         - |          NA |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                        | Job       | Runtime   | Count | Mean     | Error     | StdDev    | Ratio | RatioSD | Allocated | Alloc Ratio |
+|------------------------------ |---------- |---------- |------ |---------:|----------:|----------:|------:|--------:|----------:|------------:|
+| EqualityOperator              | .NET 10.0 | .NET 10.0 | 1000  | 1.873 μs | 0.0066 μs | 0.0055 μs |  1.00 |    0.00 |         - |          NA |
+| StringEqualsOrdinal           | .NET 10.0 | .NET 10.0 | 1000  | 1.862 μs | 0.0181 μs | 0.0151 μs |  0.99 |    0.01 |         - |          NA |
+| StringEqualsOrdinalIgnoreCase | .NET 10.0 | .NET 10.0 | 1000  | 2.330 μs | 0.0064 μs | 0.0057 μs |  1.24 |    0.00 |         - |          NA |
+| StringInstanceEquals          | .NET 10.0 | .NET 10.0 | 1000  | 1.994 μs | 0.0220 μs | 0.0206 μs |  1.06 |    0.01 |         - |          NA |
+| StringInstanceEqualsOrdinal   | .NET 10.0 | .NET 10.0 | 1000  | 1.969 μs | 0.0157 μs | 0.0139 μs |  1.05 |    0.01 |         - |          NA |
+|                               |           |           |       |          |           |           |       |         |           |             |
+| EqualityOperator              | .NET 9.0  | .NET 9.0  | 1000  | 1.868 μs | 0.0250 μs | 0.0222 μs |  1.00 |    0.02 |         - |          NA |
+| StringEqualsOrdinal           | .NET 9.0  | .NET 9.0  | 1000  | 1.894 μs | 0.0317 μs | 0.0297 μs |  1.01 |    0.02 |         - |          NA |
+| StringEqualsOrdinalIgnoreCase | .NET 9.0  | .NET 9.0  | 1000  | 2.334 μs | 0.0179 μs | 0.0159 μs |  1.25 |    0.02 |         - |          NA |
+| StringInstanceEquals          | .NET 9.0  | .NET 9.0  | 1000  | 2.012 μs | 0.0088 μs | 0.0078 μs |  1.08 |    0.01 |         - |          NA |
+| StringInstanceEqualsOrdinal   | .NET 9.0  | .NET 9.0  | 1000  | 1.954 μs | 0.0062 μs | 0.0048 μs |  1.05 |    0.01 |         - |          NA |

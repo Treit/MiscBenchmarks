@@ -5,8 +5,11 @@ using System.Buffers.Binary;
 using System.IO;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     static string s_fileName = "nums.bin";

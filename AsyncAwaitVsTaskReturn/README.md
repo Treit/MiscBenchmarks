@@ -2,17 +2,23 @@
 
 
 
-```
-
-BenchmarkDotNet v0.15.2, Windows 11 (10.0.27891.1000)
-Unknown processor
-.NET SDK 9.0.301
-  [Host]     : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 
 ```
-| Method                    | Count | Mean      | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|-------------------------- |------ |----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| AsyncAwaitWithAwaitChain  | 100   | 129.24 μs | 2.549 μs | 5.958 μs |  2.09 |    0.12 | 6.8359 |  29.84 KB |        3.14 |
-| AsyncAwaitWithReturnChain | 100   |  61.98 μs | 1.215 μs | 2.399 μs |  1.00 |    0.05 | 2.1973 |   9.49 KB |        1.00 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                    | Job       | Runtime   | Count | Mean     | Error    | StdDev   | Median   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|-------------------------- |---------- |---------- |------ |---------:|---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| AsyncAwaitWithAwaitChain  | .NET 10.0 | .NET 10.0 | 100   | 74.98 μs | 1.450 μs | 2.079 μs | 74.31 μs |  1.39 |    0.05 | 1.7090 |  29.82 KB |        3.12 |
+| AsyncAwaitWithReturnChain | .NET 10.0 | .NET 10.0 | 100   | 53.82 μs | 1.059 μs | 1.088 μs | 53.70 μs |  1.00 |    0.03 | 0.4883 |   9.55 KB |        1.00 |
+|                           |           |           |       |          |          |          |          |       |         |        |           |             |
+| AsyncAwaitWithAwaitChain  | .NET 9.0  | .NET 9.0  | 100   | 80.28 μs | 2.163 μs | 6.379 μs | 77.81 μs |  1.51 |    0.13 | 1.7090 |  29.82 KB |        3.12 |
+| AsyncAwaitWithReturnChain | .NET 9.0  | .NET 9.0  | 100   | 53.32 μs | 1.045 μs | 1.532 μs | 53.35 μs |  1.00 |    0.04 | 0.4883 |   9.55 KB |        1.00 |

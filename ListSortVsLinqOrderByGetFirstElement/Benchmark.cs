@@ -3,11 +3,14 @@ using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BenchmarkDotNet.Jobs;
 
 public record SomeData(string Name, int Score);
 
 [MemoryDiagnoser]
 [MemoryRandomization]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(8, 100, 100_000, 1_000_000)]

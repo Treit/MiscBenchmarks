@@ -1,11 +1,14 @@
-﻿namespace Test;
+namespace Test;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using CommunityToolkit.HighPerformance;
 using System;
 using System.Text.RegularExpressions;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private static string[] _delimitedStrings;

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using BenchmarkDotNet.Jobs;
 
 public enum NeedleLocation
 {
@@ -15,6 +16,8 @@ public enum NeedleLocation
 
 [MemoryDiagnoser]
 [MemoryRandomization]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10, 100_000)]

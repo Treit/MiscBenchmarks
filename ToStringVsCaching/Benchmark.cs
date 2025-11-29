@@ -3,6 +3,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using System;
 using System.Collections.Generic;
+using BenchmarkDotNet.Jobs;
 
 [Flags]
 enum ReplicaType
@@ -20,6 +21,8 @@ class TestData
 }
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10_000, 1_000_000)]

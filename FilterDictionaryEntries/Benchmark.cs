@@ -3,6 +3,7 @@ using BenchmarkDotNet.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BenchmarkDotNet.Jobs;
 
 public record Instrument(int InstrumentId, string InstrumentName);
 public record Profile(
@@ -13,6 +14,8 @@ public record Profile(
     bool IsFlagged);
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private List<Instrument> _candidates;

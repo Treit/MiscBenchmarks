@@ -1,18 +1,20 @@
-```
-
-BenchmarkDotNet v0.13.6, Arch Linux
-AMD Ryzen 9 5900X, 1 CPU, 24 logical and 12 physical cores
-.NET SDK 8.0.100-preview.6.23330.14
-  [Host]     : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
-  DefaultJob : .NET 7.0.9 (7.0.923.32018), X64 RyuJIT AVX2
 
 
 ```
-|                Method |      Mean |     Error |    StdDev | Ratio |   Gen0 | Allocated | Alloc Ratio |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                | Mean      | Error     | StdDev    | Ratio | Gen0   | Allocated | Alloc Ratio |
 |---------------------- |----------:|----------:|----------:|------:|-------:|----------:|------------:|
-|            Reflection | 72.917 ns | 1.0150 ns | 0.9494 ns |  1.00 | 0.0013 |     112 B |        1.00 |
-|      ReflectionCached | 53.873 ns | 0.6870 ns | 0.6426 ns |  0.74 | 0.0013 |     112 B |        1.00 |
-| ReflectionCachedFully | 36.013 ns | 0.2546 ns | 0.1988 ns |  0.49 | 0.0002 |      24 B |        0.21 |
-|       WithSpanInvoker | 11.212 ns | 0.0323 ns | 0.0287 ns |  0.15 |      - |         - |        0.00 |
-|         GeneratedFunc |  1.236 ns | 0.0023 ns | 0.0021 ns |  0.02 |      - |         - |        0.00 |
-|               Dynamic |  8.838 ns | 0.1546 ns | 0.1446 ns |  0.12 | 0.0003 |      24 B |        0.21 |
+| Reflection            | 62.084 ns | 0.2871 ns | 0.2241 ns |  1.00 | 0.0067 |     112 B |        1.00 |
+| ReflectionCached      | 39.395 ns | 0.2563 ns | 0.2272 ns |  0.63 | 0.0067 |     112 B |        1.00 |
+| ReflectionCachedFully | 24.680 ns | 0.1004 ns | 0.0890 ns |  0.40 | 0.0014 |      24 B |        0.21 |
+| WithSpanInvoker       |  4.280 ns | 0.0098 ns | 0.0082 ns |  0.07 |      - |         - |        0.00 |
+| GeneratedFunc         |  1.783 ns | 0.0038 ns | 0.0031 ns |  0.03 |      - |         - |        0.00 |
+| Dynamic               |  9.445 ns | 0.0411 ns | 0.0364 ns |  0.15 | 0.0014 |      24 B |        0.21 |

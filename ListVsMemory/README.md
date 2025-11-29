@@ -3,28 +3,44 @@
 Comparing the performance of `List<T>` vs `ReadOnlyMemory<T>` and `Memory<T>` for various operations.
 
 
-```
-
-BenchmarkDotNet v0.15.2, Windows 11 (10.0.27887.1000)
-Unknown processor
-.NET SDK 9.0.301
-  [Host]     : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.6 (9.0.625.26613), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 
 ```
-| Method                            | Count | Mean      | Error     | StdDev    | Median    | Gen0   | Gen1   | Allocated |
-|---------------------------------- |------ |----------:|----------:|----------:|----------:|-------:|-------:|----------:|
-| ReadList                          | 10000 |  5.613 μs | 0.1102 μs | 0.1225 μs |  5.604 μs |      - |      - |         - |
-| ReadReadOnlyMemory                | 10000 |  3.687 μs | 0.0358 μs | 0.0279 μs |  3.686 μs |      - |      - |         - |
-| ReadMemory                        | 10000 |  4.477 μs | 0.2683 μs | 0.7912 μs |  4.265 μs |      - |      - |         - |
-| ReadListForeach                   | 10000 |  5.937 μs | 0.1204 μs | 0.3357 μs |  5.833 μs |      - |      - |         - |
-| ReadReadOnlyMemoryForeach         | 10000 |  3.803 μs | 0.0735 μs | 0.0786 μs |  3.794 μs |      - |      - |         - |
-| WriteList                         | 10000 | 13.116 μs | 0.1582 μs | 0.1403 μs | 13.085 μs |      - |      - |         - |
-| WriteListLocalVariable            | 10000 | 12.508 μs | 0.1363 μs | 0.1208 μs | 12.498 μs |      - |      - |         - |
-| WriteListCollectionsMarshalAsSpan | 10000 |  3.767 μs | 0.0841 μs | 0.2400 μs |  3.688 μs |      - |      - |         - |
-| WriteMemory                       | 10000 |  3.717 μs | 0.0708 μs | 0.1611 μs |  3.644 μs |      - |      - |         - |
-| RandomAccessList                  | 10000 | 10.150 μs | 0.1908 μs | 0.2121 μs | 10.133 μs |      - |      - |         - |
-| RandomAccessReadOnlyMemory        | 10000 | 10.288 μs | 0.0906 μs | 0.0707 μs | 10.280 μs |      - |      - |         - |
-| CreateList                        | 10000 | 17.496 μs | 0.3369 μs | 0.3309 μs | 17.456 μs | 9.2468 | 1.0071 |   40056 B |
-| CreateReadOnlyMemory              | 10000 |  6.314 μs | 0.1214 μs | 0.1398 μs |  6.306 μs | 9.1705 | 1.1444 |   40024 B |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                            | Job       | Runtime   | Count | Mean     | Error     | StdDev    | Gen0   | Gen1   | Allocated |
+|---------------------------------- |---------- |---------- |------ |---------:|----------:|----------:|-------:|-------:|----------:|
+| ReadList                          | .NET 10.0 | .NET 10.0 | 10000 | 6.231 μs | 0.0066 μs | 0.0059 μs |      - |      - |         - |
+| ReadReadOnlyMemory                | .NET 10.0 | .NET 10.0 | 10000 | 3.270 μs | 0.0091 μs | 0.0080 μs |      - |      - |         - |
+| ReadMemory                        | .NET 10.0 | .NET 10.0 | 10000 | 3.263 μs | 0.0027 μs | 0.0022 μs |      - |      - |         - |
+| ReadListForeach                   | .NET 10.0 | .NET 10.0 | 10000 | 6.219 μs | 0.0116 μs | 0.0102 μs |      - |      - |         - |
+| ReadReadOnlyMemoryForeach         | .NET 10.0 | .NET 10.0 | 10000 | 3.265 μs | 0.0077 μs | 0.0068 μs |      - |      - |         - |
+| WriteList                         | .NET 10.0 | .NET 10.0 | 10000 | 6.445 μs | 0.0279 μs | 0.0261 μs |      - |      - |         - |
+| WriteListLocalVariable            | .NET 10.0 | .NET 10.0 | 10000 | 6.301 μs | 0.0075 μs | 0.0070 μs |      - |      - |         - |
+| WriteListCollectionsMarshalAsSpan | .NET 10.0 | .NET 10.0 | 10000 | 3.129 μs | 0.0055 μs | 0.0046 μs |      - |      - |         - |
+| WriteMemory                       | .NET 10.0 | .NET 10.0 | 10000 | 3.134 μs | 0.0143 μs | 0.0134 μs |      - |      - |         - |
+| RandomAccessList                  | .NET 10.0 | .NET 10.0 | 10000 | 9.352 μs | 0.0325 μs | 0.0304 μs |      - |      - |         - |
+| RandomAccessReadOnlyMemory        | .NET 10.0 | .NET 10.0 | 10000 | 8.581 μs | 0.0244 μs | 0.0228 μs |      - |      - |         - |
+| CreateList                        | .NET 10.0 | .NET 10.0 | 10000 | 9.162 μs | 0.0671 μs | 0.0628 μs | 2.3804 | 0.2899 |   40056 B |
+| CreateReadOnlyMemory              | .NET 10.0 | .NET 10.0 | 10000 | 4.142 μs | 0.0657 μs | 0.0614 μs | 2.3804 | 0.3357 |   40024 B |
+| ReadList                          | .NET 9.0  | .NET 9.0  | 10000 | 6.231 μs | 0.0124 μs | 0.0109 μs |      - |      - |         - |
+| ReadReadOnlyMemory                | .NET 9.0  | .NET 9.0  | 10000 | 3.262 μs | 0.0029 μs | 0.0024 μs |      - |      - |         - |
+| ReadMemory                        | .NET 9.0  | .NET 9.0  | 10000 | 3.264 μs | 0.0039 μs | 0.0031 μs |      - |      - |         - |
+| ReadListForeach                   | .NET 9.0  | .NET 9.0  | 10000 | 6.219 μs | 0.0138 μs | 0.0129 μs |      - |      - |         - |
+| ReadReadOnlyMemoryForeach         | .NET 9.0  | .NET 9.0  | 10000 | 3.264 μs | 0.0035 μs | 0.0033 μs |      - |      - |         - |
+| WriteList                         | .NET 9.0  | .NET 9.0  | 10000 | 6.326 μs | 0.0311 μs | 0.0291 μs |      - |      - |         - |
+| WriteListLocalVariable            | .NET 9.0  | .NET 9.0  | 10000 | 6.305 μs | 0.0059 μs | 0.0055 μs |      - |      - |         - |
+| WriteListCollectionsMarshalAsSpan | .NET 9.0  | .NET 9.0  | 10000 | 3.131 μs | 0.0060 μs | 0.0050 μs |      - |      - |         - |
+| WriteMemory                       | .NET 9.0  | .NET 9.0  | 10000 | 3.125 μs | 0.0054 μs | 0.0048 μs |      - |      - |         - |
+| RandomAccessList                  | .NET 9.0  | .NET 9.0  | 10000 | 9.259 μs | 0.0132 μs | 0.0117 μs |      - |      - |         - |
+| RandomAccessReadOnlyMemory        | .NET 9.0  | .NET 9.0  | 10000 | 8.554 μs | 0.0183 μs | 0.0171 μs |      - |      - |         - |
+| CreateList                        | .NET 9.0  | .NET 9.0  | 10000 | 9.227 μs | 0.0729 μs | 0.0647 μs | 2.3804 | 0.2899 |   40056 B |
+| CreateReadOnlyMemory              | .NET 9.0  | .NET 9.0  | 10000 | 4.161 μs | 0.0761 μs | 0.0712 μs | 2.3804 | 0.3357 |   40024 B |

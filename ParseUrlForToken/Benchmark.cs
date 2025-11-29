@@ -6,10 +6,13 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using BenchmarkDotNet.Jobs;
 
 record TestRecord(string Name, Uri? Url);
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private static TestRecord[]? _data;

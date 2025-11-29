@@ -2,30 +2,48 @@
 
 
 
+
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
 AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 .NET SDK 10.0.100
-  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
-  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-| Method                 | Iterations | Mean           | Error        | StdDev       | Allocated |
-|----------------------- |----------- |---------------:|-------------:|-------------:|----------:|
-| **LookupUsingHashSet**     | **1000**       |     **2,361.1 ns** |     **21.00 ns** |     **19.64 ns** |         **-** |
-| LookupUsingList        | 1000       |     2,503.4 ns |     15.24 ns |     14.25 ns |         - |
-| LookupUsingConditional | 1000       |       785.5 ns |      3.42 ns |      3.20 ns |         - |
-| LookupUsingSwitch      | 1000       |       476.8 ns |      4.70 ns |      4.40 ns |         - |
-| LookupUsingRange       | 1000       |       323.4 ns |      4.59 ns |      4.07 ns |         - |
-| **LookupUsingHashSet**     | **100000**     |   **232,431.9 ns** |    **753.41 ns** |    **588.21 ns** |         **-** |
-| LookupUsingList        | 100000     |   249,997.6 ns |  2,498.58 ns |  2,337.18 ns |         - |
-| LookupUsingConditional | 100000     |    78,021.8 ns |    457.10 ns |    427.57 ns |         - |
-| LookupUsingSwitch      | 100000     |    46,943.5 ns |    189.17 ns |    167.70 ns |         - |
-| LookupUsingRange       | 100000     |    31,341.4 ns |    322.45 ns |    301.62 ns |         - |
-| **LookupUsingHashSet**     | **1000000**    | **2,374,108.6 ns** | **14,473.86 ns** | **13,538.86 ns** |         **-** |
-| LookupUsingList        | 1000000    | 2,493,411.2 ns | 12,950.92 ns | 12,114.30 ns |         - |
-| LookupUsingConditional | 1000000    |   779,071.9 ns |  2,764.95 ns |  2,451.06 ns |         - |
-| LookupUsingSwitch      | 1000000    |   469,280.3 ns |  1,734.69 ns |  1,622.63 ns |         - |
-| LookupUsingRange       | 1000000    |   313,226.9 ns |    941.78 ns |    735.28 ns |         - |
+| Method                 | Job       | Runtime   | Iterations | Mean           | Error       | StdDev      | Allocated |
+|----------------------- |---------- |---------- |----------- |---------------:|------------:|------------:|----------:|
+| **LookupUsingHashSet**     | **.NET 10.0** | **.NET 10.0** | **1000**       |     **2,341.0 ns** |     **3.60 ns** |     **3.00 ns** |         **-** |
+| LookupUsingList        | .NET 10.0 | .NET 10.0 | 1000       |     2,495.9 ns |     8.79 ns |     7.79 ns |         - |
+| LookupUsingConditional | .NET 10.0 | .NET 10.0 | 1000       |       780.2 ns |     1.21 ns |     1.08 ns |         - |
+| LookupUsingSwitch      | .NET 10.0 | .NET 10.0 | 1000       |       474.5 ns |     3.36 ns |     3.14 ns |         - |
+| LookupUsingRange       | .NET 10.0 | .NET 10.0 | 1000       |       321.2 ns |     1.36 ns |     1.21 ns |         - |
+| LookupUsingHashSet     | .NET 9.0  | .NET 9.0  | 1000       |     2,343.4 ns |    13.48 ns |    11.26 ns |         - |
+| LookupUsingList        | .NET 9.0  | .NET 9.0  | 1000       |     2,491.2 ns |     3.79 ns |     3.36 ns |         - |
+| LookupUsingConditional | .NET 9.0  | .NET 9.0  | 1000       |       781.3 ns |     2.64 ns |     2.34 ns |         - |
+| LookupUsingSwitch      | .NET 9.0  | .NET 9.0  | 1000       |       475.9 ns |     3.63 ns |     3.39 ns |         - |
+| LookupUsingRange       | .NET 9.0  | .NET 9.0  | 1000       |       322.6 ns |     2.97 ns |     2.63 ns |         - |
+| **LookupUsingHashSet**     | **.NET 10.0** | **.NET 10.0** | **100000**     |   **231,056.9 ns** |   **552.91 ns** |   **431.67 ns** |         **-** |
+| LookupUsingList        | .NET 10.0 | .NET 10.0 | 100000     |   248,601.9 ns |   496.20 ns |   414.35 ns |         - |
+| LookupUsingConditional | .NET 10.0 | .NET 10.0 | 100000     |    77,504.4 ns |    76.23 ns |    63.66 ns |         - |
+| LookupUsingSwitch      | .NET 10.0 | .NET 10.0 | 100000     |    46,775.6 ns |   163.34 ns |   152.79 ns |         - |
+| LookupUsingRange       | .NET 10.0 | .NET 10.0 | 100000     |    31,347.2 ns |   400.31 ns |   354.86 ns |         - |
+| LookupUsingHashSet     | .NET 9.0  | .NET 9.0  | 100000     |   231,846.6 ns | 1,317.26 ns | 1,167.72 ns |         - |
+| LookupUsingList        | .NET 9.0  | .NET 9.0  | 100000     |   248,544.4 ns |   387.07 ns |   343.12 ns |         - |
+| LookupUsingConditional | .NET 9.0  | .NET 9.0  | 100000     |    77,651.4 ns |   261.13 ns |   244.26 ns |         - |
+| LookupUsingSwitch      | .NET 9.0  | .NET 9.0  | 100000     |    46,834.8 ns |   250.07 ns |   233.91 ns |         - |
+| LookupUsingRange       | .NET 9.0  | .NET 9.0  | 100000     |    31,144.1 ns |   160.22 ns |   142.03 ns |         - |
+| **LookupUsingHashSet**     | **.NET 10.0** | **.NET 10.0** | **1000000**    | **2,349,540.1 ns** | **3,464.15 ns** | **3,070.88 ns** |         **-** |
+| LookupUsingList        | .NET 10.0 | .NET 10.0 | 1000000    | 2,483,309.1 ns | 2,431.96 ns | 1,898.71 ns |         - |
+| LookupUsingConditional | .NET 10.0 | .NET 10.0 | 1000000    |   775,171.1 ns |   730.68 ns |   570.47 ns |         - |
+| LookupUsingSwitch      | .NET 10.0 | .NET 10.0 | 1000000    |   469,904.8 ns | 1,905.07 ns | 1,688.79 ns |         - |
+| LookupUsingRange       | .NET 10.0 | .NET 10.0 | 1000000    |   310,960.2 ns | 1,075.37 ns |   897.98 ns |         - |
+| LookupUsingHashSet     | .NET 9.0  | .NET 9.0  | 1000000    | 2,312,034.3 ns | 5,470.35 ns | 5,116.97 ns |         - |
+| LookupUsingList        | .NET 9.0  | .NET 9.0  | 1000000    | 2,486,845.6 ns | 3,425.55 ns | 3,204.26 ns |         - |
+| LookupUsingConditional | .NET 9.0  | .NET 9.0  | 1000000    |   777,371.6 ns | 3,153.44 ns | 2,949.73 ns |         - |
+| LookupUsingSwitch      | .NET 9.0  | .NET 9.0  | 1000000    |   468,989.3 ns | 2,981.34 ns | 2,788.75 ns |         - |
+| LookupUsingRange       | .NET 9.0  | .NET 9.0  | 1000000    |   310,669.4 ns |   679.98 ns |   530.88 ns |         - |

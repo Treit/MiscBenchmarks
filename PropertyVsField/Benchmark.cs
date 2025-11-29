@@ -2,8 +2,11 @@ namespace Test;
 using BenchmarkDotNet.Attributes;
 using System;
 using System.Runtime.CompilerServices;
+using BenchmarkDotNet.Jobs;
 
 [DisassemblyDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     public int Count;

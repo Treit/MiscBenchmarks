@@ -1,12 +1,15 @@
-﻿namespace Test;
+namespace Test;
 
 using BenchmarkDotNet.Attributes;
 using System;
 using System.Linq;
 using System.Numerics;
 using System.Numerics.Tensors;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(1_000_000)]

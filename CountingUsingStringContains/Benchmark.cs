@@ -4,9 +4,12 @@ using BenchmarkDotNet.Diagnosers;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
 [Orderer(BenchmarkDotNet.Order.SummaryOrderPolicy.FastestToSlowest)]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(10, 1000)]

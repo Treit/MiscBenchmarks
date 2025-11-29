@@ -8,6 +8,7 @@ The benchmark task simply reads one column of values from a fairly large table i
 
 
 
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)

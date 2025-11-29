@@ -5,8 +5,11 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     [Params(4, 100, 1024)]

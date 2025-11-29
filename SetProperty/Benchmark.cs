@@ -1,6 +1,7 @@
 namespace Test;
 using BenchmarkDotNet.Attributes;
 using System;
+using BenchmarkDotNet.Jobs;
 
 public interface IContainer
 {
@@ -23,6 +24,8 @@ public class Payload
 }
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     Container<Payload> _container;

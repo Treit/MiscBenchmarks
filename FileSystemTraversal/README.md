@@ -2,20 +2,28 @@
 
 
 
+
+
 ```
 
 BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
 AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
 .NET SDK 10.0.100
-  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
-  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 
 ```
-| Method                                             | Count | Mean      | Error     | StdDev    | Median    |
-|--------------------------------------------------- |------ |----------:|----------:|----------:|----------:|
-| TraverseRecursive                                  | 10000 |  9.485 ms | 0.1893 ms | 0.1771 ms |  9.556 ms |
-| TraverseWithStack                                  | 10000 | 10.710 ms | 0.2116 ms | 0.3477 ms | 10.843 ms |
-| TraverseWithGetFileSystemEntries                   | 10000 |  5.846 ms | 0.1157 ms | 0.2390 ms |  5.961 ms |
-| TraverseWithEnumerateFileSystemEntries             | 10000 |  5.581 ms | 0.0863 ms | 0.0807 ms |  5.594 ms |
-| TraverseWithEnumerateFileSystemEntriesParallelLinq | 10000 |  5.568 ms | 0.1054 ms | 0.1128 ms |  5.600 ms |
+| Method                                             | Job       | Runtime   | Count | Mean      | Error     | StdDev    |
+|--------------------------------------------------- |---------- |---------- |------ |----------:|----------:|----------:|
+| TraverseRecursive                                  | .NET 10.0 | .NET 10.0 | 10000 |  8.820 ms | 0.1422 ms | 0.1187 ms |
+| TraverseWithStack                                  | .NET 10.0 | .NET 10.0 | 10000 |  9.824 ms | 0.1907 ms | 0.3080 ms |
+| TraverseWithGetFileSystemEntries                   | .NET 10.0 | .NET 10.0 | 10000 |  5.579 ms | 0.1048 ms | 0.0929 ms |
+| TraverseWithEnumerateFileSystemEntries             | .NET 10.0 | .NET 10.0 | 10000 |  5.142 ms | 0.0828 ms | 0.0774 ms |
+| TraverseWithEnumerateFileSystemEntriesParallelLinq | .NET 10.0 | .NET 10.0 | 10000 |  4.519 ms | 0.0589 ms | 0.0492 ms |
+| TraverseRecursive                                  | .NET 9.0  | .NET 9.0  | 10000 |  9.880 ms | 0.1193 ms | 0.1058 ms |
+| TraverseWithStack                                  | .NET 9.0  | .NET 9.0  | 10000 | 10.054 ms | 0.1691 ms | 0.1661 ms |
+| TraverseWithGetFileSystemEntries                   | .NET 9.0  | .NET 9.0  | 10000 |  5.566 ms | 0.1046 ms | 0.0978 ms |
+| TraverseWithEnumerateFileSystemEntries             | .NET 9.0  | .NET 9.0  | 10000 |  5.184 ms | 0.0865 ms | 0.0722 ms |
+| TraverseWithEnumerateFileSystemEntriesParallelLinq | .NET 9.0  | .NET 9.0  | 10000 |  5.136 ms | 0.0711 ms | 0.0594 ms |

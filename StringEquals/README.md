@@ -1,22 +1,24 @@
 # Different methods of comparing strings
 
-```ini
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.22000
-AMD Ryzen 9 5950X, 1 CPU, 32 logical and 16 physical cores
-.NET SDK=7.0.100-preview.4.22252.9
-  [Host]     : .NET 7.0.0 (7.0.22.22904), X64 RyuJIT
-  DefaultJob : .NET 7.0.0 (7.0.22.22904), X64 RyuJIT
-```
+
 
 ```
-|                      Method | numIterations |      Mean |    Error |   StdDev |
-|---------------------------- |-------------- |----------:|---------:|---------:|
-|                EqualsObject |            10 |  26.19 ns | 0.053 ns | 0.050 ns |
-|                EqualsString |            10 |  21.56 ns | 0.103 ns | 0.097 ns |
-| EqualsStringExplicitOrdinal |            10 |  33.87 ns | 0.098 ns | 0.092 ns |
-|        EqualsStringOperator |            10 |  24.45 ns | 0.089 ns | 0.083 ns |
-|                EqualsObject |           100 | 260.65 ns | 0.921 ns | 0.862 ns |
-|                EqualsString |           100 | 219.07 ns | 0.834 ns | 0.780 ns |
-| EqualsStringExplicitOrdinal |           100 | 345.83 ns | 0.539 ns | 0.478 ns |
-|        EqualsStringOperator |           100 | 240.41 ns | 1.234 ns | 1.094 ns |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  DefaultJob : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
 ```
+| Method                      | numIterations | Mean      | Error    | StdDev   |
+|---------------------------- |-------------- |----------:|---------:|---------:|
+| **EqualsObject**                | **10**            |  **31.62 ns** | **0.212 ns** | **0.199 ns** |
+| EqualsString                | 10            |  31.67 ns | 0.245 ns | 0.230 ns |
+| EqualsStringExplicitOrdinal | 10            |  31.53 ns | 0.297 ns | 0.278 ns |
+| EqualsStringOperator        | 10            |  32.40 ns | 0.209 ns | 0.174 ns |
+| **EqualsObject**                | **100**           | **311.94 ns** | **2.903 ns** | **2.573 ns** |
+| EqualsString                | 100           | 309.89 ns | 0.535 ns | 0.501 ns |
+| EqualsStringExplicitOrdinal | 100           | 312.92 ns | 1.595 ns | 1.492 ns |
+| EqualsStringOperator        | 100           | 312.21 ns | 1.002 ns | 0.837 ns |

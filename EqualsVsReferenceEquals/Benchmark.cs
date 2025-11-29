@@ -8,6 +8,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using BenchmarkDotNet.Jobs;
 
 public static class CollectionUtils
 {
@@ -54,6 +55,8 @@ public static class CollectionUtils
 
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     static Dictionary<string, string> dict1;

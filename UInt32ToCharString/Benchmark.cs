@@ -4,8 +4,11 @@ using System;
 using System.Buffers.Binary;
 using System.Linq;
 using System.Text;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     uint _encoded = 0x20584F56u;

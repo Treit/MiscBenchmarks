@@ -2,8 +2,11 @@ namespace Test;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using System;
+using BenchmarkDotNet.Jobs;
 
 [DisassemblyDiagnoser(exportDiff: true, exportHtml: true)]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private float[] _floats;

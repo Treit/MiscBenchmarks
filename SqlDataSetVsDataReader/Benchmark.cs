@@ -1,6 +1,7 @@
 namespace Test;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Jobs;
 using global::Benchmark;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ using System.Data;
 using System.Linq;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private readonly string _connstring = "Server=.; Integrated Security=sspi; Initial Catalog=AdventureWorks2019;Encrypt=false";

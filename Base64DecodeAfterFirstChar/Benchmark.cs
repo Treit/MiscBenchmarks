@@ -6,8 +6,11 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     // The first character is a sentinel character, we need to decode everything AFTER the first character.

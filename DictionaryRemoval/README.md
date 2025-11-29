@@ -1,29 +1,32 @@
 # Removing dictionary entries
 
 
+
+
+
 ```
 
-BenchmarkDotNet v0.15.2, Windows 11 (10.0.27959.1)
-Unknown processor
-.NET SDK 10.0.100-preview.6.25358.103
-  [Host]     : .NET 9.0.8 (9.0.825.36511), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  Job-CNUJVU : .NET 9.0.8 (9.0.825.36511), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  Job-CNUJVU : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
 
 InvocationCount=1  UnrollFactor=1  
 
 ```
-| Method                           | Count | Mean          | Error       | StdDev       | Median        | Ratio | RatioSD | Gen0      | Allocated | Alloc Ratio |
-|--------------------------------- |------ |--------------:|------------:|-------------:|--------------:|------:|--------:|----------:|----------:|------------:|
-| **RegularDictionary**                | **100**   |      **5.223 μs** |   **0.5316 μs** |     **1.482 μs** |      **4.900 μs** |  **1.07** |    **0.40** |         **-** |         **-** |          **NA** |
-| ConcurrentDictionary             | 100   |     15.240 μs |   1.2073 μs |     3.522 μs |     15.650 μs |  3.12 |    1.05 |         - |         - |          NA |
-| ImmutableDictionaryRemove        | 100   |    312.873 μs |  38.9083 μs |   112.259 μs |    350.150 μs | 64.02 |   28.12 |         - |   45600 B |          NA |
-| ImmutableDictionaryRemoveRange   | 100   |    199.011 μs |  11.6724 μs |    33.302 μs |    193.850 μs | 40.72 |   12.04 |         - |    7704 B |          NA |
-| RegularDictionaryWithContainsKey | 100   |      5.635 μs |   0.5741 μs |     1.675 μs |      5.400 μs |  1.15 |    0.45 |         - |         - |          NA |
-| RegularDictionaryBulkRemove      | 100   |     19.879 μs |   2.3862 μs |     6.808 μs |     18.750 μs |  4.07 |    1.73 |         - |     112 B |          NA |
-|                                  |       |               |             |              |               |       |         |           |           |             |
-| **RegularDictionary**                | **10000** |    **641.130 μs** |  **28.2433 μs** |    **80.580 μs** |    **658.400 μs** |  **1.02** |    **0.22** |         **-** |         **-** |          **NA** |
-| ConcurrentDictionary             | 10000 |  1,362.702 μs |  92.0097 μs |   261.016 μs |  1,349.600 μs |  2.17 |    0.56 |         - |         - |          NA |
-| ImmutableDictionaryRemove        | 10000 | 19,142.582 μs | 530.5419 μs | 1,522.224 μs | 19,069.300 μs | 30.51 |    5.81 | 1000.0000 | 8783616 B |          NA |
-| ImmutableDictionaryRemoveRange   | 10000 | 11,188.071 μs | 395.2292 μs | 1,127.611 μs | 11,105.950 μs | 17.83 |    3.57 |         - |  759896 B |          NA |
-| RegularDictionaryWithContainsKey | 10000 |  1,068.387 μs |  97.7542 μs |   286.696 μs |    912.750 μs |  1.70 |    0.55 |         - |         - |          NA |
-| RegularDictionaryBulkRemove      | 10000 |  1,247.137 μs |  87.5690 μs |   256.825 μs |  1,150.550 μs |  1.99 |    0.54 |         - |     112 B |          NA |
+| Method                           | Count | Mean         | Error       | StdDev      | Median       | Ratio | RatioSD | Allocated | Alloc Ratio |
+|--------------------------------- |------ |-------------:|------------:|------------:|-------------:|------:|--------:|----------:|------------:|
+| **RegularDictionary**                | **100**   |     **2.137 μs** |   **0.0469 μs** |   **0.0958 μs** |     **2.100 μs** |  **1.00** |    **0.06** |         **-** |          **NA** |
+| ConcurrentDictionary             | 100   |     5.006 μs |   0.1060 μs |   0.1088 μs |     5.000 μs |  2.35 |    0.11 |         - |          NA |
+| ImmutableDictionaryRemove        | 100   |   107.519 μs |   2.1388 μs |   2.1005 μs |   107.650 μs | 50.41 |    2.41 |   45600 B |          NA |
+| ImmutableDictionaryRemoveRange   | 100   |    86.335 μs |   1.6888 μs |   1.9448 μs |    86.150 μs | 40.47 |    1.99 |    7704 B |          NA |
+| RegularDictionaryWithContainsKey | 100   |     2.824 μs |   0.0618 μs |   0.1468 μs |     2.800 μs |  1.32 |    0.09 |         - |          NA |
+| RegularDictionaryBulkRemove      | 100   |     9.157 μs |   0.1824 μs |   0.2617 μs |     9.200 μs |  4.29 |    0.22 |     112 B |          NA |
+|                                  |       |              |             |             |              |       |         |           |             |
+| **RegularDictionary**                | **10000** |   **131.635 μs** |   **8.3360 μs** |  **24.1842 μs** |   **127.250 μs** |  **1.03** |    **0.25** |         **-** |          **NA** |
+| ConcurrentDictionary             | 10000 |   381.958 μs |   4.1409 μs |   3.2329 μs |   382.150 μs |  2.99 |    0.49 |         - |          NA |
+| ImmutableDictionaryRemove        | 10000 | 6,854.905 μs | 131.5558 μs | 161.5624 μs | 6,851.200 μs | 53.66 |    8.89 | 8783616 B |          NA |
+| ImmutableDictionaryRemoveRange   | 10000 | 5,103.519 μs | 100.6655 μs | 210.1264 μs | 5,088.500 μs | 39.95 |    6.76 |  759896 B |          NA |
+| RegularDictionaryWithContainsKey | 10000 |   150.593 μs |   1.9666 μs |   1.7433 μs |   150.150 μs |  1.18 |    0.19 |         - |          NA |
+| RegularDictionaryBulkRemove      | 10000 |   241.131 μs |  11.6229 μs |  33.7201 μs |   221.400 μs |  1.89 |    0.41 |     112 B |          NA |

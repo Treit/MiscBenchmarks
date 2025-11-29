@@ -4,8 +4,11 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     MemoryStream _ms;

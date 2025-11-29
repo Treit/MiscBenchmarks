@@ -2,8 +2,11 @@ namespace Test;
 using BenchmarkDotNet.Attributes;
 using System.Collections.Generic;
 using System.Linq;
+using BenchmarkDotNet.Jobs;
 
 [DisassemblyDiagnoser]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private string[] _strings;

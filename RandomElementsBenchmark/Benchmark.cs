@@ -2,10 +2,13 @@
 using BenchmarkDotNet.Attributes;
 using System.Collections;
 using System.Security.Cryptography;
+using BenchmarkDotNet.Jobs;
 
 namespace RandomElementsBenchmark
 {
     [MemoryDiagnoser]
+    [SimpleJob(RuntimeMoniker.Net90)]
+    [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {
         [Params(500)]

@@ -1,23 +1,36 @@
 # TeBeCoStorageDictionary
 
-```
-
-BenchmarkDotNet v0.15.2, Windows 11 (10.0.28000.1199)
-Unknown processor
-.NET SDK 10.0.100-preview.6.25358.103
-  [Host]     : .NET 9.0.10 (9.0.1025.47515), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
-  DefaultJob : .NET 9.0.10 (9.0.1025.47515), X64 RyuJIT AVX-512F+CD+BW+DQ+VL
 
 
 ```
-| Method                   | EntityCount | Mean           | Error         | StdDev          | Median         | Ratio | RatioSD | Gen0     | Allocated | Alloc Ratio |
-|------------------------- |------------ |---------------:|--------------:|----------------:|---------------:|------:|--------:|---------:|----------:|------------:|
-| **NewImplementationTypeOf**  | **1**           |    **16,307.0 ns** |   **1,068.30 ns** |     **3,082.29 ns** |    **15,587.4 ns** |  **1.03** |    **0.26** |   **0.6409** |    **2889 B** |        **1.00** |
-| OldImplementationTypeOf  | 1           |       376.9 ns |      18.63 ns |        54.64 ns |       365.0 ns |  0.02 |    0.01 |   0.1426 |     616 B |        0.21 |
-| NewImplementationGetType | 1           |    15,759.1 ns |     952.16 ns |     2,701.12 ns |    14,942.9 ns |  1.00 |    0.24 |   0.6409 |    2889 B |        1.00 |
-| OldImplementationGetType | 1           |       384.1 ns |      21.30 ns |        61.44 ns |       366.1 ns |  0.02 |    0.01 |   0.1426 |     616 B |        0.21 |
-|                          |             |                |               |                 |                |       |         |          |           |             |
-| **NewImplementationTypeOf**  | **512**         | **7,370,961.4 ns** | **385,094.42 ns** | **1,111,085.54 ns** | **7,017,710.2 ns** |  **1.02** |    **0.21** | **328.1250** | **1478935 B** |        **1.00** |
-| OldImplementationTypeOf  | 512         |   172,255.5 ns |   6,935.00 ns |    20,448.01 ns |   167,916.7 ns |  0.02 |    0.00 |  72.9980 |  315418 B |        0.21 |
-| NewImplementationGetType | 512         | 7,479,333.7 ns | 401,335.67 ns | 1,151,507.35 ns | 7,243,023.4 ns |  1.04 |    0.21 | 328.1250 | 1478935 B |        1.00 |
-| OldImplementationGetType | 512         |   186,509.9 ns |  10,314.71 ns |    30,088.49 ns |   177,426.7 ns |  0.03 |    0.01 |  72.9980 |  315418 B |        0.21 |
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.22631.6199/23H2/2023Update/SunValley3) (Hyper-V)
+AMD EPYC 7763 2.44GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 10.0.100
+  [Host]    : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 10.0 : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+  .NET 9.0  : .NET 10.0.0 (10.0.25.52411), X64 RyuJIT AVX2
+
+
+```
+| Method                   | Job       | Runtime   | EntityCount | Mean           | Error        | StdDev       | Ratio | Gen0    | Allocated | Alloc Ratio |
+|------------------------- |---------- |---------- |------------ |---------------:|-------------:|-------------:|------:|--------:|----------:|------------:|
+| **NewImplementationTypeOf**  | **.NET 10.0** | **.NET 10.0** | **1**           |    **10,596.3 ns** |    **119.26 ns** |     **99.58 ns** |  **1.00** |  **0.1526** |    **2888 B** |        **1.00** |
+| OldImplementationTypeOf  | .NET 10.0 | .NET 10.0 | 1           |       193.1 ns |      1.40 ns |      1.17 ns |  0.02 |  0.0367 |     616 B |        0.21 |
+| NewImplementationGetType | .NET 10.0 | .NET 10.0 | 1           |    10,794.4 ns |     48.80 ns |     38.10 ns |  1.02 |  0.1526 |    2888 B |        1.00 |
+| OldImplementationGetType | .NET 10.0 | .NET 10.0 | 1           |       201.6 ns |      1.00 ns |      0.94 ns |  0.02 |  0.0367 |     616 B |        0.21 |
+|                          |           |           |             |                |              |              |       |         |           |             |
+| NewImplementationTypeOf  | .NET 9.0  | .NET 9.0  | 1           |    10,845.8 ns |    104.93 ns |     87.62 ns |  1.00 |  0.1526 |    2888 B |        1.00 |
+| OldImplementationTypeOf  | .NET 9.0  | .NET 9.0  | 1           |       192.0 ns |      0.89 ns |      0.79 ns |  0.02 |  0.0367 |     616 B |        0.21 |
+| NewImplementationGetType | .NET 9.0  | .NET 9.0  | 1           |    10,610.6 ns |     80.87 ns |     67.53 ns |  0.98 |  0.1526 |    2888 B |        1.00 |
+| OldImplementationGetType | .NET 9.0  | .NET 9.0  | 1           |       196.1 ns |      1.09 ns |      1.02 ns |  0.02 |  0.0367 |     616 B |        0.21 |
+|                          |           |           |             |                |              |              |       |         |           |             |
+| **NewImplementationTypeOf**  | **.NET 10.0** | **.NET 10.0** | **512**         | **5,466,415.5 ns** | **28,534.71 ns** | **23,827.77 ns** |  **1.00** | **78.1250** | **1478843 B** |        **1.00** |
+| OldImplementationTypeOf  | .NET 10.0 | .NET 10.0 | 512         |    99,762.1 ns |  1,698.50 ns |  1,505.68 ns |  0.02 | 18.7988 |  315399 B |        0.21 |
+| NewImplementationGetType | .NET 10.0 | .NET 10.0 | 512         | 5,565,813.3 ns | 84,896.92 ns | 70,892.77 ns |  1.02 | 78.1250 | 1478843 B |        1.00 |
+| OldImplementationGetType | .NET 10.0 | .NET 10.0 | 512         |   102,977.1 ns |    671.68 ns |    524.41 ns |  0.02 | 18.7988 |  315399 B |        0.21 |
+|                          |           |           |             |                |              |              |       |         |           |             |
+| NewImplementationTypeOf  | .NET 9.0  | .NET 9.0  | 512         | 5,527,022.5 ns | 28,065.55 ns | 21,911.73 ns |  1.00 | 78.1250 | 1478843 B |        1.00 |
+| OldImplementationTypeOf  | .NET 9.0  | .NET 9.0  | 512         |   112,039.5 ns |    955.67 ns |    847.18 ns |  0.02 | 18.7988 |  315399 B |        0.21 |
+| NewImplementationGetType | .NET 9.0  | .NET 9.0  | 512         | 5,369,362.1 ns | 37,994.49 ns | 29,663.60 ns |  0.97 | 78.1250 | 1478843 B |        1.00 |
+| OldImplementationGetType | .NET 9.0  | .NET 9.0  | 512         |   100,593.9 ns |    720.22 ns |    638.46 ns |  0.02 | 18.7988 |  315399 B |        0.21 |

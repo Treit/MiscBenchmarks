@@ -3,9 +3,12 @@ using BenchmarkDotNet.Attributes;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
 [MemoryRandomization]
+[SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
     private const int Iterations = 100_000;
