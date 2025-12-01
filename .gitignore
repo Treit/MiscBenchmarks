@@ -18,7 +18,8 @@
 # Mono auto generated files
 mono_crash.*
 
-
+benchmark_progress.json
+benchmark_skiplist.txt
 
 # Build results
 [Dd]ebug/
