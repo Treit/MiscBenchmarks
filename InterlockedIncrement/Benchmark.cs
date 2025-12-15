@@ -6,7 +6,7 @@ using System.Threading;
 [MemoryDiagnoser]
 public class Benchmark
 {
-    [Params(100, 10000)]
+    [Params(100, 10_000_000)]
     public int Count { get; set; }
 
     private int _counter;
