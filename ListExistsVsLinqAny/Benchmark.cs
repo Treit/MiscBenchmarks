@@ -7,6 +7,7 @@ namespace ListExistsVsLinqAny
     using System.Linq;
 
     [MemoryDiagnoser]
+    [MemoryRandomization]
     [SimpleJob(RuntimeMoniker.Net80)]
     [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
