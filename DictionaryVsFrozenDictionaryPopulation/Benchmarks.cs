@@ -8,7 +8,6 @@ using BenchmarkDotNet.Jobs;
 namespace DictionaryVsFrozenDictionaryPopulation
 {
     [MemoryDiagnoser]
-    [SimpleJob(RuntimeMoniker.Net90)]
     [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {

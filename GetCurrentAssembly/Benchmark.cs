@@ -2,8 +2,6 @@ namespace Test;
 using BenchmarkDotNet.Attributes;
 using System.Reflection;
 using BenchmarkDotNet.Jobs;
-
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 
 public class Benchmark

@@ -6,7 +6,6 @@ namespace AsyncAwaitVsTaskReturn
     using BenchmarkDotNet.Jobs;
 
     [MemoryDiagnoser]
-    [SimpleJob(RuntimeMoniker.Net90)]
     [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {

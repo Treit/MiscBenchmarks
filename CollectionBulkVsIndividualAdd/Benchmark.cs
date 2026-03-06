@@ -7,7 +7,6 @@ using BenchmarkDotNet.Jobs;
 namespace CollectionBulkVsIndividualAdd
 {
     [MemoryDiagnoser]
-    [SimpleJob(RuntimeMoniker.Net90)]
     [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {

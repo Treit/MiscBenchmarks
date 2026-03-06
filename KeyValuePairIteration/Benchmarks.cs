@@ -11,7 +11,6 @@ using BenchmarkDotNet.Jobs;
 namespace KeyValuePairIteration
 {
     [MemoryDiagnoser]
-    [SimpleJob(RuntimeMoniker.Net90)]
     [SimpleJob(RuntimeMoniker.Net10_0)]
     public class Benchmark
     {

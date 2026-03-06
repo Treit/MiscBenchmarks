@@ -4,8 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using BenchmarkDotNet.Jobs;
-
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 
 public class Benchmark

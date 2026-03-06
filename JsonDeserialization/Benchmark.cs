@@ -16,7 +16,6 @@ internal partial class SourceGenerationContext : JsonSerializerContext
 }
 
 [MemoryDiagnoser]
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {

@@ -5,8 +5,6 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Jobs;
-
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 
 public class Benchmark

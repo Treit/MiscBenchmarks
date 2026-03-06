@@ -14,7 +14,6 @@ using BenchmarkDotNet.Jobs;
 public record SomeClass(string Name, int Value, List<string> SomeData, List<int> SomeMoreData, Guid SomeGuid);
 
 [MemoryDiagnoser]
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {

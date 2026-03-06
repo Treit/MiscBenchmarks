@@ -11,7 +11,6 @@ using BenchmarkDotNet.Jobs;
 record TestRecord(string Name, Uri? Url);
 
 [MemoryDiagnoser]
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {

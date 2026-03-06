@@ -14,7 +14,6 @@ public class TestClass
 }
 
 [DisassemblyDiagnoser(printSource: true)]
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {

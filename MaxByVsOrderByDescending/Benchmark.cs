@@ -10,7 +10,6 @@ using BenchmarkDotNet.Jobs;
 public record MyClass(int Id, string Name);
 
 [MemoryDiagnoser]
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {

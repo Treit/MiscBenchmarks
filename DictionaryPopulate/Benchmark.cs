@@ -12,7 +12,6 @@ using BenchmarkDotNet.Jobs;
 /// those to zero in the target dictionary.
 /// </summary>
 [MemoryDiagnoser]
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {

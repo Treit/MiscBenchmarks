@@ -8,7 +8,6 @@ using BenchmarkDotNet.Jobs;
 
 [MemoryDiagnoser]
 [ShortRunJob]
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {

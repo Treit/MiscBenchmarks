@@ -8,8 +8,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using BenchmarkDotNet.Jobs;
-
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 
 public class Benchmark

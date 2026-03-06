@@ -16,7 +16,6 @@ public enum NeedleLocation
 
 [MemoryDiagnoser]
 [MemoryRandomization]
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {

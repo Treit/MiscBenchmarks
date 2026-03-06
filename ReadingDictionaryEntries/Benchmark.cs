@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using BenchmarkDotNet.Jobs;
-
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 
 public class Benchmark

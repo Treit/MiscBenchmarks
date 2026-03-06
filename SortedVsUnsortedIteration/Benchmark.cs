@@ -5,8 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.X86;
 using System.Runtime.Intrinsics;
 using BenchmarkDotNet.Jobs;
-
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 
 public class Benchmark

@@ -4,8 +4,6 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using System.IO;
 using System.Threading.Tasks;
-
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 
 public class Benchmark

@@ -15,8 +15,6 @@ public class TestClass
     public int Id { get; set; }
     public bool SomeFlag { get; set; }
 }
-
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 
 public class Benchmark

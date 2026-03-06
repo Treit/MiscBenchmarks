@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿namespace Test;
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿namespace Test;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Diagnosers;
 using System;
@@ -27,7 +27,6 @@ public class Experience
 
 [MemoryDiagnoser]
 [MemoryRandomization]
-[SimpleJob(RuntimeMoniker.Net90)]
 [SimpleJob(RuntimeMoniker.Net10_0)]
 public class Benchmark
 {
