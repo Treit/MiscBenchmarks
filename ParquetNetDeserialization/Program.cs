@@ -12,8 +12,7 @@ internal class Program
         BenchmarkRunner.Run<Benchmark>();
 #else
         var b = new Benchmark();
-        b.RowCount = 50_000;
-        await b.GlobalSetup();
+        b.GlobalSetup();
 
         var r1 = await b.SerializerDeserialize();
         var r2 = await b.ColumnApiDeserialize();
