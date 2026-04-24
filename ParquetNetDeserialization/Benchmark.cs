@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 [MemoryDiagnoser]
 public class Benchmark
 {
-    [Params(50_000, 500_000)]
+    [Params(50_000, 500_000, 2_621_470)]
     public int RowCount { get; set; }
 
     private string _parquetFilePath = "";
