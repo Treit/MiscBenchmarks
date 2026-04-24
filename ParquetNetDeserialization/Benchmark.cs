@@ -71,19 +71,22 @@ public class Benchmark
     private static async Task WriteTestFile(string path, int rowCount)
     {
         var rng = new Random(42);
+
+        var orgPool = Enumerable.Range(1, 2000)
+            .Select(n => $"00000000-0000-0000-0000-{n:D12}")
+            .ToArray();
+
         var baseTime = new DateTime(2026, 4, 23, 13, 0, 0);
         var rows = Enumerable.Range(0, rowCount).Select(i =>
         {
-            var t = baseTime.AddSeconds(i % 3617);
-            var endTime   = t.ToString("yyyy-MM-ddTHH:mm:ss");
-            var timeBucket = t.ToString("yyyy-MM-ddTHH-mm-ss");
+            var t = baseTime.AddSeconds(rng.Next(3617));
             return new EventRow
             {
-                Id             = $"{(ulong)i:x32}",
-                OrganizationId = $"00000000-0000-0000-0000-{(i % 2000) + 1:D12}",
+                Id             = $"0000000000000000{(uint)rng.Next():x8}{(uint)rng.Next():x8}",
+                OrganizationId = orgPool[rng.Next(orgPool.Length)],
                 UsageQuantity  = Math.Round(rng.NextDouble() * 10, 4),
-                UsageEndTime   = endTime,
-                TimeBucket     = timeBucket,
+                UsageEndTime   = t.ToString("yyyy-MM-ddTHH:mm:ss"),
+                TimeBucket     = t.ToString("yyyy-MM-ddTHH-mm-ss"),
             };
         });
 
