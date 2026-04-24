@@ -50,14 +50,18 @@ public class Benchmark
         {
             using var rgr = reader.OpenRowGroupReader(rg);
 
-            var orgIds    = (string[]) (await rgr.ReadColumnAsync(reader.Schema.DataFields[0])).Data;
-            var quantities = (double?[])(await rgr.ReadColumnAsync(reader.Schema.DataFields[1])).Data;
-            var buckets   = (string[]) (await rgr.ReadColumnAsync(reader.Schema.DataFields[2])).Data;
+            var ids        = (string[]) (await rgr.ReadColumnAsync(reader.Schema.DataFields[0])).Data;
+            var orgIds     = (string[]) (await rgr.ReadColumnAsync(reader.Schema.DataFields[1])).Data;
+            var quantities = (double[]) (await rgr.ReadColumnAsync(reader.Schema.DataFields[2])).Data;
+            var endTimes   = (string[]) (await rgr.ReadColumnAsync(reader.Schema.DataFields[3])).Data;
+            var buckets    = (string[]) (await rgr.ReadColumnAsync(reader.Schema.DataFields[4])).Data;
 
-            totalRows += orgIds.Length;
+            totalRows += ids.Length;
 
+            _ = ids[0];
             _ = orgIds[0];
             _ = quantities[0];
+            _ = endTimes[0];
             _ = buckets[0];
         }
 
@@ -67,11 +71,20 @@ public class Benchmark
     private static async Task WriteTestFile(string path, int rowCount)
     {
         var rng = new Random(42);
-        var rows = Enumerable.Range(0, rowCount).Select(i => new EventRow
+        var baseTime = new DateTime(2026, 4, 23, 13, 0, 0);
+        var rows = Enumerable.Range(0, rowCount).Select(i =>
         {
-            OrganizationId = $"org-{i % 10_000:D5}",
-            UsageQuantity  = Math.Round(rng.NextDouble() * 1000, 2),
-            TimeBucket     = $"2026-04-{(i % 28) + 1:D2}T{(i % 24):D2}-00-00",
+            var t = baseTime.AddSeconds(i % 3617);
+            var endTime   = t.ToString("yyyy-MM-ddTHH:mm:ss");
+            var timeBucket = t.ToString("yyyy-MM-ddTHH-mm-ss");
+            return new EventRow
+            {
+                Id             = $"{(ulong)i:x32}",
+                OrganizationId = $"00000000-0000-0000-0000-{(i % 2000) + 1:D12}",
+                UsageQuantity  = Math.Round(rng.NextDouble() * 10, 4),
+                UsageEndTime   = endTime,
+                TimeBucket     = timeBucket,
+            };
         });
 
         using var fs = File.Create(path);
@@ -81,7 +94,9 @@ public class Benchmark
 
 class EventRow
 {
+    public string Id             { get; set; } = "";
     public string OrganizationId { get; set; } = "";
-    public double? UsageQuantity { get; set; }
-    public string TimeBucket { get; set; } = "";
+    public double UsageQuantity  { get; set; }
+    public string UsageEndTime   { get; set; } = "";
+    public string TimeBucket     { get; set; } = "";
 }
