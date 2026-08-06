@@ -15,13 +15,19 @@ internal class Program
             Size = 1_048_576
         };
 
-        var managed = b.AllocateManagedArrays();
+        var bytes = b.AllocateByteArrays();
         b.Cleanup();
-        var uninitialized = b.AllocateUninitializedManagedArrays();
+        var uninitializedBytes = b.AllocateUninitializedByteArrays();
         b.Cleanup();
         var nativeAddress = b.AllocateNativeBuffers();
         b.Cleanup();
-        Console.WriteLine($"{managed.Length}, {uninitialized.Length}, {nativeAddress != 0}");
+        var references = b.AllocateReferenceArrays();
+        b.Cleanup();
+        var uninitializedReferences = b.AllocateUninitializedReferenceArrays();
+        b.Cleanup();
+        Console.WriteLine(
+            $"{bytes.Length}, {uninitializedBytes.Length}, {nativeAddress != 0}, " +
+            $"{references.Length}, {uninitializedReferences.Length}");
 #endif
     }
 }
