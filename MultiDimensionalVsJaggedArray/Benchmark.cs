@@ -2,7 +2,6 @@ using CommunityToolkit.HighPerformance;
 
 namespace Test;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Jobs;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -10,7 +9,6 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
-[SimpleJob(RuntimeMoniker.Net10_0)]
 
 public class Benchmark
 {
